@@ -20,6 +20,7 @@ init_trader_database();
 init_raid_locations();
 init_flag_database();
 init_skill_database();
+init_recipe_database();
 init_workbench_database();
 init_area_database();
 init_raid_vars();
@@ -124,6 +125,10 @@ equipment_selecting_item = false;
 skills_index = 0;
 crew_skills_index = 0;
 crew_skills_crew_index = 0;
+crafting_recipe_index = 0;
+crafting_recipe_scroll = 0;
+crafting_visible_rows = 20;
+crafting_message = "";
 // ==============================
 // WORKSHOP
 // ==============================

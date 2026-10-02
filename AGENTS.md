@@ -2,7 +2,7 @@
 
 This is a GameMaker project written in GML.
 
-## Coding style
+## Coding Style
 
 - Prefer compact GML formatting.
 - Avoid unnecessary vertical whitespace.
@@ -12,36 +12,47 @@ This is a GameMaker project written in GML.
 - Make the smallest reasonable change.
 - Do not refactor unrelated code unless specifically requested.
 
-## Search workflow
+## Investigation
 
-When investigating code:
+Before modifying an existing file:
 
-1. Use grep to locate exact functions and references.
-2. Read the relevant GML files.
-3. Inspect callers before changing shared functions.
-4. Use GameMaker MCP when GameMaker resource information is needed.
+1. Search for the relevant function/resource if necessary.
+2. Read the actual file before editing it.
+3. Inspect relevant callers and related functions.
+4. Never guess file contents or file paths.
+5. Use existing project architecture instead of inventing parallel systems.
 
-Do not invent file paths or assume how a system works without reading it.
+If an edit fails, read the current file again before retrying.
 
-## Game architecture
+## GameMaker
 
-Primary game states:
-- MAIN_MENU
-- HIDEOUT
-- RAID
+Use GameMaker ResourceTool MCP when resource information is useful.
 
-Most menus should be substates of HIDEOUT, not global game states.
+Use gm-cli to compile after code changes.
 
-Enemy firing should use shared weapon/firing functions where possible.
+Do not manually modify GameMaker .yy resource files unless necessary.
+Prefer ResourceTool MCP for structured GameMaker resource operations.
 
 ## Verification
 
 After making code changes:
 
-1. Review the modified files.
+1. Review the modified code.
 2. Run gm-cli compile.
-3. Read compiler errors.
+3. Read any compiler errors.
 4. Fix errors caused by the changes.
 5. Compile again.
 
 Do not claim a change works unless compilation succeeds.
+
+## Project Architecture
+
+Primary game states:
+
+- MAIN_MENU
+- HIDEOUT
+- RAID
+
+Most menus should be substates of HIDEOUT rather than new global game states.
+
+Enemy firing should use existing shared weapon/firing functions when possible.

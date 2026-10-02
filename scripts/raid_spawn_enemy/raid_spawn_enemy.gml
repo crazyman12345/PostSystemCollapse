@@ -100,15 +100,16 @@ function raid_spawn_enemy(_type, _x, _y)
 
 		   case RaidEnemyType.SPINNER:
 		{
-		    enemy.enemy_sprite = -1;
+		    enemy.enemy_sprite_idle = spr_burst_shooter_idle;
+			enemy.enemy_sprite_active = spr_burst_shooter_run;
 
 		    enemy.enemy_has_gun = true;
 		    enemy.enemy_gun_sprite = spr_1911;
 
-		    enemy.enemy_gun_offset = 10;
+		    enemy.enemy_gun_offset = 16;
 
-		    enemy.enemy_muzzle_x = 12;
-		    enemy.enemy_muzzle_y = 2;
+		    enemy.enemy_muzzle_x = 14;
+		    enemy.enemy_muzzle_y = 6;
 
 		    enemy.enemy_hp = 24;
 		    enemy.enemy_speed = 1.0;

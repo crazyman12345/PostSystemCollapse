@@ -6,6 +6,12 @@ function knife_dasher(_enemy)
     {
         case RaidEnemyState.PAUSE:
         {
+            if (e.enemy_sprite != spr_dasher_idle)
+            {
+                e.enemy_sprite = spr_dasher_idle;
+                e.enemy_frame = 0;
+            }
+
             e.state_timer--;
 
             if (e.state_timer <= 0)
@@ -18,13 +24,19 @@ function knife_dasher(_enemy)
                 );
 
                 e.enemy_state = RaidEnemyState.DASH;
-                e.state_timer = 30;
+                e.state_timer = 40;
             }
         }
         break;
 
         case RaidEnemyState.DASH:
         {
+            if (e.enemy_sprite != spr_dasher_run)
+            {
+                e.enemy_sprite = spr_dasher_run;
+                e.enemy_frame = 0;
+            }
+
             e.enemy_x += lengthdir_x(
                 e.dash_speed,
                 e.dash_dir

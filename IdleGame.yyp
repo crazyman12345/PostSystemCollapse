@@ -332,6 +332,7 @@
     {"id":{"name":"step_drug_lab","path":"scripts/step_drug_lab/step_drug_lab.yy",},},
     {"id":{"name":"step_handle_shortcuts","path":"scripts/step_handle_shortcuts/step_handle_shortcuts.yy",},},
     {"id":{"name":"step_hideout_combat","path":"scripts/step_hideout_combat/step_hideout_combat.yy",},},
+    {"id":{"name":"step_hideout_crafting","path":"scripts/step_hideout_crafting/step_hideout_crafting.yy",},},
     {"id":{"name":"step_hideout_raid","path":"scripts/step_hideout_raid/step_hideout_raid.yy",},},
     {"id":{"name":"step_hideout_stash","path":"scripts/step_hideout_stash/step_hideout_stash.yy",},},
     {"id":{"name":"step_hideout_traders","path":"scripts/step_hideout_traders/step_hideout_traders.yy",},},

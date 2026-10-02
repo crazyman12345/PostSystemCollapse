@@ -20,6 +20,13 @@ function step_hideout()
         if (keyboard_check_pressed(vk_enter))
         {
             hideout_focus = HideoutFocus.CONTENT;
+
+            if (variable_struct_exists(recipe_db, selected.key))
+            {
+                crafting_recipe_index = 0;
+                crafting_recipe_scroll = 0;
+                crafting_message = "";
+            }
         }
 
         return;
