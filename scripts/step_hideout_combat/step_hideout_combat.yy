@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_hideout_combat",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_hideout_combat",
+  "parent":{
+    "name":"idle_combat",
+    "path":"folders/idle_combat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

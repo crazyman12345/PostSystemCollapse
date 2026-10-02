@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_spawn_ground_item",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_spawn_ground_item",
+  "parent":{
+    "name":"loot",
+    "path":"folders/RAID/loot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_raid_prep",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_raid_prep",
+  "parent":{
+    "name":"araid_OLD",
+    "path":"folders/araid_OLD.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

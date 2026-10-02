@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"skill_xp_required",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"skill_xp_required",
+  "parent":{
+    "name":"skills",
+    "path":"folders/skills.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

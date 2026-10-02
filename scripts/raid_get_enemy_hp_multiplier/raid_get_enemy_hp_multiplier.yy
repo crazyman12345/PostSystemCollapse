@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_get_enemy_hp_multiplier",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_get_enemy_hp_multiplier",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

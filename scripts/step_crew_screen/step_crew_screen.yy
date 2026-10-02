@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_crew_screen",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_crew_screen",
+  "parent":{
+    "name":"crew",
+    "path":"folders/crew.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_raid_player_combat_panel",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_raid_player_combat_panel",
+  "parent":{
+    "name":"combat",
+    "path":"folders/araid_OLD/combat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"wall_rusher",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"wall_rusher",
+  "parent":{
+    "name":"enemy_AI",
+    "path":"folders/RAID/enemy_AI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

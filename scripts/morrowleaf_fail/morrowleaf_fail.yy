@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"morrowleaf_fail",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"morrowleaf_fail",
+  "parent":{
+    "name":"morrowleaf",
+    "path":"folders/misc/morrowleaf.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

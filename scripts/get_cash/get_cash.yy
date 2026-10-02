@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"get_cash",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"get_cash",
+  "parent":{
+    "name":"trader",
+    "path":"folders/trader.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

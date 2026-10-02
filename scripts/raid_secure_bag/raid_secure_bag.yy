@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_secure_bag",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_secure_bag",
+  "parent":{
+    "name":"loot",
+    "path":"folders/araid_OLD/loot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

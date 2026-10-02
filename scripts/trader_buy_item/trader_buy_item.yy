@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"trader_buy_item",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"trader_buy_item",
+  "parent":{
+    "name":"trader",
+    "path":"folders/trader.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

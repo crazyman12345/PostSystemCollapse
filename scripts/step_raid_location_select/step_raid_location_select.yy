@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_raid_location_select",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_raid_location_select",
+  "parent":{
+    "name":"step",
+    "path":"folders/step.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

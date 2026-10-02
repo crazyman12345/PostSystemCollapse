@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_bag_get_selected_item",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_bag_get_selected_item",
+  "parent":{
+    "name":"bag",
+    "path":"folders/araid_OLD/bag.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

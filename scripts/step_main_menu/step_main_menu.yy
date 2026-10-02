@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_main_menu",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_main_menu",
+  "parent":{
+    "name":"step",
+    "path":"folders/step.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

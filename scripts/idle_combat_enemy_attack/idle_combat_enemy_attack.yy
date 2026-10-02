@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"idle_combat_enemy_attack",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"idle_combat_enemy_attack",
+  "parent":{
+    "name":"idle_combat",
+    "path":"folders/idle_combat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

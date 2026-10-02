@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ascii_bar",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ascii_bar",
+  "parent":{
+    "name":"idle_combat",
+    "path":"folders/idle_combat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"skill_db_get",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"skill_db_get",
+  "parent":{
+    "name":"skills",
+    "path":"folders/skills.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

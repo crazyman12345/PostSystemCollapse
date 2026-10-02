@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_update_threat",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_update_threat",
+  "parent":{
+    "name":"threat",
+    "path":"folders/araid_OLD/threat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"enemy_get",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"enemy_get",
+  "parent":{
+    "name":"araid_OLD",
+    "path":"folders/araid_OLD.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

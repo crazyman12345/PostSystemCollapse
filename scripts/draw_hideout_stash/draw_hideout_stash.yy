@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_hideout_stash",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_hideout_stash",
+  "parent":{
+    "name":"hideout",
+    "path":"folders/hideout.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

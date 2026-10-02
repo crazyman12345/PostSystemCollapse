@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_generate_reward_loot",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_generate_reward_loot",
+  "parent":{
+    "name":"loot",
+    "path":"folders/RAID/loot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

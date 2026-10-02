@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"skill_get_level",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"skill_get_level",
+  "parent":{
+    "name":"hideout",
+    "path":"folders/hideout.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"inventory_salvage_item",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"inventory_salvage_item",
+  "parent":{
+    "name":"inventory",
+    "path":"folders/inventory.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

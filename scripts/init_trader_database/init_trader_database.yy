@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"init_trader_database",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"init_trader_database",
+  "parent":{
+    "name":"init",
+    "path":"folders/init.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

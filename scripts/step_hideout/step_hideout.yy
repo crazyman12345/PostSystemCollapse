@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_hideout",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_hideout",
+  "parent":{
+    "name":"hideout",
+    "path":"folders/hideout.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

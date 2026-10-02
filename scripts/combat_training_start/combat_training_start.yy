@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"combat_training_start",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"combat_training_start",
+  "parent":{
+    "name":"idle_combat",
+    "path":"folders/idle_combat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

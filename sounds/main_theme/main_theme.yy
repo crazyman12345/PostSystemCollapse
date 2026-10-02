@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"main_theme",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":202.90909,
+  "exportDir":"",
+  "name":"main_theme",
+  "parent":{
+    "name":"IdleGame",
+    "path":"IdleGame.yyp",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"main_theme.wav",
+  "volume":0.1,
+}

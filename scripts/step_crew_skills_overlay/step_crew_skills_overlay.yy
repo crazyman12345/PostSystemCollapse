@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_crew_skills_overlay",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_crew_skills_overlay",
+  "parent":{
+    "name":"skills",
+    "path":"folders/skills.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

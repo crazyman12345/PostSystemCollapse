@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"knife_dasher",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"knife_dasher",
+  "parent":{
+    "name":"enemy_AI",
+    "path":"folders/RAID/enemy_AI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

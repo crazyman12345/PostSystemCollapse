@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"terminal_prompt",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"terminal_prompt",
+  "parent":{
+    "name":"UI_tools",
+    "path":"folders/UI_tools.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

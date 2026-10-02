@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"crew_update_injury",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"crew_update_injury",
+  "parent":{
+    "name":"crew",
+    "path":"folders/crew.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

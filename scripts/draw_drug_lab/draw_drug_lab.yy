@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_drug_lab",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_drug_lab",
+  "parent":{
+    "name":"menus",
+    "path":"folders/draw_functions/menus.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

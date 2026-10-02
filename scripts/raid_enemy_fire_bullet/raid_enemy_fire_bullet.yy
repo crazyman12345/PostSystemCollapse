@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_enemy_fire_bullet",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_enemy_fire_bullet",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

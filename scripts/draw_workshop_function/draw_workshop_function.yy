@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_workshop_function",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_workshop_function",
+  "parent":{
+    "name":"workshop",
+    "path":"folders/workshop.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

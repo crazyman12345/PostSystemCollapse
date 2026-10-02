@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_loot_pick",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_loot_pick",
+  "parent":{
+    "name":"loot",
+    "path":"folders/RAID/loot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

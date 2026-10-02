@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_bag_get_visible_items",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_bag_get_visible_items",
+  "parent":{
+    "name":"loot",
+    "path":"folders/araid_OLD/loot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

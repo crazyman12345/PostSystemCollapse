@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_location_get",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_location_get",
+  "parent":{
+    "name":"database",
+    "path":"folders/araid_OLD/database.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

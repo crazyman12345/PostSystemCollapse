@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"init_item_database",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"init_item_database",
+  "parent":{
+    "name":"init",
+    "path":"folders/init.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

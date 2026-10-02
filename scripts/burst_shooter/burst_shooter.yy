@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"burst_shooter",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"burst_shooter",
+  "parent":{
+    "name":"enemy_AI",
+    "path":"folders/RAID/enemy_AI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

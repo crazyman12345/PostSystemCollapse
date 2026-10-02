@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"craft_basic_grow",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"craft_basic_grow",
+  "parent":{
+    "name":"morrowleaf",
+    "path":"folders/misc/morrowleaf.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

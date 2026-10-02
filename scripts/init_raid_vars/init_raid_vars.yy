@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"init_raid_vars",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"init_raid_vars",
+  "parent":{
+    "name":"init",
+    "path":"folders/init.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

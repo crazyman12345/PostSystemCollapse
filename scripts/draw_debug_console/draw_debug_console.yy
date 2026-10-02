@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_debug_console",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_debug_console",
+  "parent":{
+    "name":"debug",
+    "path":"folders/debug.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

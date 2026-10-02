@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"knife_stalker",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"knife_stalker",
+  "parent":{
+    "name":"enemy_AI",
+    "path":"folders/RAID/enemy_AI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

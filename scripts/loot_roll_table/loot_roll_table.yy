@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"loot_roll_table",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"loot_roll_table",
+  "parent":{
+    "name":"araid_OLD",
+    "path":"folders/araid_OLD.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

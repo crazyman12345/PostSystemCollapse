@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_skills_overlay",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_skills_overlay",
+  "parent":{
+    "name":"skills",
+    "path":"folders/skills.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

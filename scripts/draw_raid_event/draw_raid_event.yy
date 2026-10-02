@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_raid_event",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_raid_event",
+  "parent":{
+    "name":"events",
+    "path":"folders/araid_OLD/events.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

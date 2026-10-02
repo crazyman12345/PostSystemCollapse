@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"crew_pay_for_treatment",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"crew_pay_for_treatment",
+  "parent":{
+    "name":"crew",
+    "path":"folders/crew.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

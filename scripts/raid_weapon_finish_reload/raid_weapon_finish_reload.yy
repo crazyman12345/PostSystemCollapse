@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_weapon_finish_reload",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_weapon_finish_reload",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

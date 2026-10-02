@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"skill_xp_to_next_level",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"skill_xp_to_next_level",
+  "parent":{
+    "name":"misc",
+    "path":"folders/misc.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

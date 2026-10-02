@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_raid_loot_found_panel",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_raid_loot_found_panel",
+  "parent":{
+    "name":"loot",
+    "path":"folders/araid_OLD/loot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

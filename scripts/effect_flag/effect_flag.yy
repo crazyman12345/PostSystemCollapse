@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"effect_flag",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"effect_flag",
+  "parent":{
+    "name":"araid_level_design",
+    "path":"folders/araid_level_design.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

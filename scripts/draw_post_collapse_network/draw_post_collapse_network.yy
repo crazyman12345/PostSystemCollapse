@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_post_collapse_network",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_post_collapse_network",
+  "parent":{
+    "name":"misc",
+    "path":"folders/misc.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

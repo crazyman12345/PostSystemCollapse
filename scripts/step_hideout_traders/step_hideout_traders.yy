@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_hideout_traders",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_hideout_traders",
+  "parent":{
+    "name":"hideout",
+    "path":"folders/hideout.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

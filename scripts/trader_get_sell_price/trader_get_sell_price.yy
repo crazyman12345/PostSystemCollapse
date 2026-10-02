@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"trader_get_sell_price",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"trader_get_sell_price",
+  "parent":{
+    "name":"trader",
+    "path":"folders/trader.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

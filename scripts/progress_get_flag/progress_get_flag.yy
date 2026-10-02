@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"progress_get_flag",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"progress_get_flag",
+  "parent":{
+    "name":"misc",
+    "path":"folders/misc.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

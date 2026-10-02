@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"init_loot_tables",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"init_loot_tables",
+  "parent":{
+    "name":"init",
+    "path":"folders/init.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

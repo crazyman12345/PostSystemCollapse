@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_apply_effect",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_apply_effect",
+  "parent":{
+    "name":"effects",
+    "path":"folders/araid_OLD/effects.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

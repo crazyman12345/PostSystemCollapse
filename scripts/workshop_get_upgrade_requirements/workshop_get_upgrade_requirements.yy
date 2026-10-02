@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"workshop_get_upgrade_requirements",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"workshop_get_upgrade_requirements",
+  "parent":{
+    "name":"workshop",
+    "path":"folders/workshop.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

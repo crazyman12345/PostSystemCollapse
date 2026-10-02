@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_raid_combat",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_raid_combat",
+  "parent":{
+    "name":"combat",
+    "path":"folders/araid_OLD/combat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

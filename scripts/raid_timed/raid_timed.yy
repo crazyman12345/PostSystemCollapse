@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_timed",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_timed",
+  "parent":{
+    "name":"araid_level_design",
+    "path":"folders/araid_level_design.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

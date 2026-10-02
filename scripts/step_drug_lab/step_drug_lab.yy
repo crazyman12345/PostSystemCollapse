@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_drug_lab",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_drug_lab",
+  "parent":{
+    "name":"step",
+    "path":"folders/step.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

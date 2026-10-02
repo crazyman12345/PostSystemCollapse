@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_raid_result",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_raid_result",
+  "parent":{
+    "name":"results",
+    "path":"folders/araid_OLD/results.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

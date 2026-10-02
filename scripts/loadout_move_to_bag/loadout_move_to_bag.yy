@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"loadout_move_to_bag",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"loadout_move_to_bag",
+  "parent":{
+    "name":"araid_OLD",
+    "path":"folders/araid_OLD.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,86 @@
+function draw_raid_player()
+{
+    var member = crew[0];
+
+    var _base;
+
+    if (raid_player_moving)
+        _base = spr_player_run;
+    else
+        _base = spr_player_idle;
+	
+	
+	
+    var _frame =
+        floor(raid_player_anim_frame)
+        mod sprite_get_number(_base);
+
+    var _x = round(raid_player_x);
+    var _y = round(raid_player_y);
+
+	var _player_alpha = 1;
+
+	if (raid_player_invincible)
+	{
+	    if (
+	        floor(
+	            raid_player_invincible_timer / 5
+	        )
+	        mod 2 == 0
+	    )
+	    {
+	        _player_alpha = 0.35;
+	    }
+	}
+    // ==============================
+    // BAG - BEHIND PLAYER
+    // ==============================
+
+    raid_draw_equipment_layer(
+        member.bag,
+        _frame,
+        _x,
+        _y
+    );
+
+
+    // ==============================
+    // BASE BODY
+    // ==============================
+
+    draw_sprite_ext(
+        _base,
+        _frame,
+        _x,
+        _y,
+        raid_player_facing,
+        1,
+        0,
+        c_white,
+        _player_alpha
+    );
+
+
+    // ==============================
+    // CHEST ARMOR
+    // ==============================
+
+    raid_draw_equipment_layer(
+        member.armor_chest,
+        _frame,
+        _x,
+        _y
+    );
+
+
+    // ==============================
+    // HELMET
+    // ==============================
+
+    raid_draw_equipment_layer(
+        member.armor_head,
+        _frame,
+        _x,
+        _y
+    );
+}

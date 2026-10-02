@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"workshop_get_salvageable_items",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"workshop_get_salvageable_items",
+  "parent":{
+    "name":"workshop",
+    "path":"folders/workshop.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

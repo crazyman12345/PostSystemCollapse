@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"crew_skill_add_xp",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"crew_skill_add_xp",
+  "parent":{
+    "name":"skills",
+    "path":"folders/skills.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_inventory_overlay",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_inventory_overlay",
+  "parent":{
+    "name":"draw_functions",
+    "path":"folders/draw_functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

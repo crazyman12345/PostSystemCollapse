@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_crew_screen",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_crew_screen",
+  "parent":{
+    "name":"crew",
+    "path":"folders/crew.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

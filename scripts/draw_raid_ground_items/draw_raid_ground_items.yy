@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_raid_ground_items",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_raid_ground_items",
+  "parent":{
+    "name":"loot",
+    "path":"folders/RAID/loot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

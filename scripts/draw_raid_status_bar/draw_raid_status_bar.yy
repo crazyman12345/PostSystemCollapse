@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_raid_status_bar",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_raid_status_bar",
+  "parent":{
+    "name":"UI",
+    "path":"folders/araid_OLD/UI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

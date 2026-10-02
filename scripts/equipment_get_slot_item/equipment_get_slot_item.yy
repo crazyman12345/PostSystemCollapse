@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"equipment_get_slot_item",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"equipment_get_slot_item",
+  "parent":{
+    "name":"equipment",
+    "path":"folders/equipment.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

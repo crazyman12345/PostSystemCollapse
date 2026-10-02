@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_morrowleaf_harvest",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_morrowleaf_harvest",
+  "parent":{
+    "name":"draw_functions",
+    "path":"folders/draw_functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

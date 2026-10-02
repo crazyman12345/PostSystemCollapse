@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_ascii_block",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_ascii_block",
+  "parent":{
+    "name":"UI",
+    "path":"folders/araid_OLD/UI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

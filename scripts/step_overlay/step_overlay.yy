@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_overlay",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_overlay",
+  "parent":{
+    "name":"step",
+    "path":"folders/step.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

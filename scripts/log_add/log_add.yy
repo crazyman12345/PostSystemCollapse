@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"log_add",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"log_add",
+  "parent":{
+    "name":"UI_tools",
+    "path":"folders/UI_tools.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

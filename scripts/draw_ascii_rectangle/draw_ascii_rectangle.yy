@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_ascii_rectangle",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_ascii_rectangle",
+  "parent":{
+    "name":"UI_tools",
+    "path":"folders/UI_tools.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

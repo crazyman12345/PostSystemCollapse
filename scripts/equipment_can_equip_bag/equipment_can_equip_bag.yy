@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"equipment_can_equip_bag",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"equipment_can_equip_bag",
+  "parent":{
+    "name":"equipment",
+    "path":"folders/equipment.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

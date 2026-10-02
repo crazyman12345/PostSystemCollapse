@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_raid_loot",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_raid_loot",
+  "parent":{
+    "name":"loot",
+    "path":"folders/araid_OLD/loot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

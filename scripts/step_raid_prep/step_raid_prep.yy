@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_raid_prep",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_raid_prep",
+  "parent":{
+    "name":"step",
+    "path":"folders/step.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

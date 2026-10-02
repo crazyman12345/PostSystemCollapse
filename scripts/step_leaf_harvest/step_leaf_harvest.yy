@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_leaf_harvest",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_leaf_harvest",
+  "parent":{
+    "name":"drug",
+    "path":"folders/drug.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

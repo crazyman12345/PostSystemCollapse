@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_get_random_enemy_type",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_get_random_enemy_type",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_enemy_pick_random_position",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_enemy_pick_random_position",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

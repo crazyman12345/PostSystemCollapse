@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_add_noise",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_add_noise",
+  "parent":{
+    "name":"threat",
+    "path":"folders/araid_OLD/threat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

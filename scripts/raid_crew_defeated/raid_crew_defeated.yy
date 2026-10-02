@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_crew_defeated",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_crew_defeated",
+  "parent":{
+    "name":"crew",
+    "path":"folders/crew.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

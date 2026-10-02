@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"overlay_open",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"overlay_open",
+  "parent":{
+    "name":"UI_tools",
+    "path":"folders/UI_tools.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
