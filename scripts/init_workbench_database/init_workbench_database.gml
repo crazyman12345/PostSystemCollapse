@@ -9,7 +9,7 @@ function init_workbench_database()
         salvage_bench: {
             name: "SALVAGE BENCH",
             description: "Break down scavenged junk into useful materials.",
-            sprite: -1, //spr_salvage_bench,
+            sprite: spr_salvage_bench, //spr_salvage_bench,
             function_name: "SALVAGE",
             max_level: 3,
 
@@ -33,7 +33,7 @@ function init_workbench_database()
         workbench: {
             name: "WEAPON WORKBENCH",
             description: "Craft and modify firearms and weapon components.",
-            sprite: -1, //spr_workbench,
+            sprite: spr_weapon_workbench, //spr_workbench,
             function_name: "CRAFTING",
             max_level: 3,
 

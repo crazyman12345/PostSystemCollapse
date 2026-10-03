@@ -2,6 +2,17 @@ function draw_trader_select()
 {
     var trader_keys = variable_struct_get_names(global.traders);
 
+    if (!global.admin_trader_enabled)
+    {
+        for (var i = array_length(trader_keys) - 1; i >= 0; i--)
+        {
+            if (trader_keys[i] == "admin")
+            {
+                array_delete(trader_keys, i, 1);
+            }
+        }
+    }
+
     // RIGHT SIDE AREA: X 320 -> 1920
     // CONTENT AREA: Y 80 -> 1080
 

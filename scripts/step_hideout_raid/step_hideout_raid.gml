@@ -5,8 +5,6 @@ function step_hideout_raid()
     // AREA SELECT
     // ==========================================
 
-    if (combat_menu_focus == CombatMenuFocus.AREAS)
-    {
         var count = array_length(combat_area_db);
 
         if (keyboard_check_pressed(ord("A")) && combat_area_index mod 2 == 1) combat_area_index--;
@@ -43,6 +41,5 @@ function step_hideout_raid()
         }
 
         return;
-    }
 
 }

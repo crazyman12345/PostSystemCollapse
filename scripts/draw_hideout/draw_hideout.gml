@@ -37,6 +37,10 @@ function draw_hideout()
 
         // MENU ITEM
         draw_set_halign(fa_left);
+        if (entry.bench_key != "" && variable_struct_get(workshop_progress, entry.bench_key) <= 0)
+            draw_set_color(c_gray);
+        else
+            draw_set_color(c_lime);
         draw_text(margin, _y, cursor + entry.name);
 
         // SKILL LEVEL
@@ -73,7 +77,13 @@ function draw_hideout()
     draw_line(content_x1 + 20, content_y1 + 60, content_x2 - 20, content_y1 + 60);
 
     // RIGHT SIDE CONTENT
-    switch (selected.key)
+    if (selected.bench_key != "" && variable_struct_get(workshop_progress, selected.bench_key) <= 0)
+    {
+        var bench = variable_struct_get(workshop_db, selected.bench_key);
+        draw_text(content_x1 + 25, content_y1 + 85, "[LOCKED]");
+        draw_text(content_x1 + 25, content_y1 + 125, "BUILD THE " + bench.name + " IN THE WORKSHOP TO UNLOCK.");
+    }
+    else switch (selected.key)
     {
         case "traders":
             draw_hideout_traders();
@@ -92,7 +102,7 @@ function draw_hideout()
         break;
 		
 		case "salvaging":
-			draw_hideout_salvaging();
+			draw_hideout_salvage();
 		break;
 		
         case "gunmaking":

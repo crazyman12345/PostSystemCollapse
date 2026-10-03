@@ -1,3 +1,4 @@
+// TEST
 function draw_raid_enemies()
 {
     draw_set_font(fnt_terminal_small);
@@ -90,14 +91,14 @@ function draw_raid_enemies()
 
             _bar_y =
                 _sprite_top
-                - 10;
+                - 15;
         }
         else
         {
             _bar_y =
                 e.enemy_y
                 - e.enemy_radius
-                - 10;
+                - 15;
         }
 
 

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"inventory_get_visible_salvageable_items",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"inventory_get_visible_salvageable_items",
+  "parent":{
+    "name":"hideout",
+    "path":"folders/hideout.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

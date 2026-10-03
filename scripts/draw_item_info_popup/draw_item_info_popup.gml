@@ -1,4 +1,10 @@
-function draw_item_info_popup(_item_key)
+function draw_item_info_popup(
+    _item_key,
+    _left = 1305,
+    _top = 210,
+    _width = 600,
+    _height = 600
+)
 {
     var item = item_get(_item_key);
 
@@ -29,17 +35,17 @@ function draw_item_info_popup(_item_key)
     // BOX POSITIONS
     // ============================================================
 
-    var _x1 = 1305;
-    var _y1 = 210;
+    var _x1 = _left;
+    var _y1 = _top;
 
-    var _x2 = 1905;
-    var _y2 = 810;
+    var _x2 = _x1 + _width;
+    var _y2 = _y1 + _height;
 
     var _title_h = 34;
 
-    var _image_right = 1525;
-    var _name_bottom = 330;
-    var _stats_bottom = 500;
+    var _image_right = _x1 + 220;
+    var _name_bottom = _y1 + 120;
+    var _stats_bottom = _y1 + 290;
 
 
     // ============================================================
@@ -240,37 +246,36 @@ function draw_item_info_popup(_item_key)
             ((_y1 + _title_h) + _stats_bottom) * 0.5;
 
 
-        var _sprite_w =
-            sprite_get_width(_sprite);
+        var _max_w = 120;
+        var _max_h = 120;
 
-        var _sprite_h =
-            sprite_get_height(_sprite);
-
-
-        var _max_w = 150;
-        var _max_h = 180;
-
+        var _bbox_left = sprite_get_bbox_left(_sprite);
+        var _bbox_top = sprite_get_bbox_top(_sprite);
+        var _bbox_w = sprite_get_bbox_right(_sprite) - _bbox_left + 1;
+        var _bbox_h = sprite_get_bbox_bottom(_sprite) - _bbox_top + 1;
 
         var _scale =
             min(
-                _max_w / _sprite_w,
-                _max_h / _sprite_h
+                _max_w / _bbox_w,
+                _max_h / _bbox_h
             );
 
-        _scale = min(_scale, 3);
 
-
-        draw_sprite_ext(
+        draw_sprite_part_ext(
             _sprite,
             0,
 
-            _image_center_x,
-            _image_center_y,
+            _bbox_left,
+            _bbox_top,
+            _bbox_w,
+            _bbox_h,
+
+            _image_center_x - (_bbox_w * _scale * 0.5),
+            _image_center_y - (_bbox_h * _scale * 0.5),
 
             _scale,
             _scale,
 
-            0,
             c_white,
             1
         );

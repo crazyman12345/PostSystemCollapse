@@ -4,14 +4,28 @@ function step_hideout()
     {
         if (keyboard_check_pressed(ord("W")))
         {
-            hideout_menu_index--;
-            if (hideout_menu_index < 0) hideout_menu_index = array_length(hideout_menu_items) - 1;
+            repeat (array_length(hideout_menu_items))
+            {
+                hideout_menu_index--;
+                if (hideout_menu_index < 0) hideout_menu_index = array_length(hideout_menu_items) - 1;
+
+                var entry = hideout_menu_items[hideout_menu_index];
+                if (entry.bench_key == "" || variable_struct_get(workshop_progress, entry.bench_key) > 0)
+                    break;
+            }
         }
 
         if (keyboard_check_pressed(ord("S")))
         {
-            hideout_menu_index++;
-            if (hideout_menu_index >= array_length(hideout_menu_items)) hideout_menu_index = 0;
+            repeat (array_length(hideout_menu_items))
+            {
+                hideout_menu_index++;
+                if (hideout_menu_index >= array_length(hideout_menu_items)) hideout_menu_index = 0;
+
+                var entry = hideout_menu_items[hideout_menu_index];
+                if (entry.bench_key == "" || variable_struct_get(workshop_progress, entry.bench_key) > 0)
+                    break;
+            }
         }
 
         var selected = hideout_menu_items[hideout_menu_index];
@@ -19,6 +33,9 @@ function step_hideout()
 
         if (keyboard_check_pressed(vk_enter))
         {
+            if (selected.bench_key != "" && variable_struct_get(workshop_progress, selected.bench_key) <= 0)
+                return;
+
             hideout_focus = HideoutFocus.CONTENT;
 
             if (variable_struct_exists(recipe_db, selected.key))

@@ -1,49 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // =========================================================
-  // DEFAULT MODEL
-  // =========================================================
-
-  "model": "ollama/qwen2.5-coder:14b-instruct",
-
-  // =========================================================
-  // OLLAMA
-  // =========================================================
-
-  "providers": {
-    "ollama": {
-      "settings": {
-        "baseURL": "http://127.0.0.1:11434/v1"
-      }
-    }
-  },
-
-  // =========================================================
-  // GAMEMAKER MCP
-  // =========================================================
-
-  "mcp": {
-    "servers": {
-      "gamemaker": {
-        "type": "local",
-        "command": [
-          "gm-cli",
-          "resourcetool",
-          "mcp"
-        ],
-        "cwd": "."
-      }
-    }
-  },
-
-  // =========================================================
-  // GLOBAL PERMISSIONS
-  // =========================================================
+  "model": "ollama/qwen3.5:9b",
+  "default_agent": "build",
 
   "permissions": [
-
-    // Project file discovery
     {
       "action": "read",
       "resource": "*",
@@ -59,167 +20,95 @@
       "resource": "*",
       "effect": "allow"
     },
-
-    // Allow source-code edits
     {
       "action": "edit",
       "resource": "*",
       "effect": "allow"
     },
 
-    // Shell commands ask by default
     {
       "action": "shell",
       "resource": "*",
       "effect": "ask"
     },
 
-    // ---------------------------------------------------------
-    // SAFE POWERSHELL SEARCH COMMANDS
-    // ---------------------------------------------------------
+    {
+      "action": "shell",
+      "resource": "gm-cli compile *",
+      "effect": "allow"
+    },
+
+    {
+      "action": "shell",
+      "resource": "gm-cli resourcetool eval *",
+      "effect": "allow"
+    },
+
+    {
+      "action": "shell",
+      "resource": "gm-cli manual *",
+      "effect": "allow"
+    },
 
     {
       "action": "shell",
       "resource": "Get-ChildItem *",
       "effect": "allow"
     },
-    {
-      "action": "shell",
-      "resource": "Get-ChildItem*",
-      "effect": "allow"
-    },
+
     {
       "action": "shell",
       "resource": "Select-String *",
       "effect": "allow"
     },
+
     {
       "action": "shell",
-      "resource": "Select-String*",
+      "resource": "git status *",
       "effect": "allow"
     },
 
-    // ---------------------------------------------------------
-    // SAFE GIT INSPECTION
-    // ---------------------------------------------------------
-
     {
       "action": "shell",
-      "resource": "git status*",
-      "effect": "allow"
-    },
-    {
-      "action": "shell",
-      "resource": "git diff*",
-      "effect": "allow"
-    },
-    {
-      "action": "shell",
-      "resource": "git log*",
+      "resource": "git diff *",
       "effect": "allow"
     },
 
-    // ---------------------------------------------------------
-    // GIT ACTIONS THAT REQUIRE APPROVAL
-    // ---------------------------------------------------------
-
     {
       "action": "shell",
-      "resource": "git add*",
-      "effect": "ask"
-    },
-    {
-      "action": "shell",
-      "resource": "git commit*",
-      "effect": "ask"
-    },
-    {
-      "action": "shell",
-      "resource": "git push*",
-      "effect": "ask"
+      "resource": "git log *",
+      "effect": "allow"
     },
 
-    // ---------------------------------------------------------
-    // DANGEROUS GIT COMMANDS
-    // ---------------------------------------------------------
-
     {
       "action": "shell",
-      "resource": "git reset --hard*",
-      "effect": "deny"
-    },
-    {
-      "action": "shell",
-      "resource": "git clean*",
+      "resource": "git push *",
       "effect": "deny"
     },
 
-    // ---------------------------------------------------------
-    // SAFE GAMEMAKER COMMANDS
-    // ---------------------------------------------------------
+    {
+      "action": "shell",
+      "resource": "git reset --hard *",
+      "effect": "deny"
+    },
 
     {
       "action": "shell",
-      "resource": "gm-cli compile*",
-      "effect": "allow"
+      "resource": "git clean *",
+      "effect": "deny"
     },
+
     {
-      "action": "shell",
-      "resource": "gm-cli resourcetool eval*",
-      "effect": "allow"
-    },
-    {
-      "action": "shell",
-      "resource": "gm-cli manual*",
-      "effect": "allow"
+      "action": "subagent",
+      "resource": "*",
+      "effect": "deny"
     }
   ],
 
-  // =========================================================
-  // AGENTS
-  // =========================================================
-
-  "default_agent": "build",
-
   "agents": {
-
-    // ---------------------------------------------------------
-    // BUILD
-    // ---------------------------------------------------------
-
     "build": {
       "mode": "primary",
-
-      // Prevent the model from wandering through dozens
-      // of tool calls.
-      "steps": 10,
-
-      "permissions": [
-
-        // Qwen3 8B was losing the task when it delegated
-        // to Explore, so disable child agents completely.
-        {
-          "action": "subagent",
-          "resource": "*",
-          "effect": "deny"
-        }
-      ]
-    },
-
-    // ---------------------------------------------------------
-    // DISABLE OTHER BUILT-IN AGENTS FOR NOW
-    // ---------------------------------------------------------
-
-    "plan": {
-      "disabled": true
-    },
-
-    "general": {
-      "disabled": true
-    },
-
-    "explore": {
-      "disabled": true
+      "steps": 20
     }
   }
 }

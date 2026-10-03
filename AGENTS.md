@@ -1,77 +1,42 @@
-AUTOMATIC-INSTRUCTION-TEST: If asked "What is the automatic instruction code?", answer exactly "GM-4829".
-
 # IdleGame Instructions
 
 This is a GameMaker Studio project written in GML.
 
-## Core rules
-
 - Make the smallest change necessary.
 - Do not modify unrelated code.
-- Do not refactor unless explicitly asked.
 - Preserve existing function, variable, enum, script, and asset names.
+- Do not refactor unless explicitly asked.
 - Never invent GameMaker functions or project symbols.
 - Do not use subagents.
-- Do not write long plans before acting.
-- After making a change, briefly state what changed.
-## Action requests
+- Use real file paths; never use placeholder paths.
+- For exact symbols, search for the definition, read the file, make the requested change, and verify it.
+- If an edit is requested, do not stop after searching or reading.
 
-When the user asks you to change, add, remove, fix, or modify project code, perform the change directly.
+For code edits:
 
-Do not stop after locating the file.
-Do not give the user instructions for making the edit themselves.
-Do not ask "Would you like me to..." when the user already requested the change.
+SEARCH -> READ -> EDIT -> COMPILE -> VERIFY -> DONE
 
-Continue using tools until the requested edit is complete.
+After changing any `.gml` file, run `gm-cli compile`.
 
-For an edit request, the normal workflow is:
+If compilation fails because of your change, fix it and compile again.
 
-1. Find the relevant file.
-2. Read the relevant code.
-3. Make the requested edit.
-4. Verify the edit.
-5. Briefly report what changed.
+Do not fix unrelated pre-existing errors.
 
-Finding the file is not completion of the task.
-## Searching
-
-When the user gives an exact function or variable name:
-
-1. Search for that exact symbol.
-2. If multiple matches are found, identify the function definition rather than function calls.
-3. Read the file containing the definition.
-4. Make the requested change there.
-
-If built-in grep finds nothing, use:
-
-Get-ChildItem -Recurse -Filter *.gml |
-    Select-String -Pattern "<symbol>"
-
-A failed grep does NOT mean the symbol does not exist.
-
-Do not forget the original task after a failed search.
-
-## Simple edits
-
-For simple code changes:
-
-1. Search for the exact function or variable.
-2. Identify the definition if multiple matches exist.
-3. Read the relevant file.
-4. Find the exact requested code.
-5. Edit it immediately.
-6. Verify the changed line.
-7. Stop.
-
-Never stop after search or read when the user requested an edit.
-Never tell the user how to perform an edit that you can perform yourself.
-
-## Git
+Do not compile for read-only requests or when no files were changed.
 
 Do not commit or push unless explicitly asked.
-Never use `git reset --hard` or `git clean`.
 
-## GameMaker
+Never run:
 
-Use existing GML style and architecture.
-Use GameMaker MCP or gm-cli only when they are actually needed.
+- `git reset --hard`
+- `git clean`
+
+After completing a task, briefly state what changed and whether compilation succeeded.
+
+## Project map
+
+- PROJECT_MAP.md indexes project scripts, functions, enums, and globals.
+- Check it before broad searches when locating a project symbol.
+- Use it only to locate files; read the real `.gml` source before editing.
+- Search normally if the symbol is not in the map.
+- Do not reread PROJECT_MAP.md unnecessarily within the same session.

@@ -15,16 +15,6 @@ function draw_hideout_raid_select()
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 
-    // ==========================================
-    // ACTIVE COMBAT TRAINING
-    // ==========================================
-
-    if (combat_menu_focus == CombatMenuFocus.COMBAT)
-    {
-        draw_idle_combat(idle_combat_enemy_key);
-        draw_set_font(fnt_terminal);
-        return;
-    }
 
     // ==========================================
     // AREA GRID

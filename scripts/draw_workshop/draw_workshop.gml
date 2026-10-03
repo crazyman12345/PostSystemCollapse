@@ -46,7 +46,9 @@ function draw_workshop()
         var status = "[LOCKED]";
         if (level > 0) status = "[LV." + string(level) + "]";
 
+        if (level <= 0) draw_set_color(c_gray);
         draw_text(left_x1 + 25, list_y + i * 32, cursor + data.name);
+        draw_set_color(c_lime);
         draw_text(left_x2 - 110, list_y + i * 32, status);
     }
 
@@ -96,34 +98,15 @@ function draw_workshop()
     draw_text(right_x2 - 20, top + 20, status_text);
     draw_set_halign(fa_left);
 
-    // TABS
     var tab_y = top + 70;
-
-    if (workshop_tab == WorkshopTab.UPGRADES)
-    {
-        draw_text(right_x1 + 30, tab_y, "[ UPGRADES ]");
-        draw_text(right_x1 + 230, tab_y, bench.function_name);
-    }
-    else
-    {
-        draw_text(right_x1 + 30, tab_y, "UPGRADES");
-        draw_text(right_x1 + 230, tab_y, "[ " + bench.function_name + " ]");
-    }
+    draw_text(right_x1 + 30, tab_y, "[ UPGRADES ]");
 
     draw_line(right_x1 + 20, tab_y + 35, right_x2 - 20, tab_y + 35);
 
-    // TAB CONTENT
-    if (workshop_tab == WorkshopTab.UPGRADES)
-    {
-        draw_workshop_upgrades(bench, selected_key, right_x1, top, right_x2, bottom);
-    }
-    else
-    {
-        draw_workshop_function(bench, selected_key, right_x1, top, right_x2, bottom);
-    }
+    draw_workshop_upgrades(bench, selected_key, right_x1, top, right_x2, bottom);
 
     // BOTTOM CONTROLS
     draw_set_halign(fa_center);
-    draw_text(gui_w * 0.5, gui_h - 40, "[W/S] SELECT BENCH    [A/D] TAB    [ENTER] SELECT    [ESC] BACK");
+    draw_text(gui_w * 0.5, gui_h - 40, "[W/S] SELECT BENCH    [ENTER] SELECT    [ESC] BACK");
     draw_set_halign(fa_left);
 }

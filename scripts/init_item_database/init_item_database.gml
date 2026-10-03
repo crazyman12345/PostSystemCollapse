@@ -492,7 +492,8 @@ function init_item_database()
         description: "Common 9mm ammunition.",
         base_value: 2,
         weight: 0.02,
-        stackable: true
+        stackable: true,
+		icon_sprite: spr_9mm
     };
 
     global.items.ammo_45 = {
@@ -828,7 +829,7 @@ function init_item_database()
         weight: 0.2,
         stackable: true,
         combat_usable: true,
-
+		icon_sprite: spr_bandage,
         use_effects: [
             {
                 type: EffectType.HEAL,
@@ -849,7 +850,8 @@ function init_item_database()
         description: "Physical currency used for trade.",
         base_value: 1,
         weight: 0,
-        stackable: true
+        stackable: true,
+		icon_sprite: spr_cash
     };
 
 

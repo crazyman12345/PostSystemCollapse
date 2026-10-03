@@ -2,7 +2,7 @@ function draw_workshop_salvage(_x1, _top, _x2, _bottom)
 {
     var _y = _top + 140;
     var items = workshop_get_salvageable_items();
-
+	draw_set_color(c_lime);
     draw_text(_x1 + 30, _y, "SALVAGE");
     _y += 50;
 

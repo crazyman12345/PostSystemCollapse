@@ -75,12 +75,8 @@ raid =
     enemy_key: "",
     enemy_hp: 0,
     combat_active: false,
-	combat_phase:
-	    CombatPhase.DECISION,
 	combat_action_index: 0,
 	combat_item_index: 0,
-	combat_turn:
-	    CombatTurn.PLAYER,
 	combat_timer: 0,
 	combat_delay: 1,
 	combat_exchanges_remaining: 0,
@@ -109,7 +105,8 @@ raid.extract_active = false;
 loadout_focused_item_key = "";
 raid_player_max_hp = 30;
 raid_player_hp = 30;
-
+combat_area_index = 0;
+combat_menu_focus = CombatMenuFocus.AREAS;
 raid_player_armor = 0;
 raid_player_max_armor = 0;
 
@@ -122,7 +119,6 @@ raid_player_anim_frame = 0;
 raid_player_anim_speed = 0.15;
 raid_player_was_moving = false;
 raid_shot_cooldown = 0;
-raid_prep_mode = RaidPrep.CREW_SELECT;
 raid_map_surface = -1;
 raid_player_x = 960;
 raid_player_y = 540;
