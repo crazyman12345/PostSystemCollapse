@@ -1,6 +1,7 @@
 function raid_spawn_enemies()
 {
     var _count = raid_get_enemy_count();
+    var _player_spawn_area = 200;
 
     for (var i = 0; i < _count; i++)
     {
@@ -13,7 +14,7 @@ function raid_spawn_enemies()
 
         var _y = random_range(
             raid_room_y1 + 60,
-            raid_room_y2 - 100
+            raid_room_y2 - _player_spawn_area
         );
 
         raid_spawn_enemy(

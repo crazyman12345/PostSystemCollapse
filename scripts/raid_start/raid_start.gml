@@ -12,6 +12,8 @@ function raid_start(_area)
 	    360
 	);
     raid.active = true;
+    raid.paused = false;
+    raid.pause_menu_index = 1;
     raid.selected_area = _area;
 
     state = GameState.RAID;

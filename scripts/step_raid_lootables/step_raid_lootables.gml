@@ -26,6 +26,7 @@ function step_raid_lootables()
         {
             if (keyboard_check_pressed(ord("E")))
             {
+                audio_play_sound(snd_interact, 0, false);
                 raid_open_lootable(i);
                 return;
             }

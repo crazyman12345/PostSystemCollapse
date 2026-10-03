@@ -1,6 +1,8 @@
 function terminal_header(_title)
 {
-	draw_set_font(fnt_terminal);
+    draw_set_font(fnt_terminal);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
     var left = 80;
     var right = 1840;
     var top = 20;

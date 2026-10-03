@@ -34,4 +34,5 @@ function draw_raid()
         );
         draw_set_halign(fa_left);
     }
+
 }

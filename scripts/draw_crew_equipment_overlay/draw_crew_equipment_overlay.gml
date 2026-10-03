@@ -1,5 +1,8 @@
 function draw_crew_equipment_overlay()
 {
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+
     // ==============================
     // BACKGROUND
     // ==============================
@@ -15,7 +18,7 @@ function draw_crew_equipment_overlay()
     var member = crew[raid.crew_index];
 
     terminal_header(
-        member.name + " // LOADOUT"
+        "INVENTORY"
     );
 
 

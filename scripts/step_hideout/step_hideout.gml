@@ -13,6 +13,7 @@ function step_hideout()
                 if (entry.bench_key == "" || variable_struct_get(workshop_progress, entry.bench_key) > 0)
                     break;
             }
+			scroll_sound();
         }
 
         if (keyboard_check_pressed(ord("S")))
@@ -26,6 +27,7 @@ function step_hideout()
                 if (entry.bench_key == "" || variable_struct_get(workshop_progress, entry.bench_key) > 0)
                     break;
             }
+			scroll_sound();
         }
 
         var selected = hideout_menu_items[hideout_menu_index];
@@ -44,6 +46,7 @@ function step_hideout()
                 crafting_recipe_scroll = 0;
                 crafting_message = "";
             }
+			audio_play_sound(snd_interact,0,false);
         }
 
         return;

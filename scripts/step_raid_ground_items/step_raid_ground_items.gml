@@ -45,6 +45,7 @@ function step_raid_ground_items()
         && keyboard_check_pressed(ord("E"))
     )
     {
+        audio_play_sound(snd_interact, 0, false);
         raid_pickup_ground_item(
             _nearest_index
         );

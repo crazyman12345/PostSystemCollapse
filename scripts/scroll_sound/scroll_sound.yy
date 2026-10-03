@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scroll_sound",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scroll_sound",
+  "parent":{
+    "name":"IdleGame",
+    "path":"IdleGame.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

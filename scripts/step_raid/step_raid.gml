@@ -17,6 +17,45 @@ function step_raid()
     if (!raid.active)
         return;
 
+    if (raid.paused)
+    {
+        if (keyboard_check_pressed(vk_escape))
+        {
+            raid.paused = false;
+            return;
+        }
+
+        if (keyboard_check_pressed(ord("W")) || keyboard_check_pressed(ord("S")))
+        {
+            raid.pause_menu_index = 1 - raid.pause_menu_index;
+            scroll_sound();
+        }
+
+        if (keyboard_check_pressed(vk_enter))
+        {
+            audio_play_sound(snd_interact, 0, false);
+
+            if (raid.pause_menu_index == 0)
+            {
+                raid.paused = false;
+                raid_combat_loss();
+            }
+            else
+            {
+                raid.paused = false;
+            }
+        }
+
+        return;
+    }
+
+    if (keyboard_check_pressed(vk_escape))
+    {
+        raid.paused = true;
+        raid.pause_menu_index = 1;
+        return;
+    }
+
     step_raid_player();
 	step_raid_player_damage();
 	

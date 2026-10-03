@@ -11,6 +11,9 @@ function draw_item_info_popup(
     if (!is_struct(item))
         return;
 
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+
 
     // ============================================================
     // FADE / ITEM CHANGE

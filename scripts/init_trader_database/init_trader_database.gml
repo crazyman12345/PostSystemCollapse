@@ -10,7 +10,7 @@ function init_trader_database()
         trader_key : "mara",
         name : "Mara",
         title : "Supply Dealer",
-        portrait : -1,
+        portrait : spr_trader_mara,
         description :
             "Trades common crafting supplies, basic materials, and useful scavenging goods.",
 
@@ -66,7 +66,7 @@ function init_trader_database()
         trader_key : "sawbones",
         name : "Sawbones",
         title : "Field Medic",
-        portrait : -1,
+        portrait : spr_trader_sawbones,
         description :
             "Deals in medical supplies, recovery items, and emergency gear.",
 
@@ -204,7 +204,7 @@ function init_trader_database()
         trader_key : "ghost",
         name : "Ghost",
         title : "Black Market Broker",
-        portrait : -1,
+        portrait : spr_trader_ghost,
         description :
             "Deals in rare materials, restricted components, and hard-to-find equipment.",
 

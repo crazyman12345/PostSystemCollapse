@@ -6,6 +6,8 @@ function spend_cash(_amount)
     }
 
     inventory_remove("cash", _amount);
-
+	audio_play_sound(snd_purchase,0,false);
     return true;
+	
+	
 }

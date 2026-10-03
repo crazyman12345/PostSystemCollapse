@@ -32,6 +32,31 @@ function draw_raid_player()
 	        _player_alpha = 0.35;
 	    }
 	}
+
+    // ==============================
+    // DASH TRAIL - BEHIND PLAYER
+    // ==============================
+
+    for (var i = 0; i < array_length(raid_player_dash_trail); i++)
+    {
+        var _trail = raid_player_dash_trail[i];
+        var _trail_alpha =
+            (_trail.trail_timer / raid_player_dash_trail_time)
+            * 0.5;
+
+        draw_sprite_ext(
+            spr_player_run,
+            _trail.trail_frame mod sprite_get_number(spr_player_run),
+            round(_trail.trail_x),
+            round(_trail.trail_y),
+            _trail.trail_facing,
+            1,
+            0,
+            c_white,
+            _trail_alpha
+        );
+    }
+
     // ==============================
     // BAG - BEHIND PLAYER
     // ==============================

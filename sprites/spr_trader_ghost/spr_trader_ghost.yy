@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_trader_ghost",
   "bboxMode":0,
-  "bbox_bottom":1348,
+  "bbox_bottom":115,
   "bbox_left":0,
-  "bbox_right":1165,
+  "bbox_right":99,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -16,7 +16,7 @@
   ],
   "gridX":0,
   "gridY":0,
-  "height":1349,
+  "height":116,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"c6c6c956-e46c-4155-9d81-f95621f0ab8c","blendMode":0,"displayName":"default","isLocked":false,"name":"c6c6c956-e46c-4155-9d81-f95621f0ab8c","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":1166,
+  "width":100,
 }

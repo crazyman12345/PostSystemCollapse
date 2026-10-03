@@ -48,16 +48,16 @@ function draw_raid_enemies()
         draw_set_color(c_white);
         draw_set_halign(fa_center);
         draw_set_valign(fa_middle);
-
-        draw_text_transformed(
-            e.enemy_x,
-            e.enemy_y + 20,
-            raid_enemy_type_name(e.enemy_type),
-            0.32,
-            0.32,
-            0
-        );
-
+		if e.enemy_sprite = -1{
+	        draw_text_transformed(
+	            e.enemy_x,
+	            e.enemy_y + 20,
+	            raid_enemy_type_name(e.enemy_type),
+	            0.32,
+	            0.32,
+	            0
+	        );
+		}
 
         // ==============================
         // HEALTH BAR

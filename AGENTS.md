@@ -40,3 +40,11 @@ After completing a task, briefly state what changed and whether compilation succ
 - Use it only to locate files; read the real `.gml` source before editing.
 - Search normally if the symbol is not in the map.
 - Do not reread PROJECT_MAP.md unnecessarily within the same session.
+
+## Coding Style
+- Prioritize readability.
+- Use clear, focused scripts/functions instead of large monolithic code blocks.
+- Keep simple code on one line when readable; avoid excessive vertical formatting.
+- Use descriptive names and clear section comments.
+- Extract repeated or substantial logic into reusable helpers.
+- Keep changes minimal and avoid unrelated refactors.

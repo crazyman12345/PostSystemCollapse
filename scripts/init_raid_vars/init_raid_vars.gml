@@ -55,6 +55,8 @@ raid =
 	visited_junctions: {},
     // Current raid screen/activity
     mode: RaidMode.START,
+    paused: false,
+    pause_menu_index: 1,
     // Raid bag
     bag: {},
     // Loot currently on ground
@@ -129,6 +131,18 @@ raid_gun_offset = 14;
 raid_player_speed = 3;
 raid_player_facing = 1;
 raid_player_radius = 16;
+raid_player_dash_active = false;
+raid_player_dash_timer = 0;
+raid_player_dash_time = 8;
+raid_player_dash_speed = 12;
+raid_player_dash_x = 0;
+raid_player_dash_y = 0;
+raid_player_dash_trail = [];
+raid_player_dash_trail_time = 12;
+raid_player_max_stamina = 20;
+raid_player_stamina = 20;
+raid_player_dash_stamina_cost = 10;
+raid_player_stamina_regen = 0.02;
 raid_gun_recoil = 0;
 raid_gun_recoil_return = 0.8;
 raid_weapon_mag = 0;

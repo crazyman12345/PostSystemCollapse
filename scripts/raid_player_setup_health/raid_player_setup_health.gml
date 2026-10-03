@@ -9,6 +9,8 @@ function raid_player_setup_health()
     raid_player_invincible = false;
     raid_player_invincible_timer = 0;
 
+    raid_player_stamina = raid_player_max_stamina;
+
     var member = crew[0];
 
     if (member.armor_chest != "")

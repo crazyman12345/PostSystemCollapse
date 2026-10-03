@@ -9,7 +9,8 @@ function terminal_panel(
 {
     var right = _left + _width;
     var bottom = _top + _height;
-	draw_set_halign(fa_center);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_top);
     draw_rectangle(
         _left,
         _top,
@@ -31,5 +32,5 @@ function terminal_panel(
         _top + 7,
         title_text
     );
-	draw_set_halign(fa_left);
+    draw_set_halign(fa_left);
 }
