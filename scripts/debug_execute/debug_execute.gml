@@ -42,14 +42,6 @@ function debug_execute(_command)
 			debug_show_mouse = !debug_show_mouse;
 			break;
 			
-		case "turn_speed":
-			raid.combat_delay = 0.5;
-			break;
-			
-		case "noise":
-			raid.noise += 10;
-			break;
-		
 		case "debug_start_combat":
 			debug_start_combat(args);
 			break;
@@ -57,7 +49,11 @@ function debug_execute(_command)
 		case "god_trader":
 			global.admin_trader_enabled = true;
 			break;
-			
+		
+		case "unlock_tables":
+			debug_command_unlock_tables();
+			debug_log_add("Tables unlocked");
+			break;
 		
         default:
             debug_log_add(

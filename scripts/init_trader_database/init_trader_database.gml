@@ -152,7 +152,7 @@ function init_trader_database()
         trader_key : "clothman",
         name : "Clothman",
         title : "Equipment Dealer",
-        portrait : -1,
+        portrait : spr_trader_clothman,
         description :
             "Specializes in armor, packs, protective equipment, and basic field gear.",
 
