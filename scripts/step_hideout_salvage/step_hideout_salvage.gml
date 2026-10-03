@@ -1,0 +1,61 @@
+function step_hideout_salvage(){
+	var owned_items = inventory_get_visible_salvageable_items();
+	var item_count = array_length(owned_items);
+
+	if (salvage_active){
+		if (current_time >= salvage_end_time){
+			var salvaged_item = item_get(salvage_item_key);
+
+			inventory_remove(salvage_item_key, 1);
+
+			for (var i = 0; i < array_length(salvaged_item.salvage); i++){
+				var result = salvaged_item.salvage[i];
+				inventory_add(result.item_key, result.quantity);
+			}
+
+			log_add("You salvaged " + salvaged_item.name + ".");
+			salvage_message = "SALVAGED: " + salvaged_item.name;
+			salvage_active = false;
+
+			owned_items = inventory_get_visible_salvageable_items();
+			item_count = array_length(owned_items);
+		}
+	} else if (item_count > 0){
+		inventory_index = clamp(inventory_index, 0, item_count - 1);
+		inventory_scroll = clamp(inventory_scroll, 0, max(0, item_count - inventory_visible_rows));
+		inventory_index = terminal_menu_input(inventory_index, item_count);
+
+		if (inventory_index >= inventory_scroll + inventory_visible_rows){
+			inventory_scroll = inventory_index - inventory_visible_rows + 1;
+		}
+		if (inventory_index < inventory_scroll){
+			inventory_scroll = inventory_index;
+		}
+
+		if (keyboard_check_pressed(ord("E"))){
+			var selected_key = owned_items[inventory_index];
+			var selected_item = item_get(selected_key);
+
+			if (item_can_salvage(selected_key)){
+				salvage_active = true;
+				salvage_item_key = selected_key;
+				salvage_end_time = current_time + salvage_duration;
+				salvage_message = "SALVAGING: " + selected_item.name;
+			}
+		}
+	} else {
+		inventory_index = 0;
+		inventory_scroll = 0;
+	}
+	if (item_count > 0){
+		inventory_index = clamp(inventory_index, 0, item_count - 1);
+		inventory_scroll = clamp(inventory_scroll, 0, max(0, item_count - inventory_visible_rows));
+	} else {
+		inventory_index = 0;
+		inventory_scroll = 0;
+	}
+
+	if (!salvage_active && keyboard_check_pressed(vk_escape)){
+		hideout_focus = HideoutFocus.SIDEBAR;
+	}
+}

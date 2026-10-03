@@ -103,6 +103,11 @@ init_inventory();
 inventory_index = 0;
 inventory_scroll = 0;
 inventory_visible_rows=10;
+salvage_active = false;
+salvage_item_key = "";
+salvage_end_time = 0;
+salvage_duration = 5000;
+salvage_message = "";
 
 raid_bag_open = false;
 raid_bag_index = 0;
