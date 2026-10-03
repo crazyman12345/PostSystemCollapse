@@ -11,31 +11,35 @@ function draw_raid_enemies()
         // ==============================
 
         if (e.enemy_sprite != -1)
-			{
-			    draw_sprite_ext(
-			        e.enemy_sprite,
-			        floor(e.enemy_frame),
-			        e.enemy_x,
-			        e.enemy_y,
-			        e.enemy_facing * e.enemy_scale,
-			        e.enemy_scale,
-			        0,
-			        c_white,
-			        1
-			    );
-			}
-			else
-			{
-			    draw_set_color(c_red);
-			    draw_circle(
-			        e.enemy_x,
-			        e.enemy_y,
-			        e.enemy_radius,
-			        false
-			    );
-			}
+        {
+            draw_sprite_ext(
+                e.enemy_sprite,
+                floor(e.enemy_frame),
+                e.enemy_x,
+                e.enemy_y,
+                e.enemy_facing * e.enemy_scale,
+                e.enemy_scale,
+                0,
+                c_white,
+                1
+            );
+        }
+        else
+        {
+            draw_set_color(c_red);
 
-		draw_raid_enemy_gun_and_hands(e);
+            draw_circle(
+                e.enemy_x,
+                e.enemy_y,
+                e.enemy_radius,
+                false
+            );
+        }
+
+
+        draw_raid_enemy_gun_and_hands(e);
+
+
         // ==============================
         // ENEMY TYPE
         // ==============================
@@ -46,7 +50,7 @@ function draw_raid_enemies()
 
         draw_text_transformed(
             e.enemy_x,
-            e.enemy_y+20,
+            e.enemy_y + 20,
             raid_enemy_type_name(e.enemy_type),
             0.32,
             0.32,
@@ -62,19 +66,50 @@ function draw_raid_enemies()
         var _bar_h = 4;
 
         var _bar_x =
-            e.enemy_x - (_bar_w * 0.5);
+            e.enemy_x
+            - (_bar_w * 0.5);
 
-        var _bar_y =
-            e.enemy_y
-            - e.enemy_radius
-            - 10;
+
+        // ==============================
+        // POSITION ABOVE SPRITE
+        // ==============================
+
+        var _bar_y;
+
+        if (e.enemy_sprite != -1)
+        {
+            var _origin_y =
+                sprite_get_yoffset(
+                    e.enemy_sprite
+                )
+                * e.enemy_scale;
+
+            var _sprite_top =
+                e.enemy_y
+                - _origin_y;
+
+            _bar_y =
+                _sprite_top
+                - 10;
+        }
+        else
+        {
+            _bar_y =
+                e.enemy_y
+                - e.enemy_radius
+                - 10;
+        }
+
 
         var _hp_percent =
             e.enemy_hp
             / e.enemy_max_hp;
 
 
+        // ==============================
         // BLACK BACKGROUND / OUTLINE
+        // ==============================
+
         draw_set_color(c_black);
 
         draw_rectangle(
@@ -86,7 +121,10 @@ function draw_raid_enemies()
         );
 
 
+        // ==============================
         // DARK EMPTY BAR
+        // ==============================
+
         draw_set_color(
             make_color_rgb(
                 50,
@@ -104,7 +142,10 @@ function draw_raid_enemies()
         );
 
 
+        // ==============================
         // RED HEALTH
+        // ==============================
+
         draw_set_color(c_red);
 
         draw_rectangle(
@@ -134,6 +175,7 @@ function draw_raid_enemies()
             0
         );
     }
+
 
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);

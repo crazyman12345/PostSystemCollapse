@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"loadout_move_to_bag",
   "parent":{
-    "name":"araid_OLD",
-    "path":"folders/araid_OLD.yy",
+    "name":"bag",
+    "path":"folders/RAID/bag.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

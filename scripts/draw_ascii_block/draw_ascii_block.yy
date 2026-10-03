@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_ascii_block",
   "parent":{
-    "name":"UI",
-    "path":"folders/araid_OLD/UI.yy",
+    "name":"UI_tools",
+    "path":"folders/UI_tools.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

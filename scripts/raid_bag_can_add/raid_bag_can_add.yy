@@ -6,7 +6,7 @@
   "name":"raid_bag_can_add",
   "parent":{
     "name":"bag",
-    "path":"folders/araid_OLD/bag.yy",
+    "path":"folders/RAID/bag.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

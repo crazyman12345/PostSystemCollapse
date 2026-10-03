@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"ascii_bar",
   "parent":{
-    "name":"idle_combat",
-    "path":"folders/idle_combat.yy",
+    "name":"UI_tools",
+    "path":"folders/UI_tools.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

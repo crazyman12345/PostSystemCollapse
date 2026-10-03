@@ -6,7 +6,7 @@
   "name":"draw_raid_result",
   "parent":{
     "name":"results",
-    "path":"folders/araid_OLD/results.yy",
+    "path":"folders/RAID/results.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

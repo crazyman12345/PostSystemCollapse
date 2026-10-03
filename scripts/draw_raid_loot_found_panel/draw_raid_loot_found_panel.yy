@@ -6,7 +6,7 @@
   "name":"draw_raid_loot_found_panel",
   "parent":{
     "name":"loot",
-    "path":"folders/araid_OLD/loot.yy",
+    "path":"folders/RAID/bag/loot.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

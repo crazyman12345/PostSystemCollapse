@@ -6,7 +6,7 @@
   "name":"raid_take_loot",
   "parent":{
     "name":"loot",
-    "path":"folders/araid_OLD/loot.yy",
+    "path":"folders/RAID/bag/loot.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

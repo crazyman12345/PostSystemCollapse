@@ -17,7 +17,6 @@ init_item_database();
 init_loot_tables();
 init_enemy_database();
 init_trader_database();
-init_raid_locations();
 init_flag_database();
 init_skill_database();
 init_recipe_database();

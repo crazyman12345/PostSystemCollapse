@@ -6,7 +6,7 @@
   "name":"raid_bag_get_visible_items",
   "parent":{
     "name":"loot",
-    "path":"folders/araid_OLD/loot.yy",
+    "path":"folders/RAID/bag/loot.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
