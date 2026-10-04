@@ -31,5 +31,16 @@ raid_room_y1 = 340;
 raid_room_x2 = 1160;
 raid_room_y2 = 740;
 	raid_player_setup_health();
+    raid_reset_active_weapon();
+    active_weapon_slot = EquipmentSlot.WEAPON;
+
+    if (is_undefined(raid_get_weapon_in_slot(active_weapon_slot)))
+    {
+        active_weapon_slot = EquipmentSlot.WEAPON_2;
+    }
+
+    raid_update_active_weapon();
+    raid_weapon_slot_display = max(0, active_weapon_slot);
+    raid_weapon_slot_display_target = raid_weapon_slot_display;
     raid_enter_start_room();
 }

@@ -13,6 +13,19 @@ function draw_raid_enemies()
 
         if (e.enemy_sprite != -1)
         {
+            var _enemy_color = c_white;
+            var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
+            var _second_flash_duration = floor(_total_flash_duration / 2);
+
+            if (
+                e.enemy_hit_flash_timer > 0
+                && (
+                    e.enemy_hit_flash_timer > _total_flash_duration
+                    || e.enemy_hit_flash_timer <= _second_flash_duration
+                )
+            )
+                _enemy_color = c_red;
+
             draw_sprite_ext(
                 e.enemy_sprite,
                 floor(e.enemy_frame),
@@ -21,7 +34,7 @@ function draw_raid_enemies()
                 e.enemy_facing * e.enemy_scale,
                 e.enemy_scale,
                 0,
-                c_white,
+                _enemy_color,
                 1
             );
         }

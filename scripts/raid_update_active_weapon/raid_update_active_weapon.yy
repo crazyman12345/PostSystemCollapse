@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"raid_crew_defeated",
+  "%Name":"raid_update_active_weapon",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"raid_crew_defeated",
+  "name":"raid_update_active_weapon",
   "parent":{
-    "name":"crew",
-    "path":"folders/crew.yy",
+    "name":"RAID",
+    "path":"folders/RAID.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

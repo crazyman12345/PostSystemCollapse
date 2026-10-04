@@ -6,6 +6,7 @@ function raid_enemy_type_name(_type)
         case RaidEnemyType.KNIFE_STALKER: return "STALKER";
         case RaidEnemyType.SPINNER: return "SPINNER";
         case RaidEnemyType.KNIFE_DASHER: return "DASHER";
+		case RaidEnemyType.WALL_RUSHER: return "RUSHER";
     }
 
     return "UNKNOWN";

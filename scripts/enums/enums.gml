@@ -66,6 +66,7 @@ function enums(){
 	enum EquipmentSlot
 	{
 	    WEAPON,
+	    WEAPON_2,
 	    HEAD,
 	    CHEST,
 	    BAG

@@ -224,7 +224,7 @@ function step_loadout_overlay()
         {
             equipment_slot_index++;
 
-            if (equipment_slot_index >= 4)
+            if (equipment_slot_index >= 5)
             {
                 equipment_slot_index = 0;
             }
@@ -236,7 +236,7 @@ function step_loadout_overlay()
 
             if (equipment_slot_index < 0)
             {
-                equipment_slot_index = 3;
+                equipment_slot_index = 4;
             }
         }
 

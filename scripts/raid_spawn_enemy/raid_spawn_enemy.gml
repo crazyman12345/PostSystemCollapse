@@ -8,6 +8,7 @@ function raid_spawn_enemy(_type, _x, _y)
 
         enemy_hp: 30,
         enemy_max_hp: 30,
+        enemy_hit_flash_timer: 0,
 
         enemy_speed: 1.0,
         enemy_radius: 18,
@@ -34,7 +35,7 @@ function raid_spawn_enemy(_type, _x, _y)
 		enemy_frame: 0,
 		enemy_image_speed: 0.15,
 		enemy_facing: 1,
-		enemy_scale: 1,
+		enemy_scale: 0.75,
 		
 		enemy_gun_sprite: -1,
 		enemy_gun_offset: 16,

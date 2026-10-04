@@ -4,7 +4,7 @@ function raid_player_take_damage(_damage)
         return;
 
     var _remaining_damage = _damage;
-	audio_play_sound(hit3,0,false);
+	play_impact_sound(hit3, "bullet");
     // ARMOR FIRST
     if (raid_player_armor > 0)
     {

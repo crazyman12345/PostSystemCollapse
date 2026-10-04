@@ -3,6 +3,22 @@ function step_raid_enemies()
     for (var i = array_length(raid_enemies) - 1; i >= 0; i--)
     {
         var e = raid_enemies[i];
+		
+		// ==========================================
+		// INVALID ENEMY SAFETY
+		// ==========================================
+
+		if (!is_struct(e))
+		{
+		    show_debug_message("INVALID RAID ENEMY [" + string(i) + "]: " + string(e));
+		    continue;
+		}
+
+		if (!variable_struct_exists(e, "enemy_type"))
+		{
+		    show_debug_message("RAID ENEMY MISSING enemy_type [" + string(i) + "]");
+		    continue;
+		}
 
         // ==========================================
         // ENEMY AI
@@ -48,6 +64,10 @@ function step_raid_enemies()
 		    if (e.enemy_gun_recoil < 0)
 		        e.enemy_gun_recoil = 0;
 		}
+
+        if (e.enemy_hit_flash_timer > 0)
+            e.enemy_hit_flash_timer--;
+
         // ==========================================
         // KEEP ENEMY INSIDE ROOM
         // ==========================================
@@ -82,6 +102,9 @@ function step_raid_enemies()
             if (_dist <= e.enemy_radius + 4)
             {
                 e.enemy_hp -= bullet.bdamage;
+                var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
+                e.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
+                play_impact_sound(raid_enemy_hit_sound, "bullet");
 
                 array_delete(
                     raid_bullets,
@@ -104,6 +127,9 @@ function step_raid_enemies()
 		)
 		{
 		    raid_player_take_damage(10);
+
+		    if (!raid.active)
+		        return;
 		}
 		//direction facing
 		if (raid_player_x < e.enemy_x)
@@ -146,7 +172,8 @@ function step_raid_enemies()
         // SAVE ENEMY BACK
         // ==========================================
 
-        raid_enemies[i] = e;
+        if (raid.active)
+            raid_enemies[i] = e;
     }
 
     // ==========================================

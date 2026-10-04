@@ -34,6 +34,7 @@ function equipment_get_valid_items(_slot)
         switch (_slot)
         {
             case EquipmentSlot.WEAPON:
+            case EquipmentSlot.WEAPON_2:
                 valid =
                     item.category == ItemCategory.WEAPON;
                 break;

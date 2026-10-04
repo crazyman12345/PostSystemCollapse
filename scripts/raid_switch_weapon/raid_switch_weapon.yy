@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"crew_pay_for_treatment",
+  "%Name":"raid_switch_weapon",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"crew_pay_for_treatment",
+  "name":"raid_switch_weapon",
   "parent":{
-    "name":"crew",
-    "path":"folders/crew.yy",
+    "name":"RAID",
+    "path":"folders/RAID.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

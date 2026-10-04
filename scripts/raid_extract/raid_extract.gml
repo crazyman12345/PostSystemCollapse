@@ -11,11 +11,14 @@ function raid_extract()
     raid_secure_bag();
 
     raid.active = false;
+    raid_reset_active_weapon();
 
     raid.extract_active = false;
     raid.doors_active = false;
 
     raid_enemies = [];
+    raid_enemy_bullets = [];
+    raid_enemy_death_effects = [];
     raid_bullets = [];
     raid_doors = [];
 

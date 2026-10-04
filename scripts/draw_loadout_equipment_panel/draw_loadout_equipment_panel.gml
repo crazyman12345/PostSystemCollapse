@@ -50,6 +50,16 @@ function draw_loadout_equipment_panel(_member)
             }
             break;
 
+            case EquipmentSlot.WEAPON_2:
+            {
+                if (_member.weapon_2 != "")
+                {
+                    loadout_focused_item_key =
+                        _member.weapon_2;
+                }
+            }
+            break;
+
 
             case EquipmentSlot.CHEST:
             {
@@ -116,19 +126,31 @@ function draw_loadout_equipment_panel(_member)
 
 
     // ==============================
-    // WEAPON
+    // WEAPON SLOTS
     // ==============================
 
     draw_equipment_slot(
         90,
-        345,
+        310,
         235,
         70,
-        "WEAPON",
+        "WEAPON SLOT 1",
         _member.weapon,
 
         loadout_focus == LoadoutFocus.EQUIPMENT
         && equipment_slot_index == EquipmentSlot.WEAPON
+    );
+
+    draw_equipment_slot(
+        90,
+        390,
+        235,
+        70,
+        "WEAPON SLOT 2",
+        _member.weapon_2,
+
+        loadout_focus == LoadoutFocus.EQUIPMENT
+        && equipment_slot_index == EquipmentSlot.WEAPON_2
     );
 
 

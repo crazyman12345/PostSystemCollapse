@@ -1,25 +1,65 @@
 function step_raid_shooting()
 {
-    var member = crew[0];
+    raid_update_active_weapon();
 
-    if (member.weapon == "")
-        return;
-
-    var _weapon = item_get(member.weapon);
-
-    if (!is_struct(_weapon))
-        return;
-
-
-    // ======================================================
-    // NEW / CHANGED WEAPON
-    // ======================================================
-
-    if (raid_weapon_loaded_key != member.weapon)
+    if (mouse_wheel_up() || mouse_wheel_down())
     {
-        raid_weapon_loaded_key = member.weapon;
+        raid_switch_weapon();
+    }
 
-        raid_weapon_mag = _weapon.mag_size;
+    var _weapon = raid_update_active_weapon();
+
+    if (active_weapon_slot == EquipmentSlot.WEAPON_2)
+    {
+        raid_weapon_slot_display_target = 1;
+    }
+    else
+    {
+        raid_weapon_slot_display_target = 0;
+    }
+
+    raid_weapon_slot_display = lerp(
+        raid_weapon_slot_display,
+        raid_weapon_slot_display_target,
+        0.35
+    );
+
+    // ======================================================
+    // NEW / CHANGED GUN
+    // ======================================================
+
+    if (
+        !is_undefined(_weapon)
+        && (
+            raid_weapon_loaded_slot != active_weapon_slot
+            || raid_weapon_loaded_key != equipment_get_slot_item(
+                raid.crew_index,
+                active_weapon_slot
+            )
+        )
+    )
+    {
+        if (raid_weapon_loaded_slot >= 0)
+        {
+            raid_weapon_mags[raid_weapon_loaded_slot] = raid_weapon_mag;
+        }
+
+        raid_weapon_loaded_slot = active_weapon_slot;
+        raid_weapon_loaded_key = equipment_get_slot_item(
+            raid.crew_index,
+            active_weapon_slot
+        );
+
+        if (
+            raid_weapon_slot_keys[active_weapon_slot]
+            != raid_weapon_loaded_key
+        )
+        {
+            raid_weapon_slot_keys[active_weapon_slot] = raid_weapon_loaded_key;
+            raid_weapon_mags[active_weapon_slot] = _weapon.mag_size;
+        }
+
+        raid_weapon_mag = raid_weapon_mags[active_weapon_slot];
 
         raid_reload_active = false;
         raid_reload_timer = 0;
@@ -53,6 +93,128 @@ function step_raid_shooting()
 
     if (raid_shot_cooldown > 0)
         raid_shot_cooldown--;
+
+    for (var t = array_length(raid_knife_trail) - 1; t >= 0; t--)
+    {
+        var _trail = raid_knife_trail[t];
+        _trail.trail_timer--;
+
+        if (_trail.trail_timer <= 0)
+        {
+            array_delete(raid_knife_trail, t, 1);
+            continue;
+        }
+
+        raid_knife_trail[t] = _trail;
+    }
+
+    // ======================================================
+    // BUILT-IN KNIFE
+    // ======================================================
+
+    if (is_undefined(_weapon))
+    {
+        raid_reload_active = false;
+        raid_reload_timer = 0;
+
+        if (raid_knife_attack_timer > 0)
+        {
+            raid_knife_attack_timer--;
+        }
+
+        if (
+            mouse_check_button_pressed(mb_left)
+            && raid_shot_cooldown <= 0
+        )
+        {
+            raid_knife_attack_timer = raid_knife_attack_time;
+            raid_knife_attack_hit = false;
+            raid_knife_attack_dir = raid_aim_dir;
+            raid_shot_cooldown = 12;
+        }
+
+        if (raid_knife_attack_timer > 0)
+        {
+            var _progress = 1 - (raid_knife_attack_timer / raid_knife_attack_time);
+            var _knife_raise = 90 * raid_player_facing;
+            var _knife_dir;
+            var _stab_distance;
+
+            if (_progress < 0.625)
+            {
+                _knife_dir = raid_knife_attack_dir + _knife_raise - (_knife_raise * min(1, _progress / 0.25));
+            }
+            else
+            {
+                _knife_dir = raid_knife_attack_dir + (_knife_raise * ((_progress - 0.625) / 0.375));
+            }
+
+            if (_progress < 0.5)
+            {
+                _stab_distance = clamp((_progress - 0.25) / 0.25, 0, 1) * 42;
+            }
+            else if (_progress < 0.625)
+            {
+                _stab_distance = 42;
+            }
+            else
+            {
+                _stab_distance = clamp(1 - ((_progress - 0.625) / 0.375), 0, 1) * 42;
+            }
+
+            array_push(raid_knife_trail, {
+                trail_hand_x: raid_player_x + lengthdir_x(12, raid_knife_attack_dir) + lengthdir_x(_stab_distance, _knife_dir),
+                trail_hand_y: raid_player_y - 10 + lengthdir_y(12, raid_knife_attack_dir) + lengthdir_y(_stab_distance, _knife_dir),
+                trail_dir: _knife_dir,
+                trail_timer: raid_knife_trail_time
+            });
+        }
+
+        if (
+            raid_knife_attack_timer == floor(raid_knife_attack_time * 0.5)
+            && !raid_knife_attack_hit
+        )
+        {
+            var _attack_x = raid_player_x + lengthdir_x(60, raid_knife_attack_dir);
+            var _attack_y = raid_player_y + lengthdir_y(60, raid_knife_attack_dir);
+            var _target_index = -1;
+            var _target_distance = 9999;
+
+            for (var i = 0; i < array_length(raid_enemies); i++)
+            {
+                var _enemy = raid_enemies[i];
+                var _distance = point_distance(
+                    _attack_x,
+                    _attack_y,
+                    _enemy.enemy_x,
+                    _enemy.enemy_y
+                );
+
+                if (
+                    _distance <= _enemy.enemy_radius + 8
+                    && _distance < _target_distance
+                )
+                {
+                    _target_index = i;
+                    _target_distance = _distance;
+                }
+            }
+
+            if (_target_index >= 0)
+            {
+                var _target = raid_enemies[_target_index];
+                _target.enemy_hp -= 5;
+                var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
+                _target.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
+                raid_enemies[_target_index] = _target;
+                play_impact_sound(raid_enemy_hit_sound, "knife");
+            }
+
+            raid_knife_attack_hit = true;
+        }
+
+        return;
+    }
 
 
     // ======================================================

@@ -22,5 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"nine_shot.mp3",
-  "volume":0.37,
+  "volume":0.07,
 }

@@ -8,6 +8,9 @@ function equipment_get_slot_item(_crew_index, _slot)
         case EquipmentSlot.WEAPON:
             return member.weapon;
 
+        case EquipmentSlot.WEAPON_2:
+            return member.weapon_2;
+
         case EquipmentSlot.HEAD:
             return member.armor_head;
 

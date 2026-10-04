@@ -28,6 +28,7 @@ function raid_combat_loss()
     // ==========================================
 
     raid.active = false;
+    raid_reset_active_weapon();
 
     raid.pending_action =
         undefined;
@@ -41,6 +42,7 @@ function raid_combat_loss()
     raid_enemies = [];
     raid_bullets = [];
     raid_enemy_bullets = [];
+    raid_enemy_death_effects = [];
     raid_doors = [];
 
 

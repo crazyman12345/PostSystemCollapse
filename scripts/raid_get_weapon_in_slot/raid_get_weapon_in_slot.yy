@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"crew_update_injury",
+  "%Name":"raid_get_weapon_in_slot",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"crew_update_injury",
+  "name":"raid_get_weapon_in_slot",
   "parent":{
-    "name":"crew",
-    "path":"folders/crew.yy",
+    "name":"RAID",
+    "path":"folders/RAID.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

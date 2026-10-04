@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scroll_sound",
   "parent":{
-    "name":"IdleGame",
-    "path":"IdleGame.yyp",
+    "name":"sounds",
+    "path":"folders/sounds.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
