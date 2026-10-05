@@ -36,6 +36,23 @@ function step_hideout_stash(){
     var equipment_center = 575;
     var equipment_slot = -1;
 
+    if (!is_undefined(stash.held_item) && mouse_check_button_pressed(mb_right))
+    {
+        var cancel_container = undefined;
+        if (stash.held_source == "backpack") cancel_container = stash.backpack;
+        else if (stash.held_source == "secure") cancel_container = stash.secure_container;
+        else if (stash.held_source == "stash") cancel_container = stash;
+        if (!is_undefined(cancel_container))
+        {
+            array_push(cancel_container.items, stash.held_item);
+            stash.held_item = undefined;
+            stash.held_source = "";
+            stash.hover_x = -1;
+            stash.hover_y = -1;
+            stash.hover_container = "";
+        }
+    }
+
     if (gui_mouse_x >= equipment_center - 45 && gui_mouse_x < equipment_center + 45
     && gui_mouse_y >= grid_top + 5 && gui_mouse_y < grid_top + 95)
     {
@@ -171,16 +188,32 @@ function step_hideout_stash(){
             }
         }
         else if (!is_undefined(hovered_grid) && mouse_check_button_pressed(mb_left)
-        && stash_item_fits(stash.held_item.item_key, mouse_grid_x, mouse_grid_y, stash.held_item.rotation, hovered_grid.storage))
+        && inventory_can_place_item(stash.held_item, mouse_grid_x, mouse_grid_y, hovered_grid.storage))
         {
-            stash.held_item.x = mouse_grid_x;
-            stash.held_item.y = mouse_grid_y;
-            array_push(hovered_grid.storage.items, stash.held_item);
-            stash.held_item = undefined;
-            stash.held_source = "";
-            stash.hover_x = -1;
-            stash.hover_y = -1;
-            stash.hover_container = "";
+            var stack_target = inventory_find_item_at(hovered_grid.storage, mouse_grid_x, mouse_grid_y);
+            if (!is_undefined(stack_target))
+            {
+                inventory_merge_stacks(stash.held_item, stack_target);
+                if (stash.held_item.quantity <= 0)
+                {
+                    stash.held_item = undefined;
+                    stash.held_source = "";
+                    stash.hover_x = -1;
+                    stash.hover_y = -1;
+                    stash.hover_container = "";
+                }
+            }
+            else
+            {
+                stash.held_item.x = mouse_grid_x;
+                stash.held_item.y = mouse_grid_y;
+                array_push(hovered_grid.storage.items, stash.held_item);
+                stash.held_item = undefined;
+                stash.held_source = "";
+                stash.hover_x = -1;
+                stash.hover_y = -1;
+                stash.hover_container = "";
+            }
 
             if (hovered_grid.key == "stash") stash_index = array_length(stash.items) - 1;
         }

@@ -52,6 +52,28 @@ function draw_inraid_bag_panel()
 
     if (!is_undefined(raid.inventory_item))
     {
+        var preview_grids = raid_inventory_get_grids();
+        for (var preview_index = 0; preview_index < array_length(preview_grids); preview_index++)
+        {
+            var preview_grid = preview_grids[preview_index];
+            var preview_x = floor((device_mouse_x_to_gui(0) - preview_grid.left) / 60);
+            var preview_y = floor((device_mouse_y_to_gui(0) - preview_grid.top) / 60);
+            if (preview_x >= 0 && preview_y >= 0 && preview_x < preview_grid.storage.grid_width && preview_y < preview_grid.storage.grid_height)
+            {
+                var preview_definition = item_get(raid.inventory_item.item_key);
+                var preview_width = raid.inventory_rotation == 90 ? preview_definition.grid_height : preview_definition.grid_width;
+                var preview_height = raid.inventory_rotation == 90 ? preview_definition.grid_width : preview_definition.grid_height;
+                draw_set_alpha(0.45);
+                draw_set_color(inventory_can_place_item(raid.inventory_item, preview_x, preview_y, preview_grid.storage) ? c_lime : c_red);
+                draw_rectangle(preview_grid.left + preview_x * 60 + 4, preview_grid.top + preview_y * 60 + 4, preview_grid.left + (preview_x + preview_width) * 60 - 4, preview_grid.top + (preview_y + preview_height) * 60 - 4, false);
+                draw_set_alpha(1);
+                break;
+            }
+        }
+    }
+
+    if (!is_undefined(raid.inventory_item))
+    {
         var held_definition = item_get(raid.inventory_item.item_key);
         var held_width = held_definition.grid_width;
         var held_height = held_definition.grid_height;
@@ -181,14 +203,27 @@ function step_raid_inventory()
         if (!is_undefined(raid.inventory_item))
         {
             var item = raid.inventory_item;
-            if (stash_item_fits(item.item_key, grid_x, grid_y, raid.inventory_rotation, grid.storage))
+            if (inventory_can_place_item(item, grid_x, grid_y, grid.storage))
             {
-                item.x = grid_x;
-                item.y = grid_y;
-                item.rotation = raid.inventory_rotation;
-                array_push(grid.storage.items, item);
-                raid.inventory_item = undefined;
-                raid.inventory_container = undefined;
+                var stack_target = inventory_find_item_at(grid.storage, grid_x, grid_y);
+                if (!is_undefined(stack_target))
+                {
+                    inventory_merge_stacks(item, stack_target);
+                    if (item.quantity <= 0)
+                    {
+                        raid.inventory_item = undefined;
+                        raid.inventory_container = undefined;
+                    }
+                }
+                else
+                {
+                    item.x = grid_x;
+                    item.y = grid_y;
+                    item.rotation = raid.inventory_rotation;
+                    array_push(grid.storage.items, item);
+                    raid.inventory_item = undefined;
+                    raid.inventory_container = undefined;
+                }
             }
             return;
         }

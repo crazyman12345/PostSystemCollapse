@@ -19,11 +19,16 @@ function raid_open_lootable(_index)
 
         for (var i = 0; i < array_length(_loot); i++)
         {
-            var _item = stash_place_item(_loot[i].item_key, -1, -1, 0, l.storage);
-            if (is_undefined(_item))
-                _item = stash_place_item(_loot[i].item_key, -1, -1, 90, l.storage);
-
-            if (!is_undefined(_item)) _item.quantity = _loot[i].quantity;
+            var remaining = _loot[i].quantity;
+            var max_stack = item_get_max_stack(_loot[i].item_key);
+            while (remaining > 0)
+            {
+                var _item = stash_place_item(_loot[i].item_key, -1, -1, 0, l.storage);
+                if (is_undefined(_item)) _item = stash_place_item(_loot[i].item_key, -1, -1, 90, l.storage);
+                if (is_undefined(_item)) break;
+                _item.quantity = min(remaining, max_stack);
+                remaining -= _item.quantity;
+            }
         }
 
         l.opened = true;

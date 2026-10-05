@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"item_can_stack",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"item_can_stack",
+  "parent":{
+    "name":"inventory",
+    "path":"folders/inventory.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

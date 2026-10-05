@@ -226,7 +226,7 @@ function draw_hideout_stash()
             {
                 var preview_left = item_grid.left + (stash.hover_x * item_grid.cell_size);
                 var preview_top = item_grid.top + (stash.hover_y * item_grid.cell_size);
-                var preview_valid = stash_item_fits(stash.held_item.item_key, stash.hover_x, stash.hover_y, stash.held_item.rotation, item_grid.storage);
+                var preview_valid = inventory_can_place_item(stash.held_item, stash.hover_x, stash.hover_y, item_grid.storage);
 
                 draw_set_alpha(0.45);
                 draw_set_color(preview_valid ? c_lime : c_red);

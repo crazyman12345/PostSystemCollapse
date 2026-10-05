@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"inventory_merge_stacks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"inventory_merge_stacks",
+  "parent":{
+    "name":"inventory",
+    "path":"folders/inventory.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"IdleGame",
-    "path":"IdleGame.yyp",
+    "name":"item icons",
+    "path":"folders/sprites/item icons.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

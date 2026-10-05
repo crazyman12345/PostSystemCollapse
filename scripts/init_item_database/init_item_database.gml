@@ -18,7 +18,9 @@ function init_item_database()
         description: "Assorted pieces of scrap metal useful for crafting and repairs.",
         base_value: 8,
         weight: 0.6,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		icon_sprite: spr_metal_scrap
     };
 
     global.items.weapon_parts = {
@@ -28,7 +30,9 @@ function init_item_database()
         description: "Usable firearm components recovered from damaged or dismantled weapons.",
         base_value: 20,
         weight: 0.3,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		icon_sprite: spr_weapon_parts
     };
 
     global.items.springs = {
@@ -38,7 +42,9 @@ function init_item_database()
         description: "Small mechanical springs used in weapons and machinery.",
         base_value: 12,
         weight: 0.1,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		icon_sprite: spr_springs
     };
 
     global.items.screws = {
@@ -48,7 +54,9 @@ function init_item_database()
         description: "Assorted screws used for construction and repairs.",
         base_value: 5,
         weight: 0.05,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		icon_sprite: spr_screws
     };
 
     global.items.bolts = {
@@ -58,7 +66,9 @@ function init_item_database()
         description: "Assorted bolts used for construction, repairs, and crafting.",
         base_value: 8,
         weight: 0.1,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		icon_sprite: spr_bolts
     };
 
     global.items.wood = {
@@ -68,7 +78,9 @@ function init_item_database()
         description: "Salvaged pieces of usable wood.",
         base_value: 5,
         weight: 0.5,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		icon_sprite: spr_wood
     };
 
     global.items.plastic = {
@@ -78,7 +90,9 @@ function init_item_database()
         description: "Salvaged plastic suitable for crafting and repairs.",
         base_value: 6,
         weight: 0.1,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		icon_sprite: spr_plastic_scrap
     };
 
     global.items.cloth = {
@@ -88,7 +102,9 @@ function init_item_database()
         description: "Scraps of fabric useful for clothing, bags, armor, and medical supplies.",
         base_value: 6,
         weight: 0.1,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		spr_cloth
     };
 
     global.items.leather = {
@@ -98,7 +114,9 @@ function init_item_database()
         description: "Durable pieces of leather useful for clothing, armor, and bags.",
         base_value: 10,
         weight: 0.2,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		spr_leather
     };
 
     global.items.rubber = {
@@ -108,7 +126,9 @@ function init_item_database()
         description: "Flexible rubber material recovered from old equipment.",
         base_value: 8,
         weight: 0.2,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		spr_rubber
     };
 
     global.items.adhesive = {
@@ -118,7 +138,10 @@ function init_item_database()
         description: "Industrial adhesive used to bind and repair materials.",
         base_value: 12,
         weight: 0.2,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		icon_sprite: spr_adhesive,
+		grid_height: 2
     };
 
     global.items.chemicals = {
@@ -128,7 +151,9 @@ function init_item_database()
         description: "Assorted chemical compounds useful for advanced crafting.",
         base_value: 18,
         weight: 0.3,
-        stackable: true
+        stackable: true,
+		max_stack: 5,
+		icon_sprite: spr_chemicals
     };
 
     global.items.gunpowder = {
@@ -138,7 +163,8 @@ function init_item_database()
         description: "Propellant used in the production of ammunition.",
         base_value: 18,
         weight: 0.2,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.mechanical_parts = {
@@ -148,7 +174,8 @@ function init_item_database()
         description: "Gears, bearings, and other useful mechanical components.",
         base_value: 25,
         weight: 0.4,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.precision_parts = {
@@ -158,7 +185,8 @@ function init_item_database()
         description: "Finely manufactured components required for advanced equipment.",
         base_value: 45,
         weight: 0.2,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.electronics = {
@@ -168,7 +196,8 @@ function init_item_database()
         description: "Reusable electronic components recovered from old devices.",
         base_value: 30,
         weight: 0.2,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.steel_plate = {
@@ -178,7 +207,8 @@ function init_item_database()
         description: "A heavy plate of steel suitable for protective equipment.",
         base_value: 35,
         weight: 1.5,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.aluminum = {
@@ -188,7 +218,8 @@ function init_item_database()
         description: "Lightweight metal useful for advanced equipment.",
         base_value: 25,
         weight: 0.5,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.polymer = {
@@ -198,7 +229,8 @@ function init_item_database()
         description: "Durable synthetic material used in modern equipment and firearms.",
         base_value: 30,
         weight: 0.2,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.ballistic_fabric = {
@@ -208,7 +240,8 @@ function init_item_database()
         description: "High-strength fabric designed to resist ballistic impacts.",
         base_value: 45,
         weight: 0.3,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.ceramic_plate = {
@@ -218,7 +251,8 @@ function init_item_database()
         description: "A hardened ceramic armor plate used in advanced protective equipment.",
         base_value: 70,
         weight: 1.2,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.medical_supplies = {
@@ -228,7 +262,8 @@ function init_item_database()
         description: "General medical materials used to craft treatment items.",
         base_value: 25,
         weight: 0.2,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.alcohol = {
@@ -238,7 +273,8 @@ function init_item_database()
         description: "Medical-grade alcohol useful for disinfecting and crafting medicine.",
         base_value: 20,
         weight: 0.3,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.painkillers = {
@@ -248,7 +284,8 @@ function init_item_database()
         description: "Medication used for pain relief and advanced medical crafting.",
         base_value: 30,
         weight: 0.1,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
     global.items.rare_weapon_parts = {
@@ -258,7 +295,8 @@ function init_item_database()
         description: "High-quality firearm components used to build advanced weapons.",
         base_value: 80,
         weight: 0.3,
-        stackable: true
+        stackable: true,
+		max_stack: 5
     };
 
 
@@ -503,6 +541,7 @@ function init_item_database()
         category: ItemCategory.AMMO,
         description: "Heavy pistol ammunition used by weapons such as the M1911.",
         base_value: 3,
+		max_stack: 60,
         weight: 0.025,
         stackable: true
     };
@@ -513,6 +552,7 @@ function init_item_database()
         category: ItemCategory.AMMO,
         description: "A common shotgun shell.",
         base_value: 4,
+		max_stack: 60,
         weight: 0.05,
         stackable: true
     };
@@ -794,7 +834,8 @@ function init_item_database()
         stackable: false,
         bag_capacity: 8.0,
         grid_width: 3,
-        grid_height: 3
+        grid_height: 3,
+		icon_sprite: spr_sling_bag
     };
 
     global.items.school_backpack = {
@@ -837,6 +878,7 @@ function init_item_database()
         weight: 0.2,
         stackable: true,
         combat_usable: true,
+		max_stack: 3,
 		icon_sprite: spr_bandage,
         use_effects: [
             {
@@ -859,6 +901,7 @@ function init_item_database()
         base_value: 1,
         weight: 0,
         stackable: true,
+		max_stack: 10000,
 		icon_sprite: spr_cash
     };
 
@@ -1070,26 +1113,6 @@ function init_item_database()
 
 
     // ------------------------------------------------------------
-    // OLD WEAPONS
-    // ------------------------------------------------------------
-
-    global.items.pistol = {
-        item_key: "pistol",
-        name: "9mm Pistol",
-        category: ItemCategory.WEAPON,
-        description: "A basic semi-automatic 9mm pistol.",
-        base_value: 250,
-        weight: 1.1,
-        stackable: false,
-        damage_min: 8,
-        damage_max: 12,
-        accuracy_bonus: 0.05,
-        ammo_key: "ammo_9mm",
-        ammo_per_attack: 1
-    };
-
-
-    // ------------------------------------------------------------
     // OLD BAGS
     // ------------------------------------------------------------
 
@@ -1174,5 +1197,6 @@ function init_item_database()
 
         if (!variable_struct_exists(item, "grid_width")) item.grid_width = 1;
         if (!variable_struct_exists(item, "grid_height")) item.grid_height = 1;
+        if (item.stackable && !variable_struct_exists(item, "max_stack")) item.max_stack = 100;
     }
 }
