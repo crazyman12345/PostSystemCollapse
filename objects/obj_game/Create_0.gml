@@ -3,6 +3,9 @@
 // ==============================
 display_set_gui_size(1920, 1080);
 window_set_fullscreen(false);
+
+// Set to spr_equipment_silhouette after importing the sprite.
+equipment_silhouette_sprite = spr_silhouette;
 // ==============================
 // GAME STATE
 // ==============================
@@ -91,7 +94,7 @@ trader_mode = TraderMode.SELECT;
 // ==============================
 // RAID
 // ==============================
-audio_play_sound(main_theme, 0, true);
+//audio_play_sound(main_theme, 0, true);
 
 loadout_confirm_start = false;
 loadout_confirm_index = 0;
@@ -104,6 +107,7 @@ init_inventory();
 inventory_index = 0;
 inventory_scroll = 0;
 inventory_visible_rows=10;
+stash_index = 0;
 salvage_active = false;
 salvage_item_key = "";
 salvage_end_time = 0;

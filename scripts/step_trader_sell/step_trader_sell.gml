@@ -12,7 +12,11 @@ var sellable_items =
 		            trader_sell_index,
 		            item_count
 		        );
-		    if (keyboard_check_pressed(vk_enter))
+		    var visible_count = min(10, item_count);
+		    var scroll_offset = max(0, trader_sell_index - visible_count + 1);
+		    var mouse_menu = terminal_menu_mouse_input(trader_sell_index, visible_count, scroll_offset, 620, 270, 280, 50);
+		    trader_sell_index = mouse_menu.index;
+		    if (keyboard_check_pressed(vk_enter) || mouse_menu.confirm)
 		    {
 		        var item_key =
 		            sellable_items[
@@ -51,9 +55,11 @@ var sellable_items =
 		{
 		    trader_mode = TraderMode.BUY;
 		    trader_menu_index = 0;
+			scroll_sound();
 		}
 		if (keyboard_check_pressed(vk_escape))
 		{
+		    audio_play_sound(snd_interact, 0, false);
 		    trader_mode = TraderMode.SELECT;
 		    menu_index = 0;
 		}

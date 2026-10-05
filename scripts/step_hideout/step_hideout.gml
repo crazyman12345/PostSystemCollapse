@@ -30,10 +30,30 @@ function step_hideout()
 			scroll_sound();
         }
 
+        var _mouse_x = device_mouse_x_to_gui(0);
+        var _mouse_y = device_mouse_y_to_gui(0);
+        var hover_index = -1;
+        var item_y = 85;
+        for (var i = 0; i < array_length(hideout_menu_items); i++)
+        {
+            var hover_entry = hideout_menu_items[i];
+            if (hover_entry.header != "") item_y += 50;
+            if (_mouse_x >= 25 && _mouse_x <= 295 && _mouse_y >= item_y && _mouse_y < item_y + 34
+                && (hover_entry.bench_key == "" || variable_struct_get(workshop_progress, hover_entry.bench_key) > 0)) hover_index = i;
+            item_y += 34;
+            if (hover_entry.key == "workshop" || hover_entry.key == "drugmaking") item_y += 30;
+        }
+
+        if (hover_index != -1 && hideout_menu_index != hover_index)
+        {
+            hideout_menu_index = hover_index;
+            scroll_sound();
+        }
+
         var selected = hideout_menu_items[hideout_menu_index];
         hideout_page = selected.page;
 
-        if (keyboard_check_pressed(vk_enter))
+        if (keyboard_check_pressed(vk_enter) || (hover_index != -1 && mouse_check_button_pressed(mb_left)))
         {
             if (selected.bench_key != "" && variable_struct_get(workshop_progress, selected.bench_key) <= 0)
                 return;

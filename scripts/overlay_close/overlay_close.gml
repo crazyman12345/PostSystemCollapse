@@ -17,6 +17,12 @@ function overlay_close()
 
         case OverlayMode.LOADOUT:
         {
+            if (raid.active)
+            {
+                raid_inventory_clear_held();
+                raid.active_loot_container = undefined;
+            }
+
             loadout_focus =
                 LoadoutFocus.EQUIPMENT;
 

@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"draw_raid_loot_bag_panel",
+  "%Name":"stash_place_item",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"draw_raid_loot_bag_panel",
+  "name":"stash_place_item",
   "parent":{
-    "name":"loot",
-    "path":"folders/RAID/bag/loot.yy",
+    "name":"inventory",
+    "path":"folders/inventory.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

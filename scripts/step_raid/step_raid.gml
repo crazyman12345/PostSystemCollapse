@@ -21,6 +21,7 @@ function step_raid()
     {
         if (keyboard_check_pressed(vk_escape))
         {
+            audio_play_sound(snd_interact, 0, false);
             raid.paused = false;
             return;
         }
@@ -51,6 +52,7 @@ function step_raid()
 
     if (keyboard_check_pressed(vk_escape))
     {
+        audio_play_sound(snd_interact, 0, false);
         raid.paused = true;
         raid.pause_menu_index = 1;
         return;

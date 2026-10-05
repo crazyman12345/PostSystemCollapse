@@ -24,6 +24,8 @@ function step_hideout_salvage(){
 		inventory_index = clamp(inventory_index, 0, item_count - 1);
 		inventory_scroll = clamp(inventory_scroll, 0, max(0, item_count - inventory_visible_rows));
 		inventory_index = terminal_menu_input(inventory_index, item_count);
+		var mouse_menu = terminal_menu_mouse_input(inventory_index, min(inventory_visible_rows, item_count - inventory_scroll), inventory_scroll, 345, 170, 510, 34);
+		inventory_index = mouse_menu.index;
 
 		if (inventory_index >= inventory_scroll + inventory_visible_rows){
 			inventory_scroll = inventory_index - inventory_visible_rows + 1;
@@ -32,7 +34,7 @@ function step_hideout_salvage(){
 			inventory_scroll = inventory_index;
 		}
 
-		if (keyboard_check_pressed(ord("E"))){
+		if (keyboard_check_pressed(ord("E")) || mouse_menu.confirm){
 			var selected_key = owned_items[inventory_index];
 			var selected_item = item_get(selected_key);
 
@@ -56,6 +58,7 @@ function step_hideout_salvage(){
 	}
 
 	if (!salvage_active && keyboard_check_pressed(vk_escape)){
+		audio_play_sound(snd_interact, 0, false);
 		hideout_focus = HideoutFocus.SIDEBAR;
 	}
 }

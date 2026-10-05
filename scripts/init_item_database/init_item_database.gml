@@ -493,6 +493,7 @@ function init_item_database()
         base_value: 2,
         weight: 0.02,
         stackable: true,
+		max_stack: 60,
 		icon_sprite: spr_9mm
     };
 
@@ -537,7 +538,8 @@ function init_item_database()
         reload_time: 90,
         bullet_speed: 7,
         accuracy_bonus: -0.05,
-
+		grid_width: 2,
+		grid_height: 1,
         ammo_key: "ammo_9mm",
         ammo_per_attack: 1,
 
@@ -790,7 +792,9 @@ function init_item_database()
         base_value: 100,
         weight: 0.8,
         stackable: false,
-        bag_capacity: 8.0
+        bag_capacity: 8.0,
+        grid_width: 3,
+        grid_height: 3
     };
 
     global.items.school_backpack = {
@@ -801,7 +805,9 @@ function init_item_database()
         base_value: 180,
         weight: 1.2,
         stackable: false,
-        bag_capacity: 14.0
+        bag_capacity: 14.0,
+        grid_width: 4,
+        grid_height: 4
     };
 
     global.items.small_hiking_pack = {
@@ -812,7 +818,9 @@ function init_item_database()
         base_value: 300,
         weight: 1.8,
         stackable: false,
-        bag_capacity: 20.0
+        bag_capacity: 20.0,
+        grid_width: 5,
+        grid_height: 5
     };
 
 
@@ -1157,4 +1165,14 @@ function init_item_database()
         sprite_idle: spr_security_vest_idle,
         sprite_run: -1
     };
+
+    var item_keys = variable_struct_get_names(global.items);
+
+    for (var i = 0; i < array_length(item_keys); i++)
+    {
+        var item = variable_struct_get(global.items, item_keys[i]);
+
+        if (!variable_struct_exists(item, "grid_width")) item.grid_width = 1;
+        if (!variable_struct_exists(item, "grid_height")) item.grid_height = 1;
+    }
 }

@@ -19,9 +19,39 @@ function raid_spawn_reward_lootable(_reward_type)
 
         opened: false,
 
+        storage: {
+            grid_width: 6,
+            grid_height: 6,
+            items: []
+        },
+
         width: 34,
         height: 22
     };
+
+    switch (_reward_type)
+    {
+        case RaidRewardType.FILING_CABINETS:
+        case RaidRewardType.CASH_REGISTER:
+            _lootable.storage.grid_width = 5;
+            _lootable.storage.grid_height = 4;
+            break;
+
+        case RaidRewardType.TOOLBOX:
+            _lootable.storage.grid_width = 4;
+            _lootable.storage.grid_height = 4;
+            break;
+
+        case RaidRewardType.MEDICAL_CRATE:
+            _lootable.storage.grid_width = 5;
+            _lootable.storage.grid_height = 5;
+            break;
+
+        case RaidRewardType.BACKROOM_STASH:
+            _lootable.storage.grid_width = 7;
+            _lootable.storage.grid_height = 5;
+            break;
+    }
 
 
     array_push(

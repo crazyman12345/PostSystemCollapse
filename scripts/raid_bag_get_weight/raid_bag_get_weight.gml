@@ -1,54 +1,11 @@
 function raid_bag_get_weight()
 {
     var total_weight = 0;
-
-    var keys =
-        variable_struct_get_names(
-            raid.bag
-        );
-
-
-    for (var i = 0; i < array_length(keys); i++)
+    for (var i = 0; i < array_length(stash.backpack.items); i++)
     {
-        var item_key =
-            keys[i];
-
-
-        // Skip invalid empty item
-        if (item_key == "")
-            continue;
-
-
-        var item =
-            item_get(
-                item_key
-            );
-
-
-        // Skip invalid item keys
-        if (is_undefined(item))
-        {
-            log_add(
-                "Invalid bag item: "
-                + string(item_key)
-            );
-
-            continue;
-        }
-
-
-        var quantity =
-            variable_struct_get(
-                raid.bag,
-                item_key
-            );
-
-
-        total_weight +=
-            item.weight
-            * quantity;
+        var item = stash.backpack.items[i];
+        var definition = item_get(item.item_key);
+        if (!is_undefined(definition)) total_weight += definition.weight * item.quantity;
     }
-
-
     return total_weight;
 }

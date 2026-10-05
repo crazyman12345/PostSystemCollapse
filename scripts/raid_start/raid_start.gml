@@ -1,5 +1,22 @@
 function raid_start(_area)
 {
+	if (!is_undefined(stash.held_item))
+	{
+		log_add("Place the held item before starting a raid.");
+		return;
+	}
+	// Carry the existing grids and their item instances directly into the raid.
+	var backpack = item_get(crew[raid.crew_index].bag);
+	stash.backpack.grid_width = is_undefined(backpack) ? 0 : backpack.grid_width;
+	stash.backpack.grid_height = is_undefined(backpack) ? 0 : backpack.grid_height;
+	// Raid inventory uses the persistent equipped grids directly. Clear only
+	// stale raid references from the previous result; never rebuild the grids.
+	raid.active_loot_container = undefined;
+	raid.inventory_item = undefined;
+	raid.inventory_container = undefined;
+	raid.inventory_rotation = 0;
+	raid.last_loot = [];
+	raid.loot_index = 0;
 	
 	view_enabled = true;
 	view_visible[0] = true;

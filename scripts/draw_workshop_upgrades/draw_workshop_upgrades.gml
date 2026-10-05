@@ -9,6 +9,7 @@ function draw_workshop_upgrades(_bench, _key, _x1, _top, _x2, _bottom)
     if (level >= _bench.max_level)
     {
         draw_text(_x1 + 30, _y, "MAX LEVEL");
+        workshop_upgrade_button(_key, _x1, _top, _x2, true);
         return;
     }
 
@@ -31,15 +32,5 @@ function draw_workshop_upgrades(_bench, _key, _x1, _top, _x2, _bottom)
         _y += 35;
     }
 
-    _y += 35;
-
-    if (workshop_can_upgrade(_key))
-    {
-        if (level == 0) draw_text(_x1 + 30, _y, "[ENTER] BUILD");
-        else draw_text(_x1 + 30, _y, "[ENTER] UPGRADE");
-    }
-    else
-    {
-        draw_text(_x1 + 30, _y, "INSUFFICIENT MATERIALS");
-    }
+    workshop_upgrade_button(_key, _x1, _top, _x2, true);
 }

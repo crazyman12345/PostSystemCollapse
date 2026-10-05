@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"draw_raid_loot_found_panel",
+  "%Name":"workshop_upgrade_button",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"draw_raid_loot_found_panel",
+  "name":"workshop_upgrade_button",
   "parent":{
-    "name":"loot",
-    "path":"folders/RAID/bag/loot.yy",
+    "name":"workshop",
+    "path":"folders/workshop.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

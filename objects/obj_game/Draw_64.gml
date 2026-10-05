@@ -14,6 +14,10 @@ switch (state)
     break;
 		
 	case GameState.RAID:
+		if (raid.active && overlay_mode == OverlayMode.NONE && !raid.paused)
+		{
+			draw_raid_hotbar(false);
+		}
 		if (raid.mode == RaidMode.RESULT)
 		{
 		    draw_raid_result();

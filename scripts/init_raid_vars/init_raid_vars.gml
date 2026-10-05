@@ -57,8 +57,14 @@ raid =
     mode: RaidMode.START,
     paused: false,
     pause_menu_index: 1,
-    // Raid bag
-    bag: {},
+    // Selection references the carried grid item; it never removes it from storage.
+    inventory_item: undefined,
+    inventory_container: undefined,
+    active_loot_container: undefined,
+    hotbar: [undefined, undefined, undefined, undefined, undefined, undefined],
+    hotbar_feedback_slot: -1,
+    hotbar_feedback_timer: 0,
+    hotbar_feedback_success: false,
     // Loot currently on ground
     last_loot: [],
     loot_index: 0,

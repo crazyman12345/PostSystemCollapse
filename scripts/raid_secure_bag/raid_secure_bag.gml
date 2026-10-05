@@ -1,36 +1,13 @@
 function raid_secure_bag()
-{//transfers loot from raid bag to main inventory
-    var bag_keys =
-        variable_struct_get_names(raid.bag);
+{
+    // The backpack and secure container are already the persistent grids.
+    // Return a held item to its source before dropping the temporary raid
+    // references; no inventory instances are copied here.
+    raid_inventory_clear_held();
+    raid.inventory_rotation = 0;
 
-    for (var i = 0; i < array_length(bag_keys); i++)
-    {
-        var item_key =
-            bag_keys[i];
-
-        var quantity =
-            raid_bag_get_quantity(item_key);
-
-        if (quantity > 0)
-        {
-            inventory_add(
-                item_key,
-                quantity
-            );
-
-            var item =
-                item_get(item_key);
-
-            log_add(
-                "Secured "
-                + string(quantity)
-                + "x "
-                + item.name
-                + "."
-            );
-        }
-    }
-
-    // Only clear AFTER everything has transferred
-    raid.bag = {};
+    raid.active_loot_container = undefined;
+    raid_lootables = [];
+    raid.last_loot = [];
+    raid.loot_index = 0;
 }

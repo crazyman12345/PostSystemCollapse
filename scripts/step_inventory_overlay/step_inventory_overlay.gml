@@ -24,6 +24,7 @@
         inventory_scroll = 0;
     }
     if (keyboard_check_pressed(vk_escape)) {
+        audio_play_sound(snd_interact, 0, false);
         overlay_mode = OverlayMode.NONE;
     }
  }

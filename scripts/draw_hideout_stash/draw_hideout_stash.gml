@@ -4,148 +4,458 @@ function draw_hideout_stash()
     // MAIN LAYOUT
     // ==========================================
 
-    var panel_left = 320;
+    var panel_left = 330;
     var panel_top = 80;
-    var panel_width = 1600;
-    var panel_height = 1000;
-    var padding = 40;
+    var panel_width = 1570;
+    var panel_height = 970;
 
-    // ==========================================
-    // ITEM LIST
-    // ==========================================
+    var equipment_left = panel_left + 20;
+    var equipment_width = 450;
 
-    var list_left = panel_left + padding;
-    var list_width = 960;
-    var name_x = list_left + 36;
-    var quantity_x = list_left + 610;
-    var weight_x = list_left + 720;
-    var value_x = list_left + 840;
-    var quantity_divider_x = list_left + 590;
-    var weight_divider_x = list_left + 700;
-    var value_divider_x = list_left + 820;
-    var header_y = panel_top + 70;
-    var item_start_y = panel_top + 110;
-    var item_spacing = 34;
-    var visible_rows = inventory_visible_rows;
-    var divider_top = header_y - 10;
-    var divider_bottom = item_start_y + (visible_rows * item_spacing) - 10;
+    var stash_right_margin = 25;
+    var grid_top = panel_top + 70;
+    var stash_cell_size = 60;
 
-    // ==========================================
-    // ITEM INFO
-    // ==========================================
+    var stash_left =
+        1920
+        - stash_right_margin
+        - (stash.grid_width * stash_cell_size);
 
-    var info_left = list_left + list_width;
-    var info_top = panel_top + 70;
-    var info_width = 560;
-    var info_height = 720;
+    var middle_left =
+        equipment_left
+        + equipment_width
+        + 15;
 
-    // ==========================================
-    // BACKGROUND
-    // ==========================================
+    var middle_width =
+        stash_left
+        - middle_left
+        - 15;
 
-    draw_set_color(c_black);
-    draw_rectangle(panel_left, panel_top, panel_left + panel_width, panel_top + panel_height, false);
+    var container_cell_size = 60;
 
-    draw_set_color(c_lime);
-    draw_set_font(fnt_terminal_small);
+    var backpack_grid_left = middle_left + 165;
+    var backpack_grid_top = grid_top;
+
+    var secure_grid_left = middle_left + 165;
+    var secure_grid_top = backpack_grid_top + 320;
+
+    var item_count = array_length(stash.items);
+    var member = crew[0];
+
 
     // ==========================================
     // MAIN PANEL
     // ==========================================
 
-    terminal_panel(panel_left, panel_top, panel_width, panel_height, "INVENTORY");
+    draw_set_color(c_black);
 
+    draw_rectangle(
+        panel_left,
+        panel_top,
+        panel_left + panel_width,
+        panel_top + panel_height,
+        false
+    );
+
+    draw_set_color(c_lime);
+    draw_set_font(fnt_terminal_small);
+
+    terminal_panel(
+        panel_left,
+        panel_top,
+        panel_width,
+        panel_height,
+        "STASH"
+    );
+
+
+    draw_stash_equipment_and_carried_storage(member, false);
+
+    draw_text(stash_left, grid_top - 25, "MAIN STASH");
+    draw_line(stash_left, grid_top - 7, stash_left + (stash.grid_width * stash_cell_size), grid_top - 7);
     // ==========================================
-    // GET INVENTORY
+    // MAIN STASH GRID
     // ==========================================
 
-    var owned_items = inventory_get_visible_items();
-    var item_count = array_length(owned_items);
-
-    draw_text(name_x, header_y, "NAME");
-    draw_text(quantity_x, header_y, "QTY");
-    draw_text(weight_x, header_y, "WEIGHT");
-    draw_text(value_x, header_y, "VALUE");
-
-    draw_line(quantity_divider_x, divider_top, quantity_divider_x, divider_bottom);
-    draw_line(weight_divider_x, divider_top, weight_divider_x, divider_bottom);
-    draw_line(value_divider_x, divider_top, value_divider_x, divider_bottom);
-
-    // ==========================================
-    // DRAW ITEMS
-    // ==========================================
-
-    if (item_count == 0)
+    for (
+        var grid_y = 0;
+        grid_y < stash.grid_height;
+        grid_y++
+    )
     {
-        draw_text(name_x, item_start_y, "Inventory is empty.");
-    }
-    else
-    {
-        var last_visible_item = min(inventory_scroll + visible_rows, item_count);
-
-        for (var i = inventory_scroll; i < last_visible_item; i++)
+        for (
+            var grid_x = 0;
+            grid_x < stash.grid_width;
+            grid_x++
+        )
         {
-            var item_key = owned_items[i];
-            var item = item_get(item_key);
-            var quantity = inventory_get_quantity(item_key);
-            var row = i - inventory_scroll;
-            var row_y = item_start_y + (row * item_spacing);
-            var item_weight = "-";
-            var item_value = "-";
+            var cell_left =
+                stash_left
+                + (
+                    grid_x
+                    * stash_cell_size
+                );
 
-            if (variable_struct_exists(item, "weight"))
-                item_weight = string_format(item.weight, 1, 2);
+            var cell_top =
+                grid_top
+                + (
+                    grid_y
+                    * stash_cell_size
+                );
 
-            if (variable_struct_exists(item, "base_value"))
-                item_value = "$" + string(item.base_value * quantity);
+            draw_set_color(c_dkgray);
 
-            terminal_menu_item(list_left, row_y, "", inventory_index == i);
-            draw_text(name_x, row_y, item.name);
-            draw_text(quantity_x, row_y, string(quantity));
-            draw_text(weight_x, row_y, item_weight);
-            draw_text(value_x, row_y, item_value);
+            draw_rectangle(
+                cell_left,
+                cell_top,
+                cell_left + stash_cell_size,
+                cell_top + stash_cell_size,
+                false
+            );
+
+            draw_set_color(c_green);
+
+            draw_rectangle(
+                cell_left,
+                cell_top,
+                cell_left + stash_cell_size,
+                cell_top + stash_cell_size,
+                true
+            );
         }
     }
 
+
     // ==========================================
-    // SELECTED ITEM INFO
+    // GRID ITEMS
     // ==========================================
 
-    if (item_count > 0)
+    var item_grids = [{ key: "stash", storage: stash, left: stash_left, top: grid_top, cell_size: stash_cell_size }];
+
+    if (member.bag != "")
     {
-        var selected_key = inventory_get_selected_item();
+        var backpack_definition = item_get(member.bag);
 
-        draw_item_info_popup(
-            selected_key,
-            info_left,
-            info_top,
-            info_width,
-            info_height
+        if (!is_undefined(backpack_definition))
+        {
+            stash.backpack.grid_width = backpack_definition.grid_width;
+            stash.backpack.grid_height = backpack_definition.grid_height;
+            secure_grid_top = backpack_grid_top + (stash.backpack.grid_height * container_cell_size) + 150;
+            array_push(item_grids, { key: "backpack", storage: stash.backpack, left: backpack_grid_left, top: backpack_grid_top, cell_size: container_cell_size });
+        }
+    }
+
+    array_push(item_grids, { key: "secure", storage: stash.secure_container, left: secure_grid_left, top: secure_grid_top + 48, cell_size: stash_cell_size });
+
+    for (var grid_index = 0; grid_index < array_length(item_grids); grid_index++)
+    {
+        var item_grid = item_grids[grid_index];
+
+        for (var i = 0; i < array_length(item_grid.storage.items); i++)
+        {
+            var stash_item = item_grid.storage.items[i];
+
+            var definition = item_get(stash_item.item_key);
+
+            var item_width = definition.grid_width;
+
+            var item_height = definition.grid_height;
+
+            if (stash_item.rotation == 90)
+            {
+                var size = item_width;
+
+                item_width = item_height;
+
+                item_height = size;
+            }
+
+            var item_left = item_grid.left + (stash_item.x * item_grid.cell_size);
+
+            var item_top = item_grid.top + (stash_item.y * item_grid.cell_size);
+
+            var item_right = item_left + (item_width * item_grid.cell_size);
+
+            var item_bottom = item_top + (item_height * item_grid.cell_size);
+
+            draw_inventory_grid_item(stash_item, definition, item_left, item_top, item_width, item_height, item_grid.cell_size, item_grid.key == "stash" && i == stash_index);
+        }
+    }
+
+
+    // ==========================================
+    // HELD ITEM PREVIEW
+    // ==========================================
+
+    var held_definition = undefined;
+    var preview_width = 0;
+    var preview_height = 0;
+
+    if (
+        !is_undefined(stash.held_item)
+        && stash.hover_x >= 0
+        && stash.hover_y >= 0
+    )
+    {
+        held_definition =
+            item_get(stash.held_item.item_key);
+
+        preview_width =
+            held_definition.grid_width;
+
+        preview_height =
+            held_definition.grid_height;
+
+        if (stash.held_item.rotation == 90)
+        {
+            var preview_size =
+                preview_width;
+
+            preview_width =
+                preview_height;
+
+            preview_height =
+                preview_size;
+        }
+
+        for (var grid_index = 0; grid_index < array_length(item_grids); grid_index++)
+        {
+            var item_grid = item_grids[grid_index];
+
+            if (item_grid.key == stash.hover_container)
+            {
+                var preview_left = item_grid.left + (stash.hover_x * item_grid.cell_size);
+                var preview_top = item_grid.top + (stash.hover_y * item_grid.cell_size);
+                var preview_valid = stash_item_fits(stash.held_item.item_key, stash.hover_x, stash.hover_y, stash.held_item.rotation, item_grid.storage);
+
+                draw_set_alpha(0.45);
+                draw_set_color(preview_valid ? c_lime : c_red);
+                draw_rectangle(preview_left + 4, preview_top + 4, preview_left + (preview_width * item_grid.cell_size) - 4, preview_top + (preview_height * item_grid.cell_size) - 4, false);
+                draw_set_alpha(1);
+                break;
+            }
+        }
+    }
+
+    if (!is_undefined(stash.held_item))
+    {
+        if (is_undefined(held_definition)) held_definition = item_get(stash.held_item.item_key);
+        if (preview_width == 0)
+        {
+            preview_width = held_definition.grid_width;
+            preview_height = held_definition.grid_height;
+
+            if (stash.held_item.rotation == 90)
+            {
+                var held_item_size = preview_width;
+                preview_width = preview_height;
+                preview_height = held_item_size;
+            }
+        }
+
+        var held_mouse_x = device_mouse_x_to_gui(0);
+        var held_mouse_y = device_mouse_y_to_gui(0);
+        var held_item_left = held_mouse_x;
+        var held_item_top = held_mouse_y;
+
+        draw_set_alpha(0.5);
+        draw_inventory_grid_item(stash.held_item, held_definition, held_item_left, held_item_top, preview_width, preview_height, stash_cell_size, false);
+        draw_set_alpha(1);
+
+        draw_set_font(fnt_terminal_tiny);
+        draw_set_color(c_white);
+        var held_item_name_width = string_width(held_definition.name);
+        draw_text(
+            held_item_left + ((preview_width * stash_cell_size - held_item_name_width) * 0.5),
+            held_item_top - 18,
+            held_definition.name
         );
     }
 
-    // ==========================================
-    // SCROLL INDICATORS
-    // ==========================================
-
-    if (inventory_scroll > 0) draw_text(list_left + list_width - 20, item_start_y, "^");
-
-    if (inventory_scroll + visible_rows < item_count)
-        draw_text(list_left + list_width - 20, item_start_y + (visible_rows * item_spacing), "v");
-
-    // ==========================================
-    // ITEM POSITION
-    // ==========================================
-
-    if (item_count > 0)
-        draw_text(list_left, panel_top + 850, "ITEM " + string(inventory_index + 1) + " / " + string(item_count));
 
     // ==========================================
     // CONTROLS
     // ==========================================
 
-    draw_text(list_left, panel_top + 920, "W/S: SELECT");
-    draw_text(list_left, panel_top + 960, "I / ESC: CLOSE");
+    draw_set_color(c_lime);
 
+    draw_text(
+        equipment_left,
+        panel_top + 925,
+        "W/S: SELECT MAIN STASH ITEM"
+    );
+
+    draw_text(
+        equipment_left,
+        panel_top + 950,
+        "R: ROTATE HELD ITEM | ESC: CLOSE"
+    );
+
+    draw_set_alpha(1);
     draw_set_font(fnt_terminal);
+}
+
+function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _panel_left = 330, _panel_width = 1570)
+{
+    var equipment_left = _panel_left + 20;
+    var equipment_width = 450;
+    var middle_left = equipment_left + equipment_width + 15;
+    var stash_left = _panel_left + _panel_width - 25 - (stash.grid_width * 60);
+    var middle_width = stash_left - middle_left - 15;
+    var grid_top = 150;
+    var cell_size = 60;
+    var equipment_center = equipment_left + (equipment_width * 0.5);
+    var backpack_grid_left = middle_left + 165;
+    var backpack_grid_top = grid_top;
+    var secure_grid_left = middle_left + 165;
+    var secure_grid_top = backpack_grid_top + 320;
+
+    draw_text(equipment_left, grid_top - 25, "EQUIPMENT");
+    draw_line(equipment_left, grid_top - 7, equipment_left + equipment_width, grid_top - 7);
+    draw_text(middle_left, grid_top - 25, "CARRIED STORAGE");
+    draw_line(middle_left, grid_top - 7, middle_left + middle_width, grid_top - 7);
+
+    if (equipment_silhouette_sprite != -1 && sprite_exists(equipment_silhouette_sprite))
+    {
+        var silhouette_width = sprite_get_width(equipment_silhouette_sprite);
+        var silhouette_height = sprite_get_height(equipment_silhouette_sprite);
+        var silhouette_scale = min(430 / silhouette_width, 760 / silhouette_height);
+        var silhouette_left = equipment_center - ((silhouette_width * silhouette_scale) * 0.5);
+
+        draw_set_alpha(0.55);
+        draw_sprite_part_ext(equipment_silhouette_sprite, 0, 0, 0, silhouette_width, silhouette_height, silhouette_left, grid_top + 15, silhouette_scale, silhouette_scale, c_gray, 1);
+        draw_set_alpha(1);
+    }
+
+    draw_equipment_slot(equipment_center - 45, grid_top + 5, 90, 90, "HEAD ARMOR", _member.armor_head, false, true);
+    draw_equipment_slot(equipment_center - 75, grid_top + 100, 150, 220, "CHEST ARMOR", _member.armor_chest, false, true);
+    draw_equipment_slot(equipment_center - 180, grid_top + 350, 360, 100, "WEAPON 1", _member.weapon, false, true);
+    draw_equipment_slot(equipment_center - 180, grid_top + 470, 360, 100, "WEAPON 2", _member.weapon_2, false, true);
+    draw_equipment_slot(middle_left, grid_top, 150, 220, "BACKPACK", _member.bag, false, true);
+
+    if (_member.bag != "")
+    {
+        var backpack_definition = item_get(_member.bag);
+
+        if (!is_undefined(backpack_definition))
+        {
+            stash.backpack.grid_width = backpack_definition.grid_width;
+            stash.backpack.grid_height = backpack_definition.grid_height;
+
+            for (var backpack_y = 0; backpack_y < stash.backpack.grid_height; backpack_y++)
+            {
+                for (var backpack_x = 0; backpack_x < stash.backpack.grid_width; backpack_x++)
+                {
+                    var backpack_cell_left = backpack_grid_left + (backpack_x * cell_size);
+                    var backpack_cell_top = backpack_grid_top + (backpack_y * cell_size);
+                    draw_set_color(c_dkgray);
+                    draw_rectangle(backpack_cell_left, backpack_cell_top, backpack_cell_left + cell_size, backpack_cell_top + cell_size, false);
+                    draw_set_color(c_green);
+                    draw_rectangle(backpack_cell_left, backpack_cell_top, backpack_cell_left + cell_size, backpack_cell_top + cell_size, true);
+                }
+            }
+
+            secure_grid_top = backpack_grid_top + (stash.backpack.grid_height * cell_size) + 150;
+        }
+    }
+
+    draw_equipment_slot(middle_left, secure_grid_top, 150, 150, "SECURE CONTAINER", "", false, true);
+
+    for (var secure_y = 0; secure_y < stash.secure_container.grid_height; secure_y++)
+    {
+        for (var secure_x = 0; secure_x < stash.secure_container.grid_width; secure_x++)
+        {
+            var secure_cell_left = secure_grid_left + (secure_x * cell_size);
+            var secure_cell_top = secure_grid_top + 48 + (secure_y * cell_size);
+            draw_set_color(c_dkgray);
+            draw_rectangle(secure_cell_left, secure_cell_top, secure_cell_left + cell_size, secure_cell_top + cell_size, false);
+            draw_set_color(c_green);
+            draw_rectangle(secure_cell_left, secure_cell_top, secure_cell_left + cell_size, secure_cell_top + cell_size, true);
+        }
+    }
+
+    if (!_draw_items) return;
+
+    var containers = [
+        { storage: stash.backpack, left: backpack_grid_left, top: backpack_grid_top, visible: _member.bag != "" },
+        { storage: stash.secure_container, left: secure_grid_left, top: secure_grid_top + 48, visible: true }
+    ];
+
+    for (var container_index = 0; container_index < array_length(containers); container_index++)
+    {
+        var container = containers[container_index];
+        if (!container.visible) continue;
+
+        for (var item_index = 0; item_index < array_length(container.storage.items); item_index++)
+        {
+            var stored_item = container.storage.items[item_index];
+            var definition = item_get(stored_item.item_key);
+            var item_width = definition.grid_width;
+            var item_height = definition.grid_height;
+
+            if (stored_item.rotation == 90)
+            {
+                var item_size = item_width;
+                item_width = item_height;
+                item_height = item_size;
+            }
+
+            var item_left = container.left + (stored_item.x * cell_size);
+            var item_top = container.top + (stored_item.y * cell_size);
+            draw_inventory_grid_item(stored_item, definition, item_left, item_top, item_width, item_height, cell_size, false);
+        }
+    }
+}
+
+function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_width, _grid_height, _cell_size, _selected, _text_color = c_black)
+{
+    var item_right = _left + (_grid_width * _cell_size);
+    var item_bottom = _top + (_grid_height * _cell_size);
+
+    draw_set_color(_selected ? c_lime : c_gray);
+    draw_rectangle(_left + 4, _top + 4, item_right - 4, item_bottom - 4, false);
+
+    var grid_sprite = -1;
+    if (variable_struct_exists(_definition, "icon_sprite")) grid_sprite = _definition.icon_sprite;
+    if ((grid_sprite == -1 || !sprite_exists(grid_sprite)) && variable_struct_exists(_definition, "weapon_sprite")) grid_sprite = _definition.weapon_sprite;
+    if ((grid_sprite == -1 || !sprite_exists(grid_sprite)) && variable_struct_exists(_definition, "sprite_idle")) grid_sprite = _definition.sprite_idle;
+
+    if (grid_sprite == -1 || !sprite_exists(grid_sprite)) grid_sprite = spr_error;
+    var has_sprite = grid_sprite != -1 && sprite_exists(grid_sprite);
+
+    if (has_sprite)
+    {
+        var padding = 8;
+        var available_width = max(1, (item_right - _left) - (padding * 2));
+        var available_height = max(1, (item_bottom - _top) - (padding * 2));
+        var sprite_visible_left = sprite_get_bbox_left(grid_sprite);
+        var sprite_visible_top = sprite_get_bbox_top(grid_sprite);
+        var sprite_visible_width = sprite_get_bbox_right(grid_sprite) - sprite_visible_left + 1;
+        var sprite_visible_height = sprite_get_bbox_bottom(grid_sprite) - sprite_visible_top + 1;
+        var sprite_rotation = _stored_item.rotation == 90 ? 90 : 0;
+        var fit_width = sprite_rotation == 90 ? sprite_visible_height : sprite_visible_width;
+        var fit_height = sprite_rotation == 90 ? sprite_visible_width : sprite_visible_height;
+        var sprite_scale = min(available_width / fit_width, available_height / fit_height);
+        var origin_to_center_x = (sprite_visible_left + (sprite_visible_width * 0.5) - sprite_get_xoffset(grid_sprite)) * sprite_scale;
+        var origin_to_center_y = (sprite_visible_top + (sprite_visible_height * 0.5) - sprite_get_yoffset(grid_sprite)) * sprite_scale;
+        var rotation_radians = degtorad(sprite_rotation);
+        var rotated_offset_x = (origin_to_center_x * cos(rotation_radians)) - (origin_to_center_y * sin(rotation_radians));
+        var rotated_offset_y = (origin_to_center_x * sin(rotation_radians)) + (origin_to_center_y * cos(rotation_radians));
+        var center_x = ( _left + item_right ) * 0.5;
+        var center_y = ( _top + item_bottom ) * 0.5;
+
+        draw_sprite_ext(grid_sprite, 0, center_x - rotated_offset_x, center_y - rotated_offset_y, sprite_scale, sprite_scale, sprite_rotation, c_white, 1);
+    }
+    else
+    {
+        draw_set_color(_text_color);
+
+        draw_text_ext(_left + 10, _top + 10, _definition.name, 20, (_grid_width * _cell_size) - 20);
+    }
+
+    if (_stored_item.quantity > 1)
+    {
+        draw_set_color(_text_color);
+        draw_text(item_right - 28, _top + 8, "x" + string(_stored_item.quantity));
+    }
 }

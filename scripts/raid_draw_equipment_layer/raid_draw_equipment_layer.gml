@@ -11,11 +11,24 @@ function raid_draw_equipment_layer(_item_key, _frame, _x, _y)
     var _spr;
 
     if (raid_player_moving)
-        _spr = _item.sprite_run;
-    else
-        _spr = _item.sprite_idle;
+    {
+        if (!variable_struct_exists(_item, "sprite_run"))
+            return;
 
-    if (_spr == -1)
+        _spr = _item.sprite_run;
+    }
+    else
+    {
+        if (!variable_struct_exists(_item, "sprite_idle"))
+            return;
+
+        _spr = _item.sprite_idle;
+    }
+
+    if (is_undefined(_spr) || _spr == -1)
+        return;
+
+    if (!sprite_exists(_spr))
         return;
 
     draw_sprite_ext(

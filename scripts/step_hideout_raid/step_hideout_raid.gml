@@ -27,7 +27,22 @@ function step_hideout_raid()
             combat_area_index += 2;
 			scroll_sound();
 		}
-        if (keyboard_check_pressed(vk_enter))
+        var _mouse_x = device_mouse_x_to_gui(0);
+        var _mouse_y = device_mouse_y_to_gui(0);
+        var hover_column = floor((_mouse_x - 320) / 805);
+        var hover_row = floor((_mouse_y - 80) / ((950 / 6) + 10));
+        var hover_index = hover_row * 2 + hover_column;
+        var mouse_hover = _mouse_x >= 320 && _mouse_x < 1920 && _mouse_y >= 80 && _mouse_y < 1080
+            && ((_mouse_x - 320) mod 805) < 795 && ((_mouse_y - 80) mod ((950 / 6) + 10)) < (950 / 6)
+            && hover_index >= 0 && hover_index < count;
+
+        if (mouse_hover && combat_area_index != hover_index)
+        {
+            combat_area_index = hover_index;
+            scroll_sound();
+        }
+
+        if (keyboard_check_pressed(vk_enter) || (mouse_hover && mouse_check_button_pressed(mb_left)))
         {
             // STORE SELECTED RAID LOCATION
             raid.selected_area_index = combat_area_index;
@@ -35,6 +50,7 @@ function step_hideout_raid()
 
             // OPEN RAID EQUIPMENT SCREEN
             overlay_mode = OverlayMode.LOADOUT;
+            loadout_focus = LoadoutFocus.START_RAID;
 
             equipment_slot_index = 0;
             equipment_item_index = 0;

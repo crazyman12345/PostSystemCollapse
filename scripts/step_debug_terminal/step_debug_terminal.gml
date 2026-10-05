@@ -24,6 +24,7 @@ if (debug_console_open)
 
     if (keyboard_check_pressed(vk_escape))
     {
+        audio_play_sound(snd_interact, 0, false);
         debug_console_open = false;
 
         keyboard_string = "";

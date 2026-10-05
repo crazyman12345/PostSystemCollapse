@@ -1,5 +1,12 @@
 function raid_enter_normal_room(_reward_type)
 {
+    // Containers belong to the room that is being left. Clear their stored
+    // item instances before creating the next room.
+    raid_lootables = [];
+    raid.active_loot_container = undefined;
+    raid.inventory_item = undefined;
+    raid.inventory_container = undefined;
+
     raid.current_room_type = RaidRoomType.NORMAL;
     raid.current_reward_type = _reward_type;
 

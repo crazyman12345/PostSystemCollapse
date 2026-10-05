@@ -10,6 +10,7 @@ function step_crew_skills_overlay()
                     crew_skill_keys
                 ) - 1;
         }
+        scroll_sound();
     }
     if (keyboard_check_pressed(ord("S")))
     {
@@ -24,6 +25,7 @@ function step_crew_skills_overlay()
         {
             crew_skills_index = 0;
         }
+        scroll_sound();
     }
     if (keyboard_check_pressed(ord("A")))
     {
@@ -34,6 +36,7 @@ function step_crew_skills_overlay()
             crew_skills_crew_index =
                 array_length(crew) - 1;
         }
+        scroll_sound();
     }
     if (keyboard_check_pressed(ord("D")))
     {
@@ -46,5 +49,6 @@ function step_crew_skills_overlay()
         {
             crew_skills_crew_index = 0;
         }
+        scroll_sound();
     }
 }

@@ -13,10 +13,10 @@ function raid_pickup_ground_item(_index)
         raid_ground_items[_index];
 
 
-    raid_bag_add(
+    if (!raid_bag_add(
         g.item_key,
         g.quantity
-    );
+    )) return;
 
 
     array_delete(

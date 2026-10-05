@@ -1,12 +1,10 @@
 function raid_bag_get_quantity(_item_key)
 {
-    if (!variable_struct_exists(raid.bag, _item_key))
+    var quantity = 0;
+    for (var i = 0; i < array_length(stash.backpack.items); i++)
     {
-        return 0;
+        var item = stash.backpack.items[i];
+        if (item.item_key == _item_key) quantity += item.quantity;
     }
-
-    return variable_struct_get(
-        raid.bag,
-        _item_key
-    );
+    return quantity;
 }

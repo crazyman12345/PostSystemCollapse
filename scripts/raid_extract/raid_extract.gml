@@ -8,6 +8,8 @@ function raid_extract()
     raid.result_message =
         "All items secured.";
 
+    // Persistent backpack, equipment instances, and secure contents are
+    // already in their final grids. Only clear temporary raid references.
     raid_secure_bag();
 
     raid.active = false;

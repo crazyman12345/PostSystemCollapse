@@ -1,0 +1,45 @@
+function raid_hotbar_use(_slot)
+{
+    raid_hotbar_validate();
+    if (_slot < 0 || _slot >= 6) return false;
+
+    var item = raid.hotbar[_slot];
+    if (is_undefined(item)) return false;
+
+    var definition = item_get(item.item_key);
+    if (!raid_hotbar_is_usable(definition)) return false;
+
+    for (var i = 0; i < array_length(definition.use_effects); i++)
+    {
+        var effect = definition.use_effects[i];
+        if (effect.type == EffectType.HEAL && raid_player_hp >= raid_player_max_hp)
+        {
+            raid.hotbar_feedback_slot = _slot;
+            raid.hotbar_feedback_timer = 12;
+            raid.hotbar_feedback_success = false;
+            return false;
+        }
+    }
+
+    raid_apply_effects(definition.use_effects);
+    for (var i = 0; i < array_length(definition.use_effects); i++)
+    {
+        var effect = definition.use_effects[i];
+        if (effect.type == EffectType.HEAL)
+            raid_player_hp = min(raid_player_max_hp, raid_player_hp + effect.amount);
+    }
+    var container = raid_hotbar_find_item(item);
+    if (is_undefined(container)) return false;
+
+    item.quantity -= 1;
+    if (item.quantity <= 0)
+    {
+        stash_remove_item(item, container);
+        raid.hotbar[_slot] = undefined;
+    }
+
+    raid.hotbar_feedback_slot = _slot;
+    raid.hotbar_feedback_timer = 12;
+    raid.hotbar_feedback_success = true;
+    return true;
+}

@@ -11,6 +11,7 @@ function step_skills_overlay()
                     player_skill_keys
                 ) - 1;
         }
+        scroll_sound();
     }
 
     if (keyboard_check_pressed(ord("S")))
@@ -26,5 +27,6 @@ function step_skills_overlay()
         {
             skills_index = 0;
         }
+        scroll_sound();
     }
 }
