@@ -119,8 +119,8 @@
   "maintainGms1Font":false,
   "name":"fnt_terminal_tiny",
   "parent":{
-    "name":"IdleGame",
-    "path":"IdleGame.yyp",
+    "name":"misc",
+    "path":"folders/misc.yy",
   },
   "pointRounding":0,
   "ranges":[

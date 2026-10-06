@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_gun_tuning_get",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_gun_tuning_get",
+  "parent":{"name":"RAID","path":"folders/RAID.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

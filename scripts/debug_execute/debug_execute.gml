@@ -54,6 +54,10 @@ function debug_execute(_command)
 			debug_command_unlock_tables();
 			debug_log_add("Tables unlocked");
 			break;
+
+		case "gun_tuning_mode":
+			raid_gun_tuning_toggle();
+			break;
 		
         default:
             debug_log_add(

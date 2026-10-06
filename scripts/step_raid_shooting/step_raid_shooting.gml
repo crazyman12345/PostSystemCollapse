@@ -380,35 +380,33 @@ if (keyboard_check_pressed(ord("R")))
         // GUN POSITION
         // ----------------------------------------------
 
+        var _tuning = raid_gun_tuning_get(raid_gun_tuning_weapon_key, _weapon);
+        var _fire_dir = raid_aim_dir + _tuning.weapon_angle_offset;
+        var _fire_flip = (_fire_dir > 90 && _fire_dir < 270) ? -1 : 1;
+
         var _gun_x =
             _pivot_x
             + lengthdir_x(
-                raid_gun_offset,
-                raid_aim_dir
-            );
+                _tuning.weapon_offset_x,
+                _fire_dir
+            )
+            + lengthdir_x(_tuning.weapon_offset_y, _fire_dir + 90);
 
         var _gun_y =
             _pivot_y
             + lengthdir_y(
-                raid_gun_offset,
-                raid_aim_dir
-            );
+                _tuning.weapon_offset_x,
+                _fire_dir
+            )
+            + lengthdir_y(_tuning.weapon_offset_y, _fire_dir + 90);
 
 
         // ----------------------------------------------
         // MUZZLE OFFSET
         // ----------------------------------------------
 
-        var _mx = _weapon.muzzle_x;
-        var _my = _weapon.muzzle_y;
-
-        if (
-            raid_aim_dir > 90
-            && raid_aim_dir < 270
-        )
-        {
-            _my *= -1;
-        }
+        var _mx = _tuning.muzzle_offset_x;
+        var _my = _tuning.muzzle_offset_y * _fire_flip;
 
 
         // ----------------------------------------------
@@ -419,22 +417,22 @@ if (keyboard_check_pressed(ord("R")))
             _gun_x
             + lengthdir_x(
                 _mx,
-                raid_aim_dir
+                _fire_dir
             )
             + lengthdir_x(
                 _my,
-                raid_aim_dir + 90
+                _fire_dir + 90
             );
 
         var _muzzle_y =
             _gun_y
             + lengthdir_y(
                 _mx,
-                raid_aim_dir
+                _fire_dir
             )
             + lengthdir_y(
                 _my,
-                raid_aim_dir + 90
+                _fire_dir + 90
             );
 
 
@@ -446,7 +444,7 @@ if (keyboard_check_pressed(ord("R")))
             bx: _muzzle_x,
             by: _muzzle_y,
 
-            bdirection: raid_aim_dir,
+            bdirection: _fire_dir,
 
             bspeed: _weapon.bullet_speed,
             bdamage: irandom_range(

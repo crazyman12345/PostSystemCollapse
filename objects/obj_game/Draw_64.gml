@@ -14,6 +14,10 @@ switch (state)
     break;
 		
 	case GameState.RAID:
+		if (raid_gun_tuning_active && raid.active)
+		{
+			draw_raid_gun_tuning_panel();
+		}
 		if (raid.active && overlay_mode == OverlayMode.NONE && !raid.paused)
 		{
 			draw_raid_hotbar(false);
@@ -31,54 +35,24 @@ switch (state)
 
 		if (raid.paused)
 		{
-			var gui_width = display_get_gui_width();
-			var gui_height = display_get_gui_height();
-			var panel_left = gui_width * 0.25;
-			var panel_top = gui_height * 0.3;
-			var panel_right = gui_width * 0.75;
-			var panel_bottom = gui_height * 0.7;
-
-			draw_set_color(c_black);
-			draw_set_alpha(0.75);
-			draw_rectangle(0, 0, gui_width, gui_height, false);
-			draw_set_alpha(1);
-
-			draw_set_color(c_black);
-			draw_rectangle(panel_left, panel_top, panel_right, panel_bottom, false);
-			draw_set_color(c_lime);
-			draw_rectangle(panel_left, panel_top, panel_right, panel_bottom, true);
-			draw_set_halign(fa_center);
-			draw_text(gui_width * 0.5, gui_height * 0.38, "PAUSED");
-
-			if (raid.pause_menu_index == 0)
-			{
-				draw_text(gui_width * 0.5, gui_height * 0.48, "> LEAVE RAID (LOSE ALL GEAR) <");
-				draw_text(gui_width * 0.5, gui_height * 0.54, "CONTINUE");
-			}
-			else
-			{
-				draw_text(gui_width * 0.5, gui_height * 0.48, "LEAVE RAID (LOSE ALL GEAR)");
-				draw_text(gui_width * 0.5, gui_height * 0.54, "> CONTINUE <");
-			}
-
-			draw_text(gui_width * 0.5, gui_height * 0.63, "W/S: SELECT    ENTER: CONFIRM    ESC: CONTINUE");
-			draw_set_halign(fa_left);
+			draw_raid_pause_menu();
 		}
 	break;
 }
-// ==============================
-// GLOBAL EVENT LOG
-// ==============================
+ //==============================
+ //GLOBAL EVENT LOG
+ //==============================
 
-//if (state != GameState.MAIN_MENU)
-//{
-//    draw_event_log();
-//}
+if (state != GameState.MAIN_MENU)
+{
+   // draw_event_log();
+}
 
 draw_overlay(overlay_mode);
 
-// Debug console always on top
+
 draw_debug_console();
+// Debug console always on top
 
 if (debug_show_mouse)
 {

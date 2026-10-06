@@ -99,16 +99,19 @@ function step_hideout_stash(){
 
     if (!is_undefined(stash.held_item))
     {
+        var held_definition = item_get(stash.held_item.item_key);
         stash.hover_x = is_undefined(hovered_grid) ? -1 : mouse_grid_x;
         stash.hover_y = is_undefined(hovered_grid) ? -1 : mouse_grid_y;
         stash.hover_container = is_undefined(hovered_grid) ? "" : hovered_grid.key;
 
-        if (keyboard_check_pressed(ord("R")))
+        if (keyboard_check_pressed(ord("R")) && !is_undefined(held_definition))
         {
-            stash.held_item.rotation = stash.held_item.rotation == 90 ? 0 : 90;
+            if (held_definition.grid_width == held_definition.grid_height)
+                stash.held_item.rotation = 0;
+            else
+                stash.held_item.rotation = stash.held_item.rotation == 90 ? 0 : 90;
         }
 
-        var held_definition = item_get(stash.held_item.item_key);
         var held_source = variable_struct_exists(stash, "held_source") ? stash.held_source : "";
         var equipment_slot_item = "";
         var equipment_slot_valid = false;
@@ -366,6 +369,7 @@ function step_hideout_stash(){
                 stash.held_item = item;
                 stash_remove_item(item, hovered_grid.storage);
                 stash.held_source = hovered_grid.key;
+                if (definition.grid_width == definition.grid_height) item.rotation = 0;
                 stash.hover_x = mouse_grid_x;
                 stash.hover_y = mouse_grid_y;
                 stash.hover_container = hovered_grid.key;

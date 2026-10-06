@@ -104,7 +104,7 @@ function init_item_database()
         weight: 0.1,
         stackable: true,
 		max_stack: 5,
-		spr_cloth
+		icon_sprite: spr_cloth
     };
 
     global.items.leather = {
@@ -116,7 +116,7 @@ function init_item_database()
         weight: 0.2,
         stackable: true,
 		max_stack: 5,
-		spr_leather
+		icon_sprite: spr_leather
     };
 
     global.items.rubber = {
@@ -128,7 +128,7 @@ function init_item_database()
         weight: 0.2,
         stackable: true,
 		max_stack: 5,
-		spr_rubber
+		icon_sprite: spr_rubber
     };
 
     global.items.adhesive = {
@@ -554,12 +554,13 @@ function init_item_database()
         base_value: 4,
 		max_stack: 60,
         weight: 0.05,
-        stackable: true
+        stackable: true,
+		icon_sprite: spr_buckshot
     };
 
 
     // ============================================================
-    // STARTER WEAPON
+    //  WEAPON
     // ============================================================
 
     global.items.pipe_pistol = {
@@ -582,28 +583,23 @@ function init_item_database()
 		grid_height: 1,
         ammo_key: "ammo_9mm",
         ammo_per_attack: 1,
-
         weapon_sprite: spr_pipe_pistol,
 		sound_shoot: nine_shot,
         sound_reload: nine_reload,
         sound_empty: nine_empty,
 
+   		weapon_offset_x: 11,
+		weapon_draw_width: 28,
         hand1_x: 0,
         hand1_y: 0,
         hand2_x: 0,
         hand2_y: 0,
         has_second_hand: false,
-
-        muzzle_x: 9,
-        muzzle_y: 4,
+        muzzle_x: 24,
+        muzzle_y: 5,
 
         fire_modes: [WeaponFireMode.SEMI]
     };
-
-
-    // ============================================================
-    // TIER 1 WEAPONS
-    // ============================================================
 
     global.items.m1911 = {
         item_key: "m1911",
@@ -621,7 +617,7 @@ function init_item_database()
         reload_time: 60,
         bullet_speed: 8,
         accuracy_bonus: 0.05,
-
+	
         ammo_key: "ammo_9mm",
         ammo_per_attack: 1,
 
@@ -629,15 +625,18 @@ function init_item_database()
         sound_shoot: nine_shot,
         sound_reload: nine_reload,
         sound_empty: nine_empty,
-
+		grid_width: 2,
+		grid_height: 1,
+		
+		weapon_offset_x: 14,
+		weapon_draw_width: 22,
         hand1_x: 0,
         hand1_y: 0,
         hand2_x: 0,
         hand2_y: 0,
         has_second_hand: false,
-
-        muzzle_x: 9,
-        muzzle_y: 4,
+        muzzle_x: 19,
+        muzzle_y: 5.8,
 
         fire_modes: [WeaponFireMode.SEMI]
     };
@@ -658,23 +657,27 @@ function init_item_database()
         reload_time: 100,
         bullet_speed: 7,
         accuracy_bonus: -0.10,
-
+		weapon_draw_width: 64,
         ammo_key: "ammo_12g",
         ammo_per_attack: 1,
 
-        weapon_sprite: -1,
+        weapon_sprite: spr_double_barrel,
         sound_shoot: -1,
         sound_reload: -1,
         sound_empty: -1,
 
+		grid_width: 5,
+		grid_height: 1,
+
+      	weapon_offset_x: 10,
+		weapon_draw_width: 44,
         hand1_x: 0,
         hand1_y: 0,
-        hand2_x: 0,
+        hand2_x: 15,
         hand2_y: 0,
         has_second_hand: true,
-
-        muzzle_x: 16,
-        muzzle_y: 4,
+        muzzle_x: 28,
+        muzzle_y: 1,
 
         fire_modes: [WeaponFireMode.SEMI]
     };
@@ -699,19 +702,23 @@ function init_item_database()
         ammo_key: "ammo_12g",
         ammo_per_attack: 1,
 
-        weapon_sprite: -1,
+        weapon_sprite: spr_pump_shotgun,
         sound_shoot: -1,
         sound_reload: -1,
         sound_empty: -1,
-
+		
+		grid_width: 5,
+		grid_height: 1,
+		
+		weapon_offset_x: 6,
+		weapon_draw_width: 44,
         hand1_x: 0,
         hand1_y: 0,
-        hand2_x: 0,
+        hand2_x: 17,
         hand2_y: 0,
         has_second_hand: true,
-
-        muzzle_x: 18,
-        muzzle_y: 4,
+        muzzle_x: 33,
+        muzzle_y: 2,
 
         fire_modes: [WeaponFireMode.SEMI]
     };
@@ -736,26 +743,28 @@ function init_item_database()
         ammo_key: "ammo_9mm",
         ammo_per_attack: 1,
 
-        weapon_sprite: -1,
+        weapon_sprite: spr_uzi,
         sound_shoot: -1,
         sound_reload: -1,
         sound_empty: -1,
-
+		
+		weapon_draw_width: 30,
         hand1_x: 0,
         hand1_y: 0,
-        hand2_x: 0,
-        hand2_y: 0,
+        hand2_x: 10,
+        hand2_y: 3,
         has_second_hand: true,
-
-        muzzle_x: 13,
-        muzzle_y: 4,
+		grid_height: 2,
+		grid_width: 2,
+        muzzle_x: 19,
+        muzzle_y: 6,
 
         fire_modes: [WeaponFireMode.SEMI, WeaponFireMode.AUTO]
     };
 
 
     // ============================================================
-    // TIER 1 CHEST ARMOR
+    // CHEST ARMOR
     // ============================================================
 
     global.items.padded_jacket = {
@@ -788,7 +797,7 @@ function init_item_database()
 
 
     // ============================================================
-    // TIER 1 HEAD ARMOR
+    // HEAD ARMOR
     // ============================================================
 
     global.items.construction_helmet = {
@@ -821,7 +830,7 @@ function init_item_database()
 
 
     // ============================================================
-    // TIER 1 BAGS
+    // BAGS
     // ============================================================
 
     global.items.sling_bag = {
@@ -866,7 +875,7 @@ function init_item_database()
 
 
     // ============================================================
-    // TIER 1 MEDICAL
+    // MEDICAL
     // ============================================================
 
     global.items.bandage = {

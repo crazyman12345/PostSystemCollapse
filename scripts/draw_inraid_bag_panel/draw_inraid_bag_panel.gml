@@ -47,6 +47,7 @@ function draw_inraid_bag_panel()
                 loot_grid.cell_size,
                 false
             );
+            inventory_hover_consider(stored_item, loot_grid.left + (stored_item.x * loot_grid.cell_size), loot_grid.top + (stored_item.y * loot_grid.cell_size), loot_grid.left + ((stored_item.x + item_width) * loot_grid.cell_size), loot_grid.top + ((stored_item.y + item_height) * loot_grid.cell_size));
         }
     }
 
@@ -163,8 +164,18 @@ function step_raid_inventory()
         raid_inventory_clear_held();
 
     if (mouse_check_button_pressed(mb_right)) raid_inventory_clear_held();
-    if (!is_undefined(raid.inventory_item) && keyboard_check_pressed(ord("R")))
-        raid.inventory_rotation = raid.inventory_rotation == 90 ? 0 : 90;
+    if (!is_undefined(raid.inventory_item)
+    && keyboard_check_pressed(ord("R")))
+    {
+        var rotation_definition = item_get(raid.inventory_item.item_key);
+        if (!is_undefined(rotation_definition))
+        {
+            if (rotation_definition.grid_width == rotation_definition.grid_height)
+                raid.inventory_rotation = 0;
+            else
+                raid.inventory_rotation = raid.inventory_rotation == 90 ? 0 : 90;
+        }
+    }
 
     if (!mouse_check_button_pressed(mb_left)) return;
     var hotbar_rect = raid_inventory_get_hotbar_rect();
@@ -240,6 +251,7 @@ function step_raid_inventory()
                 raid.inventory_item = item;
                 raid.inventory_container = grid.storage;
                 stash_remove_item(item, grid.storage);
+                if (definition.grid_width == definition.grid_height) item.rotation = 0;
                 raid.inventory_rotation = item.rotation;
                 return;
             }

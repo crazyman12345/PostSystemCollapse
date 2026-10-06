@@ -2,6 +2,11 @@ function draw_raid_gun()
 {
     var _weapon = raid_update_active_weapon();
 
+    if (raid_gun_tuning_active)
+    {
+        _weapon = item_get(raid_gun_tuning_weapon_key);
+    }
+
     if (!is_struct(_weapon))
     {
         var _pivot_x = raid_player_x;
@@ -145,55 +150,67 @@ function draw_raid_gun()
     var _pivot_x = raid_player_x;
     var _pivot_y = raid_player_y - 10;
 
-    var _dir = raid_aim_dir;
+    var _tuning = raid_gun_tuning_get(raid_gun_tuning_weapon_key, _weapon);
+    var _dir = raid_aim_dir + _tuning.weapon_angle_offset;
 
 
     // ==============================
     // GUN POSITION
     // ==============================
 
-var _draw_offset =
-    raid_gun_offset
-    - raid_gun_recoil;
+var _weapon_offset_x = variable_struct_exists(_weapon, "weapon_offset_x") ? _weapon.weapon_offset_x : _tuning.weapon_offset_x;
+var _draw_offset = _weapon_offset_x - raid_gun_recoil;
+var _draw_side_offset = _tuning.weapon_offset_y;
 
 var _gun_x =
     _pivot_x
     + lengthdir_x(
         _draw_offset,
         _dir
-    );
+    ) + lengthdir_x(_draw_side_offset, _dir + 90);
 
 var _gun_y =
     _pivot_y
     + lengthdir_y(
         _draw_offset,
         _dir
-    );
+    ) + lengthdir_y(_draw_side_offset, _dir + 90);
 
 
     // ==============================
     // DRAW GUN
     // ==============================
+	
+var _sprite = _weapon.weapon_sprite;
 
-		 var _flip_y = 1;
+// Get the visible sprite width, excluding transparent padding
+var _bbox_left = sprite_get_bbox_left(_sprite);
+var _bbox_right = sprite_get_bbox_right(_sprite);
+var _visible_width = max(1, _bbox_right - _bbox_left + 1);
 
-		if (raid_aim_dir > 90 && raid_aim_dir < 270)
-		{
-		    _flip_y = -1;
-		}
+// Calculate uniform scale
+var _target_width = _tuning.weapon_draw_width;
+var _weapon_scale = _target_width / _visible_width;
 
-		draw_sprite_ext(
-		    _weapon.weapon_sprite,
-		    0,
-		    round(_gun_x),
-		    round(_gun_y),
-		    1,
-		    _flip_y,
-		    _dir,
-		    c_white,
-		    1
-		);
+// Flip vertically when aiming left
+var _flip_y = 1;
 
+if (_dir > 90 && _dir < 270)
+{
+    _flip_y = -1;
+}
+
+draw_sprite_ext(
+    _sprite,
+    0,
+    round(_gun_x),
+    round(_gun_y),
+    _weapon_scale,
+    _weapon_scale * _flip_y,
+    _dir,
+    c_white,
+    1
+);
 
     // ==============================
     // MAIN HAND
@@ -202,22 +219,22 @@ var _gun_y =
     var _hand1_x =
         _gun_x
         + lengthdir_x(
-            _weapon.hand1_x,
+            _tuning.hand1_offset_x,
             _dir
         )
         + lengthdir_x(
-            _weapon.hand1_y,
+            _tuning.hand1_offset_y * _flip_y,
             _dir + 90
         );
 
     var _hand1_y =
         _gun_y
         + lengthdir_y(
-            _weapon.hand1_x,
+            _tuning.hand1_offset_x,
             _dir
         )
         + lengthdir_y(
-            _weapon.hand1_y,
+            _tuning.hand1_offset_y * _flip_y,
             _dir + 90
         );
 
@@ -243,22 +260,22 @@ var _gun_y =
         var _hand2_x =
             _gun_x
             + lengthdir_x(
-                _weapon.hand2_x,
+                _tuning.hand2_offset_x,
                 _dir
             )
             + lengthdir_x(
-                _weapon.hand2_y,
+                _tuning.hand2_offset_y * _flip_y,
                 _dir + 90
             );
 
         var _hand2_y =
             _gun_y
             + lengthdir_y(
-                _weapon.hand2_x,
+                _tuning.hand2_offset_x,
                 _dir
             )
             + lengthdir_y(
-                _weapon.hand2_y,
+                _tuning.hand2_offset_y * _flip_y,
                 _dir + 90
             );
 
@@ -274,4 +291,34 @@ var _gun_y =
 		    1
 		);
 		    }
+
+    if (raid_gun_tuning_active)
+    {
+		draw_set_font(fnt_terminal_tiny);
+        var _muzzle_x = _gun_x
+            + lengthdir_x(_tuning.muzzle_offset_x, _dir)
+            + lengthdir_x(_tuning.muzzle_offset_y * _flip_y, _dir + 90);
+        var _muzzle_y = _gun_y
+            + lengthdir_y(_tuning.muzzle_offset_x, _dir)
+            + lengthdir_y(_tuning.muzzle_offset_y * _flip_y, _dir + 90);
+
+        draw_set_color(c_yellow);
+        draw_circle(_gun_x, _gun_y, 3, false);
+        draw_text(_gun_x + 7, _gun_y - 18, "origin / grip");
+        draw_set_color(c_aqua);
+        draw_circle(_hand1_x, _hand1_y, 3, false);
+        draw_text(_hand1_x + 7, _hand1_y - 18, "Hand 1");
+        if (_weapon.has_second_hand)
+        {
+            draw_set_color(c_lime);
+            draw_circle(_hand2_x, _hand2_y, 3, false);
+            draw_text(_hand2_x + 7, _hand2_y - 18, "Hand 2");
+        }
+        draw_set_color(c_red);
+        draw_circle(_muzzle_x, _muzzle_y, 3, false);
+        draw_text(_muzzle_x + 7, _muzzle_y - 18, "muzzle");
+        draw_line(_gun_x, _gun_y, _gun_x + lengthdir_x(40, _dir), _gun_y + lengthdir_y(40, _dir));
+        draw_text(_gun_x + lengthdir_x(44, _dir), _gun_y + lengthdir_y(44, _dir), "aim");
+        draw_set_color(c_white);
+    }
 }

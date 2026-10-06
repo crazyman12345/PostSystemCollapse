@@ -171,6 +171,11 @@ raid_reload_timer = 0;
 raid_burst_remaining = 0;
 raid_fire_mode_index = 0;
 raid_current_fire_mode = WeaponFireMode.SEMI;
+// Developer-only raid gun tuning state. Values live outside the item database.
+raid_gun_tuning_active = false;
+raid_gun_tuning_weapon_key = "";
+raid_gun_tuning_value_index = 0;
+raid_gun_tuning_values = {};
 raid_enemy_death_effects = [];
 player_equipment = {
     armor_sprite_idle: -1,

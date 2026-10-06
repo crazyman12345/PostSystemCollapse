@@ -58,6 +58,13 @@ function step_raid()
         return;
     }
 
+    if (raid_gun_tuning_active)
+    {
+        step_raid_gun_tuning();
+        step_raid_camera();
+        return;
+    }
+
     step_raid_player();
 	step_raid_player_damage();
 	

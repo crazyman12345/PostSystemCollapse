@@ -1,5 +1,6 @@
 function draw_crew_equipment_overlay()
 {
+    inventory_hover_begin();
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 
@@ -22,6 +23,8 @@ function draw_crew_equipment_overlay()
     if (raid.active)
     {
         draw_inraid_bag_panel();
+        inventory_hover_finish();
+        inventory_hover_draw();
         return;
     }
 
@@ -50,6 +53,8 @@ function draw_crew_equipment_overlay()
         }
 
         draw_set_font(fnt_terminal);
+        inventory_hover_finish();
+        inventory_hover_draw();
         return;
     }
 
@@ -130,6 +135,9 @@ function draw_crew_equipment_overlay()
             );
         }
     }
+
+    inventory_hover_finish();
+    inventory_hover_draw();
 }
 
 function draw_pre_raid_info(_info_left, _info_width)
