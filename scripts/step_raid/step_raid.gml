@@ -71,7 +71,8 @@ function step_raid()
     step_raid_shooting();
 	
     step_raid_bullets();
-	step_raid_enemy_bullets();
+    step_raid_enemy_bullets();
+    step_raid_ring_hazards();
 
   
     step_raid_enemies();

@@ -7,6 +7,44 @@ function draw_raid_enemies()
     {
         var e = raid_enemies[i];
 
+        if (
+            e.enemy_boss
+            && e.boss_attack == BossAttackType.BOSS_ATTACK_ROOM_SHOCKWAVE
+            && e.boss_attack_state == BossAttackState.SHOCKWAVE_WINDUP
+        )
+        {
+            var _windup_total = e.boss_phase == 2 ? 40 : 70;
+            var _windup_progress = 1 - (e.boss_attack_timer / _windup_total);
+            var _shockwave_radius = point_distance(
+                (raid_room_x1 + raid_room_x2) * 0.5,
+                (raid_room_y1 + raid_room_y2) * 0.5,
+                raid_room_x2,
+                raid_room_y2
+            );
+            var _warning_alpha = 0.35 + (0.25 * (0.5 + 0.5 * sin(current_time * 0.01)));
+
+            draw_set_color(make_color_rgb(255, 90, 90));
+            draw_set_alpha(_warning_alpha);
+            draw_circle(e.enemy_x, e.enemy_y, _shockwave_radius, false);
+
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_middle);
+			draw_set_font(fnt_explosion);
+            for (var _marker = 0; _marker < 8; _marker++)
+            {
+                var _marker_direction = _marker * 45;
+                var _marker_distance = _shockwave_radius - 20;
+                draw_text(
+                    e.enemy_x + lengthdir_x(_marker_distance, _marker_direction),
+                    e.enemy_y + lengthdir_y(_marker_distance, _marker_direction),
+                    "!"
+                );
+            }
+            draw_set_alpha(1);
+            draw_set_halign(fa_left);
+            draw_set_valign(fa_top);
+        }
+
         // ==============================
         // ENEMY BODY
         // ==============================
@@ -16,6 +54,15 @@ function draw_raid_enemies()
             var _enemy_color = c_white;
             var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
             var _second_flash_duration = floor(_total_flash_duration / 2);
+            var _bbox_height =
+                sprite_get_bbox_bottom(e.enemy_sprite)
+                - sprite_get_bbox_top(e.enemy_sprite)
+                + 1;
+            var _normalize_scale = 40 / _bbox_height;
+            var _draw_scale =
+                0.75
+                * _normalize_scale
+                * e.size_multiplier;
 
             if (
                 e.enemy_hit_flash_timer > 0
@@ -31,8 +78,8 @@ function draw_raid_enemies()
                 floor(e.enemy_frame),
                 e.enemy_x,
                 e.enemy_y,
-                e.enemy_facing * e.enemy_scale,
-                e.enemy_scale,
+                e.enemy_facing * _draw_scale,
+                _draw_scale,
                 0,
                 _enemy_color,
                 1
@@ -96,7 +143,7 @@ function draw_raid_enemies()
                 sprite_get_yoffset(
                     e.enemy_sprite
                 )
-                * e.enemy_scale;
+                * _draw_scale;
 
             var _sprite_top =
                 e.enemy_y

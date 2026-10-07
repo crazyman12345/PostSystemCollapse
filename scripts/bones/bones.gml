@@ -7,12 +7,6 @@ function bones(_enemy)
     var _delay_scale = _phase2 ? 0.6 : 1.0;
     var _dash_speed = _phase2 ? 9 : e.boss_dash_speed;
 
-    if (e.enemy_sprite != e.enemy_sprite_idle)
-    {
-        e.enemy_sprite = e.enemy_sprite_idle;
-        e.enemy_frame = 0;
-    }
-
     switch (e.boss_attack)
     {
         case BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT:
@@ -20,8 +14,16 @@ function bones(_enemy)
             switch (e.boss_attack_state)
             {
                 case BossAttackState.SELECT:
-                    e.boss_attack_state = BossAttackState.AIM;
-                    e.boss_attack_timer = 0;
+                    if (random(2) < 1)
+                    {
+                        e.boss_attack = BossAttackType.BOSS_ATTACK_ROOM_SHOCKWAVE;
+                        e.boss_attack_state = BossAttackState.SHOCKWAVE_MOVE;
+                    }
+                    else
+                    {
+                        e.boss_attack_state = BossAttackState.AIM;
+                        e.boss_attack_timer = 0;
+                    }
                     break;
 
                 case BossAttackState.AIM:
@@ -108,6 +110,61 @@ function bones(_enemy)
                     e.boss_attack_timer--;
                     if (e.boss_attack_timer <= 0)
                         e.boss_attack_state = BossAttackState.SELECT;
+                    break;
+            }
+        }
+        break;
+
+        case BossAttackType.BOSS_ATTACK_ROOM_SHOCKWAVE:
+        {
+            var _center_x = (raid_room_x1 + raid_room_x2) * 0.5;
+            var _center_y = (raid_room_y1 + raid_room_y2) * 0.5;
+
+            switch (e.boss_attack_state)
+            {
+                case BossAttackState.SHOCKWAVE_MOVE:
+                    var _center_dist = point_distance(e.enemy_x, e.enemy_y, _center_x, _center_y);
+                    var _move_speed = _phase2 ? 4.5 : 3.5;
+
+                    if (_center_dist > 10)
+                    {
+                        var _center_dir = point_direction(e.enemy_x, e.enemy_y, _center_x, _center_y);
+                        e.enemy_x += lengthdir_x(min(_move_speed, _center_dist), _center_dir);
+                        e.enemy_y += lengthdir_y(min(_move_speed, _center_dist), _center_dir);
+                    }
+                    else
+                    {
+                        e.enemy_x = _center_x;
+                        e.enemy_y = _center_y;
+                        e.boss_attack_timer = _phase2 ? 40 : 70;
+                        e.boss_attack_state = BossAttackState.SHOCKWAVE_WINDUP;
+                    }
+                    break;
+
+                case BossAttackState.SHOCKWAVE_WINDUP:
+                    e.boss_attack_timer--;
+                    if (e.boss_attack_timer <= 0)
+                    {
+                        raid_ring_create(
+                            e.enemy_x,
+                            e.enemy_y,
+                            point_distance(_center_x, _center_y, raid_room_x2, raid_room_y2),
+                            _phase2 ? 7 : 5,
+                            11,
+                            10
+                        );
+                        e.boss_attack_timer = _phase2 ? 35 : 55;
+                        e.boss_attack_state = BossAttackState.SHOCKWAVE_RECOVERY;
+                    }
+                    break;
+
+                case BossAttackState.SHOCKWAVE_RECOVERY:
+                    e.boss_attack_timer--;
+                    if (e.boss_attack_timer <= 0)
+                    {
+                        e.boss_attack = BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT;
+                        e.boss_attack_state = BossAttackState.SELECT;
+                    }
                     break;
             }
         }

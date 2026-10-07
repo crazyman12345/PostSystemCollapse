@@ -2,12 +2,16 @@ function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage)
 {
     var e = _enemy;
 
+    var _s = variable_struct_exists(_enemy, "size_multiplier")
+        ? _enemy.size_multiplier
+        : 1;
+
     // ==============================
     // GUN PIVOT
     // ==============================
 
     var _pivot_x = e.enemy_x;
-    var _pivot_y = e.enemy_y - 18;
+    var _pivot_y = e.enemy_y - (18 * _s);
 
 
     // ==============================
@@ -15,7 +19,7 @@ function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage)
     // ==============================
 
     var _gun_offset =
-        e.enemy_gun_offset
+        (e.enemy_gun_offset * _s)
         - e.enemy_gun_recoil;
 
     var _gun_x =
@@ -38,10 +42,10 @@ function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage)
     // ==============================
 
     var _mx =
-        e.enemy_muzzle_x;
+        e.enemy_muzzle_x * _s;
 
     var _my =
-        e.enemy_muzzle_y;
+        e.enemy_muzzle_y * _s;
 
 
     if (_dir > 90 && _dir < 270)

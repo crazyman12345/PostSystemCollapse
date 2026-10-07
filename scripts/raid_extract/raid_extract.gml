@@ -20,6 +20,7 @@ function raid_extract()
 
     raid_enemies = [];
     raid_enemy_bullets = [];
+    raid_ring_hazards = [];
     raid_enemy_death_effects = [];
     raid_bullets = [];
     raid_doors = [];

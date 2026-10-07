@@ -57,7 +57,10 @@ enum BossAttackState
     DASH,
     POST_DASH,
     SHOOT_SECOND,
-    RECOVERY
+    RECOVERY,
+    SHOCKWAVE_MOVE,
+    SHOCKWAVE_WINDUP,
+    SHOCKWAVE_RECOVERY
 }
 
 enum WeaponFireMode
@@ -129,6 +132,7 @@ raid.reward_unlocked = false;
 raid.doors_active = false;
 raid_doors = [];
 raid_enemy_bullets = [];
+raid_ring_hazards = [];
 raid.current_room_type = RaidRoomType.START;
 raid.room_cleared = true;
 raid.extract_active = false;

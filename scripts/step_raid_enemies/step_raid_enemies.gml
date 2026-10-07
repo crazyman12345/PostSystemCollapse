@@ -14,6 +14,9 @@ function step_raid_enemies()
 		    continue;
 		}
 
+		var _start_x = e.enemy_x;
+		var _start_y = e.enemy_y;
+
 		if (!variable_struct_exists(e, "enemy_type"))
 		{
 		    show_debug_message("RAID ENEMY MISSING enemy_type [" + string(i) + "]");
@@ -90,6 +93,13 @@ function step_raid_enemies()
             raid_room_y2 - e.enemy_radius
         );
 
+		var _actual_move_speed = point_distance(
+		    _start_x,
+		    _start_y,
+		    e.enemy_x,
+		    e.enemy_y
+		);
+
         // ==========================================
         // PLAYER BULLET COLLISION
         // ==========================================
@@ -144,7 +154,44 @@ function step_raid_enemies()
 		    e.enemy_facing = 1;
 		if (e.enemy_sprite != -1)
 		{
-			e.enemy_frame += e.enemy_image_speed;
+			if (
+			    variable_struct_exists(e, "enemy_sprite_idle")
+			    && variable_struct_exists(e, "enemy_sprite_active")
+			)
+			{
+			    var _is_moving = _actual_move_speed > 0;
+			    var _desired_sprite = _is_moving
+			        ? e.enemy_sprite_active
+			        : e.enemy_sprite_idle;
+
+			    if (e.enemy_sprite != _desired_sprite)
+			    {
+			        e.enemy_sprite = _desired_sprite;
+			        e.enemy_frame = 0;
+			    }
+
+			    if (_is_moving)
+			    {
+			        var _speed_ratio = _actual_move_speed
+			            / max(0.001, e.enemy_animation_reference_speed);
+
+			        e.enemy_image_speed = clamp(
+			            e.enemy_animation_base_speed * _speed_ratio,
+			            0.08,
+			            0.35
+			        );
+			        e.enemy_frame += e.enemy_image_speed;
+			    }
+			    else
+			    {
+			        e.enemy_image_speed = e.enemy_animation_base_speed;
+			        e.enemy_frame = 0;
+			    }
+			}
+			else
+			{
+			    e.enemy_frame += e.enemy_image_speed;
+			}
 
 			var _frame_count = sprite_get_number(e.enemy_sprite);
 

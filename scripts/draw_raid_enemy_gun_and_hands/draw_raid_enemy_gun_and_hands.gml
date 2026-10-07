@@ -5,6 +5,10 @@ function draw_raid_enemy_gun_and_hands(_enemy)
 
     var _weapon = _enemy.weapon;
 
+    var _s = variable_struct_exists(_enemy, "size_multiplier")
+        ? _enemy.size_multiplier
+        : 1;
+
     if (_weapon.weapon_sprite == -1)
         return;
 
@@ -14,7 +18,7 @@ function draw_raid_enemy_gun_and_hands(_enemy)
     // ==============================
 
     var _pivot_x = _enemy.enemy_x;
-    var _pivot_y = _enemy.enemy_y - 18;
+    var _pivot_y = _enemy.enemy_y - (18 * _s);
 
     var _dir = _enemy.enemy_gun_angle;
 
@@ -49,15 +53,23 @@ function draw_raid_enemy_gun_and_hands(_enemy)
     // GUN POSITION
     // ==============================
 
+    var _weapon_offset_y = variable_struct_exists(_weapon, "weapon_offset_y")
+        ? _weapon.weapon_offset_y * _s * _flip
+        : 0;
+
     var _offset =
         _enemy.enemy_gun_recoil
-        + _weapon.weapon_offset_x;
+        + (_weapon.weapon_offset_x * _s);
 
     var _gun_x =
         _pivot_x
         + lengthdir_x(
             _offset,
             _dir
+        )
+        + lengthdir_x(
+            _weapon_offset_y,
+            _dir + 90
         );
 
     var _gun_y =
@@ -91,8 +103,8 @@ function draw_raid_enemy_gun_and_hands(_enemy)
 
     if (_enemy.enemy_hand_sprite != -1)
     {
-        var _h1x = _weapon.hand1_x;
-        var _h1y = _weapon.hand1_y;
+        var _h1x = _weapon.hand1_x * _s;
+        var _h1y = _weapon.hand1_y * _s;
 
         if (_flip == -1)
             _h1y *= -1;
@@ -124,9 +136,9 @@ function draw_raid_enemy_gun_and_hands(_enemy)
             0,
             round(_hand1_world_x),
             round(_hand1_world_y),
-            1,
-            1,
-            0,
+            _s,
+            _s * _flip,
+            _dir,
             c_white,
             1
         );
@@ -142,8 +154,8 @@ function draw_raid_enemy_gun_and_hands(_enemy)
         && _enemy.enemy_hand_sprite != -1
     )
     {
-        var _h2x = _weapon.hand2_x;
-        var _h2y = _weapon.hand2_y;
+        var _h2x = _weapon.hand2_x * _s;
+        var _h2y = _weapon.hand2_y * _s;
 
         if (_flip == -1)
             _h2y *= -1;
@@ -175,9 +187,9 @@ function draw_raid_enemy_gun_and_hands(_enemy)
             0,
             round(_hand2_world_x),
             round(_hand2_world_y),
-            1,
-            1,
-            0,
+            _s,
+            _s * _flip,
+            _dir,
             c_white,
             1
         );

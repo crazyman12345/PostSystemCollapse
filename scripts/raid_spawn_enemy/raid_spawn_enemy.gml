@@ -35,8 +35,11 @@ function raid_spawn_enemy(_type, _x, _y)
 		enemy_sprite: -1,
 		enemy_frame: 0,
 		enemy_image_speed: 0.15,
+		enemy_animation_base_speed: 0.15,
+		enemy_animation_reference_speed: 1.0,
 		enemy_facing: 1,
 		enemy_scale: 0.75,
+		size_multiplier: 1,
 		
 		enemy_gun_sprite: -1,
 		enemy_gun_offset: 16,
@@ -161,6 +164,7 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_sprite_active = spr_bones_run2;
             enemy.enemy_sprite = spr_bones_idle2;
             enemy.enemy_scale = 0.48;
+            enemy.size_multiplier = 1.5;
             enemy.enemy_radius = 28;
             enemy.enemy_has_gun = true;
             enemy.weapon = global.items.m1911;
@@ -175,11 +179,16 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.boss_attack_state = BossAttackState.SELECT;
             enemy.boss_attack_timer = 0;
             enemy.boss_shots_fired = 0;
-            enemy.boss_dash_speed = 8;
+            enemy.boss_dash_speed = 5;
+            enemy.boss_shockwave_timer = 0;
+            enemy.enemy_animation_reference_speed = enemy.boss_dash_speed;
             enemy.enemy_state = RaidEnemyState.BOSS_ATTACK;
         }
         break;
     }
+
+	if (_type != RaidEnemyType.BONES)
+	    enemy.enemy_animation_reference_speed = max(0.001, enemy.enemy_speed);
 
 
     // ======================================================

@@ -70,6 +70,7 @@ function raid_combat_loss()
     raid_enemies = [];
     raid_bullets = [];
     raid_enemy_bullets = [];
+    raid_ring_hazards = [];
     raid_enemy_death_effects = [];
     raid_doors = [];
 

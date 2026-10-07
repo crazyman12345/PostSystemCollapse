@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_ring_update",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_ring_update",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

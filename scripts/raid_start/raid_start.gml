@@ -42,6 +42,7 @@ function raid_start(_area)
     raid_player_x = 960;
     raid_player_y = 540;
 raid_enemy_bullets = [];
+raid_ring_hazards = [];
 raid_room_x1 = 760;
 raid_room_y1 = 340;
 

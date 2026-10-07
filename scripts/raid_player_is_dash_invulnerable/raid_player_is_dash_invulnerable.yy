@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_player_is_dash_invulnerable",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_player_is_dash_invulnerable",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

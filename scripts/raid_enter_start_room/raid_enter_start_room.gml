@@ -11,6 +11,7 @@ function raid_enter_start_room()
     raid_enemies = [];
     raid_bullets = [];
     raid_doors = [];
+    raid_ring_hazards = [];
 
     // PLAYER START POSITION
     raid_player_x =

@@ -21,8 +21,9 @@ function draw_raid()
 	draw_raid_enemy_death_effects();
     draw_raid_enemies();
     draw_raid_bullets();
-	draw_raid_enemy_bullets();
-	draw_raid_extract();
+    draw_raid_enemy_bullets();
+    draw_raid_ring_hazards();
+    draw_raid_extract();
 	draw_raid_doors();
     if (raid.room_cleared)
     {

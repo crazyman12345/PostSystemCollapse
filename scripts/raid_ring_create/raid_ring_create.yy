@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_ring_create",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_ring_create",
+  "parent":{"name":"RAID","path":"folders/RAID.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
