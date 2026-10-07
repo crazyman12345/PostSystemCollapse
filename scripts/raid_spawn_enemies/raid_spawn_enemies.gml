@@ -1,5 +1,16 @@
 function raid_spawn_enemies()
 {
+	if (raid.rooms_cleared + 1 >= 20)
+	{
+	    raid.current_room_type = RaidRoomType.BOSS;
+	    raid_spawn_enemy(
+	        RaidEnemyType.BONES,
+	        (raid_room_x1 + raid_room_x2) * 0.5,
+	        raid_room_y1 + 80
+	    );
+	    return;
+	}
+
     var _count = raid_get_enemy_count();
     var _player_spawn_area = 200;
 

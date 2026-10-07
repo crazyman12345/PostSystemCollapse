@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"bones_pick_dash_position",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"bones_pick_dash_position",
+  "parent":{
+    "name":"enemy_AI",
+    "path":"folders/RAID/enemy_AI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

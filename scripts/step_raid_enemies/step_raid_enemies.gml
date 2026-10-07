@@ -54,6 +54,12 @@ function step_raid_enemies()
 			{
 				e = wall_rusher(e);
 			}
+			break;
+
+			case RaidEnemyType.BONES:
+			{
+				e = bones(e);
+			}
         }
 		
 		if (e.enemy_gun_recoil > 0)

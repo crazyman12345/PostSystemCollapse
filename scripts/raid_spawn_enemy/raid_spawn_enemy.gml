@@ -2,6 +2,7 @@ function raid_spawn_enemy(_type, _x, _y)
 {
     var enemy = {
         enemy_type: _type,
+		enemy_boss: false,
 
         enemy_x: _x,
         enemy_y: _y,
@@ -59,7 +60,7 @@ function raid_spawn_enemy(_type, _x, _y)
 
 		enemy_hand2_x: 8,
 		enemy_hand2_y: 1,
-		weapon: -1
+        weapon: -1
     };
 
 
@@ -137,7 +138,7 @@ function raid_spawn_enemy(_type, _x, _y)
         break;
 
 
-        case RaidEnemyType.WALL_RUSHER:
+		case RaidEnemyType.WALL_RUSHER:
         {
             enemy.enemy_hp = 28;
             enemy.enemy_max_hp = 28;
@@ -149,6 +150,33 @@ function raid_spawn_enemy(_type, _x, _y)
                 RaidEnemyState.PAUSE;
 
             enemy.state_timer = randomize_enemy_timer(90, 0.25);
+        }
+        break;
+
+
+        case RaidEnemyType.BONES:
+        {
+            enemy.enemy_boss = true;
+            enemy.enemy_sprite_idle = spr_bones_idle2;
+            enemy.enemy_sprite_active = spr_bones_run2;
+            enemy.enemy_sprite = spr_bones_idle2;
+            enemy.enemy_scale = 0.48;
+            enemy.enemy_radius = 28;
+            enemy.enemy_has_gun = true;
+            enemy.weapon = global.items.m1911;
+            enemy.enemy_gun_offset = 18;
+            enemy.enemy_muzzle_x = 14;
+            enemy.enemy_muzzle_y = 6;
+            enemy.enemy_hp = 600;
+            enemy.enemy_max_hp = 600;
+            enemy.enemy_speed = 0;
+            enemy.boss_phase = 1;
+            enemy.boss_attack = BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT;
+            enemy.boss_attack_state = BossAttackState.SELECT;
+            enemy.boss_attack_timer = 0;
+            enemy.boss_shots_fired = 0;
+            enemy.boss_dash_speed = 8;
+            enemy.enemy_state = RaidEnemyState.BOSS_ATTACK;
         }
         break;
     }

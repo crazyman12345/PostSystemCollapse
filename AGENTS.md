@@ -40,3 +40,10 @@ After completing a task, briefly state what changed and whether compilation succ
 - Use descriptive names and clear section comments.
 - Extract repeated or substantial logic into reusable helpers.
 - Keep changes minimal and avoid unrelated refactors.
+
+Before modifying any system, inspect the CURRENT working-tree files.
+Git may be used only to understand history or review diffs.
+NEVER use Git to restore, reset, checkout, clean, revert, or replace current working-tree files unless I explicitly ask.
+Assume uncommitted changes are intentional and must be preserved.
+When editing a system that already has uncommitted changes, modify the current version in place and preserve existing functionality.
+After completing changes, you may inspect `git diff` to review what you changed, but do not automatically revert or reconcile differences against the last commit.

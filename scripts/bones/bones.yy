@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"bones",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"bones",
+  "parent":{
+    "name":"enemy_AI",
+    "path":"folders/RAID/enemy_AI.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

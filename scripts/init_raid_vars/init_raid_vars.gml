@@ -27,7 +27,8 @@ enum RaidEnemyType
     KNIFE_STALKER,
     SPINNER,
     KNIFE_DASHER,
-	WALL_RUSHER
+	WALL_RUSHER,
+    BONES
 }
 
 enum RaidEnemyState
@@ -35,7 +36,28 @@ enum RaidEnemyState
     MOVE,
     ATTACK,
     PAUSE,
-    DASH
+    DASH,
+    BOSS_ATTACK
+}
+
+enum BossAttackType
+{
+    BONES_ATTACK_SHOOT_DASH_SHOOT,
+    BOSS_ATTACK_ROOM_SHOCKWAVE,
+    BOSS_ATTACK_WALKDOWN,
+    BOSS_ATTACK_GRENADE_WALKDOWN
+}
+
+enum BossAttackState
+{
+    SELECT,
+    AIM,
+    SHOOT_FIRST,
+    PRE_DASH,
+    DASH,
+    POST_DASH,
+    SHOOT_SECOND,
+    RECOVERY
 }
 
 enum WeaponFireMode

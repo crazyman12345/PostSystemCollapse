@@ -76,7 +76,7 @@ function draw_raid_enemies()
         // HEALTH BAR
         // ==============================
 
-        var _bar_w = 32;
+        var _bar_w = e.enemy_boss ? 64 : 32;
         var _bar_h = 4;
 
         var _bar_x =
@@ -160,7 +160,7 @@ function draw_raid_enemies()
         // RED HEALTH
         // ==============================
 
-        draw_set_color(c_red);
+        draw_set_color(e.enemy_boss ? c_yellow : c_red);
 
         draw_rectangle(
             _bar_x,
@@ -188,6 +188,13 @@ function draw_raid_enemies()
             0.4,
             0
         );
+
+        if (e.enemy_boss)
+        {
+            draw_set_color(c_yellow);
+            draw_set_halign(fa_center);
+            draw_text_transformed(e.enemy_x, _bar_y - 14, "BONES", 0.55, 0.55, 0);
+        }
     }
 
 

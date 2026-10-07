@@ -57,7 +57,7 @@ function init_enemy_database()
 	        @"   / \   "
 	    ]
 	};
-	global.enemies.prototype_boss =
+    global.enemies.prototype_boss =
 	{
 	    enemy_key: "prototype_boss",
 	    name: "LEWIS",
@@ -74,6 +74,24 @@ function init_enemy_database()
 	        @"    /_____\    ",
 	        @"      |O|      ",
 	        @"    __/|\__    ",
+	        @"      / \      "
+	    ]
+	};
+	global.enemies.bones =
+	{
+	    enemy_key: "bones",
+	    name: "Bones",
+	    max_hp: 600,
+	    accuracy: 0.7,
+	    damage_min: 10,
+	    damage_max: 10,
+	    loot_table_key: "block_enforcer",
+	    boss: true,
+	    ascii:
+	    [
+	        @"      .-.      ",
+	        @"     (o o)     ",
+	        @"     /|_|\     ",
 	        @"      / \      "
 	    ]
 	};

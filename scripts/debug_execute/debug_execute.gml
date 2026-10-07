@@ -45,6 +45,10 @@ function debug_execute(_command)
 		case "debug_start_combat":
 			debug_start_combat(args);
 			break;
+
+		case "debug_start_boss":
+			debug_start_boss();
+			break;
 			
 		case "god_trader":
 			global.admin_trader_enabled = true;
