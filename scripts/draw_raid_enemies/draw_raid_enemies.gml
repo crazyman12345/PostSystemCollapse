@@ -7,44 +7,6 @@ function draw_raid_enemies()
     {
         var e = raid_enemies[i];
 
-        if (
-            e.enemy_boss
-            && e.boss_attack == BossAttackType.BOSS_ATTACK_ROOM_SHOCKWAVE
-            && e.boss_attack_state == BossAttackState.SHOCKWAVE_WINDUP
-        )
-        {
-            var _windup_total = e.boss_phase == 2 ? 40 : 70;
-            var _windup_progress = 1 - (e.boss_attack_timer / _windup_total);
-            var _shockwave_radius = point_distance(
-                (raid_room_x1 + raid_room_x2) * 0.5,
-                (raid_room_y1 + raid_room_y2) * 0.5,
-                raid_room_x2,
-                raid_room_y2
-            );
-            var _warning_alpha = 0.35 + (0.25 * (0.5 + 0.5 * sin(current_time * 0.01)));
-
-            draw_set_color(make_color_rgb(255, 90, 90));
-            draw_set_alpha(_warning_alpha);
-            draw_circle(e.enemy_x, e.enemy_y, _shockwave_radius, false);
-
-            draw_set_halign(fa_center);
-            draw_set_valign(fa_middle);
-			draw_set_font(fnt_explosion);
-            for (var _marker = 0; _marker < 8; _marker++)
-            {
-                var _marker_direction = _marker * 45;
-                var _marker_distance = _shockwave_radius - 20;
-                draw_text(
-                    e.enemy_x + lengthdir_x(_marker_distance, _marker_direction),
-                    e.enemy_y + lengthdir_y(_marker_distance, _marker_direction),
-                    "!"
-                );
-            }
-            draw_set_alpha(1);
-            draw_set_halign(fa_left);
-            draw_set_valign(fa_top);
-        }
-
         // ==============================
         // ENEMY BODY
         // ==============================
@@ -119,129 +81,126 @@ function draw_raid_enemies()
 	        );
 		}
 
-        // ==============================
-        // HEALTH BAR
-        // ==============================
-
-        var _bar_w = e.enemy_boss ? 64 : 32;
-        var _bar_h = 4;
-
-        var _bar_x =
-            e.enemy_x
-            - (_bar_w * 0.5);
-
-
-        // ==============================
-        // POSITION ABOVE SPRITE
-        // ==============================
-
-        var _bar_y;
-
-        if (e.enemy_sprite != -1)
+        if (!e.enemy_boss)
         {
-            var _origin_y =
-                sprite_get_yoffset(
-                    e.enemy_sprite
+            // ==============================
+            // HEALTH BAR
+            // ==============================
+
+            var _bar_w = 32;
+            var _bar_h = 4;
+
+            var _bar_x =
+                e.enemy_x
+                - (_bar_w * 0.5);
+
+
+            // ==============================
+            // POSITION ABOVE SPRITE
+            // ==============================
+
+            var _bar_y;
+
+            if (e.enemy_sprite != -1)
+            {
+                var _origin_y =
+                    sprite_get_yoffset(
+                        e.enemy_sprite
+                    )
+                    * _draw_scale;
+
+                var _sprite_top =
+                    e.enemy_y
+                    - _origin_y;
+
+                _bar_y =
+                    _sprite_top
+                    - 15;
+            }
+            else
+            {
+                _bar_y =
+                    e.enemy_y
+                    - e.enemy_radius
+                    - 15;
+            }
+
+
+            var _hp_percent =
+                e.enemy_hp
+                / e.enemy_max_hp;
+
+
+            // ==============================
+            // BLACK BACKGROUND / OUTLINE
+            // ==============================
+
+            draw_set_color(c_black);
+
+            draw_rectangle(
+                _bar_x - 1,
+                _bar_y - 1,
+                _bar_x + _bar_w + 1,
+                _bar_y + _bar_h + 1,
+                false
+            );
+
+
+            // ==============================
+            // DARK EMPTY BAR
+            // ==============================
+
+            draw_set_color(
+                make_color_rgb(
+                    50,
+                    50,
+                    50
                 )
-                * _draw_scale;
+            );
 
-            var _sprite_top =
-                e.enemy_y
-                - _origin_y;
-
-            _bar_y =
-                _sprite_top
-                - 15;
-        }
-        else
-        {
-            _bar_y =
-                e.enemy_y
-                - e.enemy_radius
-                - 15;
-        }
+            draw_rectangle(
+                _bar_x,
+                _bar_y,
+                _bar_x + _bar_w,
+                _bar_y + _bar_h,
+                false
+            );
 
 
-        var _hp_percent =
-            e.enemy_hp
-            / e.enemy_max_hp;
+            // ==============================
+            // RED HEALTH
+            // ==============================
+
+            draw_set_color(c_red);
+
+            draw_rectangle(
+                _bar_x,
+                _bar_y,
+                _bar_x
+                + (_bar_w * _hp_percent),
+                _bar_y + _bar_h,
+                false
+            );
 
 
-        // ==============================
-        // BLACK BACKGROUND / OUTLINE
-        // ==============================
+            // ==============================
+            // HP NUMBER
+            // ==============================
 
-        draw_set_color(c_black);
-
-        draw_rectangle(
-            _bar_x - 1,
-            _bar_y - 1,
-            _bar_x + _bar_w + 1,
-            _bar_y + _bar_h + 1,
-            false
-        );
-
-
-        // ==============================
-        // DARK EMPTY BAR
-        // ==============================
-
-        draw_set_color(
-            make_color_rgb(
-                50,
-                50,
-                50
-            )
-        );
-
-        draw_rectangle(
-            _bar_x,
-            _bar_y,
-            _bar_x + _bar_w,
-            _bar_y + _bar_h,
-            false
-        );
-
-
-        // ==============================
-        // RED HEALTH
-        // ==============================
-
-        draw_set_color(e.enemy_boss ? c_yellow : c_red);
-
-        draw_rectangle(
-            _bar_x,
-            _bar_y,
-            _bar_x
-            + (_bar_w * _hp_percent),
-            _bar_y + _bar_h,
-            false
-        );
-
-
-        // ==============================
-        // HP NUMBER
-        // ==============================
-
-        draw_set_color(c_white);
-        draw_set_halign(fa_center);
-        draw_set_valign(fa_bottom);
-
-        draw_text_transformed(
-            e.enemy_x,
-            _bar_y - 2,
-            string(ceil(e.enemy_hp)),
-            0.4,
-            0.4,
-            0
-        );
-
-        if (e.enemy_boss)
-        {
-            draw_set_color(c_yellow);
+            draw_set_color(c_white);
             draw_set_halign(fa_center);
-            draw_text_transformed(e.enemy_x, _bar_y - 14, "BONES", 0.55, 0.55, 0);
+            draw_set_valign(fa_bottom);
+
+            draw_text_transformed(
+                e.enemy_x,
+                _bar_y - 2,
+                string(ceil(e.enemy_hp)),
+                0.4,
+                0.4,
+                0
+            );
         }
+
     }
 
 

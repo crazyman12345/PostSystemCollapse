@@ -33,6 +33,22 @@ switch (state)
 			draw_raid_health_ui();
 		}
 
+		if (raid.active && raid.mode != RaidMode.RESULT)
+		{
+			var _boss = undefined;
+			for (var _boss_i = 0; _boss_i < array_length(raid_enemies); _boss_i++)
+			{
+				if (raid_enemies[_boss_i].enemy_boss)
+				{
+					_boss = raid_enemies[_boss_i];
+					break;
+				}
+			}
+
+			if (is_struct(_boss))
+				draw_boss_healthbar(_boss);
+		}
+
 		if (raid.paused)
 		{
 			draw_raid_pause_menu();

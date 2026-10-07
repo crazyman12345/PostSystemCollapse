@@ -1,6 +1,6 @@
 function raid_player_take_damage(_damage)
 {
-    if (raid_player_is_dash_invulnerable() || raid_player_invincible)
+    if (raid_godmode || raid_player_is_dash_invulnerable() || raid_player_invincible)
         return;
 
     var _remaining_damage = _damage;

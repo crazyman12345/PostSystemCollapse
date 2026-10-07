@@ -53,6 +53,11 @@ function debug_execute(_command)
 		case "god_trader":
 			global.admin_trader_enabled = true;
 			break;
+
+		case "godmode":
+			raid_godmode = !raid_godmode;
+			debug_log_add("Godmode " + (raid_godmode ? "enabled" : "disabled"));
+			break;
 		
 		case "unlock_tables":
 			debug_command_unlock_tables();

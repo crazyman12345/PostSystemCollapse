@@ -14,13 +14,26 @@ function bones(_enemy)
             switch (e.boss_attack_state)
             {
                 case BossAttackState.SELECT:
-                    if (random(2) < 1)
+                    var _attack_roll = irandom(2);
+                    if (_attack_roll == e.boss_last_attack)
+                        _attack_roll = (_attack_roll + 1 + irandom(1)) mod 3;
+
+                    e.boss_last_attack = _attack_roll;
+                    if (_attack_roll < 1)
                     {
                         e.boss_attack = BossAttackType.BOSS_ATTACK_ROOM_SHOCKWAVE;
                         e.boss_attack_state = BossAttackState.SHOCKWAVE_MOVE;
                     }
+                    else if (_attack_roll < 2)
+                    {
+                        e.boss_attack = BossAttackType.BOSS_ATTACK_WALKDOWN;
+                        e.boss_attack_state = BossAttackState.WALKDOWN;
+                        e.boss_attack_timer = 1;
+                        e.boss_shots_fired = 0;
+                    }
                     else
                     {
+                        e.boss_attack_repeat_count = 0;
                         e.boss_attack_state = BossAttackState.AIM;
                         e.boss_attack_timer = 0;
                     }
@@ -101,7 +114,78 @@ function bones(_enemy)
 
                     if (e.boss_shots_fired >= 3 && e.boss_attack_timer <= 0)
                     {
-                        e.boss_attack_timer = max(1, round(35 * _delay_scale));
+                        e.boss_attack_repeat_count++;
+                        if (e.boss_attack_repeat_count < 3)
+                        {
+                            e.boss_attack_timer = max(1, round(35 * 1.5 * _delay_scale));
+                            e.boss_attack_state = BossAttackState.RECOVERY;
+                        }
+                        else
+                        {
+                            e.boss_attack_timer = max(1, round(35 * _delay_scale));
+                            e.boss_attack_state = BossAttackState.RECOVERY;
+                        }
+                    }
+                    break;
+
+                case BossAttackState.RECOVERY:
+                    e.boss_attack_timer--;
+                    if (e.boss_attack_timer <= 0)
+                    {
+                        if (e.boss_attack_repeat_count < 3)
+                            e.boss_attack_state = BossAttackState.AIM;
+                        else
+                            e.boss_attack_state = BossAttackState.SELECT;
+                    }
+                    break;
+            }
+        }
+        break;
+
+        case BossAttackType.BOSS_ATTACK_WALKDOWN:
+        {
+            var _walkdown_speed = _phase2 ? 1.2 : 0.95;
+            var _walkdown_delay = _phase2 ? 11 : 16;
+            var _walkdown_shots = 18;
+
+            switch (e.boss_attack_state)
+            {
+                case BossAttackState.WALKDOWN:
+                    var _walkdown_dir = point_direction(
+                        e.enemy_x,
+                        e.enemy_y,
+                        raid_player_x,
+                        raid_player_y
+                    );
+
+                    e.enemy_x = clamp(
+                        e.enemy_x + lengthdir_x(_walkdown_speed, _walkdown_dir),
+                        raid_room_x1 + e.enemy_radius,
+                        raid_room_x2 - e.enemy_radius
+                    );
+                    e.enemy_y = clamp(
+                        e.enemy_y + lengthdir_y(_walkdown_speed, _walkdown_dir),
+                        raid_room_y1 + e.enemy_radius,
+                        raid_room_y2 - e.enemy_radius
+                    );
+
+                    e.boss_attack_timer--;
+                    if (e.boss_attack_timer <= 0 && e.boss_shots_fired < _walkdown_shots)
+                    {
+                        e.enemy_gun_angle = point_direction(
+                            e.enemy_x,
+                            e.enemy_y - 10,
+                            raid_player_x,
+                            raid_player_y - 12
+                        );
+                        e = raid_enemy_fire_gun(e, e.enemy_gun_angle, 2.5, 10);
+                        e.boss_shots_fired++;
+                        e.boss_attack_timer = _walkdown_delay;
+                    }
+
+                    if (e.boss_shots_fired >= _walkdown_shots && e.boss_attack_timer <= 0)
+                    {
+                        e.boss_attack_timer = _phase2 ? 16 : 24;
                         e.boss_attack_state = BossAttackState.RECOVERY;
                     }
                     break;
@@ -109,7 +193,10 @@ function bones(_enemy)
                 case BossAttackState.RECOVERY:
                     e.boss_attack_timer--;
                     if (e.boss_attack_timer <= 0)
+                    {
+                        e.boss_attack = BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT;
                         e.boss_attack_state = BossAttackState.SELECT;
+                    }
                     break;
             }
         }
@@ -137,6 +224,17 @@ function bones(_enemy)
                         e.enemy_x = _center_x;
                         e.enemy_y = _center_y;
                         e.boss_attack_timer = _phase2 ? 40 : 70;
+                        ring_attack_create(
+                            e.enemy_x,
+                            e.enemy_y,
+                            e.boss_attack_timer,
+                            point_distance(_center_x, _center_y, raid_room_x2 * 0.95, raid_room_y2 * 0.95),
+                            _phase2 ? 7 : 5,
+                            11,
+                            10,
+                            make_color_rgb(255, 90, 90),
+                            make_color_rgb(120, 0, 0)
+                        );
                         e.boss_attack_state = BossAttackState.SHOCKWAVE_WINDUP;
                     }
                     break;
@@ -145,14 +243,6 @@ function bones(_enemy)
                     e.boss_attack_timer--;
                     if (e.boss_attack_timer <= 0)
                     {
-                        raid_ring_create(
-                            e.enemy_x,
-                            e.enemy_y,
-                            point_distance(_center_x, _center_y, raid_room_x2, raid_room_y2),
-                            _phase2 ? 7 : 5,
-                            11,
-                            10
-                        );
                         e.boss_attack_timer = _phase2 ? 35 : 55;
                         e.boss_attack_state = BossAttackState.SHOCKWAVE_RECOVERY;
                     }

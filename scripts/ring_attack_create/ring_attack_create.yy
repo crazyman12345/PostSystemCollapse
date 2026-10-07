@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ring_attack_create",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ring_attack_create",
+  "parent":{"name":"RAID","path":"folders/RAID.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

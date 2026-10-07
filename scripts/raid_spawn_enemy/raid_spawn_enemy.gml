@@ -176,10 +176,12 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_speed = 0;
             enemy.boss_phase = 1;
             enemy.boss_attack = BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT;
+            enemy.boss_last_attack = -1;
             enemy.boss_attack_state = BossAttackState.SELECT;
-            enemy.boss_attack_timer = 0;
-            enemy.boss_shots_fired = 0;
-            enemy.boss_dash_speed = 5;
+             enemy.boss_attack_timer = 0;
+             enemy.boss_shots_fired = 0;
+             enemy.boss_attack_repeat_count = 0;
+             enemy.boss_dash_speed = 5;
             enemy.boss_shockwave_timer = 0;
             enemy.enemy_animation_reference_speed = enemy.boss_dash_speed;
             enemy.enemy_state = RaidEnemyState.BOSS_ATTACK;

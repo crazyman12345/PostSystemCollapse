@@ -58,6 +58,7 @@ enum BossAttackState
     POST_DASH,
     SHOOT_SECOND,
     RECOVERY,
+    WALKDOWN,
     SHOCKWAVE_MOVE,
     SHOCKWAVE_WINDUP,
     SHOCKWAVE_RECOVERY
@@ -147,6 +148,7 @@ raid_player_max_armor = 0;
 raid_player_invincible = false;
 raid_player_invincible_timer = 0;
 raid_player_invincible_time = 90; // about 1 second at 60 FPS
+raid_godmode = false;
 
 raid_player_moving = false;
 raid_player_anim_frame = 0;
