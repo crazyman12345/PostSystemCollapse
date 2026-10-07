@@ -13,7 +13,7 @@ function draw_raid_enemies()
 
         if (e.enemy_sprite != -1)
         {
-            var _enemy_color = c_white;
+            var _enemy_color = e.enemy_tint;
             var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
             var _second_flash_duration = floor(_total_flash_duration / 2);
             var _bbox_height =
@@ -61,6 +61,26 @@ function draw_raid_enemies()
 
 
         draw_raid_enemy_gun_and_hands(e);
+
+        if (
+            variable_struct_exists(e, "boss_transition_dialogue")
+            && e.boss_transition_dialogue != ""
+        )
+        {
+            var _dialogue_y = e.enemy_y - e.enemy_radius - 20;
+
+            if (e.enemy_sprite != -1)
+            {
+                var _dialogue_bbox_height = sprite_get_bbox_bottom(e.enemy_sprite) - sprite_get_bbox_top(e.enemy_sprite) + 1;
+                var _dialogue_scale = 0.75 * (40 / _dialogue_bbox_height) * e.size_multiplier;
+                _dialogue_y = e.enemy_y - (sprite_get_yoffset(e.enemy_sprite) * _dialogue_scale) - 12;
+            }
+
+            draw_set_color(c_white);
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_bottom);
+            draw_text_transformed(e.enemy_x, _dialogue_y, e.boss_transition_dialogue, 0.45, 0.45, 0);
+        }
 
 
         // ==============================

@@ -10,6 +10,8 @@ function raid_spawn_enemy(_type, _x, _y)
         enemy_hp: 30,
         enemy_max_hp: 30,
         enemy_hit_flash_timer: 0,
+        enemy_invulnerable: false,
+        enemy_tint: c_white,
 
         enemy_speed: 1.0,
         enemy_radius: 18,
@@ -164,24 +166,56 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_sprite_active = spr_bones_run2;
             enemy.enemy_sprite = spr_bones_idle2;
             enemy.enemy_scale = 0.48;
-            enemy.size_multiplier = 1.5;
+            enemy.size_multiplier = 1.7;
             enemy.enemy_radius = 28;
             enemy.enemy_has_gun = true;
             enemy.weapon = global.items.m1911;
             enemy.enemy_gun_offset = 18;
             enemy.enemy_muzzle_x = 14;
             enemy.enemy_muzzle_y = 6;
-            enemy.enemy_hp = 600;
-            enemy.enemy_max_hp = 600;
+            enemy.enemy_hp = 300;
+            enemy.enemy_max_hp = 300;
             enemy.enemy_speed = 0;
             enemy.boss_phase = 1;
             enemy.boss_attack = BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT;
             enemy.boss_last_attack = -1;
             enemy.boss_attack_state = BossAttackState.SELECT;
-             enemy.boss_attack_timer = 0;
-             enemy.boss_shots_fired = 0;
-             enemy.boss_attack_repeat_count = 0;
-             enemy.boss_dash_speed = 5;
+            enemy.boss_attack_timer = 0;
+            enemy.boss_shots_fired = 0;
+            enemy.boss_attack_repeat_count = 0;
+            enemy.boss_transition_stage = 0;
+            enemy.boss_transition_timer = 0;
+            enemy.boss_transition_dialogue = "";
+            enemy.boss_transition_transformed = false;
+            enemy.boss_pacing_phase1 = {
+                dash_speed: 3.5,
+                dash_duration: 26,
+                attack_windup: 45,
+                burst_shot_interval: 12,
+                pre_dash_windup: 30,
+                post_dash_windup: 24,
+                attack_recovery: 60,
+                walkdown_speed: 0.7,
+                walkdown_windup: 45,
+                walkdown_shot_interval: 40,
+                shockwave_move_speed: 2.5,
+                shockwave_windup: 84
+            };
+            enemy.boss_pacing_phase2 = {
+                dash_speed: 5.46,
+                dash_duration: 17,
+                attack_windup: 29,
+                burst_shot_interval: 8,
+                pre_dash_windup: 19,
+                post_dash_windup: 15,
+                attack_recovery: 38,
+                walkdown_speed: 1.09,
+                walkdown_windup: 29,
+                walkdown_shot_interval: 26,
+                shockwave_move_speed: 3.9,
+                shockwave_windup: 54
+            };
+            enemy.boss_dash_speed = enemy.boss_pacing_phase1.dash_speed;
             enemy.boss_shockwave_timer = 0;
             enemy.enemy_animation_reference_speed = enemy.boss_dash_speed;
             enemy.enemy_state = RaidEnemyState.BOSS_ATTACK;
@@ -197,18 +231,21 @@ function raid_spawn_enemy(_type, _x, _y)
     // ROOM-BASED HP SCALING
     // ======================================================
 
+	
+	if enemy.enemy_boss != true{
+		
     var _hp_mult =
         raid_get_enemy_hp_multiplier();
+		
+	    enemy.enemy_hp =
+	        round(
+	            enemy.enemy_hp
+	            * _hp_mult
+	        );
 
-    enemy.enemy_hp =
-        round(
-            enemy.enemy_hp
-            * _hp_mult
-        );
-
-    enemy.enemy_max_hp =
-        enemy.enemy_hp;
-
+	    enemy.enemy_max_hp =
+	        enemy.enemy_hp;
+	}
 
     // ======================================================
     // ADD ENEMY

@@ -37,7 +37,8 @@ enum RaidEnemyState
     ATTACK,
     PAUSE,
     DASH,
-    BOSS_ATTACK
+    BOSS_ATTACK,
+    PHASE_TRANSITION
 }
 
 enum BossAttackType

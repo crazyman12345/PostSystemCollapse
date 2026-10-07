@@ -203,11 +203,14 @@ function step_raid_shooting()
             if (_target_index >= 0)
             {
                 var _target = raid_enemies[_target_index];
-                _target.enemy_hp -= 5;
-                var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
-                _target.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
+                if (!_target.enemy_invulnerable)
+                {
+                    _target.enemy_hp -= 5;
+                    var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
+                    _target.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
+                    play_impact_sound(raid_enemy_hit_sound, "knife");
+                }
                 raid_enemies[_target_index] = _target;
-                play_impact_sound(raid_enemy_hit_sound, "knife");
             }
 
             raid_knife_attack_hit = true;

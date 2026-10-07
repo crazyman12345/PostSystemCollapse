@@ -117,10 +117,13 @@ function step_raid_enemies()
 
             if (_dist <= e.enemy_radius + 4)
             {
-                e.enemy_hp -= bullet.bdamage;
-                var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
-                e.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
-                play_impact_sound(raid_enemy_hit_sound, "bullet");
+                if (!e.enemy_invulnerable)
+                {
+                    e.enemy_hp -= bullet.bdamage;
+                    var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
+                    e.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
+                    play_impact_sound(raid_enemy_hit_sound, "bullet");
+                }
 
                 array_delete(
                     raid_bullets,
