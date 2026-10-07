@@ -337,13 +337,16 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
     draw_equipment_slot(equipment_center - 180, grid_top + 470, 360, 100, "WEAPON 2", _member.weapon_2, false, true);
     draw_equipment_slot(middle_left, grid_top, 150, 220, "BACKPACK", _member.bag, false, true);
 
-    if (!is_undefined(stash.held_item))
+    var preview_item = raid.active ? raid.inventory_item : stash.held_item;
+
+    if (!is_undefined(preview_item))
     {
-        var held_definition = item_get(stash.held_item.item_key);
+        var held_definition = item_get(preview_item.item_key);
 
         if (!is_undefined(held_definition))
         {
-            var held_source_valid = stash.held_source == "stash" || stash.held_source == "equipment";
+            var held_source_valid = raid.active || stash.held_source == "stash" || stash.held_source == "equipment";
+            var bag_source_valid = raid.active || stash.held_source == "stash";
             var gui_mouse_x = device_mouse_x_to_gui(0);
             var gui_mouse_y = device_mouse_y_to_gui(0);
             var equipment_previews = [
@@ -351,7 +354,7 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
                 { slot: EquipmentSlot.CHEST, item_key: _member.armor_chest, category: ItemCategory.BODY_ARMOR, left: equipment_center - 75, top: grid_top + 100, right: equipment_center + 75, bottom: grid_top + 320, source: held_source_valid },
                 { slot: EquipmentSlot.WEAPON, item_key: _member.weapon, category: ItemCategory.WEAPON, left: equipment_center - 180, top: grid_top + 350, right: equipment_center + 180, bottom: grid_top + 450, source: held_source_valid },
                 { slot: EquipmentSlot.WEAPON_2, item_key: _member.weapon_2, category: ItemCategory.WEAPON, left: equipment_center - 180, top: grid_top + 470, right: equipment_center + 180, bottom: grid_top + 570, source: held_source_valid },
-                { slot: EquipmentSlot.BAG, item_key: _member.bag, category: ItemCategory.BAG, left: middle_left, top: grid_top, right: middle_left + 150, bottom: grid_top + 220, source: stash.held_source == "stash" }
+                { slot: EquipmentSlot.BAG, item_key: _member.bag, category: ItemCategory.BAG, left: middle_left, top: grid_top, right: middle_left + 150, bottom: grid_top + 220, source: bag_source_valid }
             ];
 
             for (var preview_index = 0; preview_index < array_length(equipment_previews); preview_index++)
@@ -518,7 +521,10 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
 
     if (_stored_item.quantity > 1)
     {
-        draw_set_color(_text_color);
-        draw_text(item_right - 28, _top + 8, "x" + string(_stored_item.quantity));
+        var previous_halign = draw_get_halign();
+        draw_set_color(c_black);
+        draw_set_halign(fa_right);
+        draw_text(item_right - 8, _top + 8, "x" + format_compact_number(_stored_item.quantity));
+        draw_set_halign(previous_halign);
     }
 }

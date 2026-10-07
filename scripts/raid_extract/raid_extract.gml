@@ -17,7 +17,7 @@ function raid_extract()
 
     raid.extract_active = false;
     raid.doors_active = false;
-
+	
     raid_enemies = [];
     raid_enemy_bullets = [];
     raid_ring_hazards = [];

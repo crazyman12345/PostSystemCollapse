@@ -30,6 +30,7 @@ function step_raid_doors()
 		        raid.extract_active = false;
 		    }
 
+		    raid.room_number++;
 		    raid_enter_normal_room(
 		        d.reward_type
 		    );

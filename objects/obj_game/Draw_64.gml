@@ -31,6 +31,7 @@ switch (state)
 		{
 			draw_raid_ammo_ui();
 			draw_raid_health_ui();
+			draw_raid_progress();
 		}
 
 		if (raid.active && raid.mode != RaidMode.RESULT)

@@ -87,6 +87,7 @@ raid =
     // Selection references the carried grid item; it never removes it from storage.
     inventory_item: undefined,
     inventory_container: undefined,
+    inventory_equipment_slot: -1,
     active_loot_container: undefined,
     hotbar: [undefined, undefined, undefined, undefined, undefined, undefined],
     hotbar_feedback_slot: -1,

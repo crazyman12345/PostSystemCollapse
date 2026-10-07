@@ -11,7 +11,7 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.FILING_CABINETS:
 
-            _rolls = irandom_range(2, 4);
+            _rolls = irandom_range(1, 2);
 
             _pool = [
                 raid_loot_entry("cash", 45, 10, 35),
@@ -31,16 +31,16 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.SUPPLY_CRATES:
 
-            _rolls = irandom_range(2, 4);
+            _rolls = irandom_range(1, 2);
 
             _pool = [
-                raid_loot_entry("cloth", 20, 2, 4),
+                raid_loot_entry("cloth", 20, 1, 2),
                 raid_loot_entry("leather", 15, 1, 2),
-                raid_loot_entry("plastic", 15, 2, 3),
-                raid_loot_entry("wood", 15, 2, 4),
+                raid_loot_entry("plastic", 15, 1, 2),
+                raid_loot_entry("wood", 15, 1, 2),
                 raid_loot_entry("adhesive", 10, 1, 2),
                 raid_loot_entry("rubber", 10, 1, 2),
-                raid_loot_entry("metal_scrap", 10, 2, 4),
+                raid_loot_entry("metal_scrap", 10, 1, 2),
                 raid_loot_entry("hiking_pack_junk", 5, 1, 1)
             ];
 
@@ -53,12 +53,12 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.TOOLBOX:
 
-            _rolls = irandom_range(2, 4);
+            _rolls = irandom_range(1, 2);
 
             _pool = [
-                raid_loot_entry("metal_scrap", 25, 2, 5),
-                raid_loot_entry("screws", 20, 2, 4),
-                raid_loot_entry("bolts", 15, 1, 3),
+                raid_loot_entry("metal_scrap", 25, 1, 2),
+                raid_loot_entry("screws", 20, 1, 2),
+                raid_loot_entry("bolts", 15, 1, 2),
                 raid_loot_entry("springs", 15, 1, 2),
                 raid_loot_entry("mechanical_parts", 10, 1, 1),
                 raid_loot_entry("metal_toolbox", 8, 1, 1),
@@ -75,7 +75,7 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.CASH_REGISTER:
 
-            _rolls = irandom_range(1, 3);
+            _rolls = irandom_range(1, 2);
 
             _pool = [
                 raid_loot_entry("cash", 75, 25, 75),
@@ -94,14 +94,14 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.MEDICAL_CRATE:
 
-            _rolls = irandom_range(2, 4);
+            _rolls = irandom_range(1, 2);
 
             _pool = [
-                raid_loot_entry("medical_supplies", 30, 1, 3),
+                raid_loot_entry("medical_supplies", 30, 1, 2),
                 raid_loot_entry("bandage", 20, 1, 1),
                 raid_loot_entry("alcohol", 20, 1, 2),
                 raid_loot_entry("painkillers", 15, 1, 1),
-                raid_loot_entry("cloth", 10, 2, 3),
+                raid_loot_entry("cloth", 10, 1, 3),
                 raid_loot_entry("medical_bag", 5, 1, 1)
             ];
 
@@ -114,7 +114,7 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.ELECTRONICS:
 
-            _rolls = irandom_range(2, 4);
+            _rolls = irandom_range(1, 2);
 
             _pool = [
                 raid_loot_entry("broken_radio", 25, 1, 1),
@@ -136,7 +136,7 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.FOOD_STORAGE:
 
-            _rolls = irandom_range(2, 4);
+            _rolls = irandom_range(1, 2);
 
             _pool = [
                 raid_loot_entry("cash", 40, 10, 30),
@@ -156,10 +156,10 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.WEAPON_CRATE:
 
-            _rolls = irandom_range(2, 4);
+            _rolls = irandom_range(1, 2);
 
             _pool = [
-                raid_loot_entry("weapon_parts", 25, 2, 4),
+                raid_loot_entry("weapon_parts", 25, 1, 3),
                 raid_loot_entry("ammo_9mm", 20, 8, 18),
                 raid_loot_entry("ammo_45", 15, 6, 14),
                 raid_loot_entry("ammo_12g", 15, 4, 10),
@@ -179,7 +179,7 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.ARMOR_CRATE:
 
-            _rolls = irandom_range(2, 4);
+            _rolls = irandom_range(1, 2);
 
             _pool = [
                 raid_loot_entry("cloth", 25, 3, 6),
@@ -188,9 +188,9 @@ function raid_generate_reward_loot(_reward_type)
                 raid_loot_entry("broken_armor", 15, 1, 1),
                 raid_loot_entry("adhesive", 10, 1, 2),
                 raid_loot_entry("sling_bag", 8, 1, 1),
-                raid_loot_entry("padded_jacket", 4, 1, 1),
-                raid_loot_entry("construction_helmet", 2, 1, 1),
-                raid_loot_entry("school_backpack", 1, 1, 1)
+                //raid_loot_entry("padded_jacket", 4, 1, 1),
+               //raid_loot_entry("construction_helmet", 2, 1, 1),
+                //raid_loot_entry("school_backpack", 1, 1, 1)
             ];
 
         break;
@@ -202,12 +202,12 @@ function raid_generate_reward_loot(_reward_type)
 
         case RaidRewardType.BACKROOM_STASH:
 
-            _rolls = irandom_range(4, 6);
+            _rolls = irandom_range(2, 3);
 
             _pool = [
                 raid_loot_entry("cash", 20, 50, 150),
-                raid_loot_entry("weapon_parts", 15, 2, 5),
-                raid_loot_entry("medical_supplies", 10, 2, 4),
+                raid_loot_entry("weapon_parts", 15, 1, 3),
+                raid_loot_entry("medical_supplies", 10, 1, 4),
                 raid_loot_entry("electronics", 10, 1, 3),
                 raid_loot_entry("steel_plate", 10, 1, 2),
                 raid_loot_entry("mechanical_parts", 8, 1, 2),

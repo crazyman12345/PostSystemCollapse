@@ -144,9 +144,97 @@ function raid_inventory_clear_held()
 {
     if (!is_undefined(raid.inventory_item) && !is_undefined(raid.inventory_container))
         array_push(raid.inventory_container.items, raid.inventory_item);
+    else if (!is_undefined(raid.inventory_item) && raid.inventory_equipment_slot != -1)
+        raid_inventory_set_equipped_item(raid.inventory_equipment_slot, raid.inventory_item);
 
     raid.inventory_item = undefined;
     raid.inventory_container = undefined;
+    raid.inventory_equipment_slot = -1;
+}
+
+function raid_inventory_get_equipment_slot(_mouse_x, _mouse_y)
+{
+    if (_mouse_x >= 220 && _mouse_x < 310 && _mouse_y >= 155 && _mouse_y < 245) return EquipmentSlot.HEAD;
+    if (_mouse_x >= 190 && _mouse_x < 340 && _mouse_y >= 250 && _mouse_y < 470) return EquipmentSlot.CHEST;
+    if (_mouse_x >= 85 && _mouse_x < 445 && _mouse_y >= 500 && _mouse_y < 600) return EquipmentSlot.WEAPON;
+    if (_mouse_x >= 85 && _mouse_x < 445 && _mouse_y >= 620 && _mouse_y < 720) return EquipmentSlot.WEAPON_2;
+    if (_mouse_x >= 505 && _mouse_x < 655 && _mouse_y >= 150 && _mouse_y < 370) return EquipmentSlot.BAG;
+    return -1;
+}
+
+function raid_inventory_get_equipped_item(_slot)
+{
+    switch (_slot)
+    {
+        case EquipmentSlot.WEAPON: return stash.equipped_weapon_item;
+        case EquipmentSlot.WEAPON_2: return stash.equipped_weapon_2_item;
+        case EquipmentSlot.HEAD: return stash.equipped_armor_head_item;
+        case EquipmentSlot.CHEST: return stash.equipped_armor_chest_item;
+        case EquipmentSlot.BAG: return stash.equipped_bag_item;
+    }
+    return undefined;
+}
+
+function raid_inventory_set_equipped_item(_slot, _item)
+{
+    var member = crew[raid.crew_index];
+    var item_key = is_undefined(_item) ? "" : _item.item_key;
+
+    switch (_slot)
+    {
+        case EquipmentSlot.WEAPON:
+            member.weapon = item_key;
+            stash.equipped_weapon_item = _item;
+            break;
+        case EquipmentSlot.WEAPON_2:
+            member.weapon_2 = item_key;
+            stash.equipped_weapon_2_item = _item;
+            break;
+        case EquipmentSlot.HEAD:
+            member.armor_head = item_key;
+            stash.equipped_armor_head_item = _item;
+            break;
+        case EquipmentSlot.CHEST:
+            member.armor_chest = item_key;
+            stash.equipped_armor_chest_item = _item;
+            break;
+        case EquipmentSlot.BAG:
+            member.bag = item_key;
+            stash.equipped_bag_item = _item;
+            if (!is_undefined(_item))
+            {
+                var bag_definition = item_get(item_key);
+                stash.backpack.grid_width = bag_definition.grid_width;
+                stash.backpack.grid_height = bag_definition.grid_height;
+            }
+            break;
+    }
+
+    crew[raid.crew_index] = member;
+
+    if ((_slot == EquipmentSlot.WEAPON || _slot == EquipmentSlot.WEAPON_2) && is_undefined(_item))
+    {
+        if (_slot == active_weapon_slot)
+            active_weapon_slot = _slot == EquipmentSlot.WEAPON ? EquipmentSlot.WEAPON_2 : EquipmentSlot.WEAPON;
+    }
+    raid_update_active_weapon();
+}
+
+function raid_inventory_item_fits_equipment(_item, _slot)
+{
+    if (is_undefined(_item) || equipment_get_slot_item(raid.crew_index, _slot) != "") return false;
+    var definition = item_get(_item.item_key);
+    if (is_undefined(definition)) return false;
+
+    switch (_slot)
+    {
+        case EquipmentSlot.WEAPON:
+        case EquipmentSlot.WEAPON_2: return definition.category == ItemCategory.WEAPON;
+        case EquipmentSlot.HEAD: return definition.category == ItemCategory.HEAD_ARMOR;
+        case EquipmentSlot.CHEST: return definition.category == ItemCategory.BODY_ARMOR;
+        case EquipmentSlot.BAG: return definition.category == ItemCategory.BAG;
+    }
+    return false;
 }
 
 function step_raid_inventory()
@@ -160,7 +248,8 @@ function step_raid_inventory()
     }
 
     if (!is_undefined(raid.inventory_item)
-    && is_undefined(raid.inventory_container))
+    && is_undefined(raid.inventory_container)
+    && raid.inventory_equipment_slot == -1)
         raid_inventory_clear_held();
 
     if (mouse_check_button_pressed(mb_right)) raid_inventory_clear_held();
@@ -174,10 +263,46 @@ function step_raid_inventory()
                 raid.inventory_rotation = 0;
             else
                 raid.inventory_rotation = raid.inventory_rotation == 90 ? 0 : 90;
+
+            raid.inventory_item.rotation = raid.inventory_rotation;
         }
     }
 
     if (!mouse_check_button_pressed(mb_left)) return;
+    var gui_mouse_x = device_mouse_x_to_gui(0);
+    var gui_mouse_y = device_mouse_y_to_gui(0);
+    var equipment_slot = raid_inventory_get_equipment_slot(gui_mouse_x, gui_mouse_y);
+    if (equipment_slot != -1)
+    {
+        if (!is_undefined(raid.inventory_item))
+        {
+            if (raid_inventory_item_fits_equipment(raid.inventory_item, equipment_slot))
+            {
+                raid_inventory_set_equipped_item(equipment_slot, raid.inventory_item);
+                raid.inventory_item = undefined;
+                raid.inventory_container = undefined;
+                raid.inventory_equipment_slot = -1;
+            }
+        }
+        else
+        {
+            var equipped_item = raid_inventory_get_equipped_item(equipment_slot);
+            var equipped_key = equipment_get_slot_item(raid.crew_index, equipment_slot);
+            if (equipped_key != ""
+            && (equipment_slot != EquipmentSlot.BAG || array_length(stash.backpack.items) == 0))
+            {
+                if (is_undefined(equipped_item) || equipped_item.item_key != equipped_key)
+                    equipped_item = { item_key: equipped_key, quantity: 1, x: 0, y: 0, rotation: 0 };
+
+                raid.inventory_item = equipped_item;
+                raid.inventory_container = undefined;
+                raid.inventory_equipment_slot = equipment_slot;
+                raid.inventory_rotation = equipped_item.rotation;
+                raid_inventory_set_equipped_item(equipment_slot, undefined);
+            }
+        }
+        return;
+    }
     var hotbar_rect = raid_inventory_get_hotbar_rect();
     if (device_mouse_x_to_gui(0) >= hotbar_rect.left
     && device_mouse_x_to_gui(0) < hotbar_rect.left + hotbar_rect.width

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"format_compact_number",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"format_compact_number",
+  "parent":{
+    "name":"inventory",
+    "path":"folders/inventory.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

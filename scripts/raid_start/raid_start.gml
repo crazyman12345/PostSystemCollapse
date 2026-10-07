@@ -14,6 +14,7 @@ function raid_start(_area)
 	raid.active_loot_container = undefined;
 	raid.inventory_item = undefined;
 	raid.inventory_container = undefined;
+	raid.inventory_equipment_slot = -1;
 	raid.inventory_rotation = 0;
 	raid.last_loot = [];
 	raid.loot_index = 0;
@@ -36,18 +37,18 @@ function raid_start(_area)
     state = GameState.RAID;
     overlay_mode = OverlayMode.NONE;
 
-    raid.room_number = 1;
+    raid.room_number = 0;
     raid.room_cleared = false;
-
+	raid.rooms_cleared = 0;
     raid_player_x = 960;
     raid_player_y = 540;
-raid_enemy_bullets = [];
-raid_ring_hazards = [];
-raid_room_x1 = 760;
-raid_room_y1 = 340;
+	raid_enemy_bullets = [];
+	raid_ring_hazards = [];
+	raid_room_x1 = 760;
+	raid_room_y1 = 340;
 
-raid_room_x2 = 1160;
-raid_room_y2 = 740;
+	raid_room_x2 = 1160;
+	raid_room_y2 = 740;
 	raid_player_setup_health();
     raid_reset_active_weapon();
     active_weapon_slot = EquipmentSlot.WEAPON;

@@ -252,7 +252,7 @@ function step_raid_enemies()
         raid.current_reward_type
 		);
 
-        if (raid.rooms_cleared >= 20)
+        if (raid.rooms_cleared >= 15)
         {
             // boss later
             return;

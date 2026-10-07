@@ -6,11 +6,14 @@ function draw_boss_healthbar(_boss)
     var _x = (_gui_w - _bar_w) * 0.5;
     var _panel_y = 16;
     var _bar_y = _panel_y + 30;
-    var _hp_percent = clamp(
+    var _total_hp_percent = clamp(
         _boss.enemy_hp / max(1, _boss.enemy_max_hp),
         0,
         1
     );
+    var _hp_percent = _total_hp_percent <= 0.5
+        ? _total_hp_percent * 2
+        : (_total_hp_percent - 0.5) * 2;
     var _segments = 24;
     var _segment_gap = 3;
     var _segment_w = (_bar_w - ((_segments - 1) * _segment_gap)) / _segments;
