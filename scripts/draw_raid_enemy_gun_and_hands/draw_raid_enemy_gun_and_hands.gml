@@ -1,17 +1,22 @@
 function draw_raid_enemy_gun_and_hands(_enemy)
 {
-    if (_enemy.enemy_gun_sprite == -1)
+    if (_enemy.weapon == -1 || is_undefined(_enemy.weapon))
+        return;
+
+    var _weapon = _enemy.weapon;
+
+    if (_weapon.weapon_sprite == -1)
         return;
 
 
-    var _pivot_x =
-        _enemy.enemy_x;
+    // ==============================
+    // PIVOT / DIRECTION
+    // ==============================
 
-    var _pivot_y =
-        _enemy.enemy_y - 18;
+    var _pivot_x = _enemy.enemy_x;
+    var _pivot_y = _enemy.enemy_y - 18;
 
-    var _dir =
-        _enemy.enemy_gun_angle;
+    var _dir = _enemy.enemy_gun_angle;
 
 
     // ==============================
@@ -25,12 +30,28 @@ function draw_raid_enemy_gun_and_hands(_enemy)
 
 
     // ==============================
+    // WEAPON SCALE
+    // ==============================
+
+    var _sprite = _weapon.weapon_sprite;
+
+    var _visible_width =
+        sprite_get_bbox_right(_sprite)
+        - sprite_get_bbox_left(_sprite)
+        + 1;
+
+    var _weapon_scale =
+        _weapon.weapon_draw_width
+        / max(1, _visible_width);
+
+
+    // ==============================
     // GUN POSITION
     // ==============================
 
     var _offset =
-        _enemy.enemy_gun_offset
-        - _enemy.enemy_gun_recoil;
+        _enemy.enemy_gun_recoil
+        + _weapon.weapon_offset_x;
 
     var _gun_x =
         _pivot_x
@@ -52,12 +73,12 @@ function draw_raid_enemy_gun_and_hands(_enemy)
     // ==============================
 
     draw_sprite_ext(
-        _enemy.enemy_gun_sprite,
+        _sprite,
         0,
-        _gun_x,
-        _gun_y,
-        1,
-        _flip,
+        round(_gun_x),
+        round(_gun_y),
+        _weapon_scale,
+        _weapon_scale * _flip,
         _dir,
         c_white,
         1
@@ -70,16 +91,11 @@ function draw_raid_enemy_gun_and_hands(_enemy)
 
     if (_enemy.enemy_hand_sprite != -1)
     {
-        var _h1x =
-            _enemy.enemy_hand1_x;
-
-        var _h1y =
-            _enemy.enemy_hand1_y;
-
+        var _h1x = _weapon.hand1_x;
+        var _h1y = _weapon.hand1_y;
 
         if (_flip == -1)
             _h1y *= -1;
-
 
         var _hand1_world_x =
             _gun_x
@@ -103,12 +119,11 @@ function draw_raid_enemy_gun_and_hands(_enemy)
                 _dir + 90
             );
 
-
         draw_sprite_ext(
             _enemy.enemy_hand_sprite,
             0,
-            _hand1_world_x,
-            _hand1_world_y,
+            round(_hand1_world_x),
+            round(_hand1_world_y),
             1,
             1,
             0,
@@ -123,20 +138,15 @@ function draw_raid_enemy_gun_and_hands(_enemy)
     // ==============================
 
     if (
-        _enemy.enemy_has_second_hand
+        _weapon.has_second_hand
         && _enemy.enemy_hand_sprite != -1
     )
     {
-        var _h2x =
-            _enemy.enemy_hand2_x;
-
-        var _h2y =
-            _enemy.enemy_hand2_y;
-
+        var _h2x = _weapon.hand2_x;
+        var _h2y = _weapon.hand2_y;
 
         if (_flip == -1)
             _h2y *= -1;
-
 
         var _hand2_world_x =
             _gun_x
@@ -160,12 +170,11 @@ function draw_raid_enemy_gun_and_hands(_enemy)
                 _dir + 90
             );
 
-
         draw_sprite_ext(
             _enemy.enemy_hand_sprite,
             0,
-            _hand2_world_x,
-            _hand2_world_y,
+            round(_hand2_world_x),
+            round(_hand2_world_y),
             1,
             1,
             0,

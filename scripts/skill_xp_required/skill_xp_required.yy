@@ -6,7 +6,7 @@
   "name":"skill_xp_required",
   "parent":{
     "name":"skills",
-    "path":"folders/skills.yy",
+    "path":"folders/sounds/skills.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

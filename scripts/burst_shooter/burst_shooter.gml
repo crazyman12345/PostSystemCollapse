@@ -63,7 +63,7 @@ function burst_shooter(_enemy)
                     RaidEnemyState.ATTACK;
 
                 e.shots_fired = 0;
-                e.shot_timer = 0;
+                e.shot_timer = randomize_enemy_timer(12, 0.25);
 
 
                 // Switch immediately to idle
@@ -120,7 +120,7 @@ function burst_shooter(_enemy)
 			    );
 
 			    e.shots_fired++;
-			    e.shot_timer = 12;
+                e.shot_timer = randomize_enemy_timer(12, 0.25);
 			}
 
 
@@ -132,7 +132,7 @@ function burst_shooter(_enemy)
                 e.enemy_state =
                     RaidEnemyState.PAUSE;
 
-                e.state_timer = 45;
+                e.state_timer = randomize_enemy_timer(45, 0.25);
             }
         }
         break;

@@ -109,7 +109,7 @@ function wall_rusher(_enemy)
                 e.enemy_state =
                     RaidEnemyState.PAUSE;
 
-                e.state_timer = 90;
+                e.state_timer = randomize_enemy_timer(90, 0.25);
             }
         }
         break;

@@ -58,7 +58,8 @@ function raid_spawn_enemy(_type, _x, _y)
 		enemy_has_second_hand: false,
 
 		enemy_hand2_x: 8,
-		enemy_hand2_y: 1
+		enemy_hand2_y: 1,
+		weapon: -1
     };
 
 
@@ -68,13 +69,13 @@ function raid_spawn_enemy(_type, _x, _y)
 
     switch (_type)
     {
-     case RaidEnemyType.BURST_SHOOTER:
+        case RaidEnemyType.BURST_SHOOTER:
 		{
 		    enemy.enemy_sprite_idle = spr_burst_shooter_idle;
 			enemy.enemy_sprite_active = spr_burst_shooter_run;
 
 		    enemy.enemy_has_gun = true;
-		    enemy.enemy_gun_sprite = spr_1911;
+		    enemy.weapon = global.items.m1911;
 
 		    enemy.enemy_gun_offset = 16;
 
@@ -83,6 +84,7 @@ function raid_spawn_enemy(_type, _x, _y)
 
 		    enemy.enemy_hp = 20;
 		    enemy.enemy_speed = 1.4;
+		    enemy.shot_timer = randomize_enemy_timer(12, 0.25);
 		}
 		break;
 
@@ -105,7 +107,7 @@ function raid_spawn_enemy(_type, _x, _y)
 			enemy.enemy_sprite_active = spr_burst_shooter_run;
 
 		    enemy.enemy_has_gun = true;
-		    enemy.enemy_gun_sprite = spr_1911;
+		    enemy.weapon = global.items.uzi;
 
 		    enemy.enemy_gun_offset = 16;
 
@@ -114,6 +116,7 @@ function raid_spawn_enemy(_type, _x, _y)
 
 		    enemy.enemy_hp = 24;
 		    enemy.enemy_speed = 1.0;
+		    enemy.shot_timer = randomize_enemy_timer(4, 0.25);
 		}
 		break;
 
@@ -129,7 +132,7 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_state =
                 RaidEnemyState.PAUSE;
 
-            enemy.state_timer = 90;
+            enemy.state_timer = randomize_enemy_timer(90, 0.25);
         }
         break;
 
@@ -145,7 +148,7 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_state =
                 RaidEnemyState.PAUSE;
 
-            enemy.state_timer = 90;
+            enemy.state_timer = randomize_enemy_timer(90, 0.25);
         }
         break;
     }

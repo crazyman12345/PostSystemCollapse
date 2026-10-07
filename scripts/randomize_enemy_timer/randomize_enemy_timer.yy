@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"randomize_enemy_timer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"randomize_enemy_timer",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

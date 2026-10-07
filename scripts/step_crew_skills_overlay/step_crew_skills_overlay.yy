@@ -6,7 +6,7 @@
   "name":"step_crew_skills_overlay",
   "parent":{
     "name":"skills",
-    "path":"folders/skills.yy",
+    "path":"folders/sounds/skills.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

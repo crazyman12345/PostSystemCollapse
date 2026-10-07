@@ -440,23 +440,34 @@ if (keyboard_check_pressed(ord("R")))
         // CREATE BULLET
         // ----------------------------------------------
 
-        var bullet = {
-            bx: _muzzle_x,
-            by: _muzzle_y,
+		var _pellet_count = variable_struct_exists(_weapon, "pellet_count")
+			? _weapon.pellet_count
+			: 1;
+		var _pellet_spread = variable_struct_exists(_weapon, "pellet_spread")
+			? _weapon.pellet_spread
+			: 0;
 
-            bdirection: _fire_dir,
+		for (var i = 0; i < _pellet_count; i++)
+		{
+			var _pellet_angle = _fire_dir + random_range(-_pellet_spread, _pellet_spread);
+			var bullet = {
+				bx: _muzzle_x,
+				by: _muzzle_y,
 
-            bspeed: _weapon.bullet_speed,
-            bdamage: irandom_range(
-			    _weapon.damage_min,
-			    _weapon.damage_max
-			)
-        };
+				bdirection: _pellet_angle,
 
-        array_push(
-            raid_bullets,
-            bullet
-        );
+				bspeed: _weapon.bullet_speed,
+				bdamage: irandom_range(
+					_weapon.damage_min,
+					_weapon.damage_max
+				)
+			};
+
+			array_push(
+				raid_bullets,
+				bullet
+			);
+		}
 		
 		audio_play_sound(
 		_weapon.sound_shoot,

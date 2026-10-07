@@ -110,7 +110,16 @@ function init_trader_database()
                 item_key : "m1911",
                 price : 300
             },
-
+						
+			{
+				item_key : "uzi",
+				price : 400		
+			},
+			
+			{
+				item_key : "double_barrel_shotgun",
+				price : 350		
+			},
             {
                 item_key : "ammo_45",
                 price : 4
@@ -135,6 +144,7 @@ function init_trader_database()
                 item_key : "springs",
                 price : 15
             }
+
         ],
 
         accepted_categories : [

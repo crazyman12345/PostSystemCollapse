@@ -24,7 +24,7 @@ function knife_dasher(_enemy)
                 );
 
                 e.enemy_state = RaidEnemyState.DASH;
-                e.state_timer = 40;
+                e.state_timer = randomize_enemy_timer(40, 0.25);
             }
         }
         break;
@@ -52,7 +52,7 @@ function knife_dasher(_enemy)
             if (e.state_timer <= 0)
             {
                 e.enemy_state = RaidEnemyState.PAUSE;
-                e.state_timer = 75;
+                e.state_timer = randomize_enemy_timer(75, 0.25);
             }
         }
         break;

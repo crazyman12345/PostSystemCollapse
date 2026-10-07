@@ -6,7 +6,7 @@
   "name":"player_skill_add_xp",
   "parent":{
     "name":"skills",
-    "path":"folders/skills.yy",
+    "path":"folders/sounds/skills.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

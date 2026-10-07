@@ -6,7 +6,7 @@
   "name":"skill_db_get",
   "parent":{
     "name":"skills",
-    "path":"folders/skills.yy",
+    "path":"folders/sounds/skills.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

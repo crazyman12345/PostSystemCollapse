@@ -41,7 +41,7 @@ function spinner(_enemy)
                 e.enemy_state = RaidEnemyState.ATTACK;
                 e.spin_dir = e.enemy_gun_angle;
                 e.spin_shots = 0;
-                e.shot_timer = 0;
+                e.shot_timer = randomize_enemy_timer(4, 0.25);
 
                 if (e.enemy_sprite != e.enemy_sprite_idle)
                 {
@@ -80,13 +80,13 @@ function spinner(_enemy)
                 );
 
                 e.spin_shots++;
-                e.shot_timer = 4;
+                e.shot_timer = randomize_enemy_timer(4, 0.25);
             }
 
             if (e.spin_shots >= 6)
             {
                 e.enemy_state = RaidEnemyState.PAUSE;
-                e.state_timer = 50;
+                e.state_timer = randomize_enemy_timer(50, 0.25);
             }
         }
         break;

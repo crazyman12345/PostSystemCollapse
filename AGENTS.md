@@ -33,14 +33,6 @@ Never run:
 
 After completing a task, briefly state what changed and whether compilation succeeded.
 
-## Project map
-
-- PROJECT_MAP.md indexes project scripts, functions, enums, and globals.
-- Check it before broad searches when locating a project symbol.
-- Use it only to locate files; read the real `.gml` source before editing.
-- Search normally if the symbol is not in the map.
-- Do not reread PROJECT_MAP.md unnecessarily within the same session.
-
 ## Coding Style
 - Prioritize readability.
 - Use clear, focused scripts/functions instead of large monolithic code blocks.
