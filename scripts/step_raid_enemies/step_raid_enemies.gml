@@ -135,14 +135,18 @@ function step_raid_enemies()
             }
         }
 		//Colliding with player (like knife enemies)
+		var _player_bbox = raid_player_get_collision_bbox();
+		var _nearest_player_x = clamp(e.enemy_x, _player_bbox.left, _player_bbox.right);
+		var _nearest_player_y = clamp(e.enemy_y, _player_bbox.top, _player_bbox.bottom);
+
 		if (
 		    point_distance(
 		        e.enemy_x,
 		        e.enemy_y,
-		        raid_player_x,
-		        raid_player_y
+		        _nearest_player_x,
+		        _nearest_player_y
 		    )
-		    <= e.enemy_radius + 12
+		    <= e.enemy_radius
 		)
 		{
 		    raid_player_take_damage(10);

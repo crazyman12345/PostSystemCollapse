@@ -10,12 +10,6 @@ Compact index of project GML code. Use this to locate files before searching the
 ### scripts\burst_shooter\burst_shooter.gml
 - burst_shooter
 
-### scripts\can_craft_basic_grow\can_craft_basic_grow.gml
-- can_craft_basic_grow
-
-### scripts\craft_basic_grow\craft_basic_grow.gml
-- craft_basic_grow
-
 ### scripts\crew_pay_for_treatment\crew_pay_for_treatment.gml
 - crew_pay_for_treatment
 
@@ -319,27 +313,6 @@ Compact index of project GML code. Use this to locate files before searching the
 ### scripts\log_add\log_add.gml
 - log_add
 
-### scripts\morrowleaf_action\morrowleaf_action.gml
-- morrowleaf_action
-
-### scripts\morrowleaf_fail\morrowleaf_fail.gml
-- morrowleaf_fail
-
-### scripts\morrowleaf_getmoisturestatus\morrowleaf_getmoisturestatus.gml
-- morrowleaf_get_moisture_status
-
-### scripts\morrowleaf_getnutrientstatus\morrowleaf_getnutrientstatus.gml
-- morrowleaf_get_nutrient_status
-
-### scripts\morrowleaf_getstressstatus\morrowleaf_getstressstatus.gml
-- morrowleaf_get_stress_status
-
-### scripts\morrowleaf_harvest\morrowleaf_harvest.gml
-- morrowleaf_harvest
-
-### scripts\morrowleaf_update\morrowleaf_update.gml
-- morrowleaf_update
-
 ### scripts\overlay_can_open\overlay_can_open.gml
 - overlay_can_open
 
@@ -513,9 +486,6 @@ Compact index of project GML code. Use this to locate files before searching the
 
 ### scripts\spinner\spinner.gml
 - spinner
-
-### scripts\start_morrowleaf_grow\start_morrowleaf_grow.gml
-- start_morrowleaf_grow
 
 ### scripts\step_crew_skills_overlay\step_crew_skills_overlay.gml
 - step_crew_skills_overlay
@@ -697,7 +667,6 @@ Compact index of project GML code. Use this to locate files before searching the
 - CombatTurn
 - CrewStatus
 - DrugMinigameType
-- DrugState
 - EffectType
 - EquipmentSlot
 - GameState

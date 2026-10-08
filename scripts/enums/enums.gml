@@ -52,7 +52,6 @@ function enums(){
 	{
 	    MATERIAL,
 	    LAB_MATERIAL,
-	    SEED,
 	    PRODUCT,
 	    WEAPON,
 	    AMMO,

@@ -24,14 +24,14 @@ function step_raid_enemy_bullets()
         // PLAYER COLLISION
         // ==================================================
 
-        var _dist = point_distance(
-            b.bx,
-            b.by,
-            raid_player_x,
-            raid_player_y - 12
-        );
+        var _player_bbox = raid_player_get_collision_bbox();
 
-        if (_dist <= 12)
+        if (
+            b.bx >= _player_bbox.left
+            && b.bx <= _player_bbox.right
+            && b.by >= _player_bbox.top
+            && b.by <= _player_bbox.bottom
+        )
         {
             raid_player_take_damage(10);
 

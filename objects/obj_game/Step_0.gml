@@ -1,10 +1,6 @@
 if (keyboard_check_pressed(vk_f11)) {
     window_set_fullscreen(!window_get_fullscreen());
 }
-var dt = delta_time / 1000000;
-//Persistent Simulations
-morrowleaf_update(dt);
-
 step_debug_terminal();
 if debug_console_open exit;
 	

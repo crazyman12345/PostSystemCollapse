@@ -294,7 +294,7 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
             );
 
         var owned =
-            inventory_get_quantity(
+            stash_get_quantity(
                 ingredient.item_key
             );
 
@@ -472,7 +472,7 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
             );
 
         var material_owned =
-            inventory_get_quantity(
+            stash_get_quantity(
                 material.item_key
             );
 

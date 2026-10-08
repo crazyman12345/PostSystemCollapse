@@ -18,7 +18,7 @@ function draw_workshop_salvage(_x1, _top, _x2, _bottom)
     {
         var key = items[i];
         var item = item_get(key);
-        var owned = inventory_get_quantity(key);
+        var owned = stash_get_quantity(key);
 
         var cursor = "  ";
         if (i == workshop_content_index) cursor = "> ";

@@ -24,7 +24,7 @@ function draw_workshop_upgrades(_bench, _key, _x1, _top, _x2, _bottom)
     {
         var req = reqs[i];
         var item = item_get(req.item_key);
-        var owned = inventory_get_quantity(req.item_key);
+        var owned = stash_get_quantity(req.item_key);
 
         draw_text(_x1 + 30, _y, item.name);
         draw_text(_x1 + 350, _y, string(owned) + " / " + string(req.quantity));

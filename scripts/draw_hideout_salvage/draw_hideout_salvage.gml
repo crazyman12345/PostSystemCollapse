@@ -12,7 +12,7 @@ function draw_hideout_salvage(){
 	var details_left = panel_left + list_width + padding;
 	var details_width = panel_width - list_width - (padding * 2);
 
-	var owned_items = inventory_get_visible_salvageable_items();
+	var owned_items = workshop_get_salvageable_items();
 	var item_count = array_length(owned_items);
 
 	draw_set_color(c_lime);
@@ -28,7 +28,7 @@ function draw_hideout_salvage(){
 		for (var i = inventory_scroll; i < last_visible_item; i++){
 			var item_key = owned_items[i];
 			var item = item_get(item_key);
-			var quantity = inventory_get_quantity(item_key);
+			var quantity = stash_get_quantity(item_key);
 			var row = i - inventory_scroll;
 			var display_text = item.name + "    x" + string(quantity);
 

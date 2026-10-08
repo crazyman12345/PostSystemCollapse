@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"morrowleaf_update",
+  "%Name":"draw_raid_room_border",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"morrowleaf_update",
+  "name":"draw_raid_room_border",
   "parent":{
-    "name":"morrowleaf",
-    "path":"folders/misc/morrowleaf.yy",
+    "name":"raid draw",
+    "path":"folders/RAID/raid draw.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -1,16 +1,24 @@
 function trader_get_sellable_items(_trader_key)
 {
-    var owned_items =
-        inventory_get_visible_items();
-
     var sellable_items = [];
 
-    for (var i = 0; i < array_length(owned_items); i++)
+    for (var i = 0; i < array_length(stash.items); i++)
     {
         var item_key =
-            owned_items[i];
+            stash.items[i].item_key;
 
-        if (trader_will_buy_item(_trader_key, item_key))
+        var already_added = false;
+
+        for (var j = 0; j < array_length(sellable_items); j++)
+        {
+            if (sellable_items[j] == item_key)
+            {
+                already_added = true;
+                break;
+            }
+        }
+
+        if (!already_added && trader_will_buy_item(_trader_key, item_key))
         {
             array_push(
                 sellable_items,
@@ -20,4 +28,19 @@ function trader_get_sellable_items(_trader_key)
     }
 
     return sellable_items;
+}
+
+function trader_get_stash_quantity(_item_key)
+{
+    var quantity = 0;
+
+    for (var i = 0; i < array_length(stash.items); i++)
+    {
+        if (stash.items[i].item_key == _item_key)
+        {
+            quantity += stash.items[i].quantity;
+        }
+    }
+
+    return quantity;
 }

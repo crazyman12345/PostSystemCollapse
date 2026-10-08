@@ -1,23 +1,20 @@
 function step_hideout_salvage(){
-	var owned_items = inventory_get_visible_salvageable_items();
+	var owned_items = workshop_get_salvageable_items();
 	var item_count = array_length(owned_items);
 
 	if (salvage_active){
 		if (current_time >= salvage_end_time){
 			var salvaged_item = item_get(salvage_item_key);
 
-			inventory_remove(salvage_item_key, 1);
-
-			for (var i = 0; i < array_length(salvaged_item.salvage); i++){
-				var result = salvaged_item.salvage[i];
-				inventory_add(result.item_key, result.quantity);
+			if (workshop_salvage_item(salvage_item_key)){
+				log_add("You salvaged " + salvaged_item.name + ".");
+				salvage_message = "SALVAGED: " + salvaged_item.name;
+			} else {
+				salvage_message = "NOT ENOUGH STASH SPACE";
 			}
-
-			log_add("You salvaged " + salvaged_item.name + ".");
-			salvage_message = "SALVAGED: " + salvaged_item.name;
 			salvage_active = false;
 
-			owned_items = inventory_get_visible_salvageable_items();
+			owned_items = workshop_get_salvageable_items();
 			item_count = array_length(owned_items);
 		}
 	} else if (item_count > 0){

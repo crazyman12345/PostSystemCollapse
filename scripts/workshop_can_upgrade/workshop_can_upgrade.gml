@@ -5,7 +5,7 @@ function workshop_can_upgrade(_bench_key)
     for (var i = 0; i < array_length(reqs); i++)
     {
         var req = reqs[i];
-        if (inventory_get_quantity(req.item_key) < req.quantity) return false;
+        if (!stash_has(req.item_key, req.quantity)) return false;
     }
 
     return true;

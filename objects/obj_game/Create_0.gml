@@ -156,38 +156,6 @@ workshop_content_index = 0;
 workshop_focus = WorkshopFocus.STATIONS;
 workshop_tab = WorkshopTab.UPGRADES;
 // ==============================
-// DRUG LAB
-// ==============================
-grow_setups = 0;
-grow_active = false;
-grow = {
-    growth : 0,
-    hp : 100,
-    quality : 50,
-
-    moisture : 50,
-    nutrients : 50,
-    stress : 10,
-	
-	neglect_timer : 0,
-    neglect_limit : 8,
-
-    elapsed : 0,
-    duration : 60,
-
-    water_cooldown : 0,
-    feed_cooldown : 0,
-    tend_cooldown : 0
-};
-grow_menu_index = 0;
-// ==============================
-// MORROWLEAF RESULTS
-// ==============================
-harvest_yield = 0;
-harvest_quality = 0;
-harvest_xp = 0;
-grow_fail_reason = "";
-// ==============================
 // EVENT LOG
 // ==============================
 event_log = [];

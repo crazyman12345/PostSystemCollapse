@@ -107,24 +107,53 @@ function step_raid_player()
         raid_player_dash_trail[i] = _trail;
     }
 
-    raid_player_x = clamp(
-        raid_player_x,
-        raid_room_x1 + raid_player_radius,
-        raid_room_x2 - raid_player_radius
-    );
-
-    raid_player_y = clamp(
-        raid_player_y,
-        raid_room_y1 + raid_player_radius,
-        raid_room_y2 - raid_player_radius
-    );
-
 	raid_player_facing = 1;
 
 	if (mouse_x < raid_player_x)
 	    raid_player_facing = -1;
 	else
     raid_player_facing = 1;
+
+    var _bbox = raid_player_get_collision_bbox();
+
+    raid_player_x = clamp(
+        raid_player_x,
+        raid_room_x1 + raid_player_x - _bbox.left,
+        raid_room_x2 - (_bbox.right - raid_player_x)
+    );
+
+    raid_player_y = clamp(
+        raid_player_y,
+        raid_room_y1 + raid_player_y - _bbox.top,
+        raid_room_y2 - (_bbox.bottom - raid_player_y)
+    );
 	
     raid_player_anim_frame += raid_player_anim_speed;
+}
+
+function raid_player_get_collision_bbox()
+{
+    var _sprite = raid_player_moving ? spr_player_run : spr_player_idle;
+    var _x_origin = sprite_get_xoffset(_sprite);
+    var _y_origin = sprite_get_yoffset(_sprite);
+    var _left_offset;
+    var _right_offset;
+
+    if (raid_player_facing < 0)
+    {
+        _left_offset = _x_origin - sprite_get_bbox_right(_sprite);
+        _right_offset = _x_origin - sprite_get_bbox_left(_sprite);
+    }
+    else
+    {
+        _left_offset = sprite_get_bbox_left(_sprite) - _x_origin;
+        _right_offset = sprite_get_bbox_right(_sprite) - _x_origin;
+    }
+
+    return {
+        left: raid_player_x + _left_offset,
+        right: raid_player_x + _right_offset,
+        top: raid_player_y + sprite_get_bbox_top(_sprite) - _y_origin,
+        bottom: raid_player_y + sprite_get_bbox_bottom(_sprite) - _y_origin
+    };
 }

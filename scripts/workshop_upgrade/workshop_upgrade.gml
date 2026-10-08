@@ -11,7 +11,7 @@ function workshop_upgrade(_bench_key)
     for (var i = 0; i < array_length(reqs); i++)
     {
         var req = reqs[i];
-        inventory_remove(req.item_key, req.quantity);
+        stash_remove(req.item_key, req.quantity);
     }
 
     variable_struct_set(workshop_progress, _bench_key, level + 1);

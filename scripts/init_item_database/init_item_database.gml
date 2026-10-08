@@ -1075,46 +1075,6 @@ function init_item_database()
     // OLD DRUG / LAB SYSTEM
     // ------------------------------------------------------------
 
-    global.items.morrowleaf_seed = {
-        item_key: "morrowleaf_seed",
-        name: "Morrowleaf Seed",
-        category: ItemCategory.SEED,
-        description: "Seed used to cultivate Morrowleaf.",
-        base_value: 15,
-        weight: 0.1,
-        stackable: true
-    };
-
-    global.items.morrowleaf_grow_kit = {
-        item_key: "morrowleaf_grow_kit",
-        name: "Morrowleaf Grow Kit",
-        category: ItemCategory.LAB_MATERIAL,
-        description: "A prepared kit required to begin a Morrowleaf grow.",
-        base_value: 40,
-        weight: 0.9,
-        stackable: true
-    };
-
-    global.items.fertilizer = {
-        item_key: "fertilizer",
-        name: "Fertilizer",
-        category: ItemCategory.LAB_MATERIAL,
-        description: "Manure to help plants grow.",
-        base_value: 15,
-        weight: 0.1,
-        stackable: true
-    };
-
-    global.items.dirt = {
-        item_key: "dirt",
-        name: "Bag of Soil",
-        category: ItemCategory.MATERIAL,
-        description: "A bag of soil.",
-        base_value: 15,
-        weight: 0.1,
-        stackable: true
-    };
-
     global.items.raw_morrowleaf = {
         item_key: "raw_morrowleaf",
         name: "Raw Morrowleaf",

@@ -283,7 +283,6 @@ function init_trader_database()
 		ItemCategory.MEDICAL,
 		ItemCategory.MATERIAL,
 		ItemCategory.LAB_MATERIAL,
-		ItemCategory.SEED,
 		ItemCategory.PRODUCT
 		]
 	};

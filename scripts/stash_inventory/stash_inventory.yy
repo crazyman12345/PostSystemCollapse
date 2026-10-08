@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"can_craft_basic_grow",
+  "%Name":"stash_inventory",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"can_craft_basic_grow",
+  "name":"stash_inventory",
   "parent":{
-    "name":"morrowleaf",
-    "path":"folders/misc/morrowleaf.yy",
+    "name":"inventory",
+    "path":"folders/inventory.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -7,7 +7,7 @@ function workshop_get_salvageable_items()
     {
         var key = keys[i];
 
-        if (inventory_get_quantity(key) <= 0) continue;
+        if (stash_get_quantity(key) <= 0) continue;
         if (!item_can_salvage(key)) continue;
 
         array_push(list, key);

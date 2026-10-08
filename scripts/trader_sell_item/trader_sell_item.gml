@@ -35,7 +35,7 @@ function trader_sell_item(_trader_key, _item_key)
     // DOES PLAYER OWN IT?
     // ==============================
 
-    if (!inventory_has(_item_key, 1))
+    if (trader_get_stash_quantity(_item_key) < 1)
     {
         log_add(
             "You don't have any "
@@ -61,10 +61,24 @@ function trader_sell_item(_trader_key, _item_key)
     // COMPLETE SALE
     // ==============================
 
-    inventory_remove(
-        _item_key,
-        1
-    );
+    for (var i = array_length(stash.items) - 1; i >= 0; i--)
+    {
+        var stash_item = stash.items[i];
+
+        if (stash_item.item_key == _item_key)
+        {
+            stash_item.quantity--;
+
+            if (stash_item.quantity <= 0)
+            {
+                stash_remove_item(stash_item);
+            }
+
+            break;
+        }
+    }
+
+    variable_struct_set(inventory, _item_key, trader_get_stash_quantity(_item_key));
 
    inventory_add("cash",price);
 

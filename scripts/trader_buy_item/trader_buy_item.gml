@@ -71,7 +71,7 @@ function trader_buy_item(_trader_key, _stock_index)
 
     spend_cash(price);
 
-    inventory_add(
+    stash_add(
         stock_entry.item_key,
         1
     );

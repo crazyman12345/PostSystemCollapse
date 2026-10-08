@@ -3,6 +3,8 @@ function draw_raid()
     draw_set_color(c_black);
     draw_rectangle(0, 0, 1920, 1080, false);
 
+    draw_raid_room_border();
+
     // Arena
     draw_set_color(c_lime);
     draw_rectangle(

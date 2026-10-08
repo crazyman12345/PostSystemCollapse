@@ -1,4 +1,4 @@
 function get_cash()
 {
-    return inventory_get_quantity("cash");
+    return stash_get_quantity("cash");
 }

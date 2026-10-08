@@ -8,9 +8,6 @@ function item_category_get_name(_category)
         case ItemCategory.LAB_MATERIAL:
             return "LAB MATERIAL";
 
-        case ItemCategory.SEED:
-            return "SEED";
-
         case ItemCategory.PRODUCT:
             return "PRODUCT";
 

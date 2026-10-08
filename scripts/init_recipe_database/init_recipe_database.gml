@@ -207,7 +207,7 @@ function recipe_can_craft(_skill_key, _recipe)
     {
         var ingredient = _recipe.ingredients[i];
 
-        if (!inventory_has(ingredient.item_key, ingredient.quantity))
+        if (!stash_has(ingredient.item_key, ingredient.quantity))
             return false;
     }
 
@@ -219,13 +219,14 @@ function recipe_craft(_skill_key, _recipe)
     if (!recipe_can_craft(_skill_key, _recipe))
         return false;
 
+    if (!stash_add(_recipe.output.item_key, _recipe.output.quantity))
+        return false;
+
     for (var i = 0; i < array_length(_recipe.ingredients); i++)
     {
         var ingredient = _recipe.ingredients[i];
-        inventory_remove(ingredient.item_key, ingredient.quantity);
+        stash_remove(ingredient.item_key, ingredient.quantity);
     }
-
-    inventory_add(_recipe.output.item_key, _recipe.output.quantity);
 
     if (variable_struct_exists(_recipe, "xp") && _recipe.xp > 0)
         player_skill_add_xp(_skill_key, _recipe.xp);
