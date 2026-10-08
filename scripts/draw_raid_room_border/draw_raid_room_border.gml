@@ -12,7 +12,7 @@ function draw_raid_room_border()
     var _draw_y = raid_room_y1 - (_source_inner_top * _scale_y);
 
     draw_sprite_ext(
-        spr_store_border,
+        raid.room_cleared ? spr_store_border_open : spr_store_border,
         0,
         _draw_x,
         _draw_y,

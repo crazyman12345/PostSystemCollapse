@@ -26,6 +26,7 @@ init_recipe_database();
 init_workbench_database();
 init_area_database();
 init_raid_vars();
+global.smoke_particles = [];
 //debug
 debug_console_open = false;
 debug_input = "";

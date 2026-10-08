@@ -99,6 +99,6 @@ function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage)
     // ==============================
 
     e.enemy_gun_recoil = 3;
-
+	audio_play_sound(enemy_shot_sound,0,false);
     return e;
 }

@@ -3,7 +3,8 @@ function draw_raid()
     draw_set_color(c_black);
     draw_rectangle(0, 0, 1920, 1080, false);
 
-    draw_raid_room_border();
+    if (!raid.room_entering)
+        draw_raid_room_border();
 
     // Arena
     draw_set_color(c_lime);
@@ -27,6 +28,7 @@ function draw_raid()
     draw_raid_ring_hazards();
     draw_raid_extract();
 	draw_raid_doors();
+	smoke_draw();
     if (raid.room_cleared)
     {
         draw_set_halign(fa_center);
@@ -36,6 +38,9 @@ function draw_raid()
             "ROOM CLEARED"
         );
         draw_set_halign(fa_left);
-    }
+	}
+
+    if (raid.room_entering)
+        draw_raid_room_border();
 
 }

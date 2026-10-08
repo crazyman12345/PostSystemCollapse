@@ -1,11 +1,13 @@
 if (keyboard_check_pressed(vk_f11)) {
     window_set_fullscreen(!window_get_fullscreen());
 }
-step_debug_terminal();
+if (!(state == GameState.RAID && raid.active && raid.room_entering))
+    step_debug_terminal();
 if debug_console_open exit;
 	
 
-step_handle_shortcuts();
+if (!(state == GameState.RAID && raid.active && raid.room_entering))
+    step_handle_shortcuts();
 
 if (overlay_mode != OverlayMode.NONE)
 {
@@ -13,7 +15,7 @@ if (overlay_mode != OverlayMode.NONE)
     exit;
 }
 
-if (state == GameState.RAID && raid.active && !raid.paused)
+if (state == GameState.RAID && raid.active && !raid.paused && !raid.room_entering)
 {
     raid_hotbar_validate();
     if (keyboard_check_pressed(ord("1"))) raid_hotbar_use(0);
@@ -36,6 +38,8 @@ switch (state) {
 	}
 	case GameState.RAID:{
 		step_raid();
+		if (!raid.room_entering)
+			smoke_update();
 		break;
 	}
 }

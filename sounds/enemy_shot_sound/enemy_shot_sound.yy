@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"enemy_shot_sound",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.33959183,
+  "exportDir":"",
+  "name":"enemy_shot_sound",
+  "parent":{
+    "name":"IdleGame",
+    "path":"IdleGame.yyp",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"enemy_shot_sound.mp3",
+  "volume":0.53,
+}

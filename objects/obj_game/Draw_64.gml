@@ -18,7 +18,7 @@ switch (state)
 		{
 			draw_raid_gun_tuning_panel();
 		}
-		if (raid.active && overlay_mode == OverlayMode.NONE && !raid.paused)
+		if (raid.active && overlay_mode == OverlayMode.NONE && !raid.paused && !raid.room_entering)
 		{
 			draw_raid_hotbar(false);
 		}

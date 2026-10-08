@@ -66,7 +66,6 @@ function raid_combat_loss()
 
     raid.doors_active =
         false;
-
     raid_enemies = [];
     raid_bullets = [];
     raid_enemy_bullets = [];

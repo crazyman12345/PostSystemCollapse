@@ -1,5 +1,6 @@
 function raid_spawn_reward_lootable(_reward_type)
 {
+	audio_play_sound(smoke_sound,0,false);
     var _cx =
         (raid_room_x1 + raid_room_x2) * 0.5;
 
@@ -57,5 +58,13 @@ function raid_spawn_reward_lootable(_reward_type)
     array_push(
         raid_lootables,
         _lootable
+    );
+
+    smoke_create(
+        _cx - _lootable.width * 0.5 - 5,
+        _cy - _lootable.height * 0.5 - 5,
+        _cx + _lootable.width * 0.5 +5,
+        _cy + _lootable.height * 0.5 + 5,
+        30
     );
 }

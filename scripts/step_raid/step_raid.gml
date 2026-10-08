@@ -17,6 +17,27 @@ function step_raid()
     if (!raid.active)
         return;
 
+    if (raid.room_entering)
+    {
+        raid_player_y = max(
+            raid_player_y - raid_player_entry_speed,
+            raid_player_entry_target_y
+        );
+        raid_player_anim_frame += raid_player_anim_speed;
+        step_raid_camera();
+
+        if (raid_player_y <= raid_player_entry_target_y)
+        {
+            raid_player_y = raid_player_entry_target_y;
+            raid.room_entering = false;
+            raid_player_moving = false;
+            raid_player_was_moving = false;
+            raid_player_anim_frame = 0;
+        }
+
+        return;
+    }
+
     if (raid.paused)
     {
         if (keyboard_check_pressed(vk_escape))

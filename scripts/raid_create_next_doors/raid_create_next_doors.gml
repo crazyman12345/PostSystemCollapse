@@ -11,7 +11,7 @@ function raid_create_next_doors()
         _reward2 = raid_get_random_reward();
     }
 
-    var _door_y = raid_room_y1 + 20;
+    var _door_y = raid_room_y1+10;
 
     array_push(
         raid_doors,
@@ -19,7 +19,7 @@ function raid_create_next_doors()
             door_x: raid_room_x1 + 140,
             door_y: _door_y,
             door_w: 70,
-            door_h: 24,
+            door_h: 12,
             reward_type: _reward1
         }
     );
@@ -30,7 +30,7 @@ function raid_create_next_doors()
             door_x: raid_room_x2 - 140,
             door_y: _door_y,
             door_w: 70,
-            door_h: 24,
+            door_h: 12,
             reward_type: _reward2
         }
     );

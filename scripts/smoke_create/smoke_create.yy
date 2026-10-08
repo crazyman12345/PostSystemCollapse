@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"smoke_create",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"smoke_create",
+  "parent":{
+    "name":"smoke_effect",
+    "path":"folders/smoke_effect.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
