@@ -40,6 +40,8 @@ function raid_start(_area)
     raid.room_number = 0;
     raid.room_cleared = false;
 	raid.rooms_cleared = 0;
+    raid.rooms_in_section = 0;
+    raid.section = 1;
     raid_player_x = 960;
     raid_player_y = 540;
 	raid_enemy_bullets = [];
