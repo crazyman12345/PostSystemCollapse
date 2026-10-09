@@ -76,6 +76,7 @@ function step_hideout()
     {
         case HideoutPage.TRADERS: step_hideout_traders(); break;
         case HideoutPage.STASH: step_hideout_stash(); break;
+        case HideoutPage.SKILLS: step_hideout_skills(); break;
         case HideoutPage.SALVAGE: step_hideout_salvage(); break;
 
         case HideoutPage.GUNMAKING: step_hideout_crafting("gunmaking"); break;
@@ -85,5 +86,32 @@ function step_hideout()
 
         case HideoutPage.RAIDS: step_hideout_raid(); break;
         case HideoutPage.WORKSHOP: step_workshop(); break;
+    }
+}
+
+function step_hideout_skills()
+{
+    hideout_skills_index = terminal_menu_input(hideout_skills_index, array_length(hideout_skill_tabs));
+
+    var _mouse_x = device_mouse_x_to_gui(0);
+    var _mouse_y = device_mouse_y_to_gui(0);
+    var tab_x = 340;
+    for (var i = 0; i < array_length(hideout_skill_tabs); i++)
+    {
+        var tab_width = hideout_skill_tab_width(i);
+        if (_mouse_x >= tab_x && _mouse_x <= tab_x + tab_width && _mouse_y >= 80 && _mouse_y <= 138
+            && mouse_check_button_pressed(mb_left) && hideout_skills_index != i)
+        {
+            hideout_skills_index = i;
+            scroll_sound();
+            break;
+        }
+        tab_x += tab_width + 8;
+    }
+
+    if (keyboard_check_pressed(vk_escape))
+    {
+        audio_play_sound(snd_interact, 0, false);
+        hideout_focus = HideoutFocus.SIDEBAR;
     }
 }

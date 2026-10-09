@@ -36,6 +36,11 @@ function init_skill_database(){
 	        name: "VITALITY",
 	        description: "Improves survivability in raids."
 	    },
+	    athleticism:
+	    {
+	        name: "ATHLETICISM",
+	        description: "Improves the player's athletic ability."
+	    },
 		scavenging:
 		{
 			name: "SCAVENGING",
@@ -65,6 +70,7 @@ function init_skill_database(){
         "armorcrafting",
 		"marksmanship",
 		"vitality",
+		"athleticism",
 		"strength",
 		"scavenging",
 		"salvaging"
@@ -115,6 +121,11 @@ function init_skill_database(){
 	        xp: 0
 	    },
 		vitality:
+	    {
+	        level: 1,
+	        xp: 0
+	    },
+		athleticism:
 	    {
 	        level: 1,
 	        xp: 0

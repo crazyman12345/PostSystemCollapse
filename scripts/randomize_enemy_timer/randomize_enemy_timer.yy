@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"randomize_enemy_timer",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"enemy",
+    "path":"folders/RAID/enemy.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

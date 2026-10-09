@@ -120,8 +120,8 @@
   "maintainGms1Font":false,
   "name":"fnt_explosion",
   "parent":{
-    "name":"IdleGame",
-    "path":"IdleGame.yyp",
+    "name":"misc",
+    "path":"folders/misc.yy",
   },
   "pointRounding":0,
   "ranges":[

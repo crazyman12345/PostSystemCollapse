@@ -81,7 +81,7 @@ function draw_equipment_item_select()
         else
         {
             quantity =
-                inventory_get_quantity(item_key);
+                stash_get_quantity(item_key);
         }
 
 

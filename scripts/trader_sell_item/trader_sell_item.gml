@@ -35,7 +35,7 @@ function trader_sell_item(_trader_key, _item_key)
     // DOES PLAYER OWN IT?
     // ==============================
 
-    if (trader_get_stash_quantity(_item_key) < 1)
+    if (!stash_has(_item_key, 1))
     {
         log_add(
             "You don't have any "
@@ -61,26 +61,17 @@ function trader_sell_item(_trader_key, _item_key)
     // COMPLETE SALE
     // ==============================
 
-    for (var i = array_length(stash.items) - 1; i >= 0; i--)
+    if (!stash_remove(_item_key, 1))
     {
-        var stash_item = stash.items[i];
-
-        if (stash_item.item_key == _item_key)
-        {
-            stash_item.quantity--;
-
-            if (stash_item.quantity <= 0)
-            {
-                stash_remove_item(stash_item);
-            }
-
-            break;
-        }
+        return false;
     }
 
-    variable_struct_set(inventory, _item_key, trader_get_stash_quantity(_item_key));
-
-   inventory_add("cash",price);
+    if (!stash_add("cash", price))
+    {
+        stash_add(_item_key, 1);
+        log_add("Not enough stash space to receive payment for " + item.name + ".");
+        return false;
+    }
 
 
     log_add(

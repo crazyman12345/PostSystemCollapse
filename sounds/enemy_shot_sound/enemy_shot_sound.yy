@@ -14,8 +14,8 @@
   "exportDir":"",
   "name":"enemy_shot_sound",
   "parent":{
-    "name":"IdleGame",
-    "path":"IdleGame.yyp",
+    "name":"sounds",
+    "path":"folders/sounds.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_trader_ghost",
   "bboxMode":0,
-  "bbox_bottom":115,
+  "bbox_bottom":4031,
   "bbox_left":0,
-  "bbox_right":99,
+  "bbox_right":3023,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"a7c4c842-c6b7-45ba-bec4-b98d99fd2dea","name":"a7c4c842-c6b7-45ba-bec4-b98d99fd2dea","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c35530c9-eea4-45bf-9dbf-3f9cd1881e4f","name":"c35530c9-eea4-45bf-9dbf-3f9cd1881e4f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
-  "height":116,
+  "height":4032,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"c6c6c956-e46c-4155-9d81-f95621f0ab8c","blendMode":0,"displayName":"default","isLocked":false,"name":"c6c6c956-e46c-4155-9d81-f95621f0ab8c","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"c6d16778-e05b-4795-9fa4-7b8bfdc05b48","blendMode":0,"displayName":"default","isLocked":false,"name":"c6d16778-e05b-4795-9fa4-7b8bfdc05b48","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_trader_ghost",
   "nineSlice":null,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a7c4c842-c6b7-45ba-bec4-b98d99fd2dea","path":"sprites/spr_trader_ghost/spr_trader_ghost.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"28f38720-9a0e-4f4d-b1df-22b39d8ebfe4","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c35530c9-eea4-45bf-9dbf-3f9cd1881e4f","path":"sprites/spr_trader_ghost/spr_trader_ghost.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"5a3f41dd-2b64-4aca-8b9f-fb833507963e","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":100,
+  "width":3024,
 }

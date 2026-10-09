@@ -46,7 +46,7 @@ function draw_trader_info_panel(_trader_key)
 
     if (trader.portrait != -1)
     {
-        draw_sprite_stretched(
+        draw_sprite_stretched_ext(
             trader.portrait,
             0,
 
@@ -54,7 +54,10 @@ function draw_trader_info_panel(_trader_key)
             portrait_top + 3,
 
             portrait_width - 6,
-            portrait_height - 6
+            portrait_height - 6,
+
+            c_green,
+            1
         );
     }
     else

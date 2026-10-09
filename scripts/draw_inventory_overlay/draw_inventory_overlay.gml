@@ -98,7 +98,7 @@ function draw_inventory_overlay()
     // ==========================================
 
     var owned_items =
-        inventory_get_visible_items();
+        stash_get_visible_items();
 
     var item_count =
         array_length(owned_items);
@@ -140,7 +140,7 @@ function draw_inventory_overlay()
                 item_get(item_key);
 
             var quantity =
-                inventory_get_quantity(item_key);
+                stash_get_quantity(item_key);
 
             var row =
                 i - inventory_scroll;
@@ -172,7 +172,7 @@ function draw_inventory_overlay()
     if (item_count > 0)
     {
         var selected_key =
-            inventory_get_selected_item();
+            owned_items[inventory_index];
 
         var selected_item =
             item_get(selected_key);

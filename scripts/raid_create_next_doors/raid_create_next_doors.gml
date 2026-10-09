@@ -35,5 +35,20 @@ function raid_create_next_doors()
         }
     );
 
+    if (raid.current_room_type != RaidRoomType.START)
+    {
+        for (var i = 0; i < array_length(raid_doors); i++)
+        {
+            var _door = raid_doors[i];
+            smoke_create(
+                _door.door_x - _door.door_w * 0.5,
+                _door.door_y - 76,
+                _door.door_x + _door.door_w * 0.5,
+                _door.door_y - 16,
+                20
+            );
+        }
+    }
+
     raid.doors_active = true;
 }

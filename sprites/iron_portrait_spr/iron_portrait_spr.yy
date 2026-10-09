@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"iron_portrait_spr",
   "bboxMode":0,
-  "bbox_bottom":115,
+  "bbox_bottom":446,
   "bbox_left":0,
-  "bbox_right":99,
+  "bbox_right":435,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"3b1c5566-ed86-4542-bfcb-6f395fb7fbf5","name":"3b1c5566-ed86-4542-bfcb-6f395fb7fbf5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"2cbaaabb-a930-4cf6-942f-e63e915c318d","name":"2cbaaabb-a930-4cf6-942f-e63e915c318d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
-  "height":116,
+  "height":447,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"03d89316-e024-43f8-bfe9-5e7e85e3f8fa","blendMode":0,"displayName":"default","isLocked":false,"name":"03d89316-e024-43f8-bfe9-5e7e85e3f8fa","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"607f1636-16e8-4c51-84e5-6e9f40e7bd3f","blendMode":0,"displayName":"default","isLocked":false,"name":"607f1636-16e8-4c51-84e5-6e9f40e7bd3f","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"iron_portrait_spr",
   "nineSlice":null,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"3b1c5566-ed86-4542-bfcb-6f395fb7fbf5","path":"sprites/iron_portrait_spr/iron_portrait_spr.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"f135315a-9b6f-445e-8ca2-6a2bac15286c","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"2cbaaabb-a930-4cf6-942f-e63e915c318d","path":"sprites/iron_portrait_spr/iron_portrait_spr.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"4bf6fe72-6d57-4cc1-ba04-8f6081fe9f14","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":100,
+  "width":436,
 }

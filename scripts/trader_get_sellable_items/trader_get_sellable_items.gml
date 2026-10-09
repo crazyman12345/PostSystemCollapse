@@ -32,15 +32,5 @@ function trader_get_sellable_items(_trader_key)
 
 function trader_get_stash_quantity(_item_key)
 {
-    var quantity = 0;
-
-    for (var i = 0; i < array_length(stash.items); i++)
-    {
-        if (stash.items[i].item_key == _item_key)
-        {
-            quantity += stash.items[i].quantity;
-        }
-    }
-
-    return quantity;
+    return stash_get_quantity(_item_key);
 }

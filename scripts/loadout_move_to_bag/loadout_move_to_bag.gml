@@ -1,18 +1,14 @@
 function loadout_move_to_bag(_item_key)
 {
-    if (!inventory_has(_item_key, 1))
-    {
-        return false;
-    }
+    var items = stash_find_items(_item_key);
+    if (array_length(items) == 0) return false;
 
-    if (!inventory_remove(_item_key, 1))
-    {
-        return false;
-    }
+    var item = items[0];
+    stash_remove_item(item);
 
-    if (!raid_bag_add(_item_key, 1))
+    if (!stash_place_existing_item(item, stash.backpack))
     {
-        inventory_add(_item_key, 1);
+        array_push(stash.items, item);
         return false;
     }
 

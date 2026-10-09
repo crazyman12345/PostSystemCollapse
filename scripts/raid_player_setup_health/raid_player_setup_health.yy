@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_player_setup_health",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"player",
+    "path":"folders/RAID/player.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

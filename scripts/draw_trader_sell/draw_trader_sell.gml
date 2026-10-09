@@ -183,7 +183,7 @@ function draw_trader_sell()
 
 
             var quantity =
-                trader_get_stash_quantity(
+                stash_get_quantity(
                     item_key
                 );
 

@@ -36,7 +36,7 @@ function debug_command_give(_args)
         return;
     }
 
-    inventory_add(
+    stash_add(
         item_key,
         quantity
     );

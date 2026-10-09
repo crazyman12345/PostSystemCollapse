@@ -10,6 +10,20 @@ function stash_find_items(_item_key, _storage = stash)
     return items;
 }
 
+function stash_get_visible_items(_storage = stash)
+{
+    var visible_items = [];
+
+    for (var i = 0; i < array_length(_storage.items); i++)
+    {
+        var item = _storage.items[i];
+        if (item.quantity > 0 && !array_contains(visible_items, item.item_key))
+            array_push(visible_items, item.item_key);
+    }
+
+    return visible_items;
+}
+
 function stash_get_quantity(_item_key)
 {
     var quantity = 0;

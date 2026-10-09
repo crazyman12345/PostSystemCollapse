@@ -143,6 +143,27 @@ equipment_selecting_item = false;
 // SKILLS
 // ==============================
 skills_index = 0;
+hideout_skills_index = 0;
+skill_icon_marksmanship = icon_marksmanship;
+skill_icon_athleticism = icon_athleticism;
+skill_icon_vitality = icon_vitality;
+skill_icon_strength = icon_strength;
+skill_icon_scavenging = icon_scavenging;
+skill_icon_medical_crafting = icon_medical_crafting;
+skill_icon_gunmaking = icon_gunmaking;
+skill_icon_armorcrafting = icon_armorcrafting;
+skill_icon_drugmaking = icon_drugmaking;
+hideout_skill_tabs = [
+    { key: "marksmanship", name: "MARKSMANSHIP", icon: skill_icon_marksmanship, description: "Placeholder description for the Marksmanship skill." },
+    { key: "vitality", name: "VITALITY", icon: skill_icon_vitality, description: "Placeholder description for the Vitality skill." },
+    { key: "athleticism", name: "ATHLETICISM", icon: skill_icon_athleticism, description: "Placeholder description for the Athleticism skill." },
+    { key: "strength", name: "STRENGTH", icon: skill_icon_strength, description: "Placeholder description for the Strength skill." },
+    { key: "scavenging", name: "SCAVENGING", icon: skill_icon_scavenging, description: "Placeholder description for the Scavenging skill." },
+    { key: "medical_crafting", name: "MEDICAL CRAFTING", icon: skill_icon_medical_crafting, description: "Placeholder description for the Medical Crafting skill." },
+    { key: "gunmaking", name: "GUN CRAFTING", icon: skill_icon_gunmaking, description: "Placeholder description for the Gun Crafting skill." },
+    { key: "armorcrafting", name: "ARMOR CRAFTING", icon: skill_icon_armorcrafting, description: "Placeholder description for the Armor Crafting skill." },
+    { key: "drugmaking", name: "DRUG CRAFTING", icon: skill_icon_drugmaking, description: "Placeholder description for the Drug Crafting skill." }
+];
 crew_skills_index = 0;
 crew_skills_crew_index = 0;
 crafting_recipe_index = 0;

@@ -27,7 +27,7 @@ function debug_execute(_command)
             break;
 		
 		case "money":
-			inventory_add("cash",10000);
+			stash_add("cash",10000);
 			break;
 
         case "help":

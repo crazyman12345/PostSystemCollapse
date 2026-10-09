@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_hotbar_use",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"hotbar",
+    "path":"folders/RAID/hotbar.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

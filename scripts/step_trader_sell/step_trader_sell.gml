@@ -26,7 +26,7 @@ var sellable_items =
 		            current_trader_key,
 		            item_key
 		        );
-		        // Rebuild list because inventory changed
+		        // Rebuild list because stash contents changed
 		        sellable_items =
 		            trader_get_sellable_items(
 		                current_trader_key

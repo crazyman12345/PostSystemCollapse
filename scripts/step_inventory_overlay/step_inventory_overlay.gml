@@ -3,7 +3,7 @@
 		return;
 	 }
 	 
-   var owned_items = inventory_get_visible_items();
+   var owned_items = stash_get_visible_items();
     var item_count = array_length(owned_items);
     if (item_count > 0) {
         inventory_index = terminal_menu_input(inventory_index, item_count);

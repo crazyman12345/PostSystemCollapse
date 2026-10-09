@@ -7,11 +7,19 @@ function equipment_equip_item(
     var member =
         crew[_crew_index];
 
-    var old_item_key =
-        equipment_get_slot_item(
-            _crew_index,
-            _slot
-        );
+    var old_item;
+
+    switch (_slot)
+    {
+        case EquipmentSlot.WEAPON: old_item = stash.equipped_weapon_item; break;
+        case EquipmentSlot.WEAPON_2: old_item = stash.equipped_weapon_2_item; break;
+        case EquipmentSlot.HEAD: old_item = stash.equipped_armor_head_item; break;
+        case EquipmentSlot.CHEST: old_item = stash.equipped_armor_chest_item; break;
+        case EquipmentSlot.BAG: old_item = stash.equipped_bag_item; break;
+    }
+
+    var source = raid.active ? stash.backpack : stash;
+    var new_item = undefined;
 
 
     // ==============================
@@ -20,26 +28,9 @@ function equipment_equip_item(
 
     if (_new_item_key != "")
     {
-        var removed = false;
+        var matching_items = stash_find_items(_new_item_key, source);
 
-        if (raid.active)
-        {
-            removed =
-                raid_bag_remove(
-                    _new_item_key,
-                    1
-                );
-        }
-        else
-        {
-            removed =
-                inventory_remove(
-                    _new_item_key,
-                    1
-                );
-        }
-
-        if (!removed)
+        if (array_length(matching_items) == 0)
         {
             log_add(
                 "Unable to equip item."
@@ -47,6 +38,9 @@ function equipment_equip_item(
 
             return false;
         }
+
+        new_item = matching_items[0];
+        stash_remove_item(new_item, source);
     }
 
 
@@ -54,21 +48,13 @@ function equipment_equip_item(
     // RETURN OLD ITEM
     // ==============================
 
-    if (old_item_key != "")
+    if (!is_undefined(old_item))
     {
-        if (raid.active)
+        if (!stash_place_existing_item(old_item, source))
         {
-            raid_bag_add(
-                old_item_key,
-                1
-            );
-        }
-        else
-        {
-            inventory_add(
-                old_item_key,
-                1
-            );
+            if (!is_undefined(new_item)) array_push(source.items, new_item);
+            log_add("Unable to unequip item: not enough storage space.");
+            return false;
         }
     }
 
@@ -82,26 +68,38 @@ function equipment_equip_item(
         case EquipmentSlot.WEAPON:
             member.weapon =
                 _new_item_key;
+            stash.equipped_weapon_item = new_item;
             break;
 
         case EquipmentSlot.WEAPON_2:
             member.weapon_2 =
                 _new_item_key;
+            stash.equipped_weapon_2_item = new_item;
             break;
 
         case EquipmentSlot.HEAD:
             member.armor_head =
                 _new_item_key;
+            stash.equipped_armor_head_item = new_item;
             break;
 
         case EquipmentSlot.CHEST:
             member.armor_chest =
                 _new_item_key;
+            stash.equipped_armor_chest_item = new_item;
             break;
 
         case EquipmentSlot.BAG:
             member.bag =
                 _new_item_key;
+            stash.equipped_bag_item = new_item;
+
+            if (!is_undefined(new_item))
+            {
+                var bag_definition = item_get(_new_item_key);
+                stash.backpack.grid_width = bag_definition.grid_width;
+                stash.backpack.grid_height = bag_definition.grid_height;
+            }
             break;
     }
 

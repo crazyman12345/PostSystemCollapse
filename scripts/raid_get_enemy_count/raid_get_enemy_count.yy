@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_get_enemy_count",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"enemy",
+    "path":"folders/RAID/enemy.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

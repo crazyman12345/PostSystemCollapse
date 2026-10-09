@@ -1,17 +1,7 @@
 function draw_trader_select()
 {
-    var trader_keys = variable_struct_get_names(global.traders);
-
-    if (!global.admin_trader_enabled)
-    {
-        for (var i = array_length(trader_keys) - 1; i >= 0; i--)
-        {
-            if (trader_keys[i] == "admin")
-            {
-                array_delete(trader_keys, i, 1);
-            }
-        }
-    }
+    var trader_keys = ["iron", "mara", "bastion", "sawbones", "ghost"];
+    if (global.admin_trader_enabled) array_push(trader_keys, "admin");
 
     // RIGHT SIDE AREA: X 320 -> 1920
     // CONTENT AREA: Y 80 -> 1080
@@ -61,7 +51,7 @@ function draw_trader_select()
 
     if (selected_trader.portrait != -1)
     {
-        draw_sprite_stretched(selected_trader.portrait, 0, portrait_left + 3, portrait_top + 3, portrait_width - 6, portrait_height - 6);
+        draw_sprite_stretched_ext(selected_trader.portrait, 0, portrait_left + 3, portrait_top + 3, portrait_width - 6, portrait_height - 6, c_green, 1);
     }
     else
     {

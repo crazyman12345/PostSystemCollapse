@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_trader_clothman",
   "bboxMode":0,
-  "bbox_bottom":115,
+  "bbox_bottom":3808,
   "bbox_left":0,
-  "bbox_right":99,
+  "bbox_right":3176,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"15fc397d-5c87-4477-a30a-23a7d776a2a3","name":"15fc397d-5c87-4477-a30a-23a7d776a2a3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f3bff72f-eb53-4ba0-a52c-a3b99775266d","name":"f3bff72f-eb53-4ba0-a52c-a3b99775266d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
-  "height":116,
+  "height":3809,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"9d022b46-92f1-49ff-bc51-65d9fd8776c4","blendMode":0,"displayName":"default","isLocked":false,"name":"9d022b46-92f1-49ff-bc51-65d9fd8776c4","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"447baa12-aab3-4344-9895-125c77f8c153","blendMode":0,"displayName":"default","isLocked":false,"name":"447baa12-aab3-4344-9895-125c77f8c153","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_trader_clothman",
   "nineSlice":null,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"15fc397d-5c87-4477-a30a-23a7d776a2a3","path":"sprites/spr_trader_clothman/spr_trader_clothman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"af50e685-e618-45e1-af6c-00b59697a3bd","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f3bff72f-eb53-4ba0-a52c-a3b99775266d","path":"sprites/spr_trader_clothman/spr_trader_clothman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"5024a4ad-f30d-4682-b0d5-08f2de154207","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":100,
+  "width":3177,
 }

@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_trader_sawbones",
   "bboxMode":0,
-  "bbox_bottom":115,
+  "bbox_bottom":920,
   "bbox_left":0,
-  "bbox_right":99,
+  "bbox_right":740,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"4e7165b7-493f-4622-986c-7039e5663e91","name":"4e7165b7-493f-4622-986c-7039e5663e91","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d22fb219-5045-420a-a5b7-2e62bab4c312","name":"d22fb219-5045-420a-a5b7-2e62bab4c312","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
-  "height":116,
+  "height":921,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"16dee1dc-df53-4723-aba3-be74d65ae964","blendMode":0,"displayName":"default","isLocked":false,"name":"16dee1dc-df53-4723-aba3-be74d65ae964","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"418cadce-15cf-4cda-8bb2-e212cfe270d0","blendMode":0,"displayName":"default","isLocked":false,"name":"418cadce-15cf-4cda-8bb2-e212cfe270d0","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_trader_sawbones",
   "nineSlice":null,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"4e7165b7-493f-4622-986c-7039e5663e91","path":"sprites/spr_trader_sawbones/spr_trader_sawbones.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"d954ad88-31ff-4a54-a998-9a4e2e4fd396","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d22fb219-5045-420a-a5b7-2e62bab4c312","path":"sprites/spr_trader_sawbones/spr_trader_sawbones.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"04372ec2-a003-41f3-b7ae-ea8ae2c3f24a","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":100,
+  "width":741,
 }

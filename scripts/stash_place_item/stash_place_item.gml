@@ -36,3 +36,21 @@ function stash_place_item(_item_key, _x, _y, _rotation, _container = stash)
     array_push(_container.items, item);
     return item;
 }
+
+function stash_place_existing_item(_item, _container = stash)
+{
+    for (var grid_y = 0; grid_y < _container.grid_height; grid_y++)
+    {
+        for (var grid_x = 0; grid_x < _container.grid_width; grid_x++)
+        {
+            if (!stash_item_fits(_item.item_key, grid_x, grid_y, _item.rotation, _container)) continue;
+
+            _item.x = grid_x;
+            _item.y = grid_y;
+            array_push(_container.items, _item);
+            return true;
+        }
+    }
+
+    return false;
+}

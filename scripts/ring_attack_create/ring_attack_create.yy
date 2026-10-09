@@ -4,7 +4,10 @@
   "isCompatibility":false,
   "isDnD":false,
   "name":"ring_attack_create",
-  "parent":{"name":"RAID","path":"folders/RAID.yy",},
+  "parent":{
+    "name":"enemy",
+    "path":"folders/RAID/enemy.yy",
+  },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
 }

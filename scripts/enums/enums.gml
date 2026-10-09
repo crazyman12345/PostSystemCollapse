@@ -94,10 +94,7 @@ function enums(){
 	//COMBAT
 	enum EffectType
 	{
-		HEAL,
-		GIVE_ITEM,
-		REMOVE_ITEM,
-		SET_FLAG
+		HEAL
 	}
 	enum CrewStatus
 	{

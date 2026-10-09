@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_trader_mara",
   "bboxMode":0,
-  "bbox_bottom":115,
+  "bbox_bottom":2808,
   "bbox_left":0,
-  "bbox_right":99,
+  "bbox_right":2544,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"6c513bcc-ea9a-4dab-8b3f-228d037afb62","name":"6c513bcc-ea9a-4dab-8b3f-228d037afb62","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f984816d-5cb2-4bc2-b543-45e085783d7d","name":"f984816d-5cb2-4bc2-b543-45e085783d7d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
-  "height":116,
+  "height":2809,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"fc39762a-39e0-4e3b-991e-738bd09ced65","blendMode":0,"displayName":"default","isLocked":false,"name":"fc39762a-39e0-4e3b-991e-738bd09ced65","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"86788bea-3dea-4438-a0f2-b3c983df3e40","blendMode":0,"displayName":"default","isLocked":false,"name":"86788bea-3dea-4438-a0f2-b3c983df3e40","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_trader_mara",
   "nineSlice":null,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"6c513bcc-ea9a-4dab-8b3f-228d037afb62","path":"sprites/spr_trader_mara/spr_trader_mara.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"75e11ecf-a9ac-470d-9c63-3fd357545b76","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f984816d-5cb2-4bc2-b543-45e085783d7d","path":"sprites/spr_trader_mara/spr_trader_mara.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"149231e7-6794-434e-b6f6-aac2ade301bb","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":100,
+  "width":2545,
 }

@@ -11,7 +11,7 @@ function equipment_get_valid_items(_slot)
     else
     {
         source_items =
-            inventory_get_visible_items();
+            stash_get_visible_items();
     }
 
     var valid_items = [];

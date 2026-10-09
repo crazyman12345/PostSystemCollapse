@@ -69,12 +69,17 @@ function trader_buy_item(_trader_key, _stock_index)
     // COMPLETE PURCHASE
     // ==============================
 
-    spend_cash(price);
+    if (!spend_cash(price))
+    {
+        return false;
+    }
 
-    stash_add(
-        stock_entry.item_key,
-        1
-    );
+    if (!stash_add(stock_entry.item_key, 1))
+    {
+        stash_add("cash", price);
+        log_add("Not enough stash space to buy " + item.name + ".");
+        return false;
+    }
 
 
     // ==============================

@@ -1,0 +1,11 @@
+Oct 2 — Stash become real grid. Equipment, backpack, secure container, hotbar, crafting UI.
+Oct 3 — Trader faces added. Mara, Sawbones, Clothman, Ghost. Workbench and item icons added.
+Oct 5 — Gun sprites upgraded. Weapon size/offset system improved.
+Oct 6 — Bones boss art added. Enemy gun/hand rig improved. Boss scaling fixed.
+Oct 7 — Room border added. Abandoned store shelf border, doors, arena look.
+Oct 7 — Smoke system added. Smoke spawn in area, drift little, fade slow.
+Oct 7 — Bones attacks added. Shoot-dash-shoot. Shockwave. Reusable ring attack.
+Oct 7 — Bones pacing and Phase 2 work. Transition planned, visual power-up ideas.
+Oct 7 — Raid timeline added. Extract at rooms 5 and 10. Bones at room 15.
+Oct 7 — Old inventory system migration started. Physical stash become truth.
+Oct 8 — Entry/exit transition cleaned. Door overlay fixed. Black mask above doors added.

@@ -22,7 +22,7 @@ function draw_raid_doors()
 
         draw_text_transformed(
             d.door_x,
-            d.door_y-75,
+            d.door_y-90,
             raid_reward_name(d.reward_type),
             0.35,
             0.35,

@@ -45,9 +45,6 @@ function draw_raid_enemies()
             1
         );
 
-
-        draw_raid_enemy_gun_and_hands(e);
-
         if (
             variable_struct_exists(e, "boss_transition_dialogue")
             && e.boss_transition_dialogue != ""
@@ -86,21 +83,20 @@ function draw_raid_enemies()
             // HEALTH BAR
             // ==============================
 
-            var _bar_w = 32;
-            var _bar_h = 4;
+            var _enemy_bbox = raid_enemy_get_collision_bbox(e);
+            var _bar_w = (_enemy_bbox.right - _enemy_bbox.left) + 4;
+            var _bar_h = 2;
 
-            var _bar_x =
-                e.enemy_x
-                - (_bar_w * 0.5);
+            var _bar_x = _enemy_bbox.left - 2;
 
 
             // ==============================
-            // POSITION ABOVE SPRITE
+            // POSITION BELOW SPRITE
             // ==============================
 
             var _bar_y;
 
-            _bar_y = raid_enemy_get_collision_bbox(e).top - 15;
+            _bar_y = _enemy_bbox.bottom + 3;
 
 
             var _hp_percent =
@@ -159,24 +155,9 @@ function draw_raid_enemies()
                 false
             );
 
-
-            // ==============================
-            // HP NUMBER
-            // ==============================
-
-            draw_set_color(c_white);
-            draw_set_halign(fa_center);
-            draw_set_valign(fa_bottom);
-
-            draw_text_transformed(
-                e.enemy_x,
-                _bar_y - 2,
-                string(ceil(e.enemy_hp)),
-                0.4,
-                0.4,
-                0
-            );
         }
+
+        draw_raid_enemy_gun_and_hands(e);
 
     }
 
