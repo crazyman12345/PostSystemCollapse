@@ -11,53 +11,39 @@ function draw_raid_enemies()
         // ENEMY BODY
         // ==============================
 
-        if (e.enemy_sprite != -1)
-        {
-            var _enemy_color = e.enemy_tint;
-            var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
-            var _second_flash_duration = floor(_total_flash_duration / 2);
-            var _bbox_height =
-                sprite_get_bbox_bottom(e.enemy_sprite)
-                - sprite_get_bbox_top(e.enemy_sprite)
-                + 1;
-            var _normalize_scale = 40 / _bbox_height;
-            var _draw_scale =
-                0.75
-                * _normalize_scale
-                * e.size_multiplier;
+        var _enemy_color = e.enemy_tint;
+        var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
+        var _second_flash_duration = floor(_total_flash_duration / 2);
+        var _bbox_height =
+            sprite_get_bbox_bottom(e.enemy_sprite)
+            - sprite_get_bbox_top(e.enemy_sprite)
+            + 1;
+        var _normalize_scale = 40 / _bbox_height;
+        var _draw_scale =
+            0.75
+            * _normalize_scale
+            * e.size_multiplier;
 
-            if (
-                e.enemy_hit_flash_timer > 0
-                && (
-                    e.enemy_hit_flash_timer > _total_flash_duration
-                    || e.enemy_hit_flash_timer <= _second_flash_duration
-                )
+        if (
+            e.enemy_hit_flash_timer > 0
+            && (
+                e.enemy_hit_flash_timer > _total_flash_duration
+                || e.enemy_hit_flash_timer <= _second_flash_duration
             )
-                _enemy_color = c_red;
+        )
+            _enemy_color = c_red;
 
-            draw_sprite_ext(
-                e.enemy_sprite,
-                floor(e.enemy_frame),
-                e.enemy_x,
-                e.enemy_y,
-                e.enemy_facing * _draw_scale,
-                _draw_scale,
-                0,
-                _enemy_color,
-                1
-            );
-        }
-        else
-        {
-            draw_set_color(c_red);
-
-            draw_circle(
-                e.enemy_x,
-                e.enemy_y,
-                e.enemy_radius,
-                false
-            );
-        }
+        draw_sprite_ext(
+            e.enemy_sprite,
+            floor(e.enemy_frame),
+            e.enemy_x,
+            e.enemy_y,
+            e.enemy_facing * _draw_scale,
+            _draw_scale,
+            0,
+            _enemy_color,
+            1
+        );
 
 
         draw_raid_enemy_gun_and_hands(e);
@@ -67,14 +53,7 @@ function draw_raid_enemies()
             && e.boss_transition_dialogue != ""
         )
         {
-            var _dialogue_y = e.enemy_y - e.enemy_radius - 20;
-
-            if (e.enemy_sprite != -1)
-            {
-                var _dialogue_bbox_height = sprite_get_bbox_bottom(e.enemy_sprite) - sprite_get_bbox_top(e.enemy_sprite) + 1;
-                var _dialogue_scale = 0.75 * (40 / _dialogue_bbox_height) * e.size_multiplier;
-                _dialogue_y = e.enemy_y - (sprite_get_yoffset(e.enemy_sprite) * _dialogue_scale) - 12;
-            }
+            var _dialogue_y = raid_enemy_get_collision_bbox(e).top - 12;
 
             draw_set_color(c_white);
             draw_set_halign(fa_center);
@@ -121,29 +100,7 @@ function draw_raid_enemies()
 
             var _bar_y;
 
-            if (e.enemy_sprite != -1)
-            {
-                var _origin_y =
-                    sprite_get_yoffset(
-                        e.enemy_sprite
-                    )
-                    * _draw_scale;
-
-                var _sprite_top =
-                    e.enemy_y
-                    - _origin_y;
-
-                _bar_y =
-                    _sprite_top
-                    - 15;
-            }
-            else
-            {
-                _bar_y =
-                    e.enemy_y
-                    - e.enemy_radius
-                    - 15;
-            }
+            _bar_y = raid_enemy_get_collision_bbox(e).top - 15;
 
 
             var _hp_percent =

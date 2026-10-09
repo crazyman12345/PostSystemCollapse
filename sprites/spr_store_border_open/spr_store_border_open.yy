@@ -2,7 +2,7 @@
   "$GMSprite":"v2",
   "%Name":"spr_store_border_open",
   "bboxMode":0,
-  "bbox_bottom":607,
+  "bbox_bottom":626,
   "bbox_left":20,
   "bbox_right":610,
   "bbox_top":5,

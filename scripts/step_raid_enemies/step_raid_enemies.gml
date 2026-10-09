@@ -81,17 +81,9 @@ function step_raid_enemies()
         // KEEP ENEMY INSIDE ROOM
         // ==========================================
 
-        e.enemy_x = clamp(
-            e.enemy_x,
-            raid_room_x1 + e.enemy_radius,
-            raid_room_x2 - e.enemy_radius
-        );
-
-        e.enemy_y = clamp(
-            e.enemy_y,
-            raid_room_y1 + e.enemy_radius,
-            raid_room_y2 - e.enemy_radius
-        );
+        var _enemy_bbox = raid_enemy_get_collision_bbox(e);
+        e.enemy_x = clamp(e.enemy_x, raid_room_x1 + e.enemy_x - _enemy_bbox.left, raid_room_x2 - (_enemy_bbox.right - e.enemy_x));
+        e.enemy_y = clamp(e.enemy_y, raid_room_y1 + e.enemy_y - _enemy_bbox.top, raid_room_y2 - (_enemy_bbox.bottom - e.enemy_y));
 
 		var _actual_move_speed = point_distance(
 		    _start_x,
@@ -108,14 +100,13 @@ function step_raid_enemies()
         {
             var bullet = raid_bullets[b];
 
-            var _dist = point_distance(
-                e.enemy_x,
-                e.enemy_y,
-                bullet.bx,
-                bullet.by
-            );
-
-            if (_dist <= e.enemy_radius + 4)
+            var _bullet_bbox = raid_enemy_get_collision_bbox(e);
+            if (
+                bullet.bx >= _bullet_bbox.left - 4
+                && bullet.bx <= _bullet_bbox.right + 4
+                && bullet.by >= _bullet_bbox.top - 4
+                && bullet.by <= _bullet_bbox.bottom + 4
+            )
             {
                 if (!e.enemy_invulnerable)
                 {
@@ -136,17 +127,12 @@ function step_raid_enemies()
         }
 		//Colliding with player (like knife enemies)
 		var _player_bbox = raid_player_get_collision_bbox();
-		var _nearest_player_x = clamp(e.enemy_x, _player_bbox.left, _player_bbox.right);
-		var _nearest_player_y = clamp(e.enemy_y, _player_bbox.top, _player_bbox.bottom);
-
+		var _enemy_collision_bbox = raid_enemy_get_collision_bbox(e);
 		if (
-		    point_distance(
-		        e.enemy_x,
-		        e.enemy_y,
-		        _nearest_player_x,
-		        _nearest_player_y
-		    )
-		    <= e.enemy_radius
+		    _enemy_collision_bbox.left <= _player_bbox.right
+		    && _enemy_collision_bbox.right >= _player_bbox.left
+		    && _enemy_collision_bbox.top <= _player_bbox.bottom
+		    && _enemy_collision_bbox.bottom >= _player_bbox.top
 		)
 		{
 		    raid_player_take_damage(10);

@@ -47,50 +47,35 @@ function wall_rusher(_enemy)
 
             var _hit_wall = false;
 
-            if (
-                _next_x - e.enemy_radius
-                <= raid_room_x1
-            )
+            var _next_bbox = raid_enemy_get_collision_bbox_at(e, _next_x, _next_y);
+
+            if (_next_bbox.left <= raid_room_x1)
             {
-                _next_x =
-                    raid_room_x1
-                    + e.enemy_radius;
+                _next_x += raid_room_x1 - _next_bbox.left;
 
                 _hit_wall = true;
             }
 
-            if (
-                _next_x + e.enemy_radius
-                >= raid_room_x2
-            )
+            _next_bbox = raid_enemy_get_collision_bbox_at(e, _next_x, _next_y);
+            if (_next_bbox.right >= raid_room_x2)
             {
-                _next_x =
-                    raid_room_x2
-                    - e.enemy_radius;
+                _next_x -= _next_bbox.right - raid_room_x2;
 
                 _hit_wall = true;
             }
 
-            if (
-                _next_y - e.enemy_radius
-                <= raid_room_y1
-            )
+            _next_bbox = raid_enemy_get_collision_bbox_at(e, _next_x, _next_y);
+            if (_next_bbox.top <= raid_room_y1)
             {
-                _next_y =
-                    raid_room_y1
-                    + e.enemy_radius;
+                _next_y += raid_room_y1 - _next_bbox.top;
 
                 _hit_wall = true;
             }
 
-            if (
-                _next_y + e.enemy_radius
-                >= raid_room_y2
-            )
+            _next_bbox = raid_enemy_get_collision_bbox_at(e, _next_x, _next_y);
+            if (_next_bbox.bottom >= raid_room_y2)
             {
-                _next_y =
-                    raid_room_y2
-                    - e.enemy_radius;
+                _next_y -= _next_bbox.bottom - raid_room_y2;
 
                 _hit_wall = true;
             }

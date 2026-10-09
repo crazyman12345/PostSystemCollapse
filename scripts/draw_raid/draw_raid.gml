@@ -7,16 +7,17 @@ function draw_raid()
         draw_raid_room_border();
 
     // Arena
-    draw_set_color(c_lime);
-    draw_rectangle(
-        raid_room_x1,
-        raid_room_y1,
-        raid_room_x2,
-        raid_room_y2,
-        true
-    );
+    //draw_set_color(c_lime);
+    //draw_rectangle(
+    //    raid_room_x1,
+    //    raid_room_y1,
+    //    raid_room_x2,
+    //    raid_room_y2,
+    //    true
+    //);
 	draw_raid_lootables();
 	draw_raid_ground_items();
+	draw_raid_extract();
     draw_raid_player();
 	draw_raid_gun();
 	draw_raid_lootable_prompt();
@@ -26,19 +27,12 @@ function draw_raid()
     draw_raid_bullets();
     draw_raid_enemy_bullets();
     draw_raid_ring_hazards();
-    draw_raid_extract();
 	draw_raid_doors();
+	draw_raid_door_overlay();
+
+
 	smoke_draw();
-    if (raid.room_cleared)
-    {
-        draw_set_halign(fa_center);
-        draw_text(
-            960,
-            100,
-            "ROOM CLEARED"
-        );
-        draw_set_halign(fa_left);
-	}
+
 
     if (raid.room_entering)
         draw_raid_room_border();

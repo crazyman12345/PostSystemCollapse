@@ -14,7 +14,6 @@ function raid_spawn_enemy(_type, _x, _y)
         enemy_tint: c_white,
 
         enemy_speed: 1.0,
-        enemy_radius: 18,
 
         enemy_state: RaidEnemyState.MOVE,
         state_timer: 0,
@@ -34,7 +33,7 @@ function raid_spawn_enemy(_type, _x, _y)
         dash_dir: 0,
         dash_speed: 0,
 		
-		enemy_sprite: -1,
+		enemy_sprite: spr_knife_stalker_run,
 		enemy_frame: 0,
 		enemy_image_speed: 0.15,
 		enemy_animation_base_speed: 0.15,
@@ -77,6 +76,7 @@ function raid_spawn_enemy(_type, _x, _y)
     {
         case RaidEnemyType.BURST_SHOOTER:
 		{
+		    enemy.enemy_sprite = spr_burst_shooter_run;
 		    enemy.enemy_sprite_idle = spr_burst_shooter_idle;
 			enemy.enemy_sprite_active = spr_burst_shooter_run;
 
@@ -109,6 +109,7 @@ function raid_spawn_enemy(_type, _x, _y)
 
 		   case RaidEnemyType.SPINNER:
 		{
+		    enemy.enemy_sprite = spr_burst_shooter_run;
 		    enemy.enemy_sprite_idle = spr_burst_shooter_idle;
 			enemy.enemy_sprite_active = spr_burst_shooter_run;
 
@@ -129,6 +130,7 @@ function raid_spawn_enemy(_type, _x, _y)
 
         case RaidEnemyType.KNIFE_DASHER:
         {
+            enemy.enemy_sprite = spr_dasher_idle;
             enemy.enemy_hp = 32;
             enemy.enemy_max_hp = 32;
 
@@ -145,6 +147,7 @@ function raid_spawn_enemy(_type, _x, _y)
 
 		case RaidEnemyType.WALL_RUSHER:
         {
+            enemy.enemy_sprite = spr_dasher_idle;
             enemy.enemy_hp = 28;
             enemy.enemy_max_hp = 28;
 
@@ -167,7 +170,6 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_sprite = spr_bones_idle2;
             enemy.enemy_scale = 0.48;
             enemy.size_multiplier = 1.7;
-            enemy.enemy_radius = 28;
             enemy.enemy_has_gun = true;
             enemy.weapon = global.items.m1911;
             enemy.enemy_gun_offset = 18;
@@ -255,4 +257,38 @@ function raid_spawn_enemy(_type, _x, _y)
         raid_enemies,
         enemy
     );
+}
+
+function raid_enemy_get_collision_bbox_at(_enemy, _x, _y)
+{
+    var _sprite = _enemy.enemy_sprite;
+    var _bbox_height = sprite_get_bbox_bottom(_sprite) - sprite_get_bbox_top(_sprite) + 1;
+    var _scale = 0.75 * (40 / _bbox_height) * _enemy.size_multiplier;
+    var _x_origin = sprite_get_xoffset(_sprite);
+    var _y_origin = sprite_get_yoffset(_sprite);
+    var _left_offset;
+    var _right_offset;
+
+    if (_enemy.enemy_facing < 0)
+    {
+        _left_offset = (_x_origin - sprite_get_bbox_right(_sprite)) * _scale;
+        _right_offset = (_x_origin - sprite_get_bbox_left(_sprite)) * _scale;
+    }
+    else
+    {
+        _left_offset = (sprite_get_bbox_left(_sprite) - _x_origin) * _scale;
+        _right_offset = (sprite_get_bbox_right(_sprite) - _x_origin) * _scale;
+    }
+
+    return {
+        left: _x + _left_offset,
+        right: _x + _right_offset,
+        top: _y + (sprite_get_bbox_top(_sprite) - _y_origin) * _scale,
+        bottom: _y + (sprite_get_bbox_bottom(_sprite) - _y_origin) * _scale
+    };
+}
+
+function raid_enemy_get_collision_bbox(_enemy)
+{
+    return raid_enemy_get_collision_bbox_at(_enemy, _enemy.enemy_x, _enemy.enemy_y);
 }

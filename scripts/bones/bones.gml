@@ -154,8 +154,9 @@ function bones(_enemy)
                 case BossAttackState.DASH:
                     var _dash_dist = point_distance(e.enemy_x, e.enemy_y, e.target_x, e.target_y);
                     var _dash_dir = point_direction(e.enemy_x, e.enemy_y, e.target_x, e.target_y);
-                    e.enemy_x = clamp(e.enemy_x + lengthdir_x(_pacing.dash_speed, _dash_dir), raid_room_x1 + e.enemy_radius, raid_room_x2 - e.enemy_radius);
-                    e.enemy_y = clamp(e.enemy_y + lengthdir_y(_pacing.dash_speed, _dash_dir), raid_room_y1 + e.enemy_radius, raid_room_y2 - e.enemy_radius);
+                    var _dash_bbox = raid_enemy_get_collision_bbox(e);
+                    e.enemy_x = clamp(e.enemy_x + lengthdir_x(_pacing.dash_speed, _dash_dir), raid_room_x1 + e.enemy_x - _dash_bbox.left, raid_room_x2 - (_dash_bbox.right - e.enemy_x));
+                    e.enemy_y = clamp(e.enemy_y + lengthdir_y(_pacing.dash_speed, _dash_dir), raid_room_y1 + e.enemy_y - _dash_bbox.top, raid_room_y2 - (_dash_bbox.bottom - e.enemy_y));
                     e.boss_attack_timer--;
 
                     if (_dash_dist <= _pacing.dash_speed + 4 || e.boss_attack_timer <= 0)
@@ -232,16 +233,9 @@ function bones(_enemy)
                         raid_player_y
                     );
 
-                    e.enemy_x = clamp(
-                        e.enemy_x + lengthdir_x(_pacing.walkdown_speed, _walkdown_dir),
-                        raid_room_x1 + e.enemy_radius,
-                        raid_room_x2 - e.enemy_radius
-                    );
-                    e.enemy_y = clamp(
-                        e.enemy_y + lengthdir_y(_pacing.walkdown_speed, _walkdown_dir),
-                        raid_room_y1 + e.enemy_radius,
-                        raid_room_y2 - e.enemy_radius
-                    );
+                    var _walkdown_bbox = raid_enemy_get_collision_bbox(e);
+                    e.enemy_x = clamp(e.enemy_x + lengthdir_x(_pacing.walkdown_speed, _walkdown_dir), raid_room_x1 + e.enemy_x - _walkdown_bbox.left, raid_room_x2 - (_walkdown_bbox.right - e.enemy_x));
+                    e.enemy_y = clamp(e.enemy_y + lengthdir_y(_pacing.walkdown_speed, _walkdown_dir), raid_room_y1 + e.enemy_y - _walkdown_bbox.top, raid_room_y2 - (_walkdown_bbox.bottom - e.enemy_y));
 
                     e.boss_attack_timer--;
                     if (e.boss_attack_timer <= 0 && e.boss_shots_fired < _walkdown_shots)

@@ -183,15 +183,13 @@ function step_raid_shooting()
             for (var i = 0; i < array_length(raid_enemies); i++)
             {
                 var _enemy = raid_enemies[i];
-                var _distance = point_distance(
-                    _attack_x,
-                    _attack_y,
-                    _enemy.enemy_x,
-                    _enemy.enemy_y
-                );
-
+                var _enemy_bbox = raid_enemy_get_collision_bbox(_enemy);
+                var _distance = point_distance(_attack_x, _attack_y, _enemy.enemy_x, _enemy.enemy_y);
                 if (
-                    _distance <= _enemy.enemy_radius + 8
+                    _attack_x >= _enemy_bbox.left - 8
+                    && _attack_x <= _enemy_bbox.right + 8
+                    && _attack_y >= _enemy_bbox.top - 8
+                    && _attack_y <= _enemy_bbox.bottom + 8
                     && _distance < _target_distance
                 )
                 {

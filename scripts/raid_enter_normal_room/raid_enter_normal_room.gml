@@ -26,6 +26,7 @@ function raid_enter_normal_room(_reward_type)
     raid_player_moving = true;
     raid_player_was_moving = false;
     raid_player_anim_frame = 0;
+	step_raid_camera();
 
     raid_spawn_enemies();
 }
