@@ -17,5 +17,6 @@ function debug_start_boss()
 
     raid_enter_normal_room(RaidRewardType.BACKROOM_STASH);
 
+    debug_console_open = false;
     debug_log_add("[DEBUG] Boss room started.");
 }

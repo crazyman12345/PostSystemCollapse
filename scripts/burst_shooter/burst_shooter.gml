@@ -1,14 +1,14 @@
 function burst_shooter(_enemy)
 {
     var e = _enemy;
-
-    e.enemy_gun_angle =
-        point_direction(
-            e.enemy_x,
-            e.enemy_y - 10,
-            raid_player_x,
-            raid_player_y - 12
-        );
+    var _bullet_speed = 2;
+    var _predicted_direction = raid_predict_player_aim(
+        e.enemy_x,
+        e.enemy_y,
+        _bullet_speed * 1.15,
+        e.lead_strength
+    );
+    e.enemy_gun_angle = raid_smooth_aim_direction(e.enemy_gun_angle, _predicted_direction);
 
 
     switch (e.enemy_state)
@@ -47,13 +47,13 @@ function burst_shooter(_enemy)
 
                 e.enemy_x +=
                     lengthdir_x(
-                        e.enemy_speed,
+                        e.enemy_speed * frame_scale,
                         _dir
                     );
 
                 e.enemy_y +=
                     lengthdir_y(
-                        e.enemy_speed,
+                        e.enemy_speed * frame_scale,
                         _dir
                     );
             }
@@ -97,30 +97,20 @@ function burst_shooter(_enemy)
 
 
             if (e.shot_timer > 0)
-                e.shot_timer--;
+                e.shot_timer -= frame_scale;
 
 
 			 if (e.shot_timer <= 0 && e.shots_fired < 3)
 			{
-			    var _dir =
-			        point_direction(
-			            e.enemy_x,
-			            e.enemy_y,
-			            raid_player_x,
-			            raid_player_y
-			        );
-
-			    e.enemy_gun_angle = _dir;
-
 			    e = raid_enemy_fire_gun(
 			        e,
-			        _dir,
-			        2,
+			        e.enemy_gun_angle,
+			        _bullet_speed,
 			        10
 			    );
 
 			    e.shots_fired++;
-                e.shot_timer = randomize_enemy_timer(12, 0.25);
+                e.shot_timer += randomize_enemy_timer(12, 0.25);
 			}
 
 
@@ -153,7 +143,7 @@ function burst_shooter(_enemy)
             }
 
 
-            e.state_timer--;
+            e.state_timer -= frame_scale;
 
 
             if (e.state_timer <= 0)

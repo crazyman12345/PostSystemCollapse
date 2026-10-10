@@ -10,12 +10,12 @@ function knife_stalker(_enemy)
     );
 
     e.enemy_x += lengthdir_x(
-        e.enemy_speed,
+        e.enemy_speed * frame_scale,
         _dir
     );
 
     e.enemy_y += lengthdir_y(
-        e.enemy_speed,
+        e.enemy_speed * frame_scale,
         _dir
     );
 

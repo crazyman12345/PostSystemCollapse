@@ -12,7 +12,7 @@ function draw_raid_enemies()
         // ==============================
 
         var _enemy_color = e.enemy_tint;
-        var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
+        var _total_flash_duration = 8;
         var _second_flash_duration = floor(_total_flash_duration / 2);
         var _bbox_height =
             sprite_get_bbox_bottom(e.enemy_sprite)

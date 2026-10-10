@@ -40,8 +40,8 @@ function step_raid_gun_tuning()
 
     var _amount = keyboard_check(vk_shift) ? 5 : (keyboard_check(vk_control) ? 0.1 : 1);
     var _change = 0;
-    if (keyboard_check(vk_left)) _change -= _amount;
-    if (keyboard_check(vk_right)) _change += _amount;
+    if (keyboard_check(vk_left)) _change -= _amount * frame_scale;
+    if (keyboard_check(vk_right)) _change += _amount * frame_scale;
 
     if (_change != 0)
     {

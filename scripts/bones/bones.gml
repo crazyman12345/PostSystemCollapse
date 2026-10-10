@@ -21,7 +21,6 @@ function bones(_enemy)
     {
         var _center_x = (raid_room_x1 + raid_room_x2) * 0.5;
         var _center_y = (raid_room_y1 + raid_room_y2) * 0.5;
-        var _transition_fps = game_get_speed(gamespeed_fps);
 
         switch (e.boss_transition_stage)
         {
@@ -29,35 +28,37 @@ function bones(_enemy)
                 var _center_dist = point_distance(e.enemy_x, e.enemy_y, _center_x, _center_y);
                 var _move_speed = e.boss_pacing_phase1.shockwave_move_speed;
 
-                if (_center_dist > _move_speed)
+                var _move_step = min(_move_speed * frame_scale, _center_dist);
+
+                if (_center_dist > _move_step)
                 {
                     var _center_dir = point_direction(e.enemy_x, e.enemy_y, _center_x, _center_y);
-                    e.enemy_x += lengthdir_x(_move_speed, _center_dir);
-                    e.enemy_y += lengthdir_y(_move_speed, _center_dir);
+                    e.enemy_x += lengthdir_x(_move_step, _center_dir);
+                    e.enemy_y += lengthdir_y(_move_step, _center_dir);
                 }
                 else
                 {
                     e.enemy_x = _center_x;
                     e.enemy_y = _center_y;
                     e.boss_transition_stage = 1;
-                    e.boss_transition_timer = round(_transition_fps * 0.5);
+                    e.boss_transition_timer = 30;
                 }
                 break;
 
             case 1:
-                e.boss_transition_timer--;
+                e.boss_transition_timer -= frame_scale;
                 if (e.boss_transition_timer <= 0)
                 {
                     e.boss_transition_dialogue = "Okay, now you really pissed me off!";
                     e.boss_transition_stage = 2;
-                    e.boss_transition_timer = round(_transition_fps * 1.75);
+                    e.boss_transition_timer = 105;
                 }
                 break;
 
             case 2:
-                e.boss_transition_timer--;
+                e.boss_transition_timer -= frame_scale;
 
-                if (!e.boss_transition_transformed && e.boss_transition_timer <= round(_transition_fps * 0.25))
+                if (!e.boss_transition_transformed && e.boss_transition_timer <= 15)
                 {
                     e.enemy_tint = make_color_rgb(255, 90, 90);
                     e.size_multiplier *= 1.1;
@@ -80,6 +81,10 @@ function bones(_enemy)
 
         return e;
     }
+
+    var _bullet_speed = 2.5;
+    var _predicted_direction = raid_predict_player_aim(e.enemy_x, e.enemy_y - 10, _bullet_speed * 1.15, e.lead_strength);
+    e.enemy_gun_angle = raid_smooth_aim_direction(e.enemy_gun_angle, _predicted_direction);
 
     var _pacing = _phase2 ? e.boss_pacing_phase2 : e.boss_pacing_phase1;
 
@@ -122,14 +127,10 @@ function bones(_enemy)
                     break;
 
                 case BossAttackState.SHOOT_FIRST:
-                    e.boss_attack_timer--;
+                    e.boss_attack_timer -= frame_scale;
                     if (e.boss_attack_timer <= 0 && e.boss_shots_fired < 3)
                     {
-                        e.enemy_gun_angle = point_direction(
-                            e.enemy_x, e.enemy_y - 10,
-                            raid_player_x, raid_player_y - 12
-                        );
-                        e = raid_enemy_fire_gun(e, e.enemy_gun_angle, 2.5, 10);
+                        e = raid_enemy_fire_gun(e, e.enemy_gun_angle, _bullet_speed, 10);
                         e.boss_shots_fired++;
                         e.boss_attack_timer = _pacing.burst_shot_interval;
                     }
@@ -142,7 +143,7 @@ function bones(_enemy)
                     break;
 
                 case BossAttackState.PRE_DASH:
-                    e.boss_attack_timer--;
+                    e.boss_attack_timer -= frame_scale;
                     if (e.boss_attack_timer <= 0)
                     {
                         e = bones_pick_dash_position(e);
@@ -155,11 +156,13 @@ function bones(_enemy)
                     var _dash_dist = point_distance(e.enemy_x, e.enemy_y, e.target_x, e.target_y);
                     var _dash_dir = point_direction(e.enemy_x, e.enemy_y, e.target_x, e.target_y);
                     var _dash_bbox = raid_enemy_get_collision_bbox(e);
-                    e.enemy_x = clamp(e.enemy_x + lengthdir_x(_pacing.dash_speed, _dash_dir), raid_room_x1 + e.enemy_x - _dash_bbox.left, raid_room_x2 - (_dash_bbox.right - e.enemy_x));
-                    e.enemy_y = clamp(e.enemy_y + lengthdir_y(_pacing.dash_speed, _dash_dir), raid_room_y1 + e.enemy_y - _dash_bbox.top, raid_room_y2 - (_dash_bbox.bottom - e.enemy_y));
-                    e.boss_attack_timer--;
+                    var _dash_step = min(frame_scale, e.boss_attack_timer);
+                    var _dash_move = _pacing.dash_speed * _dash_step;
+                    e.enemy_x = clamp(e.enemy_x + lengthdir_x(_dash_move, _dash_dir), raid_room_x1 + e.enemy_x - _dash_bbox.left, raid_room_x2 - (_dash_bbox.right - e.enemy_x));
+                    e.enemy_y = clamp(e.enemy_y + lengthdir_y(_dash_move, _dash_dir), raid_room_y1 + e.enemy_y - _dash_bbox.top, raid_room_y2 - (_dash_bbox.bottom - e.enemy_y));
+                    e.boss_attack_timer -= frame_scale;
 
-                    if (_dash_dist <= _pacing.dash_speed + 4 || e.boss_attack_timer <= 0)
+                    if (_dash_dist <= _dash_move + 4 || e.boss_attack_timer <= 0)
                     {
                         e.boss_attack_timer = _pacing.post_dash_windup;
                         e.boss_attack_state = BossAttackState.POST_DASH;
@@ -167,7 +170,7 @@ function bones(_enemy)
                     break;
 
                 case BossAttackState.POST_DASH:
-                    e.boss_attack_timer--;
+                    e.boss_attack_timer -= frame_scale;
                     if (e.boss_attack_timer <= 0)
                     {
                         e.boss_shots_fired = 0;
@@ -177,14 +180,10 @@ function bones(_enemy)
                     break;
 
                 case BossAttackState.SHOOT_SECOND:
-                    e.boss_attack_timer--;
+                    e.boss_attack_timer -= frame_scale;
                     if (e.boss_attack_timer <= 0 && e.boss_shots_fired < 3)
                     {
-                        e.enemy_gun_angle = point_direction(
-                            e.enemy_x, e.enemy_y - 10,
-                            raid_player_x, raid_player_y - 12
-                        );
-                        e = raid_enemy_fire_gun(e, e.enemy_gun_angle, 2.5, 10);
+                        e = raid_enemy_fire_gun(e, e.enemy_gun_angle, _bullet_speed, 10);
                         e.boss_shots_fired++;
                         e.boss_attack_timer = _pacing.burst_shot_interval;
                     }
@@ -206,7 +205,7 @@ function bones(_enemy)
                     break;
 
                 case BossAttackState.RECOVERY:
-                    e.boss_attack_timer--;
+                    e.boss_attack_timer -= frame_scale;
                     if (e.boss_attack_timer <= 0)
                     {
                         if (e.boss_attack_repeat_count < 3)
@@ -234,19 +233,13 @@ function bones(_enemy)
                     );
 
                     var _walkdown_bbox = raid_enemy_get_collision_bbox(e);
-                    e.enemy_x = clamp(e.enemy_x + lengthdir_x(_pacing.walkdown_speed, _walkdown_dir), raid_room_x1 + e.enemy_x - _walkdown_bbox.left, raid_room_x2 - (_walkdown_bbox.right - e.enemy_x));
-                    e.enemy_y = clamp(e.enemy_y + lengthdir_y(_pacing.walkdown_speed, _walkdown_dir), raid_room_y1 + e.enemy_y - _walkdown_bbox.top, raid_room_y2 - (_walkdown_bbox.bottom - e.enemy_y));
+                    e.enemy_x = clamp(e.enemy_x + lengthdir_x(_pacing.walkdown_speed * frame_scale, _walkdown_dir), raid_room_x1 + e.enemy_x - _walkdown_bbox.left, raid_room_x2 - (_walkdown_bbox.right - e.enemy_x));
+                    e.enemy_y = clamp(e.enemy_y + lengthdir_y(_pacing.walkdown_speed * frame_scale, _walkdown_dir), raid_room_y1 + e.enemy_y - _walkdown_bbox.top, raid_room_y2 - (_walkdown_bbox.bottom - e.enemy_y));
 
-                    e.boss_attack_timer--;
+                    e.boss_attack_timer -= frame_scale;
                     if (e.boss_attack_timer <= 0 && e.boss_shots_fired < _walkdown_shots)
                     {
-                        e.enemy_gun_angle = point_direction(
-                            e.enemy_x,
-                            e.enemy_y - 10,
-                            raid_player_x,
-                            raid_player_y - 12
-                        );
-                        e = raid_enemy_fire_gun(e, e.enemy_gun_angle, 2.5, 10);
+                        e = raid_enemy_fire_gun(e, e.enemy_gun_angle, _bullet_speed, 10);
                         e.boss_shots_fired++;
                         e.boss_attack_timer = _pacing.walkdown_shot_interval;
                     }
@@ -259,7 +252,7 @@ function bones(_enemy)
                     break;
 
                 case BossAttackState.RECOVERY:
-                    e.boss_attack_timer--;
+                    e.boss_attack_timer -= frame_scale;
                     if (e.boss_attack_timer <= 0)
                     {
                         e.boss_attack = BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT;
@@ -283,8 +276,9 @@ function bones(_enemy)
                     if (_center_dist > 10)
                     {
                         var _center_dir = point_direction(e.enemy_x, e.enemy_y, _center_x, _center_y);
-                        e.enemy_x += lengthdir_x(min(_pacing.shockwave_move_speed, _center_dist), _center_dir);
-                        e.enemy_y += lengthdir_y(min(_pacing.shockwave_move_speed, _center_dist), _center_dir);
+                        var _center_step = min(_pacing.shockwave_move_speed * frame_scale, _center_dist);
+                        e.enemy_x += lengthdir_x(_center_step, _center_dir);
+                        e.enemy_y += lengthdir_y(_center_step, _center_dir);
                     }
                     else
                     {
@@ -307,7 +301,7 @@ function bones(_enemy)
                     break;
 
                 case BossAttackState.SHOCKWAVE_WINDUP:
-                    e.boss_attack_timer--;
+                    e.boss_attack_timer -= frame_scale;
                     if (e.boss_attack_timer <= 0)
                     {
                         e.boss_attack_timer = _pacing.attack_recovery;
@@ -316,7 +310,7 @@ function bones(_enemy)
                     break;
 
                 case BossAttackState.SHOCKWAVE_RECOVERY:
-                    e.boss_attack_timer--;
+                    e.boss_attack_timer -= frame_scale;
                     if (e.boss_attack_timer <= 0)
                     {
                         e.boss_attack = BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT;

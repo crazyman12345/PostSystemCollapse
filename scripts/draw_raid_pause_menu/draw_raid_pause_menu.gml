@@ -1,6 +1,7 @@
 function draw_raid_pause_menu(){
 	var gui_width = display_get_gui_width();
 	var gui_height = display_get_gui_height();
+	var fps_options = [60, 120, 144, 165, 240];
 	var panel_left = gui_width * 0.25;
 	var panel_top = gui_height * 0.3;
 	var panel_right = gui_width * 0.75;
@@ -18,17 +19,23 @@ function draw_raid_pause_menu(){
 	draw_set_halign(fa_center);
 	draw_text(gui_width * 0.5, gui_height * 0.38, "PAUSED");
 
-	if (raid.pause_menu_index == 0)
-	{
-		draw_text(gui_width * 0.5, gui_height * 0.48, "> LEAVE RAID (LOSE ALL GEAR) <");
-		draw_text(gui_width * 0.5, gui_height * 0.54, "CONTINUE");
-	}
-	else
-	{
-		draw_text(gui_width * 0.5, gui_height * 0.48, "LEAVE RAID (LOSE ALL GEAR)");
-		draw_text(gui_width * 0.5, gui_height * 0.54, "> CONTINUE <");
-	}
+	var leave_text = "LEAVE RAID (LOSE ALL GEAR)";
+	var continue_text = "CONTINUE";
+	if (raid.pause_menu_index == 0) leave_text = "> " + leave_text + " <";
+	if (raid.pause_menu_index == 2) continue_text = "> " + continue_text + " <";
 
-	draw_text(gui_width * 0.5, gui_height * 0.63, "W/S: SELECT    ENTER: CONFIRM    ESC: CONTINUE");
+	draw_text(gui_width * 0.5, gui_height * 0.46, leave_text);
+	if (raid.pause_menu_index == 1)
+	{
+		draw_text(gui_width * 0.5 - 140, gui_height * 0.52, ">");
+		draw_text(gui_width * 0.5 + 140, gui_height * 0.52, "<");
+	}
+	draw_text(gui_width * 0.5 - 90, gui_height * 0.52, "FPS:");
+	draw_text(gui_width * 0.5 - 35, gui_height * 0.52, "<");
+	draw_text(gui_width * 0.5, gui_height * 0.52, string(fps_options[raid.pause_fps_index]));
+	draw_text(gui_width * 0.5 + 35, gui_height * 0.52, ">");
+	draw_text(gui_width * 0.5, gui_height * 0.58, continue_text);
+
+	draw_text(gui_width * 0.5, gui_height * 0.65, "W/S OR MOUSE: SELECT    A/D OR ARROWS: CHANGE    ENTER/CLICK: CONFIRM");
 	draw_set_halign(fa_left);
 }

@@ -10,12 +10,12 @@ function step_raid_enemy_bullets()
         // ==================================================
 
         b.bx += lengthdir_x(
-            b.bspeed,
+            b.bspeed * frame_scale,
             b.bdirection
         );
 
         b.by += lengthdir_y(
-            b.bspeed,
+            b.bspeed * frame_scale,
             b.bdirection
         );
 

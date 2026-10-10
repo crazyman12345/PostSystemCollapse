@@ -83,7 +83,8 @@ raid =
     // Current raid screen/activity
     mode: RaidMode.START,
     paused: false,
-    pause_menu_index: 1,
+    pause_menu_index: 2,
+    pause_fps_index: 1,
     // Selection references the carried grid item; it never removes it from storage.
     inventory_item: undefined,
     inventory_container: undefined,
@@ -169,10 +170,15 @@ raid_knife_attack_hit = false;
 raid_knife_attack_dir = 0;
 raid_knife_trail = [];
 raid_knife_trail_time = 6;
+raid_knife_trail_accumulator = 0;
 raid_enemy_hit_sound = snd_hit;
 raid_map_surface = -1;
 raid_player_x = 960;
 raid_player_y = 540;
+raid_player_velocity_x = 0;
+raid_player_velocity_y = 0;
+raid_player_smoothed_velocity_x = 0;
+raid_player_smoothed_velocity_y = 0;
 raid_aim_dir = 0;
 raid_gun_length = 12;
 raid_gun_width = 6;
@@ -188,6 +194,7 @@ raid_player_dash_x = 0;
 raid_player_dash_y = 0;
 raid_player_dash_trail = [];
 raid_player_dash_trail_time = 12;
+raid_player_dash_trail_accumulator = 0;
 raid_player_max_stamina = 20;
 raid_player_stamina = 20;
 raid_player_dash_stamina_cost = 10;

@@ -3,7 +3,16 @@
 // ==============================
 display_set_gui_size(1920, 1080);
 window_set_fullscreen(false);
-
+windowed_width = window_get_width();
+windowed_height = window_get_height();
+windowed_x = window_get_x();
+windowed_y = window_get_y();
+windowed_showborder = window_get_showborder();
+windowed_borderless_fullscreen = window_get_borderless_fullscreen();
+fullscreen_restore_steps = -1;
+fullscreen_active = false;
+display_reset(0, false);
+game_set_speed(120, gamespeed_fps);
 // Set to spr_equipment_silhouette after importing the sprite.
 equipment_silhouette_sprite = spr_silhouette;
 // ==============================
@@ -16,6 +25,7 @@ enums();
 // ==============================
 state = GameState.MAIN_MENU;
 menu_index = 0;
+frame_scale = 1;
 init_item_database();
 init_loot_tables();
 init_enemy_database();

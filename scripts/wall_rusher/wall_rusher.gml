@@ -6,7 +6,7 @@ function wall_rusher(_enemy)
     {
         case RaidEnemyState.PAUSE:
         {
-            e.state_timer--;
+            e.state_timer -= frame_scale;
 
             if (e.state_timer <= 0)
             {
@@ -29,14 +29,14 @@ function wall_rusher(_enemy)
             var _next_x =
                 e.enemy_x
                 + lengthdir_x(
-                    e.dash_speed,
+                    e.dash_speed * frame_scale,
                     e.dash_dir
                 );
 
             var _next_y =
                 e.enemy_y
                 + lengthdir_y(
-                    e.dash_speed,
+                    e.dash_speed * frame_scale,
                     e.dash_dir
                 );
 

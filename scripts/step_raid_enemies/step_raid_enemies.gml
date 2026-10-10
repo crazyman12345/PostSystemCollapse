@@ -68,14 +68,14 @@ function step_raid_enemies()
 		if (e.enemy_gun_recoil > 0)
 		{
 		    e.enemy_gun_recoil -=
-		        e.enemy_gun_recoil_return;
+		        e.enemy_gun_recoil_return * frame_scale;
 
 		    if (e.enemy_gun_recoil < 0)
 		        e.enemy_gun_recoil = 0;
 		}
 
         if (e.enemy_hit_flash_timer > 0)
-            e.enemy_hit_flash_timer--;
+            e.enemy_hit_flash_timer -= frame_scale;
 
         // ==========================================
         // KEEP ENEMY INSIDE ROOM
@@ -111,7 +111,7 @@ function step_raid_enemies()
                 if (!e.enemy_invulnerable)
                 {
                     e.enemy_hp -= bullet.bdamage;
-                    var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
+                    var _total_flash_duration = 8;
                     e.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
                     play_impact_sound(raid_enemy_hit_sound, "bullet");
                 }
@@ -165,15 +165,15 @@ function step_raid_enemies()
 
 			    if (_is_moving)
 			    {
-			        var _speed_ratio = _actual_move_speed
-			            / max(0.001, e.enemy_animation_reference_speed);
+			    var _speed_ratio = (_actual_move_speed / max(0.001, frame_scale))
+			        / max(0.001, e.enemy_animation_reference_speed);
 
 			        e.enemy_image_speed = clamp(
 			            e.enemy_animation_base_speed * _speed_ratio,
 			            0.08,
 			            0.35
 			        );
-			        e.enemy_frame += e.enemy_image_speed;
+			        e.enemy_frame += e.enemy_image_speed * frame_scale;
 			    }
 			    else
 			    {
@@ -183,7 +183,7 @@ function step_raid_enemies()
 			}
 			else
 			{
-			    e.enemy_frame += e.enemy_image_speed;
+			    e.enemy_frame += e.enemy_image_speed * frame_scale;
 			}
 
 			var _frame_count = sprite_get_number(e.enemy_sprite);

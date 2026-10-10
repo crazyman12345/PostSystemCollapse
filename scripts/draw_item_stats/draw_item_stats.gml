@@ -245,12 +245,13 @@ function draw_item_stats(_item, _x, _y, _bottom)
     {
         if (_pause_timer > 0)
         {
-            _pause_timer--;
+            _pause_timer -= frame_scale;
         }
         else
         {
             _scroll +=
                 0.30
+                * frame_scale
                 * _scroll_dir;
 
 

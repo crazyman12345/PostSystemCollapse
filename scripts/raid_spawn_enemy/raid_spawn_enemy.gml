@@ -14,6 +14,7 @@ function raid_spawn_enemy(_type, _x, _y)
         enemy_tint: c_white,
 
         enemy_speed: 1.0,
+        lead_strength: 0,
 
         enemy_state: RaidEnemyState.MOVE,
         state_timer: 0,
@@ -90,6 +91,7 @@ function raid_spawn_enemy(_type, _x, _y)
 
 		    enemy.enemy_hp = 20;
 		    enemy.enemy_speed = 1.4;
+		    enemy.lead_strength = 0.5;
 		    enemy.shot_timer = randomize_enemy_timer(12, 0.25);
 		}
 		break;
@@ -171,13 +173,14 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_scale = 0.48;
             enemy.size_multiplier = 1.7;
             enemy.enemy_has_gun = true;
-            enemy.weapon = global.items.m1911;
+            enemy.weapon = global.items.uzi;
             enemy.enemy_gun_offset = 18;
             enemy.enemy_muzzle_x = 14;
             enemy.enemy_muzzle_y = 6;
             enemy.enemy_hp = 300;
             enemy.enemy_max_hp = 300;
             enemy.enemy_speed = 0;
+            enemy.lead_strength = 0.9;
             enemy.boss_phase = 1;
             enemy.boss_attack = BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT;
             enemy.boss_last_attack = -1;

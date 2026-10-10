@@ -5,7 +5,7 @@ function ring_attack_update(_attack)
 
     if (_attack.state == "WINDUP")
     {
-        _attack.windup_timer--;
+        _attack.windup_timer -= frame_scale;
         if (_attack.windup_timer <= 0)
         {
             _attack.state = "ACTIVE";
@@ -14,7 +14,7 @@ function ring_attack_update(_attack)
         return _attack;
     }
 
-    _attack.current_radius += _attack.expansion_speed;
+    _attack.current_radius += _attack.expansion_speed * frame_scale;
 
     var _player_bbox = raid_player_get_collision_bbox();
     var _nearest_x = clamp(_attack.x, _player_bbox.left, _player_bbox.right);

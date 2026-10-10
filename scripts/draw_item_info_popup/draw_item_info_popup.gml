@@ -28,7 +28,7 @@ function draw_item_info_popup(
         _fade_alpha = 0.75;
     }
 
-    _fade_alpha += 0.02;
+    _fade_alpha += 0.02 * frame_scale;
     _fade_alpha = min(_fade_alpha, 1);
 
     draw_set_alpha(_fade_alpha);

@@ -12,7 +12,7 @@ function knife_dasher(_enemy)
                 e.enemy_frame = 0;
             }
 
-            e.state_timer--;
+            e.state_timer -= frame_scale;
 
             if (e.state_timer <= 0)
             {
@@ -37,17 +37,19 @@ function knife_dasher(_enemy)
                 e.enemy_frame = 0;
             }
 
+            var _dash_step = min(frame_scale, e.state_timer);
+
             e.enemy_x += lengthdir_x(
-                e.dash_speed,
+                e.dash_speed * _dash_step,
                 e.dash_dir
             );
 
             e.enemy_y += lengthdir_y(
-                e.dash_speed,
+                e.dash_speed * _dash_step,
                 e.dash_dir
             );
 
-            e.state_timer--;
+            e.state_timer -= frame_scale;
 
             if (e.state_timer <= 0)
             {

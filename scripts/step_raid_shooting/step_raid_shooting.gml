@@ -21,7 +21,7 @@ function step_raid_shooting()
     raid_weapon_slot_display = lerp(
         raid_weapon_slot_display,
         raid_weapon_slot_display_target,
-        0.35
+        1 - power(0.65, frame_scale)
     );
 
     // ======================================================
@@ -92,12 +92,12 @@ function step_raid_shooting()
     // ======================================================
 
     if (raid_shot_cooldown > 0)
-        raid_shot_cooldown--;
+        raid_shot_cooldown -= frame_scale;
 
     for (var t = array_length(raid_knife_trail) - 1; t >= 0; t--)
     {
         var _trail = raid_knife_trail[t];
-        _trail.trail_timer--;
+        _trail.trail_timer -= frame_scale;
 
         if (_trail.trail_timer <= 0)
         {
@@ -117,9 +117,11 @@ function step_raid_shooting()
         raid_reload_active = false;
         raid_reload_timer = 0;
 
+        var _knife_timer_before = raid_knife_attack_timer;
+
         if (raid_knife_attack_timer > 0)
         {
-            raid_knife_attack_timer--;
+            raid_knife_attack_timer -= frame_scale;
         }
 
         if (
@@ -130,6 +132,7 @@ function step_raid_shooting()
             raid_knife_attack_timer = raid_knife_attack_time;
             raid_knife_attack_hit = false;
             raid_knife_attack_dir = raid_aim_dir;
+            raid_knife_trail_accumulator = max(0, 1 - frame_scale);
             raid_shot_cooldown = 12;
         }
 
@@ -162,16 +165,22 @@ function step_raid_shooting()
                 _stab_distance = clamp(1 - ((_progress - 0.625) / 0.375), 0, 1) * 42;
             }
 
-            array_push(raid_knife_trail, {
-                trail_hand_x: raid_player_x + lengthdir_x(12, raid_knife_attack_dir) + lengthdir_x(_stab_distance, _knife_dir),
-                trail_hand_y: raid_player_y - 10 + lengthdir_y(12, raid_knife_attack_dir) + lengthdir_y(_stab_distance, _knife_dir),
-                trail_dir: _knife_dir,
-                trail_timer: raid_knife_trail_time
-            });
+            raid_knife_trail_accumulator += frame_scale;
+            if (raid_knife_trail_accumulator >= 1)
+            {
+                array_push(raid_knife_trail, {
+                    trail_hand_x: raid_player_x + lengthdir_x(12, raid_knife_attack_dir) + lengthdir_x(_stab_distance, _knife_dir),
+                    trail_hand_y: raid_player_y - 10 + lengthdir_y(12, raid_knife_attack_dir) + lengthdir_y(_stab_distance, _knife_dir),
+                    trail_dir: _knife_dir,
+                    trail_timer: raid_knife_trail_time
+                });
+                raid_knife_trail_accumulator -= 1;
+            }
         }
 
         if (
-            raid_knife_attack_timer == floor(raid_knife_attack_time * 0.5)
+            _knife_timer_before > floor(raid_knife_attack_time * 0.5)
+            && raid_knife_attack_timer <= floor(raid_knife_attack_time * 0.5)
             && !raid_knife_attack_hit
         )
         {
@@ -204,7 +213,7 @@ function step_raid_shooting()
                 if (!_target.enemy_invulnerable)
                 {
                     _target.enemy_hp -= 5;
-                    var _total_flash_duration = max(2, round(game_get_speed(gamespeed_fps) / 8));
+                    var _total_flash_duration = 8;
                     _target.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
                     play_impact_sound(raid_enemy_hit_sound, "knife");
                 }
@@ -253,7 +262,7 @@ function step_raid_shooting()
 
     if (raid_reload_active)
     {
-        raid_reload_timer--;
+        raid_reload_timer -= frame_scale;
 
         if (raid_reload_timer <= 0)
         {
@@ -491,7 +500,7 @@ if (keyboard_check_pressed(ord("R")))
             max(
                 1,
                 round(
-                    game_get_speed(gamespeed_fps)
+                    60
                     / _weapon.fire_rate
                 )
             );
@@ -512,7 +521,7 @@ if (keyboard_check_pressed(ord("R")))
 	
 	if (raid_gun_recoil > 0)
 	{
-	    raid_gun_recoil -= raid_gun_recoil_return;
+	    raid_gun_recoil -= raid_gun_recoil_return * frame_scale;
 
 	    if (raid_gun_recoil < 0)
 	        raid_gun_recoil = 0;

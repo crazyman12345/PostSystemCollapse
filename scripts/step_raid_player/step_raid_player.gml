@@ -1,5 +1,7 @@
 function step_raid_player()
 {
+    var _start_x = raid_player_x;
+    var _start_y = raid_player_y;
     var _mx = keyboard_check(ord("D")) - keyboard_check(ord("A"));
     var _my = keyboard_check(ord("S")) - keyboard_check(ord("W"));
 
@@ -9,7 +11,7 @@ function step_raid_player()
 
     raid_player_stamina = min(
         raid_player_max_stamina,
-        raid_player_stamina + raid_player_stamina_regen
+        raid_player_stamina + raid_player_stamina_regen * frame_scale
     );
 
     if (
@@ -40,6 +42,7 @@ function step_raid_player()
             raid_player_dash_y /= _dash_len;
             raid_player_dash_active = true;
             raid_player_dash_timer = raid_player_dash_time;
+            raid_player_dash_trail_accumulator = max(0, 1 - frame_scale);
             raid_player_stamina -= raid_player_dash_stamina_cost;
         }
     }
@@ -57,20 +60,26 @@ function step_raid_player()
 
     if (raid_player_dash_active)
     {
-        var _dash_trail = {
-            trail_x: raid_player_x,
-            trail_y: raid_player_y,
-            trail_frame: floor(raid_player_anim_frame),
-            trail_facing: raid_player_facing,
-            trail_timer: raid_player_dash_trail_time
-        };
+        raid_player_dash_trail_accumulator += frame_scale;
+        if (raid_player_dash_trail_accumulator >= 1)
+        {
+            var _dash_trail = {
+                trail_x: raid_player_x,
+                trail_y: raid_player_y,
+                trail_frame: floor(raid_player_anim_frame),
+                trail_facing: raid_player_facing,
+                trail_timer: raid_player_dash_trail_time
+            };
 
-        array_push(raid_player_dash_trail, _dash_trail);
+            array_push(raid_player_dash_trail, _dash_trail);
+            raid_player_dash_trail_accumulator -= 1;
+        }
 
-        raid_player_x += raid_player_dash_x * raid_player_dash_speed;
-        raid_player_y += raid_player_dash_y * raid_player_dash_speed;
+        var _dash_step = min(frame_scale, raid_player_dash_timer);
+        raid_player_x += raid_player_dash_x * raid_player_dash_speed * _dash_step;
+        raid_player_y += raid_player_dash_y * raid_player_dash_speed * _dash_step;
 
-        raid_player_dash_timer--;
+        raid_player_dash_timer -= frame_scale;
 
         if (raid_player_dash_timer <= 0)
         {
@@ -85,8 +94,8 @@ function step_raid_player()
         _mx /= _len;
         _my /= _len;
 
-        raid_player_x += _mx * raid_player_speed;
-        raid_player_y += _my * raid_player_speed;
+        raid_player_x += _mx * raid_player_speed * frame_scale;
+        raid_player_y += _my * raid_player_speed * frame_scale;
     }
 
     for (
@@ -96,7 +105,7 @@ function step_raid_player()
     )
     {
         var _trail = raid_player_dash_trail[i];
-        _trail.trail_timer--;
+        _trail.trail_timer -= frame_scale;
 
         if (_trail.trail_timer <= 0)
         {
@@ -127,8 +136,25 @@ function step_raid_player()
         raid_room_y1 + raid_player_y - _bbox.top,
         raid_room_y2 - (_bbox.bottom - raid_player_y)
     );
+
+    raid_player_velocity_x = (raid_player_x - _start_x) / frame_scale;
+    raid_player_velocity_y = (raid_player_y - _start_y) / frame_scale;
+
+    var _target_velocity_x = raid_player_velocity_x;
+    var _target_velocity_y = raid_player_velocity_y;
+    var _velocity_deadzone = 0.1;
+
+    if (point_distance(0, 0, _target_velocity_x, _target_velocity_y) < _velocity_deadzone)
+    {
+        _target_velocity_x = 0;
+        _target_velocity_y = 0;
+    }
+
+    var _velocity_smoothing = 1 - power(1 - 0.065, frame_scale);
+    raid_player_smoothed_velocity_x += (_target_velocity_x - raid_player_smoothed_velocity_x) * _velocity_smoothing;
+    raid_player_smoothed_velocity_y += (_target_velocity_y - raid_player_smoothed_velocity_y) * _velocity_smoothing;
 	
-    raid_player_anim_frame += raid_player_anim_speed;
+    raid_player_anim_frame += raid_player_anim_speed * frame_scale;
 }
 
 function raid_player_get_collision_bbox()

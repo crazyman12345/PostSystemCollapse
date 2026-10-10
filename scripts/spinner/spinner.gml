@@ -33,8 +33,8 @@ function spinner(_enemy)
                     e.target_y
                 );
 
-                e.enemy_x += lengthdir_x(e.enemy_speed, _dir);
-                e.enemy_y += lengthdir_y(e.enemy_speed, _dir);
+                e.enemy_x += lengthdir_x(e.enemy_speed * frame_scale, _dir);
+                e.enemy_y += lengthdir_y(e.enemy_speed * frame_scale, _dir);
             }
             else
             {
@@ -60,15 +60,14 @@ function spinner(_enemy)
                 e.enemy_frame = 0;
             }
 
-            e.spin_dir += 15;
+            e.spin_dir += 15 * frame_scale;
 
-            if (e.spin_dir >= 360)
-                e.spin_dir -= 360;
+            e.spin_dir = e.spin_dir mod 360;
 
             e.enemy_gun_angle = e.spin_dir;
 
             if (e.shot_timer > 0)
-                e.shot_timer--;
+                e.shot_timer -= frame_scale;
 
             if (e.shot_timer <= 0)
             {
@@ -80,7 +79,7 @@ function spinner(_enemy)
                 );
 
                 e.spin_shots++;
-                e.shot_timer = randomize_enemy_timer(4, 0.25);
+                e.shot_timer += randomize_enemy_timer(4, 0.25);
             }
 
             if (e.spin_shots >= 6)
@@ -104,7 +103,7 @@ function spinner(_enemy)
                 e.enemy_frame = 0;
             }
 
-            e.state_timer--;
+            e.state_timer -= frame_scale;
 
             if (e.state_timer <= 0)
             {

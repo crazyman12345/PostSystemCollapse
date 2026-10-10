@@ -31,7 +31,7 @@ function raid_start(_area)
 	);
     raid.active = true;
     raid.paused = false;
-    raid.pause_menu_index = 1;
+    raid.pause_menu_index = 2;
     raid.selected_area = _area;
 
     state = GameState.RAID;
@@ -44,6 +44,10 @@ function raid_start(_area)
     raid.section = 1;
     raid_player_x = 960;
     raid_player_y = 540;
+    raid_player_velocity_x = 0;
+    raid_player_velocity_y = 0;
+    raid_player_smoothed_velocity_x = 0;
+    raid_player_smoothed_velocity_y = 0;
 	raid_enemy_bullets = [];
 	raid_ring_hazards = [];
 	raid_room_x1 = 760;
