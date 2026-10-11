@@ -6,9 +6,9 @@ function knife_dasher(_enemy)
     {
         case RaidEnemyState.PAUSE:
         {
-            if (e.enemy_sprite != spr_dasher_idle)
+            if (e.enemy_sprite != e.enemy_sprite_idle)
             {
-                e.enemy_sprite = spr_dasher_idle;
+                e.enemy_sprite = e.enemy_sprite_idle;
                 e.enemy_frame = 0;
             }
 
@@ -31,9 +31,9 @@ function knife_dasher(_enemy)
 
         case RaidEnemyState.DASH:
         {
-            if (e.enemy_sprite != spr_dasher_run)
+            if (e.enemy_sprite != e.enemy_sprite_active)
             {
-                e.enemy_sprite = spr_dasher_run;
+                e.enemy_sprite = e.enemy_sprite_active;
                 e.enemy_frame = 0;
             }
 

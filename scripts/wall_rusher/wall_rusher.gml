@@ -6,6 +6,12 @@ function wall_rusher(_enemy)
     {
         case RaidEnemyState.PAUSE:
         {
+            if (e.enemy_sprite != e.enemy_sprite_idle)
+            {
+                e.enemy_sprite = e.enemy_sprite_idle;
+                e.enemy_frame = 0;
+            }
+
             e.state_timer -= frame_scale;
 
             if (e.state_timer <= 0)
@@ -26,6 +32,12 @@ function wall_rusher(_enemy)
 
         case RaidEnemyState.DASH:
         {
+            if (e.enemy_sprite != e.enemy_sprite_active)
+            {
+                e.enemy_sprite = e.enemy_sprite_active;
+                e.enemy_frame = 0;
+            }
+
             var _next_x =
                 e.enemy_x
                 + lengthdir_x(

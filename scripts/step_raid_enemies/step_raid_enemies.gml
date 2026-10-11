@@ -178,7 +178,7 @@ function step_raid_enemies()
 			    else
 			    {
 			        e.enemy_image_speed = e.enemy_animation_base_speed;
-			        e.enemy_frame = 0;
+			        e.enemy_frame += e.enemy_image_speed * frame_scale;
 			    }
 			}
 			else

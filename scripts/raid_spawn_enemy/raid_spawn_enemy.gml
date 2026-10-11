@@ -111,9 +111,9 @@ function raid_spawn_enemy(_type, _x, _y)
 
 		   case RaidEnemyType.SPINNER:
 		{
-		    enemy.enemy_sprite = spr_burst_shooter_run;
-		    enemy.enemy_sprite_idle = spr_burst_shooter_idle;
-			enemy.enemy_sprite_active = spr_burst_shooter_run;
+		    enemy.enemy_sprite = spr_spinner_run;
+		    enemy.enemy_sprite_idle = spr_spinner_idle;
+			enemy.enemy_sprite_active = spr_spinner_run;
 
 		    enemy.enemy_has_gun = true;
 		    enemy.weapon = global.items.uzi;
@@ -133,6 +133,8 @@ function raid_spawn_enemy(_type, _x, _y)
         case RaidEnemyType.KNIFE_DASHER:
         {
             enemy.enemy_sprite = spr_dasher_idle;
+            enemy.enemy_sprite_idle = spr_dasher_idle;
+            enemy.enemy_sprite_active = spr_dasher_run;
             enemy.enemy_hp = 32;
             enemy.enemy_max_hp = 32;
 
@@ -149,10 +151,12 @@ function raid_spawn_enemy(_type, _x, _y)
 
 		case RaidEnemyType.WALL_RUSHER:
         {
-            enemy.enemy_sprite = spr_dasher_idle;
+            enemy.enemy_sprite = spr_wallrusher_idle_4;
+            enemy.enemy_sprite_idle = spr_wallrusher_idle_4;
+            enemy.enemy_sprite_active = spr_wallrusher_run_4;
             enemy.enemy_hp = 28;
             enemy.enemy_max_hp = 28;
-
+			enemy.enemy_scale = 1.25;
             enemy.enemy_speed = 0.75;
             enemy.dash_speed = 4.0;
 
