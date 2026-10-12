@@ -46,6 +46,7 @@ function workshop_salvage_item(_item_key)
         array_push(added_results, result);
     }
 
+    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_scrap);
     return true;
 }
 

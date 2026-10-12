@@ -44,6 +44,7 @@ function step_raid_player()
             raid_player_dash_timer = raid_player_dash_time;
             raid_player_dash_trail_accumulator = max(0, 1 - frame_scale);
             raid_player_stamina -= raid_player_dash_stamina_cost;
+            raid_player_dash_xp_pending = true;
         }
     }
 
@@ -57,6 +58,8 @@ function step_raid_player()
         raid_player_anim_frame = 0;
 
     raid_player_was_moving = raid_player_moving;
+
+    var _moved_by_dash = raid_player_dash_active;
 
     if (raid_player_dash_active)
     {
@@ -90,12 +93,14 @@ function step_raid_player()
     else if (raid_player_moving)
     {
         var _len = point_distance(0, 0, _mx, _my);
+		var _conditioning = skill_node_find(skill_node_get_nodes("athleticism"), "conditioning");
+		var _move_speed_multiplier = !is_undefined(_conditioning) && skill_node_is_unlocked("athleticism", _conditioning) ? 1.025 : 1;
 
         _mx /= _len;
         _my /= _len;
 
-        raid_player_x += _mx * raid_player_speed * frame_scale;
-        raid_player_y += _my * raid_player_speed * frame_scale;
+        raid_player_x += _mx * raid_player_speed * _move_speed_multiplier * frame_scale;
+        raid_player_y += _my * raid_player_speed * _move_speed_multiplier * frame_scale;
     }
 
     for (
@@ -136,6 +141,48 @@ function step_raid_player()
         raid_room_y1 + raid_player_y - _bbox.top,
         raid_room_y2 - (_bbox.bottom - raid_player_y)
     );
+
+    var _distance_moved = point_distance(_start_x, _start_y, raid_player_x, raid_player_y);
+    var _carry_xp_rate = strength_xp_for_weight(raid_bag_get_weight());
+
+    if (_carry_xp_rate != raid_strength_carry_xp_rate)
+    {
+        raid_strength_carry_distance = 0;
+        raid_strength_carry_xp_rate = _carry_xp_rate;
+    }
+
+    if (_carry_xp_rate > 0)
+    {
+        raid_strength_carry_distance += _distance_moved;
+
+        while (raid_strength_carry_distance >= skill_xp_awards.strength_carry_distance)
+        {
+            raid_strength_carry_distance -= skill_xp_awards.strength_carry_distance;
+            player_skill_add_xp("strength", _carry_xp_rate);
+        }
+    }
+
+    if (_moved_by_dash)
+    {
+        if (raid_player_dash_xp_pending && _distance_moved > 0)
+        {
+            player_skill_add_xp("athleticism", skill_xp_awards.athleticism_dash);
+            raid_player_dash_xp_pending = false;
+        }
+
+        if (!raid_player_dash_active)
+            raid_player_dash_xp_pending = false;
+    }
+    else
+    {
+        raid_athleticism_move_distance += _distance_moved;
+
+        while (raid_athleticism_move_distance >= skill_xp_awards.athleticism_move_distance)
+        {
+            raid_athleticism_move_distance -= skill_xp_awards.athleticism_move_distance;
+            player_skill_add_xp("athleticism", skill_xp_awards.athleticism_move);
+        }
+    }
 
     raid_player_velocity_x = (raid_player_x - _start_x) / frame_scale;
     raid_player_velocity_y = (raid_player_y - _start_y) / frame_scale;

@@ -21,6 +21,7 @@ function raid_hotbar_use(_slot)
         }
     }
 
+    var hp_before = raid_player_hp;
     raid_apply_effects(definition.use_effects);
     for (var i = 0; i < array_length(definition.use_effects); i++)
     {
@@ -41,5 +42,7 @@ function raid_hotbar_use(_slot)
     raid.hotbar_feedback_slot = _slot;
     raid.hotbar_feedback_timer = 12;
     raid.hotbar_feedback_success = true;
+    if (raid_player_hp > hp_before)
+        player_skill_add_xp("vitality", skill_xp_awards.vitality_heal);
     return true;
 }

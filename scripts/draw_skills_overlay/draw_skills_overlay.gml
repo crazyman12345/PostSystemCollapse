@@ -1,276 +1,103 @@
 function draw_skills_overlay()
 {
-    var gui_w =
-        display_get_gui_width();
-
-    var gui_h =
-        display_get_gui_height();
-
-
-    // ------------------------------------------
-    // PANEL BOUNDS
-    // ------------------------------------------
-
-    var panel_w = 1000;
-
-    var x1 =
-        gui_w - panel_w - 30;
-
+    var gui_w = display_get_gui_width();
+    var gui_h = display_get_gui_height();
+    var panel_w = min(1000, gui_w - 60);
+    var x1 = gui_w - panel_w - 30;
     var y1 = 40;
+    var x2 = gui_w - 30;
+    var y2 = gui_h - 40;
+    var skill_count = array_length(hideout_skill_tabs);
 
-    var x2 =
-        gui_w - 30;
+    draw_set_font(fnt_terminal_small);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_color(c_black);
+    draw_rectangle(x1, y1, x2, y2, false);
+    draw_set_color(c_lime);
+    draw_ascii_rectangle(x1, y1, x2, y2);
 
-    var y2 =
-        gui_h - 40;
+    draw_text(x1 + 30, y1 + 25, "PLAYER SKILLS");
+    draw_text(x1 + 30, y1 + 55, "--------------------------------------------------");
 
-
-    draw_set_font(
-        fnt_terminal_small
-    );
-	
-
-    // ------------------------------------------
-    // OUTER BOX
-    // ------------------------------------------
-	draw_set_color(c_black);
-	draw_rectangle(x1,y1,x2,y2,false);
-	draw_set_color(c_lime);
-    draw_ascii_rectangle(
-        x1,
-        y1,
-        x2,
-        y2
-    );
-
-
-    // ------------------------------------------
-    // TITLE
-    // ------------------------------------------
-
-    draw_text(
-        x1 + 30,
-        y1 + 25,
-        "PLAYER SKILLS"
-    );
-
-
-    draw_text(
-        x1 + 30,
-        y1 + 55,
-        "--------------------------------------------------"
-    );
-
-
-    // ------------------------------------------
-    // SKILL LIST
-    // ------------------------------------------
-
-    var list_y =
-        y1 + 100;
-
-    var row_h = 38;
-
-
-    for (
-        var i = 0;
-        i < array_length(player_skill_keys);
-        i++
-    )
+    if (skill_count <= 0)
     {
-        var skill_key =
-            player_skill_keys[i];
-
-        var skill_def =
-            skill_db_get(skill_key);
-
-        var progress =
-            variable_struct_get(
-                player_skills,
-                skill_key
-            );
-
-
-        var prefix = "  ";
-
-        if (i == skills_index)
-        {
-            prefix = "> ";
-        }
-
-
-        draw_text(
-            x1 + 35,
-            list_y,
-            prefix
-            + skill_def.name
-        );
-
-
-        draw_text(
-            x2 - 115,
-            list_y,
-            "LV. "
-            + string(progress.level)
-        );
-
-
-        list_y += row_h;
+        draw_text(x1 + 35, y1 + 105, "NO SKILLS AVAILABLE");
+        draw_text(x1 + 35, y2 - 50, "[K/ESC] CLOSE");
+        return;
     }
 
+    skills_index = clamp(skills_index, 0, skill_count - 1);
 
-    // ------------------------------------------
-    // DIVIDER
-    // ------------------------------------------
+    var list_x = x1 + 35;
+    var list_y = y1 + 100;
+    var list_w = 390;
+    var row_h = min(58, floor((y2 - list_y - 80) / skill_count));
 
-    var info_y =
-        y1 + 600;
-
-
-    draw_text(
-        x1 + 30,
-        info_y,
-        "--------------------------------------------------"
-    );
-
-
-    // ------------------------------------------
-    // SELECTED SKILL
-    // ------------------------------------------
-
-    var selected_key =
-        player_skill_keys[
-            skills_index
-        ];
-
-    var selected_def =
-        skill_db_get(
-            selected_key
-        );
-
-    var selected_progress =
-        variable_struct_get(
-            player_skills,
-            selected_key
-        );
-
-
-    var xp_required =
-        skill_xp_required(
-            selected_progress.level
-        );
-
-
-    draw_text(
-        x1 + 35,
-        info_y + 45,
-        selected_def.name
-    );
-
-
-    draw_text(
-        x1 + 35,
-        info_y + 90,
-        "XP: "
-        + string(
-            selected_progress.xp
-        )
-        + " / "
-        + string(
-            xp_required
-        )
-    );
-
-
-    // ------------------------------------------
-    // XP BAR
-    // ------------------------------------------
-
-    var bar_width = 30;
-
-    var progress_percent =
-        selected_progress.xp
-        / xp_required;
-
-    progress_percent =
-        clamp(
-            progress_percent,
-            0,
-            1
-        );
-
-
-    var filled =
-        floor(
-            bar_width
-            * progress_percent
-        );
-
-
-    var bar = "[";
-
-
-    for (
-        var b = 0;
-        b < bar_width;
-        b++
-    )
+    for (var i = 0; i < skill_count; i++)
     {
-        if (b < filled)
+        var skill = hideout_skill_tabs[i];
+        var progress = variable_struct_get(player_skills, skill.key);
+        var row_y = list_y + i * row_h;
+        var selected = i == skills_index;
+
+        if (selected)
         {
-            bar += "#";
+            draw_set_color(c_green);
+            draw_rectangle(list_x - 8, row_y - 4, list_x + list_w, row_y + row_h - 6, false);
+            draw_set_color(c_lime);
+            draw_rectangle(list_x - 8, row_y - 4, list_x + list_w, row_y + row_h - 6, true);
         }
-        else
+
+        var text_x = list_x + 28;
+        var icon_size = max(16, row_h - 16);
+        if (skill.icon != -1)
         {
-            bar += "-";
+            var icon_scale = min(icon_size / sprite_get_width(skill.icon), icon_size / sprite_get_height(skill.icon));
+            draw_sprite_ext(skill.icon, 0, list_x + icon_size * 0.5, row_y + icon_size * 0.5, icon_scale, icon_scale, 0, selected ? c_lime : c_green, 1);
+            text_x = list_x + icon_size + 14;
         }
+
+        draw_set_color(selected ? c_lime : c_green);
+        draw_set_font(fnt_ascii);
+        draw_text(text_x, row_y + 8, skill.name);
+        draw_set_font(fnt_terminal_small);
+        draw_set_halign(fa_right);
+        draw_text(list_x + list_w - 12, row_y + 8, "LV. " + string(progress.level));
+        draw_set_halign(fa_left);
     }
 
+    var detail_x = list_x + list_w + 55;
+    var detail_right = x2 - 35;
+    var selected_skill = hideout_skill_tabs[skills_index];
+    var selected_def = skill_db_get(selected_skill.key);
+    var selected_progress = variable_struct_get(player_skills, selected_skill.key);
+    var level_xp_start = skill_xp_for_level(selected_progress.level);
+    var next_level_xp = skill_xp_for_level(selected_progress.level + 1);
+    var level_xp = selected_progress.xp - level_xp_start;
+    var level_xp_required = next_level_xp - level_xp_start;
+    var progress_percent = clamp(level_xp / level_xp_required, 0, 1);
 
-    bar += "]";
+    draw_set_color(c_green);
+    draw_line(detail_x - 28, list_y - 15, detail_x - 28, y2 - 80);
+    draw_set_color(c_lime);
+    draw_text(detail_x, list_y, selected_def.name);
+    draw_text(detail_x, list_y + 45, "LEVEL " + string(selected_progress.level));
 
+    var progress_y = list_y + 95;
+    draw_set_color(c_green);
+    draw_rectangle(detail_x, progress_y, detail_right, progress_y + 14, true);
+    draw_set_color(c_lime);
+    draw_rectangle(detail_x, progress_y, detail_x + (detail_right - detail_x) * progress_percent, progress_y + 14, false);
+    draw_text(detail_x, progress_y + 28, "LEVEL XP: " + string(level_xp) + " / " + string(level_xp_required));
+    draw_text(detail_x, progress_y + 63, "TOTAL XP: " + string(selected_progress.xp));
 
-    draw_text(
-        x1 + 35,
-        info_y + 130,
-        bar
-    );
+    draw_set_color(c_green);
+    draw_text(detail_x, progress_y + 120, "DESCRIPTION");
+    draw_set_color(c_lime);
+    draw_text_ext(detail_x, progress_y + 155, selected_def.description, 28, detail_right - detail_x);
 
-
-    // ------------------------------------------
-    // DESCRIPTION
-    // ------------------------------------------
-
-    draw_text_ext(
-        x1 + 35,
-        info_y + 185,
-        selected_def.description,
-        28,
-        panel_w - 70
-    );
-
-
-    // ------------------------------------------
-    // CONTROLS
-    // ------------------------------------------
-
-    draw_text(
-        x1 + 30,
-        y2 - 165,
-        "--------------------------------------------------"
-    );
-
-
-    draw_text(
-        x1 + 35,
-        y2 - 100,
-        "[W/S] SELECT"
-    );
-
-
-    draw_text(
-        x1 + 275,
-        y2 - 100,
-        "[K] CLOSE"
-    );
+    draw_set_color(c_lime);
+    draw_text(x1 + 30, y2 - 85, "--------------------------------------------------");
+    draw_text(x1 + 35, y2 - 50, "[W/S] SELECT    [MOUSE] SELECT    [K/ESC] CLOSE");
 }

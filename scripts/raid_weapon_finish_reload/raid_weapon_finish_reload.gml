@@ -10,6 +10,8 @@ function raid_weapon_finish_reload(_weapon)
     if (_needed <= 0)
         return;
 
+    var _rounds_loaded = 0;
+
     for (var i = 0; i < _needed; i++)
     {
         var _removed =
@@ -22,5 +24,9 @@ function raid_weapon_finish_reload(_weapon)
             break;
 
         raid_weapon_mag++;
+        _rounds_loaded++;
     }
+
+    if (_rounds_loaded > 0)
+        player_skill_add_xp("marksmanship", skill_xp_awards.marksmanship_reload);
 }

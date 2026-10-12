@@ -1,5 +1,5 @@
 function step_handle_shortcuts(){
-	if (keyboard_check_pressed(ord("O")))
+	if (keyboard_check_pressed(ord("K")))
 	{
 	    overlay_toggle(
 	        OverlayMode.SKILLS

@@ -28,19 +28,25 @@ function enums(){
 	    { name: "STASH", key: "stash", page: HideoutPage.STASH, header: "", skill_key: "", bench_key: "" },
 		{ name: "SKILLS", key: "skills", page: HideoutPage.SKILLS, header: "", skill_key: "", bench_key: "" },
 
-		{ name: "SALVAGE", key: "salvaging", page: HideoutPage.SALVAGE, header: "CRAFTING", skill_key: "salvaging", bench_key: "salvage_bench" },
+		{ name: "SALVAGE", key: "salvaging", page: HideoutPage.SALVAGE, header: "CRAFTING", skill_key: "scavenging", bench_key: "salvage_bench" },
 	    { name: "GUNMAKING", key: "gunmaking", page: HideoutPage.GUNMAKING, header: "", skill_key: "gunmaking", bench_key: "workbench" },
 	    { name: "ARMORCRAFTING", key: "armorcrafting", page: HideoutPage.ARMORCRAFTING, header: "", skill_key: "armorcrafting", bench_key: "armor_bench" },
 	    { name: "MEDICAL CRAFTING", key: "medical_crafting", page: HideoutPage.MEDICAL_CRAFTING, header: "", skill_key: "medical_crafting", bench_key: "medical_station" },
 		{ name: "DRUGMAKING", key: "drugmaking", page: HideoutPage.DRUG_LAB, header: "", skill_key: "drugmaking", bench_key: "drug_station" },
 		{ name: "WORKSHOP", key: "workshop", page: HideoutPage.WORKSHOP, header: "", skill_key: "", bench_key: "" },
 		 
-	    { name: "GO RAID!", key: "raids", page: HideoutPage.RAIDS, header: "", skill_key: "", bench_key: "" },
+	    { name: "START RAID!", key: "raids", page: HideoutPage.RAIDS, header: "", skill_key: "", bench_key: "" },
 	   
 	];
 	enum HideoutFocus{
 		SIDEBAR,
 		CONTENT
+	}
+	enum SkillNodeUnlockType
+	{
+		LEVEL,
+		MONEY,
+		INFO
 	}
 	enum TraderMode{
 		BUY,

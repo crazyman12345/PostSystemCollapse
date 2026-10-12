@@ -173,10 +173,15 @@ function step_raid()
 	
     step_raid_bullets();
     step_raid_enemy_bullets();
+    if (!raid.active) return;
+
     step_raid_ring_hazards();
+    if (!raid.active) return;
 
   
     step_raid_enemies();
+	if (!raid.active) return;
+
 	step_raid_enemy_death_effects();
 	step_raid_lootables();
 	step_raid_ground_items();

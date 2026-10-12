@@ -40,7 +40,6 @@ function raid_spawn_enemy(_type, _x, _y)
 		enemy_animation_base_speed: 0.15,
 		enemy_animation_reference_speed: 1.0,
 		enemy_facing: 1,
-		enemy_scale: 0.75,
 		size_multiplier: 1,
 		
 		enemy_gun_sprite: -1,
@@ -104,7 +103,6 @@ function raid_spawn_enemy(_type, _x, _y)
 
             enemy.enemy_speed = 0.75;
 			enemy.enemy_sprite = spr_knife_stalker_run;
-			enemy.enemy_scale = 0.75;
         }
         break;
 
@@ -137,7 +135,7 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_sprite_active = spr_dasher_run;
             enemy.enemy_hp = 32;
             enemy.enemy_max_hp = 32;
-
+	
             enemy.enemy_speed = 0.75;
             enemy.dash_speed = 3.5;
 
@@ -156,10 +154,9 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_sprite_active = spr_wallrusher_run_4;
             enemy.enemy_hp = 28;
             enemy.enemy_max_hp = 28;
-			enemy.enemy_scale = 1.25;
             enemy.enemy_speed = 0.75;
             enemy.dash_speed = 4.0;
-
+			enemy.size_multiplier = 1.2;
             enemy.enemy_state =
                 RaidEnemyState.PAUSE;
 
@@ -174,7 +171,6 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_sprite_idle = spr_bones_idle2;
             enemy.enemy_sprite_active = spr_bones_run2;
             enemy.enemy_sprite = spr_bones_idle2;
-            enemy.enemy_scale = 0.48;
             enemy.size_multiplier = 1.7;
             enemy.enemy_has_gun = true;
             enemy.weapon = global.items.uzi;

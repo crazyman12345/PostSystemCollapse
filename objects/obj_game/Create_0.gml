@@ -154,6 +154,7 @@ equipment_selecting_item = false;
 // ==============================
 skills_index = 0;
 hideout_skills_index = 0;
+hideout_skill_node_index = 0;
 skill_icon_marksmanship = icon_marksmanship;
 skill_icon_athleticism = icon_athleticism;
 skill_icon_vitality = icon_vitality;
@@ -174,6 +175,7 @@ hideout_skill_tabs = [
     { key: "armorcrafting", name: "ARMOR CRAFTING", icon: skill_icon_armorcrafting, description: "Placeholder description for the Armor Crafting skill." },
     { key: "drugmaking", name: "DRUG CRAFTING", icon: skill_icon_drugmaking, description: "Placeholder description for the Drug Crafting skill." }
 ];
+skill_notifications_init();
 crew_skills_index = 0;
 crew_skills_crew_index = 0;
 crafting_recipe_index = 0;

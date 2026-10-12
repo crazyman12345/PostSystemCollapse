@@ -59,6 +59,7 @@
   "name":"IdleGame",
   "resources":[
     {"id":{"name":"fnt_ascii","path":"fonts/fnt_ascii/fnt_ascii.yy",},},
+    {"id":{"name":"fnt_ascii2","path":"fonts/fnt_ascii2/fnt_ascii2.yy",},},
     {"id":{"name":"fnt_explosion","path":"fonts/fnt_explosion/fnt_explosion.yy",},},
     {"id":{"name":"fnt_terminal_medium","path":"fonts/fnt_terminal_medium/fnt_terminal_medium.yy",},},
     {"id":{"name":"fnt_terminal_small","path":"fonts/fnt_terminal_small/fnt_terminal_small.yy",},},

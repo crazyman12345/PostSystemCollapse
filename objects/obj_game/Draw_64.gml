@@ -67,6 +67,7 @@ if (state != GameState.MAIN_MENU)
 
 draw_overlay(overlay_mode);
 
+skill_notifications_draw();
 
 draw_debug_console();
 // Debug console always on top

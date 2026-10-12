@@ -9,3 +9,14 @@ function raid_bag_get_weight()
     }
     return total_weight;
 }
+
+function strength_xp_for_weight(_weight)
+{
+    if (_weight < 5) return 0;
+    if (_weight < 10) return 1;
+    if (_weight < 20) return 2;
+    if (_weight < 30) return 3;
+    if (_weight < 40) return 4;
+    if (_weight < 50) return 5;
+    return 6;
+}

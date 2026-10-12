@@ -33,6 +33,7 @@ function raid_open_lootable(_index)
 
         l.opened = true;
         raid_lootables[_index] = l;
+        player_skill_add_xp("scavenging", skill_xp_awards.scavenging_container);
     }
 
     raid.active_loot_container = raid_lootables[_index];

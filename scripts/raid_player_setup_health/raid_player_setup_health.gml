@@ -1,7 +1,9 @@
 function raid_player_setup_health()
 {
     raid_player_max_hp = 30;
-    raid_player_hp = 30;
+    var _thick_skin = skill_node_find(skill_node_get_nodes("vitality"), "thick_skin");
+    if (!is_undefined(_thick_skin) && skill_node_is_unlocked("vitality", _thick_skin)) raid_player_max_hp += 10;
+    raid_player_hp = raid_player_max_hp;
 
     raid_player_armor = 0;
     raid_player_max_armor = 0;

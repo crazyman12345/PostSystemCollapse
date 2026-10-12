@@ -213,6 +213,7 @@ function step_raid_shooting()
                 if (!_target.enemy_invulnerable)
                 {
                     _target.enemy_hp -= 5;
+                    player_skill_add_xp("strength", skill_xp_awards.strength_knife_hit);
                     var _total_flash_duration = 8;
                     _target.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
                     play_impact_sound(raid_enemy_hit_sound, "knife");
@@ -284,9 +285,11 @@ if (keyboard_check_pressed(ord("R")))
     if (raid_weapon_mag < _weapon.mag_size)
     {
         raid_reload_active = true;
+		var _quick_hands = skill_node_find(skill_node_get_nodes("marksmanship"), "quick_hands_1");
+		var _reload_time_multiplier = !is_undefined(_quick_hands) && skill_node_is_unlocked("marksmanship", _quick_hands) ? 0.95 : 1;
 
         raid_reload_timer =
-            _weapon.reload_time;
+			_weapon.reload_time * _reload_time_multiplier;
 
         raid_burst_remaining = 0;
 
@@ -456,6 +459,8 @@ if (keyboard_check_pressed(ord("R")))
 		var _pellet_spread = variable_struct_exists(_weapon, "pellet_spread")
 			? _weapon.pellet_spread
 			: 0;
+		var _lethal_aim = skill_node_find(skill_node_get_nodes("marksmanship"), "lethal_aim");
+		var _gun_damage_multiplier = !is_undefined(_lethal_aim) && skill_node_is_unlocked("marksmanship", _lethal_aim) ? 1.05 : 1;
 
 		for (var i = 0; i < _pellet_count; i++)
 		{
@@ -470,7 +475,7 @@ if (keyboard_check_pressed(ord("R")))
 				bdamage: irandom_range(
 					_weapon.damage_min,
 					_weapon.damage_max
-				)
+				) * _gun_damage_multiplier
 			};
 
 			array_push(
@@ -490,6 +495,7 @@ if (keyboard_check_pressed(ord("R")))
         // ----------------------------------------------
 
         raid_weapon_mag--;
+		player_skill_add_xp("marksmanship", skill_xp_awards.marksmanship_shot);
 		raid_gun_recoil = 5;
 
         // ----------------------------------------------

@@ -197,6 +197,8 @@ function step_raid_enemies()
 
 		if (e.enemy_hp <= 0)
 		{
+		    player_skill_add_xp("marksmanship", skill_xp_awards.marksmanship_kill);
+
 		    if (
 		        variable_struct_exists(e, "enemy_sprite")
 		        && e.enemy_sprite != -1

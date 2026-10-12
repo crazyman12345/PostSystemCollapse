@@ -86,6 +86,8 @@ function trader_buy_item(_trader_key, _stock_index)
     // LOG
     // ==============================
 
+    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade);
+
     log_add(
         "Purchased "
         + item.name

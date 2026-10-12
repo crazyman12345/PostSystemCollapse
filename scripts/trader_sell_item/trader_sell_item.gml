@@ -74,6 +74,8 @@ function trader_sell_item(_trader_key, _item_key)
     }
 
 
+    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade);
+
     log_add(
         "Sold "
         + item.name

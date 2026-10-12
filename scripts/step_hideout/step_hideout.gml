@@ -91,7 +91,9 @@ function step_hideout()
 
 function step_hideout_skills()
 {
+    var previous_tab = hideout_skills_index;
     hideout_skills_index = terminal_menu_input(hideout_skills_index, array_length(hideout_skill_tabs));
+    if (hideout_skills_index != previous_tab) hideout_skill_node_index = 0;
 
     var _mouse_x = device_mouse_x_to_gui(0);
     var _mouse_y = device_mouse_y_to_gui(0);
@@ -103,10 +105,60 @@ function step_hideout_skills()
             && mouse_check_button_pressed(mb_left) && hideout_skills_index != i)
         {
             hideout_skills_index = i;
+            hideout_skill_node_index = 0;
             scroll_sound();
             break;
         }
         tab_x += tab_width + 8;
+    }
+
+    var selected_skill = hideout_skill_tabs[hideout_skills_index];
+    var nodes = skill_node_get_nodes(selected_skill.key);
+    if (array_length(nodes) > 0)
+    {
+        hideout_skill_node_index = clamp(hideout_skill_node_index, 0, array_length(nodes) - 1);
+        if (keyboard_check_pressed(ord("A")))
+        {
+            hideout_skill_node_index--;
+            if (hideout_skill_node_index < 0) hideout_skill_node_index = array_length(nodes) - 1;
+            scroll_sound();
+        }
+        if (keyboard_check_pressed(ord("D")))
+        {
+            hideout_skill_node_index++;
+            if (hideout_skill_node_index >= array_length(nodes)) hideout_skill_node_index = 0;
+            scroll_sound();
+        }
+
+        var gui_h = display_get_gui_height();
+        var info_left = 375;
+        var info_right = display_get_gui_width() - 55;
+        var tree_top = 268;
+        var tree_height = gui_h - 408;
+        var detail_left = info_right - 390;
+        var graph_left = info_left + 45;
+        var graph_right = detail_left - 35;
+        var graph_top = tree_top + 65;
+        var graph_bottom = tree_top + tree_height - 105;
+        if (mouse_check_button_pressed(mb_left))
+        {
+            for (var node_index = 0; node_index < array_length(nodes); node_index++)
+            {
+                var node = nodes[node_index];
+                var node_x = hideout_skill_node_x(node, graph_left, graph_right);
+                var node_y = hideout_skill_node_y(node, nodes, graph_top, graph_bottom);
+                if (_mouse_x >= node_x - 38 && _mouse_x <= node_x + 38
+                    && _mouse_y >= node_y - 38 && _mouse_y <= node_y + 38)
+                {
+                    if (hideout_skill_node_index != node_index) scroll_sound();
+                    hideout_skill_node_index = node_index;
+                    break;
+                }
+            }
+        }
+
+        if (keyboard_check_pressed(vk_enter))
+            skill_node_purchase(selected_skill.key, nodes[hideout_skill_node_index]);
     }
 
     if (keyboard_check_pressed(vk_escape))

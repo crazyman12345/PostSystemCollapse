@@ -48,6 +48,7 @@ function raid_start(_area)
     raid_player_velocity_y = 0;
     raid_player_smoothed_velocity_x = 0;
     raid_player_smoothed_velocity_y = 0;
+	raid_player_dash_xp_pending = false;
 	raid_enemy_bullets = [];
 	raid_ring_hazards = [];
 	raid_room_x1 = 760;

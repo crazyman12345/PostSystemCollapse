@@ -1,4 +1,5 @@
 frame_scale = (delta_time / 1000000) * 60;
+skill_notifications_update();
 
 // GameMaker may ignore window changes made immediately after leaving fullscreen.
 if (fullscreen_restore_steps >= 0) {

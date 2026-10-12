@@ -4,7 +4,10 @@
   "isCompatibility":false,
   "isDnD":false,
   "name":"raid_gun_tuning_toggle",
-  "parent":{"name":"debug","path":"folders/debug.yy",},
+  "parent":{
+    "name":"debug",
+    "path":"folders/debug.yy",
+  },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
 }

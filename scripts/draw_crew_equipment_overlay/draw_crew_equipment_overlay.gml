@@ -37,7 +37,7 @@ function draw_crew_equipment_overlay()
         var raid_info_left = panel_left + panel_width - 25 - (stash.grid_width * 60);
         var raid_info_width = panel_left + panel_width - 25 - raid_info_left;
 
-        draw_set_font(fnt_terminal_small);
+        draw_set_font(fnt_ascii);
         terminal_panel(panel_left, panel_top, panel_width, panel_height, "RAID LOADOUT");
         draw_stash_equipment_and_carried_storage(member, true, panel_left, panel_width);
         draw_pre_raid_info(raid_info_left, raid_info_width);
@@ -142,6 +142,7 @@ function draw_crew_equipment_overlay()
 
 function draw_pre_raid_info(_info_left, _info_width)
 {
+	draw_set_font(fnt_ascii2);
     var info_top = 150;
 
     draw_set_color(c_lime);
