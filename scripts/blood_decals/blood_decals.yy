@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"blood_decals",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"blood_decals",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

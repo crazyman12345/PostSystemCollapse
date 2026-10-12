@@ -110,7 +110,11 @@ function step_raid_enemies()
             {
                 if (!e.enemy_invulnerable)
                 {
+                    var _enemy_hp_before = e.enemy_hp;
                     e.enemy_hp -= bullet.bdamage;
+                    e.enemy_last_hit_direction = bullet.bdirection;
+                    if (e.enemy_hp < _enemy_hp_before)
+                        blood_hit_effect(e.enemy_x, e.enemy_y, bullet.bdirection);
                     var _total_flash_duration = 8;
                     e.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
                     play_impact_sound(raid_enemy_hit_sound, "bullet");
@@ -135,7 +139,7 @@ function step_raid_enemies()
 		    && _enemy_collision_bbox.bottom >= _player_bbox.top
 		)
 		{
-		    raid_player_take_damage(10);
+		    raid_player_take_damage(10, point_direction(e.enemy_x, e.enemy_y, raid_player_x, raid_player_y));
 
 		    if (!raid.active)
 		        return;
@@ -206,6 +210,11 @@ function step_raid_enemies()
 		    {
 		        raid_create_enemy_death_effect(e);
 		    }
+
+		    var _death_direction = !is_undefined(e.enemy_last_hit_direction)
+		        ? e.enemy_last_hit_direction
+		        : random(360);
+		    blood_death_effect(e.enemy_x, e.enemy_y, _death_direction);
 
 		    array_delete(
 		        raid_enemies,

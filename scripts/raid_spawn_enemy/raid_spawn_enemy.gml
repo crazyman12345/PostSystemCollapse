@@ -10,6 +10,7 @@ function raid_spawn_enemy(_type, _x, _y)
         enemy_hp: 30,
         enemy_max_hp: 30,
         enemy_hit_flash_timer: 0,
+        enemy_last_hit_direction: undefined,
         enemy_invulnerable: false,
         enemy_tint: c_white,
 

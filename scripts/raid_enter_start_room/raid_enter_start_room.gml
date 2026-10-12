@@ -9,10 +9,13 @@ function raid_enter_start_room()
     raid.extract_active = false;
 
     raid_enemies = [];
+    raid_enemy_death_effects = [];
     raid_bullets = [];
     raid_doors = [];
     raid_lootables = [];
     raid_ring_hazards = [];
+    raid_floor_generate();
+    blood_surface_reset();
 
     // PLAYER START POSITION
     raid_player_x =

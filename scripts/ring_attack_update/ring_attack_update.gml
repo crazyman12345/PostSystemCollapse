@@ -37,7 +37,10 @@ function ring_attack_update(_attack)
         && !raid_player_is_dash_invulnerable()
     )
     {
-        raid_player_take_damage(_attack.damage);
+        raid_player_take_damage(
+            _attack.damage,
+            point_direction(_attack.x, _attack.y, raid_player_x, raid_player_y)
+        );
         _attack.damaged_player = true;
     }
 

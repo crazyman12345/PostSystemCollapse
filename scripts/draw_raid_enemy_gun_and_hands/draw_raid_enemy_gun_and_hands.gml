@@ -46,7 +46,8 @@ function draw_raid_enemy_gun_and_hands(_enemy)
 
     var _weapon_scale =
         _weapon.weapon_draw_width
-        / max(1, _visible_width);
+        / max(1, _visible_width)
+        * _s;
 
 
     // ==============================

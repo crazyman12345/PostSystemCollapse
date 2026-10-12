@@ -212,7 +212,11 @@ function step_raid_shooting()
                 var _target = raid_enemies[_target_index];
                 if (!_target.enemy_invulnerable)
                 {
+                    var _enemy_hp_before = _target.enemy_hp;
                     _target.enemy_hp -= 5;
+                    _target.enemy_last_hit_direction = raid_knife_attack_dir;
+                    if (_target.enemy_hp < _enemy_hp_before)
+                        blood_hit_effect(_target.enemy_x, _target.enemy_y, raid_knife_attack_dir);
                     player_skill_add_xp("strength", skill_xp_awards.strength_knife_hit);
                     var _total_flash_duration = 8;
                     _target.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);

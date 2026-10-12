@@ -13,6 +13,7 @@ function raid_extract()
     raid_secure_bag();
 
     raid.active = false;
+    blood_surface_destroy();
     raid_reset_active_weapon();
 
     raid.extract_active = false;

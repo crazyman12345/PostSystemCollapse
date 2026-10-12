@@ -1,4 +1,4 @@
-function raid_player_take_damage(_damage)
+function raid_player_take_damage(_damage, _hit_direction = undefined)
 {
     if (raid_godmode || raid_player_is_dash_invulnerable() || raid_player_invincible)
         return;
@@ -28,6 +28,12 @@ function raid_player_take_damage(_damage)
 
     if (raid_player_hp < _hp_before || raid_player_armor < _armor_before)
         player_skill_add_xp("vitality", skill_xp_awards.vitality_damage);
+
+    if (raid_player_hp < _hp_before)
+    {
+        var _blood_direction = is_undefined(_hit_direction) ? random(360) : _hit_direction;
+        blood_hit_effect(raid_player_x, raid_player_y, _blood_direction);
+    }
 
     // DEATH
     if (raid_player_hp <= 0)

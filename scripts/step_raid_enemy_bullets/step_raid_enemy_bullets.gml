@@ -33,7 +33,7 @@ function step_raid_enemy_bullets()
             && b.by <= _player_bbox.bottom
         )
         {
-            raid_player_take_damage(10);
+            raid_player_take_damage(10, b.bdirection);
 
 
             // ==============================================

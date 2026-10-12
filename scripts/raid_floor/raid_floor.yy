@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_floor",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_floor",
+  "parent":{
+    "name":"RAID",
+    "path":"folders/RAID.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

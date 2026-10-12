@@ -56,6 +56,7 @@ function raid_combat_loss()
     // ==========================================
 
     raid.active = false;
+    blood_surface_destroy();
     raid_reset_active_weapon();
 
     raid.pending_action =
