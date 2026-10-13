@@ -5,7 +5,7 @@ function draw_raid_hotbar(_inventory = false)
     var gui_h = display_get_gui_height();
     var slot_w = _inventory ? 64 : 44;
     var slot_h = slot_w;
-    var left = _inventory ? 40 : gui_w - slot_w - 20;
+    var left = _inventory ? raid_inventory_get_hotbar_rect().left : gui_w - slot_w - 20;
     var top = _inventory ? raid_inventory_get_hotbar_rect().top : 270;
     var gap = _inventory ? 8 : 6;
 

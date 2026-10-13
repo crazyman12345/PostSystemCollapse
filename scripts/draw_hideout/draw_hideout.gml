@@ -6,7 +6,7 @@ function draw_hideout()
     var sidebar_w = 320;
     var margin = 25;
 
-    draw_set_font(fnt_terminal_small);
+    draw_set_font(fnt_terminal_tiny);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_color(c_lime);
@@ -80,7 +80,7 @@ function draw_hideout()
     if (selected.bench_key != "" && variable_struct_get(workshop_progress, selected.bench_key) <= 0)
     {
         var bench = variable_struct_get(workshop_db, selected.bench_key);
-        draw_text(content_x1 + 25, content_y1 + 85, "[LOCKED]");
+        draw_text(content_x1 + 25, content_y1 + 75, "[LOCKED]");
         draw_text(content_x1 + 25, content_y1 + 125, "BUILD THE " + bench.name + " IN THE WORKSHOP TO UNLOCK.");
     }
     else switch (selected.key)

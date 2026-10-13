@@ -11,6 +11,7 @@ function init_stash()
         equipped_weapon_2_item: undefined,
         equipped_armor_head_item: undefined,
         equipped_armor_chest_item: undefined,
+		equipped_secure_container_item: { item_key: "small_container", quantity: 1, x: 0, y: 0, rotation: 0 },
         hover_x: -1,
         hover_y: -1,
         hover_container: "",

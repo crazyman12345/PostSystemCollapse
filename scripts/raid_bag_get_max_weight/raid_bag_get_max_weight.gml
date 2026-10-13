@@ -1,21 +1,13 @@
 function raid_bag_get_max_weight()
 {
-    var member =
-        crew[raid.crew_index];
+    var _max_weight = 8.0;
+    var _nodes = skill_node_get_nodes("strength");
 
-    // No backpack equipped
-    if (member.bag == "")
+    for (var i = 1; i <= 10; i++)
     {
-        return 2.0;
+        var _node = skill_node_find(_nodes, "strong_legs_" + string(i));
+        if (!is_undefined(_node) && skill_node_is_unlocked("strength", _node)) _max_weight += 2.0;
     }
 
-    var bag_item =
-        item_get(member.bag);
-
-    if (is_undefined(bag_item))
-    {
-        return 2.0;
-    }
-
-    return bag_item.bag_capacity;
+    return _max_weight;
 }

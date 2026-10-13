@@ -71,6 +71,7 @@ function draw_hideout_stash()
 
 
     draw_stash_equipment_and_carried_storage(member, false);
+    draw_player_status_panel(395, 790, 360);
 
     draw_text(stash_left, grid_top - 25, "MAIN STASH");
     draw_line(stash_left, grid_top - 7, stash_left + (stash.grid_width * stash_cell_size), grid_top - 7);
@@ -331,8 +332,8 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
         draw_set_alpha(1);
     }
 
-    draw_equipment_slot(equipment_center - 45, grid_top + 5, 90, 90, "HEAD ARMOR", _member.armor_head, false, true);
-    draw_equipment_slot(equipment_center - 75, grid_top + 100, 150, 220, "CHEST ARMOR", _member.armor_chest, false, true);
+    draw_equipment_slot(equipment_center - 45, grid_top + 5, 90, 90, "HELMET", _member.armor_head, false, true);
+    draw_equipment_slot(equipment_center - 75, grid_top + 100, 150, 220, "CHEST", _member.armor_chest, false, true);
     draw_equipment_slot(equipment_center - 180, grid_top + 350, 360, 100, "WEAPON 1", _member.weapon, false, true);
     draw_equipment_slot(equipment_center - 180, grid_top + 470, 360, 100, "WEAPON 2", _member.weapon_2, false, true);
     draw_equipment_slot(middle_left, grid_top, 150, 220, "BACKPACK", _member.bag, false, true);
@@ -384,6 +385,7 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
     var weapon_item = variable_struct_exists(stash, "equipped_weapon_item") ? stash.equipped_weapon_item : undefined;
     var weapon_2_item = variable_struct_exists(stash, "equipped_weapon_2_item") ? stash.equipped_weapon_2_item : undefined;
     var bag_item = variable_struct_exists(stash, "equipped_bag_item") ? stash.equipped_bag_item : undefined;
+	var secure_container_item = variable_struct_exists(stash, "equipped_secure_container_item") ? stash.equipped_secure_container_item : undefined;
     if (is_undefined(head_item)) inventory_hover_consider_key(_member.armor_head, equipment_center - 45, grid_top + 5, equipment_center + 45, grid_top + 95);
     else inventory_hover_consider(head_item, equipment_center - 45, grid_top + 5, equipment_center + 45, grid_top + 95);
     if (is_undefined(chest_item)) inventory_hover_consider_key(_member.armor_chest, equipment_center - 75, grid_top + 100, equipment_center + 75, grid_top + 320);
@@ -421,7 +423,9 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
         }
     }
 
-    draw_equipment_slot(middle_left, secure_grid_top, 150, 150, "SECURE CONTAINER", "", false, true);
+    draw_equipment_slot(middle_left, secure_grid_top, 150, 150, "CONTAINER", _member.secure_container, false, true);
+	if (is_undefined(secure_container_item)) inventory_hover_consider_key(_member.secure_container, middle_left, secure_grid_top, middle_left + 150, secure_grid_top + 150);
+	else inventory_hover_consider(secure_container_item, middle_left, secure_grid_top, middle_left + 150, secure_grid_top + 150);
 
     for (var secure_y = 0; secure_y < stash.secure_container.grid_height; secure_y++)
     {

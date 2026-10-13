@@ -49,7 +49,7 @@ function draw_workshop()
         if (level <= 0) draw_set_color(c_gray);
         draw_text(left_x1 + 25, list_y + i * 32, cursor + data.name);
         draw_set_color(c_lime);
-        draw_text(left_x2 - 110, list_y + i * 32, status);
+        draw_text(left_x2 - 135, list_y + i * 32, status);
     }
 
     // SPRITE BOX

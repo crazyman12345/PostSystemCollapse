@@ -19,6 +19,9 @@ function item_category_get_name(_category)
 			
 		case ItemCategory.CURRENCY:
             return "CURRENCY";
+
+		case ItemCategory.SECURE_CONTAINER:
+			return "SECURE CONTAINER";
     }
 
     return "UNKNOWN";

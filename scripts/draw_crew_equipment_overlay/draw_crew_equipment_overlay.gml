@@ -41,6 +41,7 @@ function draw_crew_equipment_overlay()
         terminal_panel(panel_left, panel_top, panel_width, panel_height, "RAID LOADOUT");
         draw_stash_equipment_and_carried_storage(member, true, panel_left, panel_width);
         draw_pre_raid_info(raid_info_left, raid_info_width);
+        draw_player_status_panel(85, 790, 360);
         draw_start_raid_panel();
 
         if (loadout_confirm_start)

@@ -4,6 +4,7 @@ function draw_inraid_bag_panel()
     terminal_panel(20, 80, 1880, 970, "RAID INVENTORY");
     draw_stash_equipment_and_carried_storage(crew[raid.crew_index], true, 20, 1880);
     draw_raid_hotbar(true);
+    draw_player_status_panel(85, 790, 360, true);
 
     var loot_grid = raid_inventory_get_loot_grid();
     if (!is_undefined(loot_grid))
@@ -137,7 +138,7 @@ function raid_inventory_get_hotbar_rect()
     if (crew[raid.crew_index].bag != "")
         secure_top = 348 + (stash.backpack.grid_height * 60);
 
-    return { left: 40, top: secure_top + 48 + (stash.secure_container.grid_height * 60) + 234, width: 424, height: 64 };
+    return { left: 505, top: secure_top + 48 + (stash.secure_container.grid_height * 60) + 234, width: 424, height: 64 };
 }
 
 function raid_inventory_clear_held()

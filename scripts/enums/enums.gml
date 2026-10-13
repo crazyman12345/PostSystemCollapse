@@ -65,7 +65,8 @@ function enums(){
 		BODY_ARMOR,
 		MEDICAL,
 		BAG,
-		CURRENCY
+		CURRENCY,
+		SECURE_CONTAINER
 	}
 
 	enum EquipmentSlot

@@ -62,6 +62,7 @@ crew = [
         armor_chest : "",
 		armor_head : "",
 		bag : "",
+		secure_container : "small_container",
 
         alive : true,
 
@@ -175,6 +176,19 @@ hideout_skill_tabs = [
     { key: "armorcrafting", name: "ARMOR CRAFTING", icon: skill_icon_armorcrafting, description: "Placeholder description for the Armor Crafting skill." },
     { key: "drugmaking", name: "DRUG CRAFTING", icon: skill_icon_drugmaking, description: "Placeholder description for the Drug Crafting skill." }
 ];
+skill_tree_camera_x = 0;
+skill_tree_camera_y = 0;
+skill_tree_zoom = 1;
+skill_tree_views = [];
+for (var skill_view_index = 0; skill_view_index < array_length(hideout_skill_tabs); skill_view_index++)
+    array_push(skill_tree_views, { camera_x: 0, camera_y: 0, zoom: 1, initialized: false });
+skill_tree_drag_active = false;
+skill_tree_dragging = false;
+skill_tree_drag_start_x = 0;
+skill_tree_drag_start_y = 0;
+skill_tree_drag_last_x = 0;
+skill_tree_drag_last_y = 0;
+skill_tree_pressed_node = -1;
 skill_notifications_init();
 crew_skills_index = 0;
 crew_skills_crew_index = 0;

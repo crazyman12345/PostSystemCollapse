@@ -167,6 +167,116 @@ function init_skill_database(){
 				lane: 0,
 				unlock_type: SkillNodeUnlockType.INFO,
 				prerequisites: []
+			},
+			{
+				key: "strong_legs_1",
+				name: "STRONG LEGS I",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 5,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 250,
+				prerequisites: ["strength_info"]
+			},
+			{
+				key: "strong_legs_2",
+				name: "STRONG LEGS II",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 10,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 500,
+				prerequisites: ["strong_legs_1"]
+			},
+			{
+				key: "strong_legs_3",
+				name: "STRONG LEGS III",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 15,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 750,
+				prerequisites: ["strong_legs_2"]
+			},
+			{
+				key: "strong_legs_4",
+				name: "STRONG LEGS IV",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 20,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 1000,
+				prerequisites: ["strong_legs_3"]
+			},
+			{
+				key: "strong_legs_5",
+				name: "STRONG LEGS V",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 30,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 1500,
+				prerequisites: ["strong_legs_4"]
+			},
+			{
+				key: "strong_legs_6",
+				name: "STRONG LEGS VI",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 40,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 2250,
+				prerequisites: ["strong_legs_5"]
+			},
+			{
+				key: "strong_legs_7",
+				name: "STRONG LEGS VII",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 50,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 3250,
+				prerequisites: ["strong_legs_6"]
+			},
+			{
+				key: "strong_legs_8",
+				name: "STRONG LEGS VIII",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 65,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 4500,
+				prerequisites: ["strong_legs_7"]
+			},
+			{
+				key: "strong_legs_9",
+				name: "STRONG LEGS IX",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 80,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 6000,
+				prerequisites: ["strong_legs_8"]
+			},
+			{
+				key: "strong_legs_10",
+				name: "STRONG LEGS X",
+				description: "Increases maximum carry weight by 2 kg.",
+				icon: -1,
+				required_level: 100,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 8000,
+				prerequisites: ["strong_legs_9"]
 			}
 		],
 		scavenging:
@@ -235,7 +345,7 @@ function init_skill_database(){
 			}
 		]
 	};
-	skill_node_unlocks = { marksmanship: {}, athleticism: {} };
+	skill_node_unlocks = { marksmanship: {}, athleticism: {}, strength: {} };
 	player_skill_keys =
     [
         "drugmaking",

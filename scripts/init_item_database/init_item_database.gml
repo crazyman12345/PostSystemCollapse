@@ -163,6 +163,7 @@ function init_item_database()
         description: "Propellant used in the production of ammunition.",
         base_value: 18,
         weight: 0.2,
+		grid_height: 2,
         stackable: true,
 		max_stack: 5
     };
@@ -175,7 +176,9 @@ function init_item_database()
         base_value: 25,
         weight: 0.4,
         stackable: true,
-		max_stack: 5
+		grid_width: 2,
+		max_stack: 5,
+		icon_sprite: spr_mechanicalparts
     };
 
     global.items.precision_parts = {
@@ -185,6 +188,8 @@ function init_item_database()
         description: "Finely manufactured components required for advanced equipment.",
         base_value: 45,
         weight: 0.2,
+		grid_width: 2,
+		icon_sprite: spr_precisionparts,
         stackable: true,
 		max_stack: 5
     };
@@ -196,6 +201,8 @@ function init_item_database()
         description: "Reusable electronic components recovered from old devices.",
         base_value: 30,
         weight: 0.2,
+		icon_sprite: spr_electronics,
+		grid_width: 2,
         stackable: true,
 		max_stack: 5
     };
@@ -207,6 +214,8 @@ function init_item_database()
         description: "A heavy plate of steel suitable for protective equipment.",
         base_value: 35,
         weight: 1.5,
+		grid_width: 2,
+		grid_height: 2,
         stackable: true,
 		max_stack: 5
     };
@@ -219,7 +228,8 @@ function init_item_database()
         base_value: 25,
         weight: 0.5,
         stackable: true,
-		max_stack: 5
+		max_stack: 5,
+		icon_sprite: spr_aluminum
     };
 
     global.items.polymer = {
@@ -230,7 +240,8 @@ function init_item_database()
         base_value: 30,
         weight: 0.2,
         stackable: true,
-		max_stack: 5
+		max_stack: 5,
+		icon_sprite: spr_polymer
     };
 
     global.items.ballistic_fabric = {
@@ -241,7 +252,8 @@ function init_item_database()
         base_value: 45,
         weight: 0.3,
         stackable: true,
-		max_stack: 5
+		max_stack: 5,
+		icon_sprite: spr_ballisticfabric
     };
 
     global.items.ceramic_plate = {
@@ -251,6 +263,8 @@ function init_item_database()
         description: "A hardened ceramic armor plate used in advanced protective equipment.",
         base_value: 70,
         weight: 1.2,
+		grid_width: 2,
+		grid_height: 2,
         stackable: true,
 		max_stack: 5
     };
@@ -263,7 +277,8 @@ function init_item_database()
         base_value: 25,
         weight: 0.2,
         stackable: true,
-		max_stack: 5
+		max_stack: 5,
+		icon_sprite: spr_medical_parts
     };
 
     global.items.alcohol = {
@@ -274,7 +289,9 @@ function init_item_database()
         base_value: 20,
         weight: 0.3,
         stackable: true,
-		max_stack: 5
+		max_stack: 5,
+		grid_height: 2,
+		icon_sprite: spr_alcohol
     };
 
     global.items.painkillers = {
@@ -285,7 +302,8 @@ function init_item_database()
         base_value: 30,
         weight: 0.1,
         stackable: true,
-		max_stack: 5
+		max_stack: 5,
+		icon_sprite: spr_painkillers
     };
 
     global.items.rare_weapon_parts = {
@@ -296,7 +314,8 @@ function init_item_database()
         base_value: 80,
         weight: 0.3,
         stackable: true,
-		max_stack: 5
+		max_stack: 5,
+		icon_sprite: spr_rare_weapparts
     };
 
 
@@ -312,6 +331,9 @@ function init_item_database()
         base_value: 15,
         weight: 1.5,
         stackable: false,
+		icon_sprite: spr_brokentoaster,
+		grid_width: 2,
+		grid_height: 2,
         salvage: [
             { item_key: "metal_scrap", quantity: 4 },
             { item_key: "screws", quantity: 2 }
@@ -326,6 +348,9 @@ function init_item_database()
         base_value: 22,
         weight: 2.0,
         stackable: false,
+		icon_sprite: spr_deskfan,
+		grid_width: 2,
+		grid_height: 2,
         salvage: [
             { item_key: "metal_scrap", quantity: 3 },
             { item_key: "screws", quantity: 2 },
@@ -341,6 +366,9 @@ function init_item_database()
         base_value: 35,
         weight: 1.5,
         stackable: false,
+		icon_sprite: spr_powerdrill,
+		grid_width: 2,
+		grid_height: 2,
         salvage: [
             { item_key: "metal_scrap", quantity: 2 },
             { item_key: "mechanical_parts", quantity: 2 },
@@ -357,6 +385,9 @@ function init_item_database()
         base_value: 30,
         weight: 1.0,
         stackable: false,
+		grid_width: 2,
+		grid_height: 2,
+		icon_sprite: spr_brokenradio,
         salvage: [
             { item_key: "metal_scrap", quantity: 1 },
             { item_key: "plastic", quantity: 2 },
@@ -372,6 +403,9 @@ function init_item_database()
         base_value: 35,
         weight: 6.0,
         stackable: false,
+		grid_width: 2,
+		grid_height: 2,
+		icon_sprite: spr_carbattery,
         salvage: [
             { item_key: "metal_scrap", quantity: 3 },
             { item_key: "chemicals", quantity: 1 },
@@ -543,7 +577,8 @@ function init_item_database()
         base_value: 3,
 		max_stack: 60,
         weight: 0.025,
-        stackable: true
+        stackable: true,
+		icon_sprite: spr_45acp
     };
 
     global.items.ammo_12g = {
@@ -876,6 +911,24 @@ function init_item_database()
         bag_capacity: 20.0,
         grid_width: 5,
         grid_height: 5
+    };
+
+
+    // ============================================================
+    // SECURE CONTAINERS
+    // ============================================================
+
+    global.items.small_container = {
+        item_key: "small_container",
+        name: "Small Container",
+        category: ItemCategory.SECURE_CONTAINER,
+        description: "A compact secure container that protects a small amount of loot.",
+        base_value: 100,
+        weight: 1.0,
+        stackable: false,
+        grid_width: 2,
+        grid_height: 2,
+        icon_sprite: spr_container1
     };
 
 
