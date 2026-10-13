@@ -73,7 +73,7 @@ function draw_equipment_item_select()
 
         var quantity;
 
-        if (raid.active)
+        if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
         {
             quantity =
                 raid_bag_get_quantity(item_key);

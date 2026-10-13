@@ -1,6 +1,6 @@
 function raid_player_take_damage(_damage, _hit_direction = undefined)
 {
-    if (raid_player_death_active || raid_godmode || raid_player_is_dash_invulnerable() || raid_player_invincible)
+    if (raid.state == RaidState.DEATH || raid_godmode || raid_player_is_dash_invulnerable() || raid_player_invincible)
         return;
 
     var _hp_before = raid_player_hp;

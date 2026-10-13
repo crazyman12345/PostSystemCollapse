@@ -1,6 +1,6 @@
 function draw_raid_player()
 {
-    if (raid_player_death_active)
+    if (raid.state == RaidState.DEATH)
     {
         if (raid_player_death_phase <= 1)
         {

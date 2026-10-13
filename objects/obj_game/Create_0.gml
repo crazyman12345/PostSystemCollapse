@@ -168,6 +168,13 @@ skill_icon_medical_crafting = icon_medical_crafting;
 skill_icon_gunmaking = icon_gunmaking;
 skill_icon_armorcrafting = icon_armorcrafting;
 skill_icon_drugmaking = icon_drugmaking;
+
+// Avoid first-hit stalls from uploading damage-effect texture pages during combat.
+sprite_prefetch(icon_vitality);
+sprite_prefetch(spr_blood_splat_small);
+sprite_prefetch(spr_blood_pool);
+sprite_prefetch(spr_blood_streak);
+
 hideout_skill_tabs = [
     { key: "marksmanship", name: "MARKSMANSHIP", icon: skill_icon_marksmanship, description: "Placeholder description for the Marksmanship skill." },
     { key: "vitality", name: "VITALITY", icon: skill_icon_vitality, description: "Placeholder description for the Vitality skill." },

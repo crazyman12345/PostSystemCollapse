@@ -73,16 +73,13 @@ enum WeaponFireMode
 }
 raid =
 {
-    active: false,
+    state: RaidState.INACTIVE,
     crew_index: 0,
     location_key: "",
     // Current position
     junction_key: "",
     junction_action_index: 0,
 	visited_junctions: {},
-    // Current raid screen/activity
-    mode: RaidMode.START,
-    paused: false,
     pause_menu_index: 3,
     pause_fps_index: 1,
     // Selection references the carried grid item; it never removes it from storage.
@@ -157,10 +154,8 @@ raid_player_moving = false;
 raid_player_anim_frame = 0;
 raid_player_anim_speed = 0.15;
 raid_player_was_moving = false;
-raid.room_entering = false;
 raid_player_entry_target_y = 0;
 raid_player_entry_speed = 3 / 1.3;
-raid.room_exiting = false;
 raid_player_exit_target_y = 0;
 raid_player_exit_reward_type = RaidRewardType.FILING_CABINETS;
 raid_shot_cooldown = 0;
@@ -230,7 +225,6 @@ raid_gun_tuning_weapon_key = "";
 raid_gun_tuning_value_index = 0;
 raid_gun_tuning_values = {};
 raid_enemy_death_effects = [];
-raid_player_death_active = false;
 raid_player_death_phase = 0;
 raid_player_death_timer = 0;
 raid_player_death_x = 0;

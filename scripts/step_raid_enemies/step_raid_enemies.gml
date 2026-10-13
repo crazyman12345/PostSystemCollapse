@@ -146,7 +146,7 @@ function step_raid_enemies()
 		{
 		    raid_player_take_damage(10, point_direction(e.enemy_x, e.enemy_y, raid_player_x, raid_player_y));
 
-		    if (!raid.active || raid_player_death_active)
+		    if (raid.state != RaidState.COMBAT)
 		        return;
 		}
 		//direction facing
@@ -234,7 +234,7 @@ function step_raid_enemies()
         // SAVE ENEMY BACK
         // ==========================================
 
-        if (raid.active)
+        if (raid.state == RaidState.COMBAT)
             raid_enemies[i] = e;
     }
 

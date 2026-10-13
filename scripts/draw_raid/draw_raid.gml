@@ -4,13 +4,13 @@ function draw_raid()
     draw_rectangle(0, 0, 1920, 1080, false);
     raid_floor_draw();
 
-    if (!raid.room_entering)
+    if (raid.state != RaidState.ENTERING)
     {
         draw_raid_room_border();
         blood_surface_draw();
     }
 
-    if (raid_player_death_active)
+    if (raid.state == RaidState.DEATH)
     {
         draw_raid_enemy_death_effects();
         draw_raid_player();
@@ -45,14 +45,14 @@ function draw_raid()
 	smoke_draw();
 
 
-    if (raid.room_entering)
+    if (raid.state == RaidState.ENTERING)
         draw_raid_room_border();
 
 }
 
 function draw_raid_player_death_screen()
 {
-    if (!raid_player_death_active || raid_player_death_phase < 2) return;
+    if (raid.state != RaidState.DEATH || raid_player_death_phase < 2) return;
 
     var _gui_width = display_get_gui_width();
     var _gui_height = display_get_gui_height();

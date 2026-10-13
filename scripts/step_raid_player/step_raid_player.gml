@@ -1,9 +1,16 @@
-function step_raid_player()
+function step_raid_player(_allow_dodge)
 {
     var _start_x = raid_player_x;
     var _start_y = raid_player_y;
     var _mx = keyboard_check(ord("D")) - keyboard_check(ord("A"));
     var _my = keyboard_check(ord("S")) - keyboard_check(ord("W"));
+
+    if (!_allow_dodge && raid_player_dash_active)
+    {
+        raid_player_dash_active = false;
+        raid_player_dash_timer = 0;
+        raid_player_dash_xp_pending = false;
+    }
 
     // ==========================================
     // DASH
@@ -16,6 +23,7 @@ function step_raid_player()
 
     if (
         !raid_player_dash_active
+        && _allow_dodge
         && raid_player_stamina >= raid_player_dash_stamina_cost
         && keyboard_check_pressed(vk_space)
     )

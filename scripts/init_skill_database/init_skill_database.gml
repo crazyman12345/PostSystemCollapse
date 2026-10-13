@@ -290,6 +290,72 @@ function init_skill_database(){
 				lane: 0,
 				unlock_type: SkillNodeUnlockType.INFO,
 				prerequisites: []
+			},
+			{
+				key: "lucky_looter",
+				name: "LUCKY LOOTER",
+				description: "Increases loot quantities by 5%.",
+				icon: -1,
+				required_level: 5,
+				lane: -1,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 250,
+				prerequisites: ["scavenging_info"]
+			},
+			{
+				key: "lucky_looter_2",
+				name: "LUCKY LOOTER II",
+				description: "Increases loot quantities by an additional 5%.",
+				icon: -1,
+				required_level: 10,
+				lane: -1,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 500,
+				prerequisites: ["lucky_looter"]
+			},
+			{
+				key: "charisma",
+				name: "CHARISMA",
+				description: "Improves trader buy and sell prices by 5%.",
+				icon: -1,
+				required_level: 5,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 250,
+				prerequisites: ["scavenging_info"]
+			},
+			{
+				key: "charisma_2",
+				name: "CHARISMA II",
+				description: "Improves trader buy and sell prices by an additional 5%.",
+				icon: -1,
+				required_level: 10,
+				lane: 0,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 500,
+				prerequisites: ["charisma"]
+			},
+			{
+				key: "salvage_tech",
+				name: "SALVAGE TECH",
+				description: "Increases materials gained from salvaging by 10%.",
+				icon: -1,
+				required_level: 5,
+				lane: 1,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 250,
+				prerequisites: ["scavenging_info"]
+			},
+			{
+				key: "salvage_tech_2",
+				name: "SALVAGE TECH II",
+				description: "Increases materials gained from salvaging by an additional 10%.",
+				icon: -1,
+				required_level: 10,
+				lane: 1,
+				unlock_type: SkillNodeUnlockType.MONEY,
+				cost: 500,
+				prerequisites: ["salvage_tech"]
 			}
 		],
 		gunmaking:
@@ -345,7 +411,7 @@ function init_skill_database(){
 			}
 		]
 	};
-	skill_node_unlocks = { marksmanship: {}, athleticism: {}, strength: {} };
+	skill_node_unlocks = { marksmanship: {}, athleticism: {}, strength: {}, scavenging: {} };
 	player_skill_keys =
     [
         "drugmaking",

@@ -2,6 +2,14 @@ function step_hideout()
 {
     if (hideout_focus == HideoutFocus.SIDEBAR)
     {
+        if (keyboard_check_pressed(vk_escape))
+        {
+            state = GameState.MAIN_MENU;
+            menu_index = 0;
+            audio_play_sound(snd_interact, 0, false);
+            return;
+        }
+
         if (keyboard_check_pressed(ord("W")))
         {
             repeat (array_length(hideout_menu_items))

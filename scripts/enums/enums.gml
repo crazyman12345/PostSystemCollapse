@@ -91,10 +91,14 @@ function enums(){
 	    DESTROY,
 	    CANCEL
 	}
-	enum RaidMode
+	enum RaidState
 	{
-		START,
-		LOOT,
+		INACTIVE,
+		COMBAT,
+		ENTERING,
+		EXITING,
+		PAUSED,
+		DEATH,
 		RESULT
 	}
 

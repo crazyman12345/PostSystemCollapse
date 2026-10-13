@@ -18,7 +18,7 @@ function equipment_equip_item(
         case EquipmentSlot.BAG: old_item = stash.equipped_bag_item; break;
     }
 
-    var source = raid.active ? stash.backpack : stash;
+    var source = raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT ? stash.backpack : stash;
     var new_item = undefined;
 
 
@@ -107,7 +107,7 @@ function equipment_equip_item(
     crew[_crew_index] =
         member;
 
-    if (raid.active)
+    if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
     {
         if (
             _slot == active_weapon_slot

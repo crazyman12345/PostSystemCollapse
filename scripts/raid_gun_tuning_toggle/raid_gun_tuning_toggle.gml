@@ -1,6 +1,6 @@
 function raid_gun_tuning_toggle()
 {
-    if (state != GameState.RAID || !raid.active || raid.mode == RaidMode.RESULT)
+    if (state != GameState.RAID || raid.state == RaidState.INACTIVE || raid.state == RaidState.RESULT)
     {
         debug_log_add("gun_tuning_mode is only available during an active raid.");
         return;

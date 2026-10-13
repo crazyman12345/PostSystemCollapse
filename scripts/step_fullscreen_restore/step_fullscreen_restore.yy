@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_fullscreen_restore",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_fullscreen_restore",
+  "parent":{
+    "name":"IdleGame",
+    "path":"IdleGame.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

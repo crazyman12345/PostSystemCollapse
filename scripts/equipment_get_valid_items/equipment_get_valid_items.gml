@@ -3,7 +3,7 @@ function equipment_get_valid_items(_slot)
     var source_items;
 
     // During a raid, equipment must come from raid bag
-    if (raid.active)
+    if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
     {
         source_items =
             raid_bag_get_visible_items();

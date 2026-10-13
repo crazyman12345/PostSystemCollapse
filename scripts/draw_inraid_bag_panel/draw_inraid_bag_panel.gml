@@ -240,7 +240,7 @@ function raid_inventory_item_fits_equipment(_item, _slot)
 
 function step_raid_inventory()
 {
-    if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(ord("U")))
+    if (keyboard_check_pressed(vk_escape))
     {
         raid_inventory_clear_held();
         raid.active_loot_container = undefined;

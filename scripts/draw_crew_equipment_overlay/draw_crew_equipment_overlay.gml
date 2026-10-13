@@ -9,7 +9,7 @@ function draw_crew_equipment_overlay()
     // ==============================
 
     draw_set_color(c_black);
-    if (raid.active) draw_set_alpha(0.9);
+    if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT) draw_set_alpha(0.9);
     draw_rectangle(0, 0, 1920, 1080, false);
     draw_set_alpha(1);
 
@@ -20,7 +20,7 @@ function draw_crew_equipment_overlay()
 
     var member = crew[raid.crew_index];
 
-    if (raid.active)
+    if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
     {
         draw_inraid_bag_panel();
         inventory_hover_finish();
@@ -28,7 +28,7 @@ function draw_crew_equipment_overlay()
         return;
     }
 
-    if (!raid.active)
+    if (raid.state == RaidState.INACTIVE || raid.state == RaidState.RESULT)
     {
         var panel_left = 20;
         var panel_top = 80;
@@ -77,7 +77,7 @@ function draw_crew_equipment_overlay()
     // DIFFERENT LAYOUT IN RAID
     // ==============================
 
-    if (raid.active)
+    if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
     {
         draw_character_stats_panel(
             member
@@ -129,7 +129,7 @@ function draw_crew_equipment_overlay()
 
     else
     {
-        if (raid.active)
+        if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
         {
             terminal_prompt(
                 "A/D: PANEL    W/S: SELECT    ENTER: ACTION   X: DROP ITEM    U/ESC: CLOSE"

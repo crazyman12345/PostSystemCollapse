@@ -17,7 +17,7 @@ function overlay_close()
 
         case OverlayMode.LOADOUT:
         {
-            if (raid.active)
+            if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
             {
                 raid_inventory_clear_held();
                 raid.active_loot_container = undefined;

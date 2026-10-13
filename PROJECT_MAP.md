@@ -681,7 +681,7 @@ Compact index of project GML code. Use this to locate files before searching the
 - RaidActionType
 - RaidEnemyState
 - RaidEnemyType
-- RaidMode
+- RaidState
 - RaidPrep
 - RaidRewardType
 - RaidRoomType

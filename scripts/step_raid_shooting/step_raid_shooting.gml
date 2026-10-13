@@ -1,8 +1,8 @@
-function step_raid_shooting()
+function step_raid_shooting(_allow_input)
 {
     raid_update_active_weapon();
 
-    if (mouse_wheel_up() || mouse_wheel_down())
+    if (_allow_input && (mouse_wheel_up() || mouse_wheel_down()))
     {
         raid_switch_weapon();
     }
@@ -94,6 +94,8 @@ function step_raid_shooting()
     if (raid_shot_cooldown > 0)
         raid_shot_cooldown -= frame_scale;
 
+    if (!_allow_input) raid_burst_remaining = 0;
+
     for (var t = array_length(raid_knife_trail) - 1; t >= 0; t--)
     {
         var _trail = raid_knife_trail[t];
@@ -125,7 +127,8 @@ function step_raid_shooting()
         }
 
         if (
-            mouse_check_button_pressed(mb_left)
+            _allow_input
+            && mouse_check_button_pressed(mb_left)
             && raid_shot_cooldown <= 0
         )
         {
@@ -179,7 +182,8 @@ function step_raid_shooting()
         }
 
         if (
-            _knife_timer_before > floor(raid_knife_attack_time * 0.5)
+            _allow_input
+            && _knife_timer_before > floor(raid_knife_attack_time * 0.5)
             && raid_knife_attack_timer <= floor(raid_knife_attack_time * 0.5)
             && !raid_knife_attack_hit
         )
@@ -238,7 +242,8 @@ function step_raid_shooting()
     // ======================================================
 
     if (
-        keyboard_check_pressed(ord("B"))
+        _allow_input
+        && keyboard_check_pressed(ord("B"))
         && array_length(_weapon.fire_modes) > 1
     )
     {
@@ -284,7 +289,7 @@ function step_raid_shooting()
 // START RELOAD
 // ======================================================
 
-if (keyboard_check_pressed(ord("R")))
+if (_allow_input && keyboard_check_pressed(ord("R")))
 {
     if (raid_weapon_mag < _weapon.mag_size)
     {
@@ -323,7 +328,8 @@ if (keyboard_check_pressed(ord("R")))
         case WeaponFireMode.SEMI:
         {
             _fire =
-                mouse_check_button_pressed(
+                _allow_input
+                && mouse_check_button_pressed(
                     mb_left
                 );
         }
@@ -333,7 +339,8 @@ if (keyboard_check_pressed(ord("R")))
         case WeaponFireMode.AUTO:
         {
             _fire =
-                mouse_check_button(
+                _allow_input
+                && mouse_check_button(
                     mb_left
                 );
         }
@@ -343,7 +350,8 @@ if (keyboard_check_pressed(ord("R")))
         case WeaponFireMode.BURST:
         {
             if (
-                mouse_check_button_pressed(
+                _allow_input
+                && mouse_check_button_pressed(
                     mb_left
                 )
                 && raid_burst_remaining <= 0

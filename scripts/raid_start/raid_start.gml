@@ -21,7 +21,6 @@ function raid_start(_area)
 	
 	view_enabled = true;
 	view_visible[0] = true;
-	raid.mode = RaidMode.START;
 	raid_camera = view_camera[0];
 
 	camera_set_view_size(
@@ -29,12 +28,10 @@ function raid_start(_area)
 	    640,
 	    360
 	);
-    raid.active = true;
-    raid_player_death_active = false;
+    raid_set_state(RaidState.COMBAT);
     raid_player_death_phase = 0;
     raid_player_death_timer = 0;
     raid_player_death_chunks_created = false;
-    raid.paused = false;
     raid.pause_menu_index = 3;
     raid.selected_area = _area;
 

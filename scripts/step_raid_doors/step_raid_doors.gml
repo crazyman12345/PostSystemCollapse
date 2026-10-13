@@ -20,12 +20,9 @@ function step_raid_doors()
 		)
 		{
             raid.doors_active = false;
-            raid.room_exiting = true;
             raid_player_exit_target_y = raid_room_y1 - 60;
             raid_player_exit_reward_type = d.reward_type;
-            raid_player_moving = true;
-            raid_player_was_moving = false;
-            raid_player_anim_frame = 0;
+            raid_set_state(RaidState.EXITING);
 
             return;
 		}

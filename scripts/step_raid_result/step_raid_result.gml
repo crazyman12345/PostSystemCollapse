@@ -3,6 +3,7 @@ function step_raid_result(){
 		hideout_menu_index = 1;
 		hideout_page = HideoutPage.STASH;
 		hideout_focus = HideoutFocus.CONTENT;
+		raid_set_state(RaidState.INACTIVE);
 		state = GameState.HIDEOUT;
 	}
 }

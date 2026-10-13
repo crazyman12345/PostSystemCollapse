@@ -37,7 +37,7 @@ function draw_raid_doors()
 
 function draw_raid_door_overlay()
 {
-    if (!raid.doors_active && !raid.room_exiting)
+    if (!raid.doors_active && raid.state != RaidState.EXITING)
         return;
 
     // Match the room border's scaled position so the doorway stays aligned.

@@ -8,7 +8,7 @@ function debug_start_boss()
 
     raid_start("prototype_block");
 
-    if (!raid.active || state != GameState.RAID)
+    if (raid.state == RaidState.INACTIVE || raid.state == RaidState.RESULT || state != GameState.RAID)
         return;
 
     raid.rooms_cleared = 14;

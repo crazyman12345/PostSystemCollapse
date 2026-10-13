@@ -1,6 +1,6 @@
 if (
     state == GameState.RAID
-    && raid.mode != RaidMode.RESULT
+    && raid.state != RaidState.RESULT
 )
 {
     draw_raid();

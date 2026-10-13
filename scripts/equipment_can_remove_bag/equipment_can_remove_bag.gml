@@ -1,6 +1,6 @@
 function equipment_can_remove_bag()
 {
-    if (!raid.active)
+    if (raid.state == RaidState.INACTIVE || raid.state == RaidState.RESULT)
     {
         return true;
     }

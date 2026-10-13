@@ -237,6 +237,11 @@ function raid_generate_reward_loot(_reward_type)
     // ============================================================
 
     var _loot = [];
+	var _scavenging_nodes = skill_node_get_nodes("scavenging");
+	var _lucky_looter = skill_node_find(_scavenging_nodes, "lucky_looter");
+	var _lucky_looter_unlocked = !is_undefined(_lucky_looter) && skill_node_is_unlocked("scavenging", _lucky_looter);
+	var _lucky_looter_2 = skill_node_find(_scavenging_nodes, "lucky_looter_2");
+	var _lucky_looter_2_unlocked = !is_undefined(_lucky_looter_2) && skill_node_is_unlocked("scavenging", _lucky_looter_2);
 
     for (var i = 0; i < _rolls; i++)
     {
@@ -247,6 +252,14 @@ function raid_generate_reward_loot(_reward_type)
                 _entry.min_qty,
                 _entry.max_qty
             );
+
+		if (_lucky_looter_unlocked || _lucky_looter_2_unlocked)
+		{
+			var _loot_bonus = (_lucky_looter_unlocked ? 0.05 : 0) + (_lucky_looter_2_unlocked ? 0.05 : 0);
+			var _bonus_quantity = _quantity * _loot_bonus;
+			_quantity += floor(_bonus_quantity);
+			if (random(1) < _bonus_quantity - floor(_bonus_quantity)) _quantity++;
+		}
 
         _loot =
             raid_loot_add(

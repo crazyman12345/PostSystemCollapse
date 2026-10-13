@@ -46,7 +46,7 @@ function trader_buy_item(_trader_key, _stock_index)
     // ==============================
 
     var price =
-        stock_entry.price;
+        trader_get_buy_price(stock_entry.price);
 
 
     // ==============================
@@ -97,4 +97,15 @@ function trader_buy_item(_trader_key, _stock_index)
     );
 
     return true;
+}
+
+function trader_get_buy_price(_base_price)
+{
+	var nodes = skill_node_get_nodes("scavenging");
+	var charisma = skill_node_find(nodes, "charisma");
+	var charisma_2 = skill_node_find(nodes, "charisma_2");
+	var multiplier = 1;
+	if (!is_undefined(charisma) && skill_node_is_unlocked("scavenging", charisma)) multiplier -= 0.05;
+	if (!is_undefined(charisma_2) && skill_node_is_unlocked("scavenging", charisma_2)) multiplier -= 0.05;
+	return max(1, floor(_base_price * multiplier));
 }

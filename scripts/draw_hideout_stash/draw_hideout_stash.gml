@@ -338,7 +338,7 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
     draw_equipment_slot(equipment_center - 180, grid_top + 470, 360, 100, "WEAPON 2", _member.weapon_2, false, true);
     draw_equipment_slot(middle_left, grid_top, 150, 220, "BACKPACK", _member.bag, false, true);
 
-    var preview_item = raid.active ? raid.inventory_item : stash.held_item;
+    var preview_item = raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT ? raid.inventory_item : stash.held_item;
 
     if (!is_undefined(preview_item))
     {
@@ -346,8 +346,8 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
 
         if (!is_undefined(held_definition))
         {
-            var held_source_valid = raid.active || stash.held_source == "stash" || stash.held_source == "equipment";
-            var bag_source_valid = raid.active || stash.held_source == "stash";
+            var held_source_valid = (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT) || stash.held_source == "stash" || stash.held_source == "equipment";
+            var bag_source_valid = (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT) || stash.held_source == "stash";
             var gui_mouse_x = device_mouse_x_to_gui(0);
             var gui_mouse_y = device_mouse_y_to_gui(0);
             var equipment_previews = [

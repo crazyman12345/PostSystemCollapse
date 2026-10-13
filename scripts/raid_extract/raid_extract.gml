@@ -12,7 +12,6 @@ function raid_extract()
     // already in their final grids. Only clear temporary raid references.
     raid_secure_bag();
 
-    raid.active = false;
     blood_surface_destroy();
     raid_reset_active_weapon();
 
@@ -26,7 +25,5 @@ function raid_extract()
     raid_bullets = [];
     raid_doors = [];
 
-    raid.mode = RaidMode.RESULT;
-
-    menu_index = 0;
+    raid_set_state(RaidState.RESULT);
 }

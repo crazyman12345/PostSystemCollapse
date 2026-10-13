@@ -22,14 +22,36 @@ function workshop_salvage_item(_item_key)
 {
     var item = item_get(_item_key);
     if (is_undefined(item) || !item_can_salvage(_item_key) || !stash_has(_item_key, 1)) return false;
-    if (!workshop_salvage_outputs_fit(_item_key, item.salvage)) return false;
+
+	var salvage_outputs = [];
+	var scavenging_nodes = skill_node_get_nodes("scavenging");
+	var salvage_tech = skill_node_find(scavenging_nodes, "salvage_tech");
+	var salvage_tech_unlocked = !is_undefined(salvage_tech) && skill_node_is_unlocked("scavenging", salvage_tech);
+	var salvage_tech_2 = skill_node_find(scavenging_nodes, "salvage_tech_2");
+	var salvage_tech_2_unlocked = !is_undefined(salvage_tech_2) && skill_node_is_unlocked("scavenging", salvage_tech_2);
+
+	for (var i = 0; i < array_length(item.salvage); i++)
+	{
+		var result = item.salvage[i];
+		var quantity = result.quantity;
+		if (salvage_tech_unlocked || salvage_tech_2_unlocked)
+		{
+			var salvage_bonus = (salvage_tech_unlocked ? 0.10 : 0) + (salvage_tech_2_unlocked ? 0.10 : 0);
+			var bonus_quantity = quantity * salvage_bonus;
+			quantity += floor(bonus_quantity);
+			if (random(1) < bonus_quantity - floor(bonus_quantity)) quantity++;
+		}
+		array_push(salvage_outputs, { item_key: result.item_key, quantity: quantity });
+	}
+
+    if (!workshop_salvage_outputs_fit(_item_key, salvage_outputs)) return false;
 
     stash_remove(_item_key, 1);
     var added_results = [];
 
-    for (var i = 0; i < array_length(item.salvage); i++)
+    for (var i = 0; i < array_length(salvage_outputs); i++)
     {
-        var result = item.salvage[i];
+        var result = salvage_outputs[i];
 
         if (!stash_add(result.item_key, result.quantity))
         {

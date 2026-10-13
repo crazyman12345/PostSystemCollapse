@@ -5,7 +5,7 @@ function step_loadout_overlay()
         return;
     }
 
-    if (raid.active)
+    if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
     {
         step_raid_inventory();
         return;
@@ -75,7 +75,7 @@ function step_loadout_overlay()
     // PRE-RAID LOADOUT
     // ======================================================
 
-    if (!raid.active)
+    if (raid.state == RaidState.INACTIVE || raid.state == RaidState.RESULT)
     {
         loadout_focus = LoadoutFocus.START_RAID;
 
@@ -155,7 +155,7 @@ function step_loadout_overlay()
 
                 if (old_item_key != "")
                 {
-                    if (raid.active)
+                    if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
                     {
                         equipment_equip_item(
                             raid.crew_index,

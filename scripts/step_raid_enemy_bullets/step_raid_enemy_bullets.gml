@@ -41,7 +41,7 @@ function step_raid_enemy_bullets()
             // Leave arrays intact until the deferred loss cleanup.
             // ==============================================
 
-            if (!raid.active || raid_player_death_active)
+            if (raid.state != RaidState.COMBAT)
                 return;
 
 

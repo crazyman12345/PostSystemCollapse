@@ -143,7 +143,7 @@ else
         draw_text(
             995,
             _y,
-            "$" + string(stock_entry.price)
+            "$" + string(trader_get_buy_price(stock_entry.price))
         );
     }
 

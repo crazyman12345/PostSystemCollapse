@@ -55,7 +55,6 @@ function raid_combat_loss()
     // STOP RAID
     // ==========================================
 
-    raid.active = false;
     blood_surface_destroy();
     raid_reset_active_weapon();
 
@@ -91,42 +90,12 @@ function raid_combat_loss()
         "Raid failed."
     );
 
-    raid.mode =
-        RaidMode.RESULT;
-
-    menu_index = 0;
+    raid_set_state(RaidState.RESULT);
 }
 
 function raid_player_death_start()
 {
-    if (raid_player_death_active) return;
-
-    raid_player_death_active = true;
-    raid_player_death_phase = 0;
-    raid_player_death_timer = 0;
-    raid_player_death_x = raid_player_x;
-    raid_player_death_y = raid_player_y;
-    raid_player_death_sprite = raid_player_moving ? spr_player_run : spr_player_idle;
-    raid_player_death_frame = floor(raid_player_anim_frame) mod sprite_get_number(raid_player_death_sprite);
-    raid_player_death_facing = raid_player_facing;
-    raid_player_death_scale = 1;
-    raid_player_death_chunks_created = false;
-    raid_player_death_camera_width = camera_get_view_width(raid_camera);
-    raid_player_death_camera_height = camera_get_view_height(raid_camera);
-
-    raid_player_x = raid_player_death_x;
-    raid_player_y = raid_player_death_y;
-    raid_player_velocity_x = 0;
-    raid_player_velocity_y = 0;
-    raid_player_smoothed_velocity_x = 0;
-    raid_player_smoothed_velocity_y = 0;
-    raid_player_dash_active = false;
-    raid_player_moving = false;
-    raid.paused = false;
-    raid_gun_tuning_active = false;
-    overlay_mode = OverlayMode.NONE;
-
-    blood_stamp_pool(raid_player_death_x, raid_player_death_y, 1.6);
+    raid_set_state(RaidState.DEATH);
 }
 
 function step_raid_player_death()
@@ -200,7 +169,6 @@ function step_raid_player_death()
         if (raid_player_death_phase == 3 && keyboard_check_pressed(vk_enter))
         {
             camera_set_view_size(raid_camera, raid_player_death_camera_width, raid_player_death_camera_height);
-            raid_player_death_active = false;
             step_raid_camera();
             raid_combat_loss();
         }
