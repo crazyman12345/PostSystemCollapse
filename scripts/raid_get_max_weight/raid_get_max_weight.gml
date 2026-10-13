@@ -1,4 +1,4 @@
-function raid_bag_get_max_weight()
+function raid_get_max_weight()
 {
     var _max_weight = 8.0;
     var _nodes = skill_node_get_nodes("strength");

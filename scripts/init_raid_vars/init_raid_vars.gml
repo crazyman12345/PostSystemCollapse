@@ -83,7 +83,7 @@ raid =
     // Current raid screen/activity
     mode: RaidMode.START,
     paused: false,
-    pause_menu_index: 2,
+    pause_menu_index: 3,
     pause_fps_index: 1,
     // Selection references the carried grid item; it never removes it from storage.
     inventory_item: undefined,
@@ -230,6 +230,18 @@ raid_gun_tuning_weapon_key = "";
 raid_gun_tuning_value_index = 0;
 raid_gun_tuning_values = {};
 raid_enemy_death_effects = [];
+raid_player_death_active = false;
+raid_player_death_phase = 0;
+raid_player_death_timer = 0;
+raid_player_death_x = 0;
+raid_player_death_y = 0;
+raid_player_death_sprite = -1;
+raid_player_death_frame = 0;
+raid_player_death_facing = 1;
+raid_player_death_scale = 1;
+raid_player_death_chunks_created = false;
+raid_player_death_camera_width = 640;
+raid_player_death_camera_height = 360;
 player_equipment = {
     armor_sprite_idle: -1,
     armor_sprite_run: -1,

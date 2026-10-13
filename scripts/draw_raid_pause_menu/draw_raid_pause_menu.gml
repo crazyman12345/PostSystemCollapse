@@ -5,7 +5,7 @@ function draw_raid_pause_menu(){
 	var panel_left = gui_width * 0.25;
 	var panel_top = gui_height * 0.3;
 	var panel_right = gui_width * 0.75;
-	var panel_bottom = gui_height * 0.7;
+	var panel_bottom = gui_height * 0.72;
 
 	draw_set_color(c_black);
 	draw_set_alpha(0.75);
@@ -22,7 +22,7 @@ function draw_raid_pause_menu(){
 	var leave_text = "LEAVE RAID (LOSE ALL GEAR)";
 	var continue_text = "CONTINUE";
 	if (raid.pause_menu_index == 0) leave_text = "> " + leave_text + " <";
-	if (raid.pause_menu_index == 2) continue_text = "> " + continue_text + " <";
+	if (raid.pause_menu_index == 3) continue_text = "> " + continue_text + " <";
 
 	draw_text(gui_width * 0.5, gui_height * 0.46, leave_text);
 	if (raid.pause_menu_index == 1)
@@ -34,8 +34,17 @@ function draw_raid_pause_menu(){
 	draw_text(gui_width * 0.5 - 35, gui_height * 0.52, "<");
 	draw_text(gui_width * 0.5, gui_height * 0.52, string(fps_options[raid.pause_fps_index]));
 	draw_text(gui_width * 0.5 + 35, gui_height * 0.52, ">");
-	draw_text(gui_width * 0.5, gui_height * 0.58, continue_text);
+	if (raid.pause_menu_index == 2)
+	{
+		draw_text(gui_width * 0.5 - 140, gui_height * 0.58, ">");
+		draw_text(gui_width * 0.5 + 140, gui_height * 0.58, "<");
+	}
+	draw_text(gui_width * 0.5 - 110, gui_height * 0.58, "MUSIC:");
+	draw_text(gui_width * 0.5 - 35, gui_height * 0.58, "<");
+	draw_text(gui_width * 0.5, gui_height * 0.58, string(music_volume) + "%");
+	draw_text(gui_width * 0.5 + 35, gui_height * 0.58, ">");
+	draw_text(gui_width * 0.5, gui_height * 0.64, continue_text);
 
-	draw_text(gui_width * 0.5, gui_height * 0.65, "W/S OR MOUSE: SELECT    A/D OR ARROWS: CHANGE    ENTER/CLICK: CONFIRM");
+	draw_text(gui_width * 0.5, gui_height * 0.69, "W/S OR MOUSE: SELECT    A/D OR ARROWS: CHANGE    ENTER/CLICK: CONFIRM");
 	draw_set_halign(fa_left);
 }

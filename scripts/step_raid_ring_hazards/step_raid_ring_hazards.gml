@@ -5,6 +5,12 @@ function step_raid_ring_hazards()
         var _ring = raid_ring_hazards[i];
         _ring = ring_attack_update(_ring);
 
+        if (raid_player_death_active)
+        {
+            raid_ring_hazards[i] = _ring;
+            return;
+        }
+
         if (_ring.active)
             raid_ring_hazards[i] = _ring;
         else

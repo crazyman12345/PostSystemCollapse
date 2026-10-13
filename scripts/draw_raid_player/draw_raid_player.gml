@@ -1,5 +1,25 @@
 function draw_raid_player()
 {
+    if (raid_player_death_active)
+    {
+        if (raid_player_death_phase <= 1)
+        {
+            draw_sprite_ext(
+                raid_player_death_sprite,
+                raid_player_death_frame,
+                round(raid_player_death_x),
+                round(raid_player_death_y),
+                raid_player_death_facing * raid_player_death_scale,
+                raid_player_death_scale,
+                0,
+                c_red,
+                1
+            );
+        }
+
+        return;
+    }
+
     var member = crew[0];
 
     var _base;

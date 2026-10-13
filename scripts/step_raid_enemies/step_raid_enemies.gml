@@ -115,6 +115,11 @@ function step_raid_enemies()
                     e.enemy_last_hit_direction = bullet.bdirection;
                     if (e.enemy_hp < _enemy_hp_before)
                         blood_hit_effect(e.enemy_x, e.enemy_y, bullet.bdirection);
+                    if (_enemy_hp_before > 0 && e.enemy_hp <= 0)
+                    {
+                        var _death_sound = audio_play_sound(choose(gore1, gore2, gore3, gore4, gore5), 0, false);
+                        audio_sound_pitch(_death_sound, random_range(0.92, 1.08));
+                    }
                     var _total_flash_duration = 8;
                     e.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
                     play_impact_sound(raid_enemy_hit_sound, "bullet");
@@ -141,7 +146,7 @@ function step_raid_enemies()
 		{
 		    raid_player_take_damage(10, point_direction(e.enemy_x, e.enemy_y, raid_player_x, raid_player_y));
 
-		    if (!raid.active)
+		    if (!raid.active || raid_player_death_active)
 		        return;
 		}
 		//direction facing

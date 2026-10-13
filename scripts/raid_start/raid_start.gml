@@ -30,8 +30,12 @@ function raid_start(_area)
 	    360
 	);
     raid.active = true;
+    raid_player_death_active = false;
+    raid_player_death_phase = 0;
+    raid_player_death_timer = 0;
+    raid_player_death_chunks_created = false;
     raid.paused = false;
-    raid.pause_menu_index = 2;
+    raid.pause_menu_index = 3;
     raid.selected_area = _area;
 
     state = GameState.RAID;

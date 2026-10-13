@@ -127,7 +127,7 @@ function draw_pre_raid_bag_panel()
         )
         + " / "
         + string_format(
-            raid_bag_get_max_weight(),
+            raid_get_max_weight(),
             1,
             1
         )

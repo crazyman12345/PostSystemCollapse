@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"raid_bag_get_max_weight",
+  "%Name":"raid_get_max_weight",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"raid_bag_get_max_weight",
+  "name":"raid_get_max_weight",
   "parent":{
-    "name":"loot",
-    "path":"folders/RAID/bag/loot.yy",
+    "name":"RAID",
+    "path":"folders/RAID.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

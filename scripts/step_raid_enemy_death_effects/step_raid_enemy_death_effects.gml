@@ -90,6 +90,21 @@ function step_raid_enemy_death_effects()
             }
         }
 
+        if (variable_struct_exists(e, "effect_lifetime"))
+        {
+            e.effect_lifetime -= frame_scale;
+            e.effect_scale *= power(e.effect_shrink_factor, frame_scale);
+
+            if (e.effect_lifetime <= e.effect_fade_time)
+                e.effect_alpha = clamp(e.effect_lifetime / e.effect_fade_time, 0, 1);
+
+            if (e.effect_lifetime <= 0)
+            {
+                array_delete(raid_enemy_death_effects, i, 1);
+                continue;
+            }
+        }
+
         raid_enemy_death_effects[i] = e;
     }
 }

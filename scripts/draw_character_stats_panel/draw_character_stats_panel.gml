@@ -55,7 +55,7 @@ function draw_character_stats_panel(_member)
         )
         + " / "
         + string_format(
-            raid_bag_get_max_weight(),
+            raid_get_max_weight(),
             1,
             1
         )

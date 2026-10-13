@@ -37,11 +37,11 @@ function step_raid_enemy_bullets()
 
 
             // ==============================================
-            // PLAYER DIED / RAID ENDED
-            // raid_combat_loss() cleared the bullet arrays
+            // PLAYER DIED / DEATH CINEMATIC STARTED
+            // Leave arrays intact until the deferred loss cleanup.
             // ==============================================
 
-            if (!raid.active)
+            if (!raid.active || raid_player_death_active)
                 return;
 
 

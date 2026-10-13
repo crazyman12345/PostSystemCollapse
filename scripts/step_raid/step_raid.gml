@@ -17,6 +17,12 @@ function step_raid()
     if (!raid.active)
         return;
 
+    if (raid_player_death_active)
+    {
+        step_raid_player_death();
+        return;
+    }
+
     if (raid.room_exiting)
     {
         raid_player_y = max(
@@ -84,6 +90,7 @@ function step_raid()
             if (_mouse_y >= _gui_height * 0.44 && _mouse_y < _gui_height * 0.50) _hover_index = 0;
             else if (_mouse_y >= _gui_height * 0.50 && _mouse_y < _gui_height * 0.56) _hover_index = 1;
             else if (_mouse_y >= _gui_height * 0.56 && _mouse_y < _gui_height * 0.62) _hover_index = 2;
+            else if (_mouse_y >= _gui_height * 0.62 && _mouse_y < _gui_height * 0.68) _hover_index = 3;
         }
 
         if (_hover_index != -1 && raid.pause_menu_index != _hover_index)
@@ -103,8 +110,8 @@ function step_raid()
         if (_menu_move != 0)
         {
             raid.pause_menu_index += _menu_move;
-            if (raid.pause_menu_index < 0) raid.pause_menu_index = 2;
-            if (raid.pause_menu_index > 2) raid.pause_menu_index = 0;
+            if (raid.pause_menu_index < 0) raid.pause_menu_index = 3;
+            if (raid.pause_menu_index > 3) raid.pause_menu_index = 0;
             scroll_sound();
         }
 
@@ -117,6 +124,12 @@ function step_raid()
             if (point_in_rectangle(_mouse_x, _mouse_y, _gui_width * 0.5 - 57, _fps_y - 8, _gui_width * 0.5 - 13, _fps_y + 32)) _fps_change = -1;
             if (point_in_rectangle(_mouse_x, _mouse_y, _gui_width * 0.5 + 13, _fps_y - 8, _gui_width * 0.5 + 57, _fps_y + 32)) _fps_change = 1;
         }
+		if (_mouse_clicked && raid.pause_menu_index == 2)
+		{
+			var _music_y = _gui_height * 0.58;
+			if (point_in_rectangle(_mouse_x, _mouse_y, _gui_width * 0.5 - 57, _music_y - 8, _gui_width * 0.5 - 13, _music_y + 32)) _fps_change = -1;
+			if (point_in_rectangle(_mouse_x, _mouse_y, _gui_width * 0.5 + 13, _music_y - 8, _gui_width * 0.5 + 57, _music_y + 32)) _fps_change = 1;
+		}
         if (raid.pause_menu_index == 1 && _fps_change != 0)
         {
             raid.pause_fps_index += _fps_change;
@@ -125,9 +138,15 @@ function step_raid()
             game_set_speed(_fps_options[raid.pause_fps_index], gamespeed_fps);
             scroll_sound();
         }
+		if (raid.pause_menu_index == 2 && _fps_change != 0)
+		{
+			music_volume = clamp(music_volume + _fps_change * 10, 0, 100);
+			audio_sound_gain(music_instance, music_volume / 100, 0);
+			scroll_sound();
+		}
 
         var _keyboard_confirm = keyboard_check_pressed(vk_enter);
-        var _mouse_confirm = _mouse_clicked && _hover_index != -1 && _hover_index != 1;
+        var _mouse_confirm = _mouse_clicked && _hover_index != -1 && _hover_index != 1 && _hover_index != 2;
         if (_keyboard_confirm || _mouse_confirm)
         {
             audio_play_sound(snd_interact, 0, false);
@@ -142,6 +161,12 @@ function step_raid()
                 raid.pause_fps_index = (raid.pause_fps_index + 1) mod array_length(_fps_options);
                 game_set_speed(_fps_options[raid.pause_fps_index], gamespeed_fps);
             }
+            else if (raid.pause_menu_index == 2 && _keyboard_confirm)
+            {
+				music_volume -= 10;
+				if (music_volume < 0) music_volume = 100;
+				audio_sound_gain(music_instance, music_volume / 100, 0);
+			}
             else
             {
                 raid.paused = false;
@@ -155,7 +180,7 @@ function step_raid()
     {
         audio_play_sound(snd_interact, 0, false);
         raid.paused = true;
-        raid.pause_menu_index = 2;
+        raid.pause_menu_index = 3;
         return;
     }
 
@@ -168,18 +193,22 @@ function step_raid()
 
     step_raid_player();
 	step_raid_player_damage();
+	if (raid_player_death_active) return;
 	
     step_raid_shooting();
 	
     step_raid_bullets();
     step_raid_enemy_bullets();
+    if (raid_player_death_active) return;
     if (!raid.active) return;
 
     step_raid_ring_hazards();
+    if (raid_player_death_active) return;
     if (!raid.active) return;
 
   
     step_raid_enemies();
+	if (raid_player_death_active) return;
 	if (!raid.active) return;
 
 	step_raid_enemy_death_effects();

@@ -149,7 +149,7 @@ function blood_death_effect(_x, _y, _hit_direction)
 {
     var _splat_count = irandom_range(2, 4);
     var _pool_count = irandom_range(1, 2);
-    var _streak_count = irandom_range(1, 2);
+    var _streak_count = irandom_range(2, 3);
 
     for (var i = 0; i < _splat_count; i++)
     {

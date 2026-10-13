@@ -96,3 +96,113 @@ function raid_combat_loss()
 
     menu_index = 0;
 }
+
+function raid_player_death_start()
+{
+    if (raid_player_death_active) return;
+
+    raid_player_death_active = true;
+    raid_player_death_phase = 0;
+    raid_player_death_timer = 0;
+    raid_player_death_x = raid_player_x;
+    raid_player_death_y = raid_player_y;
+    raid_player_death_sprite = raid_player_moving ? spr_player_run : spr_player_idle;
+    raid_player_death_frame = floor(raid_player_anim_frame) mod sprite_get_number(raid_player_death_sprite);
+    raid_player_death_facing = raid_player_facing;
+    raid_player_death_scale = 1;
+    raid_player_death_chunks_created = false;
+    raid_player_death_camera_width = camera_get_view_width(raid_camera);
+    raid_player_death_camera_height = camera_get_view_height(raid_camera);
+
+    raid_player_x = raid_player_death_x;
+    raid_player_y = raid_player_death_y;
+    raid_player_velocity_x = 0;
+    raid_player_velocity_y = 0;
+    raid_player_smoothed_velocity_x = 0;
+    raid_player_smoothed_velocity_y = 0;
+    raid_player_dash_active = false;
+    raid_player_moving = false;
+    raid.paused = false;
+    raid_gun_tuning_active = false;
+    overlay_mode = OverlayMode.NONE;
+
+    blood_stamp_pool(raid_player_death_x, raid_player_death_y, 1.6);
+}
+
+function step_raid_player_death()
+{
+    if (raid_player_death_phase == 0)
+    {
+        raid_player_death_phase = 1;
+        raid_player_death_timer = 0;
+    }
+
+    var _target_width = raid_player_death_camera_width / 1.95;
+    var _target_height = raid_player_death_camera_height / 1.95;
+    var _zoom_amount = 1 - power(0.96, frame_scale);
+    var _camera_width = lerp(camera_get_view_width(raid_camera), _target_width, _zoom_amount);
+    var _camera_height = lerp(camera_get_view_height(raid_camera), _target_height, _zoom_amount);
+
+    camera_set_view_size(raid_camera, _camera_width, _camera_height);
+    camera_set_view_pos(
+        raid_camera,
+        round(raid_player_death_x - (_camera_width * 0.5)),
+        round(raid_player_death_y - (_camera_height * 0.5))
+    );
+
+    if (raid_player_death_phase == 1)
+    {
+        raid_player_death_timer += frame_scale;
+
+        if (raid_player_death_timer >= 72)
+        {
+            raid_player_death_phase = 2;
+            raid_player_death_timer = 0;
+
+            if (!raid_player_death_chunks_created)
+            {
+                raid_player_death_chunks_created = true;
+                blood_death_effect(raid_player_death_x, raid_player_death_y, random(360));
+                raid_create_enemy_death_effect({
+                    enemy_sprite: raid_player_death_sprite,
+                    enemy_frame: raid_player_death_frame,
+                    enemy_x: raid_player_death_x,
+                    enemy_y: raid_player_death_y,
+                    enemy_facing: raid_player_death_facing,
+                    enemy_boss: false,
+                    size_multiplier: 1,
+                    enemy_last_hit_direction: undefined,
+                    death_effect_scale: raid_player_death_scale,
+                    death_effect_columns: 5,
+                    death_effect_rows: 6,
+                    death_effect_radial_360: true,
+                    death_effect_speed_min: 2.6,
+                    death_effect_speed_max: 5.2,
+                    death_effect_blood_chance: 0.65,
+                    death_effect_lifetime: 300,
+                    death_effect_fade_time: 120,
+                    death_effect_shrink_factor: 0.997
+                });
+            }
+        }
+    }
+    else
+    {
+        step_raid_enemy_death_effects();
+        raid_player_death_timer += frame_scale;
+
+        if (raid_player_death_phase == 2 && raid_player_death_timer >= 36)
+        {
+            raid_player_death_phase = 3;
+            raid_player_death_timer = 0;
+        }
+
+        if (raid_player_death_phase == 3 && keyboard_check_pressed(vk_enter))
+        {
+            camera_set_view_size(raid_camera, raid_player_death_camera_width, raid_player_death_camera_height);
+            raid_player_death_active = false;
+            step_raid_camera();
+            raid_combat_loss();
+        }
+    }
+}

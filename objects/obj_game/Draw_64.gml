@@ -14,11 +14,11 @@ switch (state)
     break;
 		
 	case GameState.RAID:
-		if (raid_gun_tuning_active && raid.active)
+		if (raid_gun_tuning_active && raid.active && !raid_player_death_active)
 		{
 			draw_raid_gun_tuning_panel();
 		}
-		if (raid.active && overlay_mode == OverlayMode.NONE && !raid.paused && !raid.room_entering)
+		if (raid.active && overlay_mode == OverlayMode.NONE && !raid.paused && !raid.room_entering && !raid_player_death_active)
 		{
 			draw_raid_hotbar(false);
 		}
@@ -27,14 +27,14 @@ switch (state)
 		    draw_raid_result();
 		}
 			
-		if (raid.mode == RaidMode.START)
+		if (raid.mode == RaidMode.START && !raid_player_death_active)
 		{
 			draw_raid_ammo_ui();
 			draw_raid_health_ui();
 			draw_raid_progress();
 		}
 
-		if (raid.active && raid.mode != RaidMode.RESULT)
+		if (raid.active && raid.mode != RaidMode.RESULT && !raid_player_death_active)
 		{
 			var _boss = undefined;
 			for (var _boss_i = 0; _boss_i < array_length(raid_enemies); _boss_i++)
@@ -54,6 +54,8 @@ switch (state)
 		{
 			draw_raid_pause_menu();
 		}
+
+		draw_raid_player_death_screen();
 	break;
 }
  //==============================
@@ -67,7 +69,7 @@ if (state != GameState.MAIN_MENU)
 
 draw_overlay(overlay_mode);
 
-skill_notifications_draw();
+if (!(state == GameState.RAID && raid_player_death_active)) skill_notifications_draw();
 
 draw_debug_console();
 // Debug console always on top
