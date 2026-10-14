@@ -1,55 +1,24 @@
 function draw_raid_enemy_bullets()
 {
+    var _core_xscale = 0.25;
+    var _core_yscale = 0.10;
+    var _previous_blend_mode = gpu_get_blendmode_ext_sepalpha();
+    var _previous_color = draw_get_color();
+    var _previous_alpha = draw_get_alpha();
+
+    gpu_set_blendmode(bm_normal);
     for (var i = 0; i < array_length(raid_enemy_bullets); i++)
     {
         var b = raid_enemy_bullets[i];
-
-        var _len = 6;
-        var _wid = 2;
-
-        var _x1 = b.bx + lengthdir_x(-_len * 0.5, b.bdirection);
-        var _y1 = b.by + lengthdir_y(-_len * 0.5, b.bdirection);
-
-        var _x2 = b.bx + lengthdir_x(_len * 0.5, b.bdirection);
-        var _y2 = b.by + lengthdir_y(_len * 0.5, b.bdirection);
-
-        var _px = lengthdir_x(_wid * 0.5, b.bdirection + 90);
-        var _py = lengthdir_y(_wid * 0.5, b.bdirection + 90);
-
-        // BLACK OUTLINE
-        draw_set_color(c_black);
-
-        draw_triangle(
-            _x1 - _px - 1, _y1 - _py - 1,
-            _x2 - _px - 1, _y2 - _py - 1,
-            _x2 + _px + 1, _y2 + _py + 1,
-            false
-        );
-
-        draw_triangle(
-            _x1 - _px - 1, _y1 - _py - 1,
-            _x2 + _px + 1, _y2 + _py + 1,
-            _x1 + _px + 1, _y1 + _py + 1,
-            false
-        );
-
-        // RED BULLET
-        draw_set_color(c_red);
-
-        draw_triangle(
-            _x1 - _px, _y1 - _py,
-            _x2 - _px, _y2 - _py,
-            _x2 + _px, _y2 + _py,
-            false
-        );
-
-        draw_triangle(
-            _x1 - _px, _y1 - _py,
-            _x2 + _px, _y2 + _py,
-            _x1 + _px, _y1 + _py,
-            false
-        );
+        draw_sprite_ext(spr_enemy_bullet, 0, b.bx, b.by, _core_xscale, _core_yscale, b.bdirection, c_white, 1);
     }
 
-    draw_set_color(c_white);
+    gpu_set_blendmode_ext_sepalpha(
+        _previous_blend_mode[0],
+        _previous_blend_mode[1],
+        _previous_blend_mode[2],
+        _previous_blend_mode[3]
+    );
+    draw_set_color(_previous_color);
+    draw_set_alpha(_previous_alpha);
 }

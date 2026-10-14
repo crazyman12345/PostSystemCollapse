@@ -54,6 +54,7 @@ function raid_spawn_enemy(_type, _x, _y)
 		enemy_gun_angle: 0,
 		enemy_gun_recoil: 0,
 		enemy_gun_recoil_return: 0.7,
+		enemy_muzzle_flash_light: undefined,
 
 		enemy_has_gun: false,
 		enemy_hand_sprite: spr_hand,

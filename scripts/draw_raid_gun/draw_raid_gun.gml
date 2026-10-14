@@ -200,6 +200,13 @@ if (_dir > 90 && _dir < 270)
     _flip_y = -1;
 }
 
+var _muzzle_x = _gun_x
+    + lengthdir_x(_tuning.muzzle_offset_x, _dir)
+    + lengthdir_x(_tuning.muzzle_offset_y * _flip_y, _dir + 90);
+var _muzzle_y = _gun_y
+    + lengthdir_y(_tuning.muzzle_offset_x, _dir)
+    + lengthdir_y(_tuning.muzzle_offset_y * _flip_y, _dir + 90);
+
 draw_sprite_ext(
     _sprite,
     0,
@@ -211,6 +218,18 @@ draw_sprite_ext(
     c_white,
     1
 );
+
+if (is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
+{
+    raid_muzzle_flash_light.x = _muzzle_x;
+    raid_muzzle_flash_light.y = _muzzle_y;
+    var _muzzle_flash_scale = variable_struct_exists(_weapon, "muzzle_flash_scale")
+        ? _weapon.muzzle_flash_scale
+        : 0.5;
+    raid_muzzle_flash_light.flash_xscale = _muzzle_flash_scale * raid_muzzle_flash_light.flash_scale;
+    raid_muzzle_flash_light.flash_yscale = _muzzle_flash_scale * raid_muzzle_flash_light.flash_scale * _flip_y * raid_muzzle_flash_light.flash_mirror;
+    raid_muzzle_flash_light.flash_direction = _dir + raid_muzzle_flash_light.flash_rotation;
+}
 
     // ==============================
     // MAIN HAND
@@ -255,9 +274,12 @@ draw_sprite_ext(
     // SECOND HAND
     // ==============================
 
+    var _hand2_x = 0;
+    var _hand2_y = 0;
+
     if (_weapon.has_second_hand)
     {
-        var _hand2_x =
+        _hand2_x =
             _gun_x
             + lengthdir_x(
                 _tuning.hand2_offset_x,
@@ -268,7 +290,7 @@ draw_sprite_ext(
                 _dir + 90
             );
 
-        var _hand2_y =
+        _hand2_y =
             _gun_y
             + lengthdir_y(
                 _tuning.hand2_offset_x,
@@ -295,13 +317,6 @@ draw_sprite_ext(
     if (raid_gun_tuning_active)
     {
 		draw_set_font(fnt_terminal_tiny);
-        var _muzzle_x = _gun_x
-            + lengthdir_x(_tuning.muzzle_offset_x, _dir)
-            + lengthdir_x(_tuning.muzzle_offset_y * _flip_y, _dir + 90);
-        var _muzzle_y = _gun_y
-            + lengthdir_y(_tuning.muzzle_offset_x, _dir)
-            + lengthdir_y(_tuning.muzzle_offset_y * _flip_y, _dir + 90);
-
         draw_set_color(c_yellow);
         draw_circle(_gun_x, _gun_y, 3, false);
         draw_text(_gun_x + 7, _gun_y - 18, "origin / grip");

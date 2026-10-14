@@ -80,7 +80,7 @@ raid =
     junction_key: "",
     junction_action_index: 0,
 	visited_junctions: {},
-    pause_menu_index: 3,
+    pause_menu_index: 7,
     pause_fps_index: 1,
     // Selection references the carried grid item; it never removes it from storage.
     inventory_item: undefined,
@@ -170,12 +170,24 @@ raid_enemy_hit_sound = snd_hit;
 raid_map_surface = -1;
 raid_lighting_surface = -1;
 raid_colored_lighting_surface = -1;
+raid_emissive_surface = -1;
+raid_bloom_blur_surface = -1;
+raid_bloom_surface = -1;
 raid_lighting_ambient_alpha = 0.72;
 raid_colored_light_strength = 0.2;
+raid_bloom_enabled = true;
+raid_bloom_intensity = 1.2;
+raid_bloom_blur_radius = 8;
+raid_bloom_blur_passes = 2;
+raid_bloom_wall_lamp_source_scale = 2;
+raid_bloom_projectile_source_scale = 1.5;
+raid_bloom_muzzle_flash_source_scale = 1.35;
+raid_bloom_explosion_source_scale = 1;
 raid_player_light_radius = 130;
 raid_player_light_strength = 1;
 raid_light_sources = [];
 raid_wall_lights = [];
+raid_temporary_lights = [];
 raid_blood_surface = -1;
 raid_blood_surface_x = 0;
 raid_blood_surface_y = 0;
@@ -214,6 +226,7 @@ raid_player_dash_stamina_cost = 10;
 raid_player_stamina_regen = 0.02;
 raid_gun_recoil = 0;
 raid_gun_recoil_return = 0.8;
+raid_muzzle_flash_light = undefined;
 raid_weapon_mag = 0;
 raid_weapon_loaded_key = "";
 active_weapon_slot = -1;

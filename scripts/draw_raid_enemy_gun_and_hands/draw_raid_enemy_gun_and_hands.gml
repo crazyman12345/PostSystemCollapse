@@ -98,6 +98,27 @@ function draw_raid_enemy_gun_and_hands(_enemy)
         1
     );
 
+    if (is_struct(_enemy.enemy_muzzle_flash_light) && _enemy.enemy_muzzle_flash_light.lifetime > 0)
+    {
+        var _muzzle_x = _enemy.enemy_muzzle_x * _s;
+        var _muzzle_y = _enemy.enemy_muzzle_y * _s * _flip;
+        var _muzzle_world_x = _gun_x
+            + lengthdir_x(_muzzle_x, _dir)
+            + lengthdir_x(_muzzle_y, _dir + 90);
+        var _muzzle_world_y = _gun_y
+            + lengthdir_y(_muzzle_x, _dir)
+            + lengthdir_y(_muzzle_y, _dir + 90);
+        var _muzzle_flash_scale = variable_struct_exists(_weapon, "muzzle_flash_scale")
+            ? _weapon.muzzle_flash_scale
+            : 0.5;
+
+        _enemy.enemy_muzzle_flash_light.x = _muzzle_world_x;
+        _enemy.enemy_muzzle_flash_light.y = _muzzle_world_y;
+        _enemy.enemy_muzzle_flash_light.flash_xscale = _muzzle_flash_scale * _s * _enemy.enemy_muzzle_flash_light.flash_scale;
+        _enemy.enemy_muzzle_flash_light.flash_yscale = _muzzle_flash_scale * _s * _enemy.enemy_muzzle_flash_light.flash_scale * _flip * _enemy.enemy_muzzle_flash_light.flash_mirror;
+        _enemy.enemy_muzzle_flash_light.flash_direction = _dir + _enemy.enemy_muzzle_flash_light.flash_rotation;
+    }
+
 
     // ==============================
     // HAND 1 - HANDLE

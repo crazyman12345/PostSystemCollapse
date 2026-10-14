@@ -152,11 +152,11 @@ function skill_notifications_draw()
     {
         var notification = skill_level_up_notification;
         var alpha = min(clamp(notification.age / 15, 0, 1), clamp((225 - notification.age) / 30, 0, 1));
-        var panel_width = 620;
+        var level_panel_width = 620;
         var panel_height = 132;
-        var left = (gui_w - panel_width) * 0.5;
+        var left = (gui_w - level_panel_width) * 0.5;
         var top = 58;
-        var right = left + panel_width;
+        var right = left + level_panel_width;
 
         draw_set_alpha(alpha * 0.92);
         draw_set_color(c_black);

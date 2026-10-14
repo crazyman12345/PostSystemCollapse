@@ -24,6 +24,8 @@ function raid_extract()
     raid_enemy_death_effects = [];
     raid_bullets = [];
     raid_doors = [];
+    raid_temporary_lights = [];
+    raid_muzzle_flash_light = undefined;
 
     raid_set_state(RaidState.RESULT);
 }

@@ -20,6 +20,8 @@ function raid_enter_normal_room(_reward_type)
     raid_doors = [];
 	raid_enemy_bullets = [];
     raid_ring_hazards = [];
+    raid_temporary_lights = [];
+    raid_muzzle_flash_light = undefined;
     raid_floor_generate();
     raid_generate_room_wall_lights();
     blood_surface_reset();

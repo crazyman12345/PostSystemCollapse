@@ -10,6 +10,14 @@ function ring_attack_update(_attack)
         {
             _attack.state = "ACTIVE";
             _attack.current_radius = 0;
+            raid_spawn_temporary_light(
+                _attack.x,
+                _attack.y,
+                max(80, _attack.max_radius * 0.55),
+                make_color_rgb(255, 145, 55),
+                1,
+                10
+            );
         }
         return _attack;
     }

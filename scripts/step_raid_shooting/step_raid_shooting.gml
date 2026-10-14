@@ -473,6 +473,12 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 			: 0;
 		var _lethal_aim = skill_node_find(skill_node_get_nodes("marksmanship"), "lethal_aim");
 		var _gun_damage_multiplier = !is_undefined(_lethal_aim) && skill_node_is_unlocked("marksmanship", _lethal_aim) ? 1.05 : 1;
+		var _default_light_radius = _pellet_count > 1 ? 14 : 30;
+		var _default_light_intensity = _pellet_count > 1 ? 0.07 : 0.22;
+		var _bullet_light_enabled = variable_struct_exists(_weapon, "light_enabled") ? _weapon.light_enabled : true;
+		var _bullet_light_color = variable_struct_exists(_weapon, "light_color") ? _weapon.light_color : make_color_rgb(255, 190, 80);
+		var _bullet_light_radius = variable_struct_exists(_weapon, "light_radius") ? _weapon.light_radius : _default_light_radius;
+		var _bullet_light_intensity = variable_struct_exists(_weapon, "light_intensity") ? _weapon.light_intensity : _default_light_intensity;
 
 		for (var i = 0; i < _pellet_count; i++)
 		{
@@ -487,7 +493,11 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 				bdamage: irandom_range(
 					_weapon.damage_min,
 					_weapon.damage_max
-				) * _gun_damage_multiplier
+				) * _gun_damage_multiplier,
+				light_enabled: _bullet_light_enabled,
+				light_color: _bullet_light_color,
+				light_radius: _bullet_light_radius,
+				light_intensity: _bullet_light_intensity
 			};
 
 			array_push(
@@ -495,6 +505,38 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 				bullet
 			);
 		}
+
+        var _muzzle_flash_radius = 62;
+        var _muzzle_flash_lifetime = 5;
+        var _muzzle_flash_intensity = 0.9;
+        var _muzzle_flash_color = make_color_rgb(255, 205, 105);
+
+        if (_pellet_count > 1)
+        {
+            _muzzle_flash_radius = 95;
+            _muzzle_flash_lifetime = 7;
+            _muzzle_flash_intensity = 1;
+            _muzzle_flash_color = make_color_rgb(255, 165, 70);
+        }
+        else if (array_length(_weapon.fire_modes) > 1)
+        {
+            _muzzle_flash_radius = 50;
+            _muzzle_flash_lifetime = 4;
+            _muzzle_flash_intensity = 0.8;
+        }
+
+        raid_muzzle_flash_light = raid_spawn_temporary_light(
+            _muzzle_x,
+            _muzzle_y,
+            _muzzle_flash_radius,
+            _muzzle_flash_color,
+            _muzzle_flash_intensity,
+            _muzzle_flash_lifetime
+        );
+        raid_muzzle_flash_light.flash_scale = random_range(0.8, 1.2);
+        raid_muzzle_flash_light.flash_rotation = random_range(-12, 12);
+        raid_muzzle_flash_light.flash_mirror = choose(-1, 1);
+        raid_muzzle_flash_light.flash_subimage = irandom(sprite_get_number(spr_muzzle_flash) - 1);
 		
 		audio_play_sound(
 		_weapon.sound_shoot,

@@ -72,6 +72,8 @@ function raid_combat_loss()
     raid_ring_hazards = [];
     raid_enemy_death_effects = [];
     raid_doors = [];
+    raid_temporary_lights = [];
+    raid_muzzle_flash_light = undefined;
 
 
     // ==========================================

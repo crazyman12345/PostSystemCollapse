@@ -24,7 +24,7 @@ function raid_set_state(_state)
         break;
 
         case RaidState.PAUSED:
-            raid.pause_menu_index = 3;
+            raid.pause_menu_index = 7;
         break;
 
         case RaidState.DEATH:

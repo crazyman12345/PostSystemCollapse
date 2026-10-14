@@ -93,6 +93,38 @@ function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage)
         _damage
     );
 
+    var _muzzle_flash_radius = 62;
+    var _muzzle_flash_lifetime = 5;
+    var _muzzle_flash_intensity = 0.9;
+    var _muzzle_flash_color = make_color_rgb(255, 205, 105);
+
+    if (variable_struct_exists(e.weapon, "pellet_count") && e.weapon.pellet_count > 1)
+    {
+        _muzzle_flash_radius = 95;
+        _muzzle_flash_lifetime = 7;
+        _muzzle_flash_intensity = 1;
+        _muzzle_flash_color = make_color_rgb(255, 165, 70);
+    }
+    else if (array_length(e.weapon.fire_modes) > 1)
+    {
+        _muzzle_flash_radius = 50;
+        _muzzle_flash_lifetime = 4;
+        _muzzle_flash_intensity = 0.8;
+    }
+
+    e.enemy_muzzle_flash_light = raid_spawn_temporary_light(
+        _muzzle_x,
+        _muzzle_y,
+        _muzzle_flash_radius * _s,
+        _muzzle_flash_color,
+        _muzzle_flash_intensity,
+        _muzzle_flash_lifetime
+    );
+    e.enemy_muzzle_flash_light.flash_scale = random_range(0.8, 1.2);
+    e.enemy_muzzle_flash_light.flash_rotation = random_range(-12, 12);
+    e.enemy_muzzle_flash_light.flash_mirror = choose(-1, 1);
+    e.enemy_muzzle_flash_light.flash_subimage = irandom(sprite_get_number(spr_muzzle_flash) - 1);
+
 
     // ==============================
     // RECOIL

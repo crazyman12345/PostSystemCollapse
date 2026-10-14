@@ -4,6 +4,33 @@ function draw_raid_lighting()
     var _camera_y = camera_get_view_y(raid_camera);
     var _surface_width = max(1, ceil(camera_get_view_width(raid_camera)));
     var _surface_height = max(1, ceil(camera_get_view_height(raid_camera)));
+    var _bloom_width = _surface_width;
+    var _bloom_height = _surface_height;
+    var _bloom_scale_x = _bloom_width / _surface_width;
+    var _bloom_scale_y = _bloom_height / _surface_height;
+    var _projectile_lists = [raid_bullets, raid_enemy_bullets];
+    var _projectile_light_count = 0;
+
+    // Count only visible lights and limit their combined contribution when projectile counts spike.
+    for (var _count_list_index = 0; _count_list_index < array_length(_projectile_lists); _count_list_index++)
+    {
+        var _count_list = _projectile_lists[_count_list_index];
+        for (var _count_index = 0; _count_index < array_length(_count_list); _count_index++)
+        {
+            var _count_projectile = _count_list[_count_index];
+            if (variable_struct_exists(_count_projectile, "light_enabled") && !_count_projectile.light_enabled) continue;
+
+            var _count_radius = variable_struct_exists(_count_projectile, "light_radius") ? _count_projectile.light_radius : 30;
+            if (_count_projectile.bx + _count_radius < _camera_x
+            || _count_projectile.bx - _count_radius > _camera_x + _surface_width
+            || _count_projectile.by + _count_radius < _camera_y
+            || _count_projectile.by - _count_radius > _camera_y + _surface_height) continue;
+
+            _projectile_light_count++;
+        }
+    }
+
+    var _projectile_light_scale = min(1, 4 / max(1, _projectile_light_count));
 
     if (!surface_exists(raid_lighting_surface)
     || surface_get_width(raid_lighting_surface) != _surface_width
@@ -21,7 +48,35 @@ function draw_raid_lighting()
         raid_colored_lighting_surface = surface_create(_surface_width, _surface_height);
     }
 
-    if (!surface_exists(raid_lighting_surface) || !surface_exists(raid_colored_lighting_surface)) return;
+    if (raid_bloom_enabled && (!surface_exists(raid_emissive_surface)
+    || surface_get_width(raid_emissive_surface) != _bloom_width
+    || surface_get_height(raid_emissive_surface) != _bloom_height))
+    {
+        if (surface_exists(raid_emissive_surface)) surface_free(raid_emissive_surface);
+        raid_emissive_surface = surface_create(_bloom_width, _bloom_height);
+    }
+
+    if (raid_bloom_enabled && (!surface_exists(raid_bloom_blur_surface)
+    || surface_get_width(raid_bloom_blur_surface) != _bloom_width
+    || surface_get_height(raid_bloom_blur_surface) != _bloom_height))
+    {
+        if (surface_exists(raid_bloom_blur_surface)) surface_free(raid_bloom_blur_surface);
+        raid_bloom_blur_surface = surface_create(_bloom_width, _bloom_height);
+    }
+
+    if (raid_bloom_enabled && (!surface_exists(raid_bloom_surface)
+    || surface_get_width(raid_bloom_surface) != _bloom_width
+    || surface_get_height(raid_bloom_surface) != _bloom_height))
+    {
+        if (surface_exists(raid_bloom_surface)) surface_free(raid_bloom_surface);
+        raid_bloom_surface = surface_create(_bloom_width, _bloom_height);
+    }
+
+    if (!surface_exists(raid_lighting_surface)
+    || !surface_exists(raid_colored_lighting_surface)
+    || (raid_bloom_enabled && (!surface_exists(raid_emissive_surface)
+    || !surface_exists(raid_bloom_blur_surface)
+    || !surface_exists(raid_bloom_surface)))) return;
 
     var _previous_blend_mode = gpu_get_blendmode_ext_sepalpha();
     var _previous_color = draw_get_color();
@@ -66,6 +121,50 @@ function draw_raid_lighting()
         );
     }
 
+    for (var _temporary_index = 0; _temporary_index < array_length(raid_temporary_lights); _temporary_index++)
+    {
+        var _temporary_light = raid_temporary_lights[_temporary_index];
+        draw_raid_radial_light(
+            _temporary_light.x - _camera_x,
+            _temporary_light.y - _camera_y,
+            _temporary_light.radius,
+            _temporary_light.intensity,
+            _temporary_light.color
+        );
+    }
+
+    for (var _projectile_list_index = 0; _projectile_list_index < array_length(_projectile_lists); _projectile_list_index++)
+    {
+        var _projectile_list = _projectile_lists[_projectile_list_index];
+        for (var _projectile_index = 0; _projectile_index < array_length(_projectile_list); _projectile_index++)
+        {
+            var _projectile = _projectile_list[_projectile_index];
+            if (variable_struct_exists(_projectile, "light_enabled") && !_projectile.light_enabled) continue;
+
+            var _projectile_radius = variable_struct_exists(_projectile, "light_radius") ? _projectile.light_radius : 30;
+            if (_projectile.bx + _projectile_radius < _camera_x
+            || _projectile.bx - _projectile_radius > _camera_x + _surface_width
+            || _projectile.by + _projectile_radius < _camera_y
+            || _projectile.by - _projectile_radius > _camera_y + _surface_height) continue;
+
+            var _projectile_intensity = variable_struct_exists(_projectile, "light_intensity") ? _projectile.light_intensity : 0.22;
+            var _projectile_color = variable_struct_exists(_projectile, "light_color")
+                ? _projectile.light_color
+                : (_projectile_list_index == 0 ? make_color_rgb(255, 190, 80) : make_color_rgb(255, 95, 40));
+            draw_raid_radial_light(
+                _projectile.bx - _camera_x,
+                _projectile.by - _camera_y,
+                _projectile_radius,
+                _projectile_intensity * _projectile_light_scale,
+                _projectile_color,
+                0,
+                1,
+                1,
+                16
+            );
+        }
+    }
+
     surface_reset_target();
 
     surface_set_target(raid_colored_lighting_surface);
@@ -98,7 +197,109 @@ function draw_raid_lighting()
         );
     }
 
+    for (var _temporary_color_index = 0; _temporary_color_index < array_length(raid_temporary_lights); _temporary_color_index++)
+    {
+        var _temporary_color_light = raid_temporary_lights[_temporary_color_index];
+        draw_raid_radial_light(
+            _temporary_color_light.x - _camera_x,
+            _temporary_color_light.y - _camera_y,
+            _temporary_color_light.radius,
+            _temporary_color_light.intensity * raid_colored_light_strength,
+            _temporary_color_light.color
+        );
+    }
+
+    for (var _projectile_color_list_index = 0; _projectile_color_list_index < array_length(_projectile_lists); _projectile_color_list_index++)
+    {
+        var _projectile_color_list = _projectile_lists[_projectile_color_list_index];
+        for (var _projectile_color_index = 0; _projectile_color_index < array_length(_projectile_color_list); _projectile_color_index++)
+        {
+            var _color_projectile = _projectile_color_list[_projectile_color_index];
+            if (variable_struct_exists(_color_projectile, "light_enabled") && !_color_projectile.light_enabled) continue;
+
+            var _color_projectile_radius = variable_struct_exists(_color_projectile, "light_radius") ? _color_projectile.light_radius : 30;
+            if (_color_projectile.bx + _color_projectile_radius < _camera_x
+            || _color_projectile.bx - _color_projectile_radius > _camera_x + _surface_width
+            || _color_projectile.by + _color_projectile_radius < _camera_y
+            || _color_projectile.by - _color_projectile_radius > _camera_y + _surface_height) continue;
+
+            var _color_projectile_intensity = variable_struct_exists(_color_projectile, "light_intensity") ? _color_projectile.light_intensity : 0.22;
+            var _color_projectile_color = variable_struct_exists(_color_projectile, "light_color")
+                ? _color_projectile.light_color
+                : (_projectile_color_list_index == 0 ? make_color_rgb(255, 190, 80) : make_color_rgb(255, 95, 40));
+            draw_raid_radial_light(
+                _color_projectile.bx - _camera_x,
+                _color_projectile.by - _camera_y,
+                _color_projectile_radius,
+                _color_projectile_intensity * _projectile_light_scale * raid_colored_light_strength,
+                _color_projectile_color,
+                0,
+                1,
+                1,
+                16
+            );
+        }
+    }
+
     surface_reset_target();
+
+    if (raid_bloom_enabled)
+    {
+        // Render only emissive sprites into a fixed low-resolution bloom source.
+        surface_set_target(raid_emissive_surface);
+        draw_clear_alpha(c_black, 0);
+        gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_one, bm_inv_src_alpha);
+        draw_raid_emissives(
+            _camera_x,
+            _camera_y,
+            _bloom_scale_x,
+            _bloom_scale_y,
+            true,
+            raid_bloom_wall_lamp_source_scale,
+            raid_bloom_projectile_source_scale,
+            raid_bloom_muzzle_flash_source_scale,
+            raid_bloom_explosion_source_scale
+        );
+        surface_reset_target();
+
+        var _blur_texel = shader_get_uniform(shd_raid_bloom_blur, "u_texel_size");
+        var _blur_direction = shader_get_uniform(shd_raid_bloom_blur, "u_direction");
+        var _blur_radius = shader_get_uniform(shd_raid_bloom_blur, "u_radius");
+        var _bloom_texel_x = 1 / surface_get_width(raid_emissive_surface);
+        var _bloom_texel_y = 1 / surface_get_height(raid_emissive_surface);
+        var _previous_texfilter = gpu_get_texfilter();
+        gpu_set_texfilter(true);
+
+        for (var _blur_pass = 0; _blur_pass < clamp(raid_bloom_blur_passes, 1, 4); _blur_pass++)
+        {
+            // Horizontal Gaussian pass.
+            surface_set_target(raid_bloom_blur_surface);
+            draw_clear_alpha(c_black, 0);
+            gpu_set_blendmode_ext_sepalpha(bm_one, bm_zero, bm_one, bm_zero);
+            shader_set(shd_raid_bloom_blur);
+            shader_set_uniform_f(_blur_texel, _bloom_texel_x, _bloom_texel_y);
+            shader_set_uniform_f(_blur_direction, 1, 0);
+            shader_set_uniform_f(_blur_radius, clamp(raid_bloom_blur_radius, 0, 16));
+            draw_surface(_blur_pass == 0 ? raid_emissive_surface : raid_bloom_surface, 0, 0);
+            shader_reset();
+            surface_reset_target();
+
+            // Vertical Gaussian pass.
+            surface_set_target(raid_bloom_surface);
+            draw_clear_alpha(c_black, 0);
+            gpu_set_blendmode_ext_sepalpha(bm_one, bm_zero, bm_one, bm_zero);
+            shader_set(shd_raid_bloom_blur);
+            shader_set_uniform_f(_blur_texel, _bloom_texel_x, _bloom_texel_y);
+            shader_set_uniform_f(_blur_direction, 0, 1);
+            shader_set_uniform_f(_blur_radius, clamp(raid_bloom_blur_radius, 0, 16));
+            draw_surface(raid_bloom_blur_surface, 0, 0);
+            shader_reset();
+            surface_reset_target();
+        }
+
+        gpu_set_texfilter(_previous_texfilter);
+    }
+
     gpu_set_blendmode(bm_normal);
     draw_set_color(c_white);
     draw_set_alpha(1);
@@ -108,20 +309,153 @@ function draw_raid_lighting()
     gpu_set_blendmode_ext_sepalpha(bm_one, bm_one, bm_zero, bm_one);
     draw_surface(raid_colored_lighting_surface, _camera_x, _camera_y);
 
-    // Keep only the powered bulbs brighter than the illumination they cast.
+    // Keep the original sharp emissive sprites beneath the soft bloom.
     gpu_set_blendmode(bm_normal);
-    draw_raid_wall_lights(true);
+    draw_raid_emissives(0, 0, 1, 1, false);
 
-    gpu_set_blendmode_ext_sepalpha(_previous_blend_mode);
+    if (raid_bloom_enabled)
+    {
+        var _bloom_intensity = clamp(raid_bloom_intensity, 0, 3);
+        var _previous_bloom_texfilter = gpu_get_texfilter();
+        gpu_set_texfilter(true);
+        gpu_set_blendmode_ext_sepalpha(bm_one, bm_one, bm_zero, bm_one);
+        while (_bloom_intensity > 0)
+        {
+            var _bloom_draw_strength = min(1, _bloom_intensity);
+            var _bloom_tint = make_color_rgb(255 * _bloom_draw_strength, 255 * _bloom_draw_strength, 255 * _bloom_draw_strength);
+            draw_surface_stretched_ext(
+                raid_bloom_surface,
+                _camera_x,
+                _camera_y,
+                _surface_width,
+                _surface_height,
+                _bloom_tint,
+                1
+            );
+            _bloom_intensity -= _bloom_draw_strength;
+        }
+        gpu_set_texfilter(_previous_bloom_texfilter);
+    }
+
+    // Draw the sharp projectile core normally above its emissive glow.
+    gpu_set_blendmode(bm_normal);
+    if (raid.state != RaidState.DEATH)
+    {
+        draw_raid_bullets();
+        draw_raid_enemy_bullets();
+    }
+
+    shader_reset();
+    gpu_set_blendmode_ext_sepalpha(
+        _previous_blend_mode[0],
+        _previous_blend_mode[1],
+        _previous_blend_mode[2],
+        _previous_blend_mode[3]
+    );
     draw_set_color(_previous_color);
     draw_set_alpha(_previous_alpha);
 }
 
-function draw_raid_radial_light(_x, _y, _radius, _strength, _color = c_white, _rotation = 0, _x_scale = 1, _y_scale = 1)
+function draw_raid_emissives(_camera_x, _camera_y, _scale_x, _scale_y, _include_explosions = true, _wall_light_source_scale = 1, _projectile_source_scale = 1, _muzzle_flash_source_scale = 1, _explosion_source_scale = 1)
+{
+    draw_raid_wall_lights(true, _camera_x, _camera_y, _scale_x, _scale_y, _wall_light_source_scale);
+
+    if (raid.state == RaidState.DEATH) return;
+
+    var _projectile_lists = [raid_bullets, raid_enemy_bullets];
+    if (!_include_explosions) gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_one, bm_zero, bm_one);
+
+    for (var _list_index = 0; _list_index < array_length(_projectile_lists); _list_index++)
+    {
+        var _projectiles = _projectile_lists[_list_index];
+        var _xscale = 0.30 * _scale_x * _projectile_source_scale;
+        var _yscale = 0.14 * _scale_y * _projectile_source_scale;
+        var _sprite = _list_index == 0 ? spr_player_bullet_glow : spr_enemy_bullet_glow;
+        var _color = _list_index == 0 ? make_color_rgb(255, 190, 80) : c_white;
+        var _alpha = _list_index == 0 ? 0.35 : 0.40;
+
+        for (var _projectile_index = 0; _projectile_index < array_length(_projectiles); _projectile_index++)
+        {
+            var _projectile = _projectiles[_projectile_index];
+            draw_sprite_ext(
+                _sprite,
+                0,
+                (_projectile.bx - _camera_x) * _scale_x,
+                (_projectile.by - _camera_y) * _scale_y,
+                _xscale,
+                _yscale,
+                _projectile.bdirection,
+                _color,
+                _alpha
+            );
+        }
+    }
+
+    if (!_include_explosions) gpu_set_blendmode(bm_normal);
+
+    if (is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
+    {
+        draw_sprite_ext(
+            spr_muzzle_flash,
+            raid_muzzle_flash_light.flash_subimage,
+            (round(raid_muzzle_flash_light.x) - _camera_x) * _scale_x,
+            (round(raid_muzzle_flash_light.y) - _camera_y) * _scale_y,
+            raid_muzzle_flash_light.flash_xscale * _scale_x * _muzzle_flash_source_scale,
+            raid_muzzle_flash_light.flash_yscale * _scale_y * _muzzle_flash_source_scale,
+            raid_muzzle_flash_light.flash_direction,
+            c_white,
+            1
+        );
+    }
+
+    for (var _enemy_flash_index = 0; _enemy_flash_index < array_length(raid_enemies); _enemy_flash_index++)
+    {
+        var _enemy_flash = raid_enemies[_enemy_flash_index].enemy_muzzle_flash_light;
+        if (!is_struct(_enemy_flash) || _enemy_flash.lifetime <= 0) continue;
+
+        draw_sprite_ext(
+            spr_muzzle_flash,
+            _enemy_flash.flash_subimage,
+            (round(_enemy_flash.x) - _camera_x) * _scale_x,
+            (round(_enemy_flash.y) - _camera_y) * _scale_y,
+            _enemy_flash.flash_xscale * _scale_x * _muzzle_flash_source_scale,
+            _enemy_flash.flash_yscale * _scale_y * _muzzle_flash_source_scale,
+            _enemy_flash.flash_direction,
+            c_white,
+            1
+        );
+    }
+
+    if (_include_explosions)
+    {
+        for (var _explosion_index = 0; _explosion_index < array_length(raid_ring_hazards); _explosion_index++)
+        {
+            var _explosion = raid_ring_hazards[_explosion_index];
+            if (!_explosion.active || _explosion.state != "ACTIVE") continue;
+
+            draw_set_color(_explosion.ring_color);
+            draw_set_alpha(1);
+            var _half_thickness = _explosion.thickness * 0.5;
+            for (var _offset = -_half_thickness; _offset <= _half_thickness; _offset += 0.5)
+            {
+                draw_circle(
+                    (_explosion.x - _camera_x) * _scale_x,
+                    (_explosion.y - _camera_y) * _scale_y,
+                    max(0, (_explosion.current_radius + _offset) * min(_scale_x, _scale_y) * _explosion_source_scale),
+                    true
+                );
+            }
+        }
+    }
+
+    draw_set_color(c_white);
+    draw_set_alpha(1);
+}
+
+function draw_raid_radial_light(_x, _y, _radius, _strength, _color = c_white, _rotation = 0, _x_scale = 1, _y_scale = 1, _segments = 32)
 {
     if (_radius <= 0 || _strength <= 0) return;
 
-    var _segments = 32;
     var _alpha = clamp(_strength, 0, 1);
     var _angle_step = 360 / _segments;
 
@@ -151,6 +485,23 @@ function draw_raid_radial_light(_x, _y, _radius, _strength, _color = c_white, _r
         );
     }
     draw_primitive_end();
+}
+
+function raid_spawn_temporary_light(_x, _y, _radius, _color, _intensity, _lifetime)
+{
+    if (_radius <= 0 || _intensity <= 0 || _lifetime <= 0) return undefined;
+
+    var _light = {
+        x: _x,
+        y: _y,
+        radius: _radius,
+        color: _color,
+        intensity: _intensity,
+        lifetime: _lifetime
+    };
+
+    array_push(raid_temporary_lights, _light);
+    return _light;
 }
 
 function raid_spawn_wall_light(_x, _y, _rotation = 0, _enabled = true, _radius = 100, _color = c_orange, _intensity = 0.55)
@@ -194,9 +545,9 @@ function raid_generate_room_wall_lights()
 	 raid_spawn_wall_light(801, 744 - _o, 90, true, 100, _warm_orange, 0.55);	
 }
 
-function draw_raid_wall_lights(_glow_only = false)
+function draw_raid_wall_lights(_glow_only = false, _camera_x = 0, _camera_y = 0, _draw_scale_x = 1, _draw_scale_y = 1, _emissive_scale = 1)
 {
-    var _scale = 0.02;
+    var _scale = 0.64;
     var _shelf_mount_offset = 24;
 
     for (var _light_index = 0; _light_index < array_length(raid_wall_lights); _light_index++)
@@ -207,8 +558,17 @@ function draw_raid_wall_lights(_glow_only = false)
         var _sprite = _glow_only
             ? spr_wall_lamp_glow
             : (_light.enabled ? spr_wall_lamp_on : spr_wall_lamp_off);
+        var _sprite_scale = _scale * (_glow_only ? _emissive_scale : 1);
         var _offset_x = (sprite_get_width(_sprite) * 0.5 - sprite_get_xoffset(_sprite)) * _scale;
         var _offset_y = (sprite_get_height(_sprite) * 0.5 - sprite_get_yoffset(_sprite)) * _scale;
+        if (_glow_only)
+        {
+            // Scale the emissive sprite around the bulb pixels rather than the sprite canvas center.
+            var _bulb_pivot_x = 16;
+            var _bulb_pivot_y = 20.5;
+            _offset_x += (_bulb_pivot_x - sprite_get_xoffset(_sprite)) * (_sprite_scale - _scale);
+            _offset_y += (_bulb_pivot_y - sprite_get_yoffset(_sprite)) * (_sprite_scale - _scale);
+        }
         var _offset_distance = point_distance(0, 0, _offset_x, _offset_y);
         var _offset_direction = point_direction(0, 0, _offset_x, _offset_y) + _light.rotation;
         var _mount_x = _light.x - lengthdir_x(_shelf_mount_offset, _light.rotation);
@@ -217,10 +577,10 @@ function draw_raid_wall_lights(_glow_only = false)
         draw_sprite_ext(
             _sprite,
             0,
-            _mount_x - lengthdir_x(_offset_distance, _offset_direction),
-            _mount_y - lengthdir_y(_offset_distance, _offset_direction),
-            _scale,
-            _scale,
+            (_mount_x - lengthdir_x(_offset_distance, _offset_direction) - _camera_x) * _draw_scale_x,
+            (_mount_y - lengthdir_y(_offset_distance, _offset_direction) - _camera_y) * _draw_scale_y,
+            _sprite_scale * _draw_scale_x,
+            _sprite_scale * _draw_scale_y,
             _light.rotation,
             c_white,
             1

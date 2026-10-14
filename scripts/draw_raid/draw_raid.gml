@@ -36,8 +36,6 @@ function draw_raid()
 	draw_raid_lootable_prompt();
 	draw_raid_ground_item_prompt();
     draw_raid_enemies();
-    draw_raid_bullets();
-    draw_raid_enemy_bullets();
     draw_raid_ring_hazards();
 	draw_raid_door_overlay();
 	draw_raid_doors();

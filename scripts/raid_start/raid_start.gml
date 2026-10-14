@@ -32,7 +32,7 @@ function raid_start(_area)
     raid_player_death_phase = 0;
     raid_player_death_timer = 0;
     raid_player_death_chunks_created = false;
-    raid.pause_menu_index = 3;
+    raid.pause_menu_index = 7;
     raid.selected_area = _area;
 
     state = GameState.RAID;
@@ -52,6 +52,8 @@ function raid_start(_area)
 	raid_player_dash_xp_pending = false;
 	raid_enemy_bullets = [];
 	raid_ring_hazards = [];
+	raid_temporary_lights = [];
+	raid_muzzle_flash_light = undefined;
 	raid_room_x1 = 760;
 	raid_room_y1 = 340;
 
