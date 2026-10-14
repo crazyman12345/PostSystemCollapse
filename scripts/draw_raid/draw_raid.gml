@@ -8,6 +8,7 @@ function draw_raid()
     {
         draw_raid_room_border();
         blood_surface_draw();
+        draw_raid_wall_lights();
     }
 
     if (raid.state == RaidState.DEATH)
@@ -46,7 +47,10 @@ function draw_raid()
 
 
     if (raid.state == RaidState.ENTERING)
+    {
         draw_raid_room_border();
+        draw_raid_wall_lights();
+    }
 
 }
 

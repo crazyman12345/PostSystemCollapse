@@ -76,18 +76,15 @@ draw_debug_console();
 
 if (debug_show_mouse)
 {
-    var mouse_gui_x = device_mouse_x_to_gui(0);
-    var mouse_gui_y = device_mouse_y_to_gui(0);
-
     draw_set_font(fnt_terminal_small);
 
     draw_text(
         20,
         20,
         "X: "
-        + string(round(mouse_gui_x))
+        + string(round(mouse_x))
         + "  Y: "
-        + string(round(mouse_gui_y))
+        + string(round(mouse_y))
     );
 	
     draw_set_font(fnt_terminal);

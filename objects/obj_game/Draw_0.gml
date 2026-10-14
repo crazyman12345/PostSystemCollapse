@@ -4,4 +4,5 @@ if (
 )
 {
     draw_raid();
+    draw_raid_lighting();
 }

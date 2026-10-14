@@ -15,6 +15,7 @@ function raid_enter_start_room()
     raid_lootables = [];
     raid_ring_hazards = [];
     raid_floor_generate();
+    raid_generate_room_wall_lights();
     blood_surface_reset();
 
     // PLAYER START POSITION
