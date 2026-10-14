@@ -1,0 +1,3 @@
+part_system_destroy(smoke_particle_system);
+part_type_destroy(smoke_particle_type);
+part_type_destroy(projectile_smoke_particle_type);

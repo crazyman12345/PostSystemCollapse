@@ -45,7 +45,7 @@ function raid_create_next_doors()
                 _door.door_y - 76,
                 _door.door_x + _door.door_w * 0.5,
                 _door.door_y - 16,
-                20
+                30
             );
         }
     }

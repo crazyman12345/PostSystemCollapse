@@ -39,7 +39,29 @@ init_recipe_database();
 init_workbench_database();
 init_area_database();
 init_raid_vars();
-global.smoke_particles = [];
+smoke_particle_system = part_system_create();
+part_system_automatic_update(smoke_particle_system, false);
+part_system_automatic_draw(smoke_particle_system, false);
+smoke_particle_update_accumulator = 0;
+
+smoke_particle_type = part_type_create();
+part_type_shape(smoke_particle_type, pt_shape_smoke);
+part_type_size(smoke_particle_type, 0.25, 0.38, 0.002, 0.01);
+part_type_color3(smoke_particle_type, make_color_rgb(78, 78, 76), make_color_rgb(100, 100, 96), make_color_rgb(88, 88, 85));
+part_type_alpha3(smoke_particle_type, 0.48, 0.32, 0);
+part_type_speed(smoke_particle_type, 0.02, 0.08, 0, 0.01);
+part_type_direction(smoke_particle_type, 70, 110, 0, 4);
+part_type_life(smoke_particle_type, 145, 225);
+part_type_blend(smoke_particle_type, false);
+
+projectile_smoke_particle_type = part_type_create();
+part_type_shape(projectile_smoke_particle_type, pt_shape_smoke);
+part_type_size(projectile_smoke_particle_type, 0.10, 0.16, 0.006, 0.012);
+part_type_color3(projectile_smoke_particle_type, make_color_rgb(58, 56, 52), make_color_rgb(86, 80, 72), make_color_rgb(48, 46, 43));
+part_type_alpha3(projectile_smoke_particle_type, 0.24, 0.12, 0);
+part_type_speed(projectile_smoke_particle_type, 0.03, 0.10, 0, 0.01);
+part_type_life(projectile_smoke_particle_type, 14, 24);
+part_type_blend(projectile_smoke_particle_type, false);
 //debug
 debug_console_open = false;
 debug_input = "";

@@ -309,8 +309,28 @@ function draw_raid_lighting()
     gpu_set_blendmode_ext_sepalpha(bm_one, bm_one, bm_zero, bm_one);
     draw_surface(raid_colored_lighting_surface, _camera_x, _camera_y);
 
-    // Keep the original sharp emissive sprites beneath the soft bloom.
+    // Light smoke separately so it remains readable in darkness without making it emissive.
     gpu_set_blendmode(bm_normal);
+    shader_set(shd_raid_smoke_lighting);
+    var _smoke_darkness_sampler = shader_get_sampler_index(shd_raid_smoke_lighting, "u_darkness_texture");
+    var _smoke_colored_sampler = shader_get_sampler_index(shd_raid_smoke_lighting, "u_colored_light_texture");
+    var _smoke_min_light = shader_get_uniform(shd_raid_smoke_lighting, "u_min_light");
+    var _smoke_ambient_darkness = shader_get_uniform(shd_raid_smoke_lighting, "u_ambient_darkness");
+    var _smoke_light_response = shader_get_uniform(shd_raid_smoke_lighting, "u_light_response");
+    var _smoke_color_strength = shader_get_uniform(shd_raid_smoke_lighting, "u_colored_light_strength");
+    var _smoke_alpha_scale = shader_get_uniform(shd_raid_smoke_lighting, "u_alpha_scale");
+    texture_set_stage(_smoke_darkness_sampler, surface_get_texture(raid_lighting_surface));
+    texture_set_stage(_smoke_colored_sampler, surface_get_texture(raid_colored_lighting_surface));
+    shader_set_uniform_f(_smoke_min_light, raid_smoke_min_light);
+    shader_set_uniform_f(_smoke_ambient_darkness, raid_lighting_ambient_alpha);
+    shader_set_uniform_f(_smoke_light_response, raid_smoke_light_response);
+    shader_set_uniform_f(_smoke_color_strength, raid_smoke_colored_light_strength);
+    shader_set_uniform_f(_smoke_alpha_scale, raid_smoke_alpha_scale);
+    smoke_draw();
+    shader_reset();
+
+    // Emissives and projectile cores stay above the lit smoke.
+    // Keep the original sharp emissive sprites beneath the soft bloom.
     draw_raid_emissives(0, 0, 1, 1, false);
 
     if (raid_bloom_enabled)

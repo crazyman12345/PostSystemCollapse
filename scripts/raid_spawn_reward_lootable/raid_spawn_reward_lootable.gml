@@ -65,6 +65,6 @@ function raid_spawn_reward_lootable(_reward_type)
         _cy - _lootable.height * 0.5 - 5,
         _cx + _lootable.width * 0.5 +5,
         _cy + _lootable.height * 0.5 + 5,
-        30
+        20
     );
 }

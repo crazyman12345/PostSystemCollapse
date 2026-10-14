@@ -3,6 +3,8 @@ function step_raid_enemy_bullets()
     for (var i = array_length(raid_enemy_bullets) - 1; i >= 0; i--)
     {
         var b = raid_enemy_bullets[i];
+        var _previous_x = b.bx;
+        var _previous_y = b.by;
 
 
         // ==================================================
@@ -18,6 +20,8 @@ function step_raid_enemy_bullets()
             b.bspeed * frame_scale,
             b.bdirection
         );
+
+        b = projectile_smoke_update(b, _previous_x, _previous_y);
 
 
         // ==================================================

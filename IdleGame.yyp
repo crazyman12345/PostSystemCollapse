@@ -332,6 +332,7 @@
     {"id":{"name":"workshop_upgrade_interact","path":"scripts/workshop_upgrade_interact/workshop_upgrade_interact.yy",},},
     {"id":{"name":"workshop_upgrade","path":"scripts/workshop_upgrade/workshop_upgrade.yy",},},
     {"id":{"name":"shd_raid_bloom_blur","path":"shaders/shd_raid_bloom_blur/shd_raid_bloom_blur.yy",},},
+    {"id":{"name":"shd_raid_smoke_lighting","path":"shaders/shd_raid_smoke_lighting/shd_raid_smoke_lighting.yy",},},
     {"id":{"name":"enemy_shot_sound","path":"sounds/enemy_shot_sound/enemy_shot_sound.yy",},},
     {"id":{"name":"gore1","path":"sounds/gore1/gore1.yy",},},
     {"id":{"name":"gore2","path":"sounds/gore2/gore2.yy",},},

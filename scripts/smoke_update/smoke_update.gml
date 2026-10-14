@@ -1,15 +1,9 @@
 function smoke_update()
 {
-    for (var i = array_length(global.smoke_particles) - 1; i >= 0; i--)
+    smoke_particle_update_accumulator += frame_scale;
+    while (smoke_particle_update_accumulator >= 1)
     {
-        var p = global.smoke_particles[i];
-
-        p.x += p.vx * frame_scale;
-        p.y += p.vy * frame_scale;
-        p.size += 0.08 * frame_scale;
-        p.life -= p.decay * frame_scale;
-
-        if (p.life <= 0)
-            array_delete(global.smoke_particles, i, 1);
+        part_system_update(smoke_particle_system);
+        smoke_particle_update_accumulator -= 1;
     }
 }

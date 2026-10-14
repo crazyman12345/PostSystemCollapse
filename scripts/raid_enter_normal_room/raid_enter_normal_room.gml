@@ -9,7 +9,8 @@ function raid_enter_normal_room(_reward_type)
 
     raid.current_room_type = RaidRoomType.NORMAL;
     raid.current_reward_type = _reward_type;
-	global.smoke_particles = [];
+	part_particles_clear(smoke_particle_system);
+	smoke_particle_update_accumulator = 0;
     raid.room_cleared = false;
     raid.reward_unlocked = false;
     raid.doors_active = false;

@@ -3,9 +3,12 @@ function step_raid_bullets()
     for (var i = array_length(raid_bullets) - 1; i >= 0; i--)
     {
         var b = raid_bullets[i];
+        var _previous_x = b.bx;
+        var _previous_y = b.by;
 
         b.bx += lengthdir_x(b.bspeed * frame_scale, b.bdirection);
         b.by += lengthdir_y(b.bspeed * frame_scale, b.bdirection);
+        b = projectile_smoke_update(b, _previous_x, _previous_y);
 
         raid_bullets[i] = b;
 

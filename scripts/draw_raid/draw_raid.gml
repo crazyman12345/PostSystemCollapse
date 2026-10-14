@@ -39,11 +39,6 @@ function draw_raid()
     draw_raid_ring_hazards();
 	draw_raid_door_overlay();
 	draw_raid_doors();
-
-
-	smoke_draw();
-
-
     if (raid.state == RaidState.ENTERING)
     {
         draw_raid_room_border();

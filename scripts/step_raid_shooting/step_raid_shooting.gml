@@ -479,6 +479,8 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 		var _bullet_light_color = variable_struct_exists(_weapon, "light_color") ? _weapon.light_color : make_color_rgb(255, 190, 80);
 		var _bullet_light_radius = variable_struct_exists(_weapon, "light_radius") ? _weapon.light_radius : _default_light_radius;
 		var _bullet_light_intensity = variable_struct_exists(_weapon, "light_intensity") ? _weapon.light_intensity : _default_light_intensity;
+		var _bullet_smoke_enabled = variable_struct_exists(_weapon, "projectile_smoke_enabled") ? _weapon.projectile_smoke_enabled : true;
+		var _bullet_smoke_interval = variable_struct_exists(_weapon, "projectile_smoke_interval") ? _weapon.projectile_smoke_interval : 1.25;
 
 		for (var i = 0; i < _pellet_count; i++)
 		{
@@ -497,7 +499,10 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 				light_enabled: _bullet_light_enabled,
 				light_color: _bullet_light_color,
 				light_radius: _bullet_light_radius,
-				light_intensity: _bullet_light_intensity
+				light_intensity: _bullet_light_intensity,
+				smoke_enabled: _bullet_smoke_enabled,
+				smoke_interval: _bullet_smoke_interval,
+				smoke_timer: random_range(0, _bullet_smoke_interval)
 			};
 
 			array_push(

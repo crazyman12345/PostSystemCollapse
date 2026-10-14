@@ -37,5 +37,5 @@ function step_raid()
     }
 
     // Cleanup
-    if (raid.state != RaidState.ENTERING && raid.state != RaidState.DEATH) smoke_update();
+    if (raid.state == RaidState.COMBAT || raid.state == RaidState.EXITING) smoke_update();
 }
