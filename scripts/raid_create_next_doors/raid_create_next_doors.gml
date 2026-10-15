@@ -18,9 +18,15 @@ function raid_create_next_doors()
         {
             door_x: raid_room_x1 + 140,
             door_y: _door_y,
-            door_w: 70,
+            door_w: 50,
             door_h: 24,
-            reward_type: _reward1
+            reward_type: _reward1,
+            loot_halo_enabled: loot_halo_enabled,
+            loot_halo_radius: loot_halo_radius,
+            loot_halo_intensity: loot_door_halo_intensity,
+            loot_halo_color: loot_halo_color,
+            loot_halo_offset_x: loot_halo_offset_x,
+            loot_halo_offset_y: loot_door_halo_offset_y
         }
     );
 
@@ -29,9 +35,15 @@ function raid_create_next_doors()
         {
             door_x: raid_room_x2 - 140,
             door_y: _door_y,
-            door_w: 70,
+            door_w: 50,
             door_h: 24,
-            reward_type: _reward2
+            reward_type: _reward2,
+            loot_halo_enabled: loot_halo_enabled,
+            loot_halo_radius: loot_halo_radius,
+            loot_halo_intensity: loot_door_halo_intensity,
+            loot_halo_color: loot_halo_color,
+            loot_halo_offset_x: loot_halo_offset_x,
+            loot_halo_offset_y: loot_door_halo_offset_y
         }
     );
 
@@ -45,7 +57,7 @@ function raid_create_next_doors()
                 _door.door_y - 76,
                 _door.door_x + _door.door_w * 0.5,
                 _door.door_y - 16,
-                30
+                20
             );
         }
     }

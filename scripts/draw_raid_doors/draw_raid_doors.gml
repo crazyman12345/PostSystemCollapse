@@ -1,6 +1,6 @@
 function draw_raid_doors()
 {
-    if (!raid.doors_active)
+    if (!raid.doors_active && raid.state != RaidState.EXITING)
         return;
 
     draw_set_halign(fa_center);
@@ -31,6 +31,45 @@ function draw_raid_doors()
     }
 
     draw_set_halign(fa_left);
+}
+
+
+function draw_raid_door_backgrounds()
+{
+    if (!raid.doors_active && raid.state != RaidState.EXITING)
+        return;
+
+    var _source_left = sprite_get_bbox_left(spr_door_bg);
+    var _source_top = sprite_get_bbox_top(spr_door_bg);
+    var _source_width = sprite_get_bbox_right(spr_door_bg) - _source_left + 1;
+    var _source_height = sprite_get_bbox_bottom(spr_door_bg) - _source_top + 1;
+    var _room_scale_x = (raid_room_x2 - raid_room_x1) / 467;
+    var _room_scale_y = (raid_room_y2 - raid_room_y1) / 467;
+    var _border_draw_x = raid_room_x1 - 80 * _room_scale_x;
+    var _border_draw_y = raid_room_y1 - 80 * _room_scale_y;
+    var _opening_padding = 2;
+    var _opening_top_stretch = 6;
+
+    for (var i = 0; i < array_length(raid_doors); i++)
+    {
+        var _opening_left = i == 0 ? 215 : 352;
+        var _opening_width = i == 0 ? 61 : 60;
+        var _opening_height = i == 0 ? 33 : 32;
+        draw_sprite_part_ext(
+            spr_door_bg,
+            0,
+            _source_left,
+            _source_top,
+            _source_width,
+            _source_height,
+            _border_draw_x + (_opening_left - _opening_padding) * _room_scale_x,
+            _border_draw_y + (22 - _opening_padding - _opening_top_stretch) * _room_scale_y,
+            (_opening_width + _opening_padding * 2) * _room_scale_x / _source_width,
+            (_opening_height + _opening_padding * 2 + _opening_top_stretch) * _room_scale_y / _source_height,
+            c_white,
+            1
+        );
+    }
 }
 
 

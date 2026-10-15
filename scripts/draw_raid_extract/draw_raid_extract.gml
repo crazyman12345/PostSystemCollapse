@@ -54,21 +54,14 @@ function draw_raid_extract()
         0.35,
         0
     );
-	
-	var _distance = point_distance(
-    raid_player_x,
-    raid_player_y,
-    _x,
-    raid_room_y1 + 55
-	);
-
-	if (_distance <= 50)
-	{
-	    draw_interact_prompt(
-	        raid_player_x,
-	        raid_player_y - 38
-	    );
-	}
-
     draw_set_halign(fa_left);
+}
+
+function draw_raid_extract_prompt()
+{
+    if (!raid.extract_active) return;
+
+    var _x = raid_room_x1 + 55;
+    var _distance = point_distance(raid_player_x, raid_player_y, _x, raid_room_y1 + 55);
+    if (_distance <= 50) draw_interact_prompt(raid_player_x, raid_player_y - 38);
 }

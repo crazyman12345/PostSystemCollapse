@@ -25,13 +25,13 @@ raid_lootable_visuals = [
     {sprite: spr_filing_cabinet, scale: 0.098, shadow_offset_x: 0, shadow_offset_y: -12}, // FILING_CABINETS
     {sprite: spr_crate, scale: 0.07, shadow_offset_x: 0, shadow_offset_y: -12}, // SUPPLY_CRATES
     {sprite: spr_toolbox, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}, // TOOLBOX
-    {sprite: spr_cashregister, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}, // CASH_REGISTER
+    {sprite: spr_cashregister, scale: 0.029, shadow_offset_x: 0, shadow_offset_y: -12}, // CASH_REGISTER
     {sprite: spr_crate, scale: 0.07, shadow_offset_x: 0, shadow_offset_y: -12}, // MEDICAL_CRATE
-    {sprite: spr_shelves, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}, // ELECTRONICS
-    {sprite: spr_foodshelf, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}, // FOOD_STORAGE
+    {sprite: spr_shelves, scale: 0.075, shadow_offset_x: 0, shadow_offset_y: -12}, // ELECTRONICS
+    {sprite: spr_foodshelf, scale: 0.029, shadow_offset_x: 0, shadow_offset_y: -12}, // FOOD_STORAGE
     {sprite: spr_crate, scale: 0.07, shadow_offset_x: 0, shadow_offset_y: -12}, // WEAPON_CRATE
     {sprite: spr_crate, scale: 0.07, shadow_offset_x: 0, shadow_offset_y: -12}, // ARMOR_CRATE
-    {sprite: spr_shelves, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}  // BACKROOM_STASH
+    {sprite: spr_shelves, scale: 0.075, shadow_offset_x: 0, shadow_offset_y: -12}  // BACKROOM_STASH
 ];
 
 enum RaidEnemyType
@@ -224,6 +224,17 @@ raid_player_light_strength = 0.22;
 raid_player_light_color = make_color_rgb(255, 220, 175);
 raid_player_light_offset_y = -8;
 raid_enemy_light_strength = 0.14;
+// Shared defaults copied onto lootables so individual objects can override them.
+loot_halo_enabled = true;
+loot_halo_radius = 65;
+loot_halo_intensity = 0.60;
+loot_halo_color = c_white;
+loot_halo_offset_x = 0;
+loot_halo_offset_y = -10;
+loot_door_halo_intensity = 0.75;
+loot_door_halo_offset_y = -32;
+loot_door_halo_xscale = 1;
+loot_door_halo_yscale = 1;
 raid_light_sources = [];
 raid_wall_lights = [];
 raid_room_clear_light = undefined;
@@ -234,6 +245,8 @@ raid_shadow_debug = false;
 raid_character_shadows_enabled = true;
 raid_character_shadow_size = 20;
 raid_character_shadow_opacity = 0.35;
+raid_shadow_hand_extra_offset_scale = 0.75;
+raid_shadow_gun_extra_offset_scale = 0.75;
 raid_blood_surface = -1;
 raid_blood_surface_x = 0;
 raid_blood_surface_y = 0;

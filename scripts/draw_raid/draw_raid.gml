@@ -3,6 +3,7 @@ function draw_raid()
     draw_set_color(c_black);
     draw_rectangle(0, 0, 1920, 1080, false);
     raid_floor_draw();
+    draw_raid_door_backgrounds();
 
     if (raid.state != RaidState.ENTERING)
     {
@@ -35,12 +36,9 @@ function draw_raid()
 	draw_raid_enemy_death_effects();
     draw_raid_player();
 	draw_raid_gun();
-	draw_raid_lootable_prompt();
-	draw_raid_ground_item_prompt();
     draw_raid_enemies();
     draw_raid_ring_hazards();
 	draw_raid_door_overlay();
-	draw_raid_doors();
     if (raid.state == RaidState.ENTERING)
     {
         draw_raid_room_border();

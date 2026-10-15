@@ -1,4 +1,4 @@
-function draw_raid_lootables()
+function draw_raid_lootables(_labels_only = false)
 {
     draw_set_font(fnt_terminal_medium);
 
@@ -38,7 +38,7 @@ function draw_raid_lootables()
 
 
         // BODY
-        if (_sprite >= 0)
+        if (!_labels_only && _sprite >= 0)
         {
             draw_sprite_ext(
                 _sprite,
@@ -52,28 +52,16 @@ function draw_raid_lootables()
                 1
             );
         }
-        else
+        else if (!_labels_only)
         {
             draw_set_color(c_dkgray);
             draw_rectangle(_x1, _y1, _x2, _y2, false);
         }
 
 
-        // BORDER
-        if (raid.room_cleared)
-            draw_set_color(c_lime);
-        else
-            draw_set_color(c_gray);
+        if (!_labels_only) continue;
 
-        draw_rectangle(
-            _x1,
-            _y1,
-            _x2,
-            _y2,
-            true
-        );
-
-
+		draw_set_color(c_lime);
         // LABEL
         draw_set_halign(fa_center);
 

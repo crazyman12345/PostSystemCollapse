@@ -36,7 +36,14 @@ function raid_spawn_reward_lootable(_reward_type)
         image_yscale: _visual.scale,
         image_angle: 0,
         shadow_offset_x: variable_struct_exists(_visual, "shadow_offset_x") ? _visual.shadow_offset_x : 0,
-        shadow_offset_y: variable_struct_exists(_visual, "shadow_offset_y") ? _visual.shadow_offset_y : 0
+        shadow_offset_y: variable_struct_exists(_visual, "shadow_offset_y") ? _visual.shadow_offset_y : 0,
+
+        loot_halo_enabled: loot_halo_enabled,
+        loot_halo_radius: loot_halo_radius,
+        loot_halo_intensity: loot_halo_intensity,
+        loot_halo_color: loot_halo_color,
+        loot_halo_offset_x: loot_halo_offset_x,
+        loot_halo_offset_y: loot_halo_offset_y
     };
 
     // Place the configured art's visible bottom-center on the lootable's floor.
@@ -82,6 +89,6 @@ function raid_spawn_reward_lootable(_reward_type)
         _cy - _lootable.height * 0.5 - 5,
         _cx + _lootable.width * 0.5 +5,
         _cy + _lootable.height * 0.5 + 5,
-        20
+        12
     );
 }

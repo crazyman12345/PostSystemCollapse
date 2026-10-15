@@ -9,15 +9,19 @@ uniform vec2 u_rectangle_half_size[16];
 uniform float u_rectangle_height[16];
 uniform float u_rectangle_rotation[16];
 uniform float u_sprite_count;
-uniform vec2 u_sprite_ground_position[8];
-uniform vec2 u_sprite_axis[8];
-uniform vec2 u_sprite_size[8];
-uniform vec2 u_sprite_source_position[8];
-uniform vec2 u_sprite_source_size[8];
-uniform float u_sprite_exclude_source[8];
-uniform vec4 u_sprite_uv[8];
-uniform float u_sprite_flip[8];
-uniform float u_sprite_flip_y[8];
+uniform vec2 u_sprite_ground_position[24];
+uniform vec2 u_sprite_axis[24];
+uniform vec2 u_sprite_size[24];
+uniform vec2 u_sprite_source_position[24];
+uniform vec2 u_sprite_source_size[24];
+uniform float u_sprite_exclude_source[24];
+uniform vec4 u_sprite_uv[24];
+uniform float u_sprite_flip[24];
+uniform float u_sprite_flip_y[24];
+uniform vec2 u_sprite_source_axis[24];
+uniform float u_sprite_shared_anchor_projection[24];
+uniform float u_sprite_projection_height_scale[24];
+uniform float u_sprite_texture_index[24];
 uniform sampler2D u_sprite_texture_0;
 uniform sampler2D u_sprite_texture_1;
 uniform sampler2D u_sprite_texture_2;
@@ -76,14 +80,15 @@ bool rectangle_blocks_light(int index, vec2 sample_position)
 
 float sprite_silhouette_alpha(int index, vec2 uv)
 {
-    if (index == 0) return texture2D(u_sprite_texture_0, uv).a;
-    if (index == 1) return texture2D(u_sprite_texture_1, uv).a;
-    if (index == 2) return texture2D(u_sprite_texture_2, uv).a;
-    if (index == 3) return texture2D(u_sprite_texture_3, uv).a;
-    if (index == 4) return texture2D(u_sprite_texture_4, uv).a;
-    if (index == 5) return texture2D(u_sprite_texture_5, uv).a;
-    if (index == 6) return texture2D(u_sprite_texture_6, uv).a;
-    if (index == 7) return texture2D(u_sprite_texture_7, uv).a;
+    int texture_index = int(u_sprite_texture_index[index]);
+    if (texture_index == 0) return texture2D(u_sprite_texture_0, uv).a;
+    if (texture_index == 1) return texture2D(u_sprite_texture_1, uv).a;
+    if (texture_index == 2) return texture2D(u_sprite_texture_2, uv).a;
+    if (texture_index == 3) return texture2D(u_sprite_texture_3, uv).a;
+    if (texture_index == 4) return texture2D(u_sprite_texture_4, uv).a;
+    if (texture_index == 5) return texture2D(u_sprite_texture_5, uv).a;
+    if (texture_index == 6) return texture2D(u_sprite_texture_6, uv).a;
+    if (texture_index == 7) return texture2D(u_sprite_texture_7, uv).a;
     return 0.0;
 }
 
@@ -91,7 +96,7 @@ bool sprite_source_is_visible(int index, vec2 sample_position)
 {
     if (u_sprite_exclude_source[index] < 0.5) return false;
 
-    vec2 axis = u_sprite_axis[index];
+    vec2 axis = u_sprite_source_axis[index];
     vec2 normal = vec2(-axis.y, axis.x);
     vec2 source_offset = sample_position - u_sprite_source_position[index];
     float horizontal = dot(source_offset, axis) / u_sprite_source_size[index].x + 0.5;
@@ -120,8 +125,23 @@ bool sprite_blocks_light(int index, vec2 sample_position)
     if (along_ray < 0.0 || along_ray > maximum_height_time) return false;
 
     vec2 intersection = sample_position + ray * along_ray;
-    float horizontal = dot(intersection - u_sprite_ground_position[index], axis) / u_sprite_size[index].x + 0.5;
-    float vertical = 1.0 - (along_ray * u_light_height / u_sprite_size[index].y);
+    float horizontal;
+    float vertical;
+    if (u_sprite_shared_anchor_projection[index] > 0.5)
+    {
+        float source_height = along_ray * u_light_height / max(u_sprite_projection_height_scale[index], 0.001);
+        vec2 source_position = vec2(intersection.x, u_sprite_ground_position[index].y - source_height);
+        vec2 source_axis = u_sprite_source_axis[index];
+        vec2 source_normal = vec2(-source_axis.y, source_axis.x);
+        vec2 source_offset = source_position - u_sprite_source_position[index];
+        horizontal = dot(source_offset, source_axis) / u_sprite_source_size[index].x + 0.5;
+        vertical = dot(source_offset, source_normal) / u_sprite_source_size[index].y + 0.5;
+    }
+    else
+    {
+        horizontal = dot(intersection - u_sprite_ground_position[index], axis) / u_sprite_size[index].x + 0.5;
+        vertical = 1.0 - (along_ray * u_light_height / u_sprite_size[index].y);
+    }
     if (horizontal < 0.0 || horizontal > 1.0 || vertical < 0.0 || vertical > 1.0) return false;
     if (u_sprite_flip[index] > 0.5) horizontal = 1.0 - horizontal;
     if (u_sprite_flip_y[index] > 0.5) vertical = 1.0 - vertical;
@@ -139,7 +159,7 @@ float shadow_visibility(vec2 sample_position)
         if (rectangle_blocks_light(rectangle_index, sample_position)) return 0.0;
     }
 
-    for (int sprite_index = 0; sprite_index < 8; sprite_index++)
+    for (int sprite_index = 0; sprite_index < 24; sprite_index++)
     {
         if (float(sprite_index) >= u_sprite_count) break;
         if (sprite_blocks_light(sprite_index, sample_position)) return 0.0;

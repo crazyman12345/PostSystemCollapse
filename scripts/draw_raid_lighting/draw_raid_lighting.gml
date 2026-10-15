@@ -474,6 +474,8 @@ function draw_raid_darkness_lights(_camera_x, _camera_y, _surface_width, _surfac
         raid_player_light_color
     );
 
+    draw_raid_loot_halos(_camera_x, _camera_y, _surface_width, _surface_height);
+
     for (var _enemy_light_index = 0; _enemy_light_index < array_length(raid_enemies); _enemy_light_index++)
     {
         var _enemy_light = raid_enemies[_enemy_light_index];
@@ -562,6 +564,8 @@ function draw_raid_colored_lights(_camera_x, _camera_y, _surface_width, _surface
         raid_player_light_strength * raid_colored_light_strength,
         raid_player_light_color
     );
+
+    draw_raid_loot_halos(_camera_x, _camera_y, _surface_width, _surface_height, raid_colored_light_strength);
 
     for (var _enemy_color_light_index = 0; _enemy_color_light_index < array_length(raid_enemies); _enemy_color_light_index++)
     {
@@ -846,6 +850,7 @@ function raid_shadow_occluder_sprite(_sprite, _subimage, _x, _y, _xscale = 1, _y
 function raid_shadow_get_active_occluders()
 {
     var _active = [];
+    var _character_accessories = [];
     if (global.graphics_settings.environment_shadows)
     {
         _active = raid_shadow_get_arena_wall_occluders();
@@ -885,8 +890,13 @@ function raid_shadow_get_active_occluders()
             1
         );
         _player_caster.character_caster = true;
+        _player_caster.player_shadow_body = true;
         _player_caster.exclude_source_from_shadow = true;
         array_push(_active, _player_caster);
+        _character_accessories = raid_shadow_get_player_accessory_occluders(
+            _player_caster.position.x,
+            _player_caster.position.y
+        );
 
         for (var _enemy_index = 0; _enemy_index < array_length(raid_enemies); _enemy_index++)
         {
@@ -907,7 +917,16 @@ function raid_shadow_get_active_occluders()
             _enemy_caster.character_caster = true;
             _enemy_caster.exclude_source_from_shadow = true;
             array_push(_active, _enemy_caster);
+
+            var _enemy_accessories = raid_shadow_get_enemy_accessory_occluders(_enemy);
+            for (var _accessory_index = 0; _accessory_index < array_length(_enemy_accessories); _accessory_index++)
+                array_push(_character_accessories, _enemy_accessories[_accessory_index]);
         }
+
+        // Bodies stay ahead of accessories so a crowded room never loses its
+        // existing body shadows when the shader reaches its caster limit.
+        for (var _character_accessory_index = 0; _character_accessory_index < array_length(_character_accessories); _character_accessory_index++)
+            array_push(_active, _character_accessories[_character_accessory_index]);
     }
 
     // Loot structs are the registration source, so clearing or replacing the
@@ -938,6 +957,135 @@ function raid_shadow_get_active_occluders()
     return _active;
 }
 
+function raid_shadow_character_accessory(_sprite, _x, _y, _xscale, _yscale, _rotation, _feet_x = undefined, _feet_y = undefined, _extra_offset_scale = 1)
+{
+    var _caster = raid_shadow_occluder_sprite(_sprite, 0, round(_x), round(_y), _xscale, _yscale, _rotation);
+    if (!is_undefined(_feet_x) && !is_undefined(_feet_y))
+    {
+        var _height_scale = clamp(_extra_offset_scale, 0.001, 1);
+        var _source_axis_y = lengthdir_y(1, _rotation);
+        var _source_normal_y = lengthdir_y(1, _rotation + 90);
+        var _source_top_y = _caster.source_position.y
+            - abs(_source_axis_y) * _caster.source_size.width * 0.5
+            - abs(_source_normal_y) * _caster.source_size.height * 0.5;
+        _caster.position.x = _feet_x;
+        _caster.position.y = _feet_y;
+        _caster.height = max(0.001, (_feet_y - _source_top_y) * _height_scale);
+        _caster.projection_rotation = 0;
+        _caster.shared_anchor_projection = true;
+        _caster.projection_height_scale = _height_scale;
+    }
+    _caster.character_caster = true;
+    _caster.exclude_source_from_shadow = true;
+    return _caster;
+}
+
+function raid_shadow_get_player_accessory_occluders(_feet_x, _feet_y)
+{
+    var _accessories = [];
+    var _weapon = raid_update_active_weapon();
+    if (raid_gun_tuning_active) _weapon = item_get(raid_gun_tuning_weapon_key);
+
+    if (!is_struct(_weapon))
+    {
+        var _knife_raise = 90 * raid_player_facing;
+        var _knife_dir = raid_aim_dir + _knife_raise;
+        var _hand_dir = raid_aim_dir;
+        var _stab_distance = 0;
+        if (raid_knife_attack_timer > 0)
+        {
+            var _progress = 1 - (raid_knife_attack_timer / raid_knife_attack_time);
+            _hand_dir = raid_knife_attack_dir;
+            if (_progress < 0.5) _stab_distance = clamp((_progress - 0.25) / 0.25, 0, 1) * 42;
+            else if (_progress < 0.625) _stab_distance = 42;
+            else _stab_distance = clamp(1 - ((_progress - 0.625) / 0.375), 0, 1) * 42;
+
+            if (_progress < 0.625) _knife_dir = raid_knife_attack_dir + _knife_raise - (_knife_raise * min(1, _progress / 0.25));
+            else _knife_dir = raid_knife_attack_dir + (_knife_raise * ((_progress - 0.625) / 0.375));
+        }
+
+        var _hand_x = raid_player_x + lengthdir_x(12, _hand_dir) + lengthdir_x(_stab_distance, _knife_dir);
+        var _hand_y = raid_player_y - 10 + lengthdir_y(12, _hand_dir) + lengthdir_y(_stab_distance, _knife_dir);
+        array_push(_accessories, raid_shadow_character_accessory(
+            spr_hand, _hand_x, _hand_y, 1, 1, _knife_dir,
+            _feet_x, _feet_y, raid_shadow_hand_extra_offset_scale
+        ));
+        return _accessories;
+    }
+
+    if (_weapon.weapon_sprite < 0 || !sprite_exists(_weapon.weapon_sprite)) return _accessories;
+    var _tuning = raid_gun_tuning_get(raid_gun_tuning_weapon_key, _weapon);
+    var _dir = raid_aim_dir + _tuning.weapon_angle_offset;
+    var _flip_y = (_dir > 90 && _dir < 270) ? -1 : 1;
+    var _weapon_offset_x = variable_struct_exists(_weapon, "weapon_offset_x") ? _weapon.weapon_offset_x : _tuning.weapon_offset_x;
+    var _gun_x = raid_player_x
+        + lengthdir_x(_weapon_offset_x - raid_gun_recoil, _dir)
+        + lengthdir_x(_tuning.weapon_offset_y, _dir + 90);
+    var _gun_y = raid_player_y - 10
+        + lengthdir_y(_weapon_offset_x - raid_gun_recoil, _dir)
+        + lengthdir_y(_tuning.weapon_offset_y, _dir + 90);
+    var _visible_width = max(1, sprite_get_bbox_right(_weapon.weapon_sprite) - sprite_get_bbox_left(_weapon.weapon_sprite) + 1);
+    var _weapon_scale = _tuning.weapon_draw_width / _visible_width;
+    array_push(_accessories, raid_shadow_character_accessory(
+        _weapon.weapon_sprite, _gun_x, _gun_y, _weapon_scale, _weapon_scale * _flip_y, _dir,
+        _feet_x, _feet_y, raid_shadow_gun_extra_offset_scale
+    ));
+
+    var _hand1_x = _gun_x + lengthdir_x(_tuning.hand1_offset_x, _dir) + lengthdir_x(_tuning.hand1_offset_y * _flip_y, _dir + 90);
+    var _hand1_y = _gun_y + lengthdir_y(_tuning.hand1_offset_x, _dir) + lengthdir_y(_tuning.hand1_offset_y * _flip_y, _dir + 90);
+    array_push(_accessories, raid_shadow_character_accessory(
+        spr_hand, _hand1_x, _hand1_y, 1, _flip_y, _dir,
+        _feet_x, _feet_y, raid_shadow_hand_extra_offset_scale
+    ));
+
+    if (_weapon.has_second_hand)
+    {
+        var _hand2_x = _gun_x + lengthdir_x(_tuning.hand2_offset_x, _dir) + lengthdir_x(_tuning.hand2_offset_y * _flip_y, _dir + 90);
+        var _hand2_y = _gun_y + lengthdir_y(_tuning.hand2_offset_x, _dir) + lengthdir_y(_tuning.hand2_offset_y * _flip_y, _dir + 90);
+        array_push(_accessories, raid_shadow_character_accessory(
+            spr_hand, _hand2_x, _hand2_y, 1, _flip_y, _dir,
+            _feet_x, _feet_y, raid_shadow_hand_extra_offset_scale
+        ));
+    }
+    return _accessories;
+}
+
+function raid_shadow_get_enemy_accessory_occluders(_enemy)
+{
+    var _accessories = [];
+    if (_enemy.weapon == -1 || is_undefined(_enemy.weapon) || !is_struct(_enemy.weapon)) return _accessories;
+    var _weapon = _enemy.weapon;
+    if (_weapon.weapon_sprite < 0 || !sprite_exists(_weapon.weapon_sprite)) return _accessories;
+
+    var _scale = variable_struct_exists(_enemy, "size_multiplier") ? _enemy.size_multiplier : 1;
+    var _dir = _enemy.enemy_gun_angle;
+    var _flip = (_dir > 90 && _dir < 270) ? -1 : 1;
+    var _weapon_offset_y = variable_struct_exists(_weapon, "weapon_offset_y") ? _weapon.weapon_offset_y * _scale * _flip : 0;
+    var _offset = _enemy.enemy_gun_recoil + (_weapon.weapon_offset_x * _scale);
+    var _gun_x = _enemy.enemy_x + lengthdir_x(_offset, _dir) + lengthdir_x(_weapon_offset_y, _dir + 90);
+    var _gun_y = _enemy.enemy_y - (18 * _scale) + lengthdir_y(_offset, _dir);
+    var _visible_width = max(1, sprite_get_bbox_right(_weapon.weapon_sprite) - sprite_get_bbox_left(_weapon.weapon_sprite) + 1);
+    var _weapon_scale = (_weapon.weapon_draw_width / _visible_width) * 0.75 * _scale;
+    array_push(_accessories, raid_shadow_character_accessory(
+        _weapon.weapon_sprite, _gun_x, _gun_y, _weapon_scale, _weapon_scale * _flip, _dir
+    ));
+
+    if (_enemy.enemy_hand_sprite != -1 && sprite_exists(_enemy.enemy_hand_sprite))
+    {
+        var _hand1_x = _gun_x + lengthdir_x(_weapon.hand1_x * _scale, _dir) + lengthdir_x(_weapon.hand1_y * _scale * _flip, _dir + 90);
+        var _hand1_y = _gun_y + lengthdir_y(_weapon.hand1_x * _scale, _dir) + lengthdir_y(_weapon.hand1_y * _scale * _flip, _dir + 90);
+        array_push(_accessories, raid_shadow_character_accessory(_enemy.enemy_hand_sprite, _hand1_x, _hand1_y, _scale, _scale * _flip, _dir));
+
+        if (_weapon.has_second_hand)
+        {
+            var _hand2_x = _gun_x + lengthdir_x(_weapon.hand2_x * _scale, _dir) + lengthdir_x(_weapon.hand2_y * _scale * _flip, _dir + 90);
+            var _hand2_y = _gun_y + lengthdir_y(_weapon.hand2_x * _scale, _dir) + lengthdir_y(_weapon.hand2_y * _scale * _flip, _dir + 90);
+            array_push(_accessories, raid_shadow_character_accessory(_enemy.enemy_hand_sprite, _hand2_x, _hand2_y, _scale, _scale * _flip, _dir));
+        }
+    }
+    return _accessories;
+}
+
 function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_y, _strength, _color, _debug_visibility = false)
 {
     var _falloff_rotation = variable_struct_exists(_light, "falloff_rotation") ? _light.falloff_rotation : 0;
@@ -958,15 +1106,19 @@ function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_
     var _rectangle_half_sizes = array_create(32, 0);
     var _rectangle_heights = array_create(16, 0);
     var _rectangle_rotations = array_create(16, 0);
-    var _sprite_ground_positions = array_create(16, 0);
-    var _sprite_axes = array_create(16, 0);
-    var _sprite_sizes = array_create(16, 1);
-    var _sprite_source_positions = array_create(16, 0);
-    var _sprite_source_sizes = array_create(16, 1);
-    var _sprite_source_exclusions = array_create(8, 0);
-    var _sprite_uvs = array_create(32, 0);
-    var _sprite_flips = array_create(8, 0);
-    var _sprite_flip_ys = array_create(8, 0);
+    var _sprite_ground_positions = array_create(48, 0);
+    var _sprite_axes = array_create(48, 0);
+    var _sprite_sizes = array_create(48, 1);
+    var _sprite_source_positions = array_create(48, 0);
+    var _sprite_source_sizes = array_create(48, 1);
+    var _sprite_source_exclusions = array_create(24, 0);
+    var _sprite_uvs = array_create(96, 0);
+    var _sprite_flips = array_create(24, 0);
+    var _sprite_flip_ys = array_create(24, 0);
+    var _sprite_source_axes = array_create(48, 0);
+    var _sprite_shared_anchor_projections = array_create(24, 0);
+    var _sprite_projection_height_scales = array_create(24, 1);
+    var _sprite_texture_indices = array_create(24, 0);
     var _sprite_textures = [];
     var _rectangle_count = 0;
     var _sprite_count = 0;
@@ -996,15 +1148,32 @@ function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_
             _rectangle_rotations[_rectangle_count] = degtorad(_occluder.rotation);
             _rectangle_count++;
         }
-        else if (_occluder.geometry.type == "sprite" && _sprite_count < 8)
+        else if (_occluder.geometry.type == "sprite" && _sprite_count < 24)
         {
+            var _silhouette = _occluder.geometry.silhouette;
+            var _texture_slot = -1;
+            for (var _existing_texture_index = 0; _existing_texture_index < array_length(_sprite_textures); _existing_texture_index++)
+            {
+                if (_sprite_textures[_existing_texture_index] == _silhouette.texture)
+                {
+                    _texture_slot = _existing_texture_index;
+                    break;
+                }
+            }
+            if (_texture_slot < 0)
+            {
+                if (array_length(_sprite_textures) >= 8) continue;
+                _texture_slot = array_length(_sprite_textures);
+                array_push(_sprite_textures, _silhouette.texture);
+            }
+
             var _sprite_offset = _sprite_count * 2;
             var _uv_offset = _sprite_count * 4;
-            var _silhouette = _occluder.geometry.silhouette;
             _sprite_ground_positions[_sprite_offset] = _occluder.position.x - _camera_x;
             _sprite_ground_positions[_sprite_offset + 1] = _occluder.position.y - _camera_y;
-            _sprite_axes[_sprite_offset] = lengthdir_x(1, _occluder.rotation);
-            _sprite_axes[_sprite_offset + 1] = lengthdir_y(1, _occluder.rotation);
+            var _projection_rotation = variable_struct_exists(_occluder, "projection_rotation") ? _occluder.projection_rotation : _occluder.rotation;
+            _sprite_axes[_sprite_offset] = lengthdir_x(1, _projection_rotation);
+            _sprite_axes[_sprite_offset + 1] = lengthdir_y(1, _projection_rotation);
             _sprite_sizes[_sprite_offset] = _occluder.geometry.width;
             _sprite_sizes[_sprite_offset + 1] = _occluder.height;
             _sprite_source_positions[_sprite_offset] = _occluder.source_position.x - _camera_x;
@@ -1018,7 +1187,11 @@ function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_
             _sprite_uvs[_uv_offset + 3] = _silhouette.uv_bottom;
             _sprite_flips[_sprite_count] = _occluder.flip_x;
             _sprite_flip_ys[_sprite_count] = _occluder.flip_y;
-            array_push(_sprite_textures, _silhouette.texture);
+            _sprite_source_axes[_sprite_offset] = lengthdir_x(1, _occluder.rotation);
+            _sprite_source_axes[_sprite_offset + 1] = lengthdir_y(1, _occluder.rotation);
+            _sprite_shared_anchor_projections[_sprite_count] = variable_struct_exists(_occluder, "shared_anchor_projection") && _occluder.shared_anchor_projection;
+            _sprite_projection_height_scales[_sprite_count] = variable_struct_exists(_occluder, "projection_height_scale") ? _occluder.projection_height_scale : 1;
+            _sprite_texture_indices[_sprite_count] = _texture_slot;
             _sprite_count++;
         }
     }
@@ -1048,7 +1221,11 @@ function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_
     shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_uv"), _sprite_uvs);
     shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_flip"), _sprite_flips);
     shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_flip_y"), _sprite_flip_ys);
-    for (var _texture_index = 0; _texture_index < _sprite_count; _texture_index++)
+    shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_source_axis"), _sprite_source_axes);
+    shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_shared_anchor_projection"), _sprite_shared_anchor_projections);
+    shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_projection_height_scale"), _sprite_projection_height_scales);
+    shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_texture_index"), _sprite_texture_indices);
+    for (var _texture_index = 0; _texture_index < array_length(_sprite_textures); _texture_index++)
     {
         var _sampler = shader_get_sampler_index(shd_raid_shadow_visibility, "u_sprite_texture_" + string(_texture_index));
         texture_set_stage(_sampler, _sprite_textures[_texture_index]);
@@ -1133,6 +1310,46 @@ function draw_raid_shadow_debug(_occluders)
         var _shadow_height = raid_light_get_shadow_height(_debug_light);
         draw_circle(_debug_light.x, _debug_light.y, 4, false);
         draw_text(_debug_light.x + 6, _debug_light.y - 14, "Shadow height: " + string(_shadow_height));
+    }
+
+    var _player_body_caster = undefined;
+    var _weapon_rig_caster = undefined;
+    for (var _player_caster_index = 0; _player_caster_index < array_length(_occluders); _player_caster_index++)
+    {
+        var _player_debug_caster = _occluders[_player_caster_index];
+        if (variable_struct_exists(_player_debug_caster, "player_shadow_body") && _player_debug_caster.player_shadow_body)
+            _player_body_caster = _player_debug_caster;
+        if (variable_struct_exists(_player_debug_caster, "shared_anchor_projection") && _player_debug_caster.shared_anchor_projection
+        && (is_undefined(_weapon_rig_caster) || _player_debug_caster.height > _weapon_rig_caster.height))
+            _weapon_rig_caster = _player_debug_caster;
+    }
+    if (!is_undefined(_player_body_caster))
+    {
+        var _feet_x = _player_body_caster.position.x;
+        var _feet_y = _player_body_caster.position.y;
+        var _light_height = raid_light_get_shadow_height(_light);
+        var _body_height = min(_player_body_caster.height, _light_height * 0.95);
+        var _body_projection_scale = _body_height / max(0.001, _light_height - _body_height);
+        var _body_projection_x = (_feet_x - _light.x) * _body_projection_scale;
+        var _body_projection_y = (_feet_y - _light.y) * _body_projection_scale;
+        draw_set_color(c_yellow);
+        draw_line(_light.x, _light.y, _feet_x, _feet_y);
+        draw_text((_light.x + _feet_x) * 0.5 + 5, (_light.y + _feet_y) * 0.5, "light direction");
+        draw_set_color(c_lime);
+        draw_circle(_feet_x, _feet_y, 4, false);
+        draw_line(_feet_x, _feet_y, _feet_x + _body_projection_x, _feet_y + _body_projection_y);
+        draw_text(_feet_x + 6, _feet_y + 5, "feet / body projection");
+
+        if (!is_undefined(_weapon_rig_caster))
+        {
+            var _weapon_height = min(_weapon_rig_caster.height, _light_height * 0.95);
+            var _weapon_projection_scale = _weapon_height / max(0.001, _light_height - _weapon_height);
+            draw_set_color(c_fuchsia);
+            draw_line(_feet_x, _feet_y,
+                _feet_x + (_feet_x - _light.x) * _weapon_projection_scale,
+                _feet_y + (_feet_y - _light.y) * _weapon_projection_scale);
+            draw_text(_feet_x + 6, _feet_y + 17, "weapon projection (75% height)");
+        }
     }
     draw_set_color(c_white);
 }
@@ -1231,6 +1448,74 @@ function raid_radial_light_is_visible(_x, _y, _radius, _x_scale = 1, _y_scale = 
         && _x - _extent <= _scissor.x + _scissor.w
         && _y + _extent >= _scissor.y
         && _y - _extent <= _scissor.y + _scissor.h;
+}
+
+function draw_raid_loot_halos(_camera_x, _camera_y, _surface_width, _surface_height, _intensity_scale = 1)
+{
+    for (var _loot_index = 0; _loot_index < array_length(raid_lootables); _loot_index++)
+    {
+        var _lootable = raid_lootables[_loot_index];
+        if (variable_struct_exists(_lootable, "loot_halo_enabled") && !_lootable.loot_halo_enabled) continue;
+
+        var _radius = variable_struct_exists(_lootable, "loot_halo_radius") ? _lootable.loot_halo_radius : loot_halo_radius;
+        var _intensity = variable_struct_exists(_lootable, "loot_halo_intensity") ? _lootable.loot_halo_intensity : loot_halo_intensity;
+        if (_radius <= 0 || _intensity <= 0) continue;
+
+        var _halo_x = _lootable.lootable_x;
+        var _halo_y = _lootable.lootable_y;
+        var _x_scale = 1;
+        var _y_scale = 1;
+        if (variable_struct_exists(_lootable, "sprite_index") && _lootable.sprite_index >= 0)
+        {
+            var _sprite = _lootable.sprite_index;
+            var _sprite_x = variable_struct_exists(_lootable, "sprite_x") ? _lootable.sprite_x : _lootable.lootable_x;
+            var _sprite_y = variable_struct_exists(_lootable, "sprite_y") ? _lootable.sprite_y : _lootable.lootable_y;
+            var _image_xscale = variable_struct_exists(_lootable, "image_xscale") ? _lootable.image_xscale : 1;
+            var _image_yscale = variable_struct_exists(_lootable, "image_yscale") ? _lootable.image_yscale : 1;
+            var _image_angle = variable_struct_exists(_lootable, "image_angle") ? _lootable.image_angle : 0;
+            var _local_center_x = ((sprite_get_bbox_left(_sprite) + sprite_get_bbox_right(_sprite) + 1) * 0.5 - sprite_get_xoffset(_sprite)) * _image_xscale;
+            var _local_center_y = ((sprite_get_bbox_top(_sprite) + sprite_get_bbox_bottom(_sprite) + 1) * 0.5 - sprite_get_yoffset(_sprite)) * _image_yscale;
+            var _center_distance = point_distance(0, 0, _local_center_x, _local_center_y);
+            var _center_direction = point_direction(0, 0, _local_center_x, _local_center_y) + _image_angle;
+            _halo_x = _sprite_x + lengthdir_x(_center_distance, _center_direction);
+            _halo_y = _sprite_y + lengthdir_y(_center_distance, _center_direction);
+
+            var _visual_width = abs((sprite_get_bbox_right(_sprite) - sprite_get_bbox_left(_sprite) + 1) * _image_xscale);
+            var _visual_height = abs((sprite_get_bbox_bottom(_sprite) - sprite_get_bbox_top(_sprite) + 1) * _image_yscale);
+            _radius = max(_radius, max(_visual_width, _visual_height) * 0.5 + 12);
+            _x_scale = max(0.72, _visual_width / max(1, _visual_height));
+            _x_scale = clamp(_x_scale, 0.85, 1.35);
+            _y_scale = clamp(_visual_height / max(1, _visual_width), 0.72, 1);
+        }
+
+        _halo_x += variable_struct_exists(_lootable, "loot_halo_offset_x") ? _lootable.loot_halo_offset_x : loot_halo_offset_x;
+        _halo_y += variable_struct_exists(_lootable, "loot_halo_offset_y") ? _lootable.loot_halo_offset_y : loot_halo_offset_y;
+        if (_halo_x + _radius * _x_scale < _camera_x || _halo_x - _radius * _x_scale > _camera_x + _surface_width
+        || _halo_y + _radius * _y_scale < _camera_y || _halo_y - _radius * _y_scale > _camera_y + _surface_height) continue;
+
+        var _color = variable_struct_exists(_lootable, "loot_halo_color") ? _lootable.loot_halo_color : loot_halo_color;
+        draw_raid_radial_light(_halo_x - _camera_x, _halo_y - _camera_y, _radius, _intensity * _intensity_scale,
+            _color, 0, _x_scale, _y_scale, 24, true);
+    }
+
+    if (!raid.doors_active && raid.state != RaidState.EXITING) return;
+    for (var _door_index = 0; _door_index < array_length(raid_doors); _door_index++)
+    {
+        var _door = raid_doors[_door_index];
+        if (variable_struct_exists(_door, "loot_halo_enabled") && !_door.loot_halo_enabled) continue;
+
+        var _door_radius = variable_struct_exists(_door, "loot_halo_radius") ? _door.loot_halo_radius : loot_halo_radius;
+        var _door_intensity = variable_struct_exists(_door, "loot_halo_intensity") ? _door.loot_halo_intensity : loot_door_halo_intensity;
+        var _door_x = _door.door_x + (variable_struct_exists(_door, "loot_halo_offset_x") ? _door.loot_halo_offset_x : loot_halo_offset_x);
+        var _door_y = _door.door_y + (variable_struct_exists(_door, "loot_halo_offset_y") ? _door.loot_halo_offset_y : loot_door_halo_offset_y);
+        if (_door_radius <= 0 || _door_intensity <= 0
+        || _door_x + _door_radius * loot_door_halo_xscale < _camera_x || _door_x - _door_radius * loot_door_halo_xscale > _camera_x + _surface_width
+        || _door_y + _door_radius * loot_door_halo_yscale < _camera_y || _door_y - _door_radius * loot_door_halo_yscale > _camera_y + _surface_height) continue;
+
+        var _door_color = variable_struct_exists(_door, "loot_halo_color") ? _door.loot_halo_color : loot_halo_color;
+        draw_raid_radial_light(_door_x - _camera_x, _door_y - _camera_y, _door_radius, _door_intensity * _intensity_scale,
+            _door_color, 0, loot_door_halo_xscale, loot_door_halo_yscale, 24, true);
+    }
 }
 
 function draw_raid_light_core(_light, _camera_x, _camera_y, _strength_scale = 1)
@@ -1366,22 +1651,7 @@ function raid_generate_room_wall_lights()
     //top
     raid_spawn_wall_light(1101, 335, 270, true, 125, _warm_orange, 0.42, 64, true);
     raid_spawn_wall_light(819, 335, 270, true, 125, _warm_orange, 0.42, 64, true);
-    raid_room_clear_light = raid_spawn_wall_light(
-        (raid_room_x1 + raid_room_x2) * 0.5,
-        raid_room_y1 - 5,
-        270,
-        raid.room_cleared,
-        88,
-        make_color_rgb(95, 175, 100),
-        0.24,
-        64,
-        true,
-        -1,
-        1.15
-    );
-    raid_room_clear_light.core_radius = 21;
-    raid_room_clear_light.core_intensity = 0.42;
-    raid_room_clear_light.core_color = make_color_rgb(130, 220, 135);
+
     //bottom
     raid_spawn_wall_light(1018, 744, 90, true, 125, _warm_orange, 0.42, 64, true);
     raid_spawn_wall_light(801, 744, 90, true, 125, _warm_orange, 0.42, 64, true);
@@ -1403,16 +1673,25 @@ function raid_shadow_get_arena_wall_occluders()
     array_push(_wall_occluders, raid_shadow_occluder_rectangle(_outer_right + _wall_depth * 0.5, (_outer_top + _outer_bottom) * 0.5, _wall_depth, _outer_height + _wall_depth * 2, _wall_height));
     array_push(_wall_occluders, raid_shadow_occluder_rectangle((_outer_left + _outer_right) * 0.5, _outer_bottom + _wall_depth * 0.5, _outer_width, _wall_depth, _wall_height));
 
+
+	var door_padding = 15;
     var _openings = [];
     if (raid.doors_active || raid.state == RaidState.EXITING)
     {
+        var _door_lintel_depth = _wall_depth * 0.58;
         for (var _door_index = 0; _door_index < array_length(raid_doors); _door_index++)
         {
             var _door = raid_doors[_door_index];
-            array_push(_openings, {
-                left: max(raid_room_x1, _door.door_x - _door.door_w * 0.5),
-                right: min(raid_room_x2, _door.door_x + _door.door_w * 0.5)
-            });
+            var _opening_left = max(raid_room_x1, _door.door_x - _door.door_w * 0.5 - door_padding);
+            var _opening_right = min(raid_room_x2, _door.door_x + _door.door_w * 0.5 + door_padding);
+            array_push(_openings, {left: _opening_left, right: _opening_right});
+            array_push(_wall_occluders, raid_shadow_occluder_rectangle(
+                (_opening_left + _opening_right) * 0.5,
+                _outer_top - _wall_depth + _door_lintel_depth * 0.5,
+                _opening_right - _opening_left,
+                _door_lintel_depth,
+                _wall_height
+            ));
         }
         array_sort(_openings, function(_a, _b) { return _a.left - _b.left; });
     }
