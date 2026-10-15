@@ -7,6 +7,28 @@ function step_raid()
     if (!_raid_transition_blocks_input) step_debug_terminal();
     if (debug_console_open) return;
 
+    if (keyboard_check_pressed(vk_f3)) raid_shadow_debug = !raid_shadow_debug;
+
+    // Debug movement proves that visibility is rebuilt from live light/caster data.
+    if (raid_shadow_debug && array_length(raid_wall_lights) > 0)
+    {
+        var _debug_move_x = keyboard_check(vk_right) - keyboard_check(vk_left);
+        var _debug_move_y = keyboard_check(vk_down) - keyboard_check(vk_up);
+        var _debug_move_speed = 2 * frame_scale;
+        if (keyboard_check(vk_shift))
+        {
+            raid_wall_lights[0].x += _debug_move_x * _debug_move_speed;
+            raid_wall_lights[0].y += _debug_move_y * _debug_move_speed;
+        }
+        else if (array_length(raid_lootables) > 0)
+        {
+            raid_lootables[0].lootable_x += _debug_move_x * _debug_move_speed;
+            raid_lootables[0].lootable_y += _debug_move_y * _debug_move_speed;
+            raid_lootables[0].sprite_x += _debug_move_x * _debug_move_speed;
+            raid_lootables[0].sprite_y += _debug_move_y * _debug_move_speed;
+        }
+    }
+
     if (raid.state != RaidState.PAUSED && raid.state != RaidState.RESULT)
     {
         for (var _light_index = array_length(raid_temporary_lights) - 1; _light_index >= 0; _light_index--)

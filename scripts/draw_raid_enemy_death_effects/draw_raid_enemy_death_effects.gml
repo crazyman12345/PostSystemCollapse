@@ -1,5 +1,6 @@
 function draw_raid_enemy_death_effects()
 {
+    if (!global.graphics_settings.death_gibs) return;
     for (
         var i = 0;
         i < array_length(raid_enemy_death_effects);

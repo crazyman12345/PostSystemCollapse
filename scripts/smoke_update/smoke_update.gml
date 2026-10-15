@@ -1,5 +1,6 @@
 function smoke_update()
 {
+    if (!global.graphics_settings.smoke_effects) return;
     smoke_particle_update_accumulator += frame_scale;
     while (smoke_particle_update_accumulator >= 1)
     {

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"graphics_settings",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"graphics_settings",
+  "parent":{
+    "name":"IdleGame",
+    "path":"IdleGame.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

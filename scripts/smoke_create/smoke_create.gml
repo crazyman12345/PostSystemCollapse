@@ -1,11 +1,13 @@
 function smoke_create(_x1, _y1, _x2, _y2, _amount = 8)
 {
+    if (!global.graphics_settings.smoke_effects) return;
     for (var i = 0; i < _amount; i++)
         part_particles_create(smoke_particle_system, random_range(_x1, _x2), random_range(_y1, _y2), smoke_particle_type, 1);
 }
 
 function projectile_smoke_update(_bullet, _previous_x, _previous_y)
 {
+    if (!global.graphics_settings.smoke_effects) return _bullet;
     if (!variable_struct_exists(_bullet, "smoke_enabled") || !_bullet.smoke_enabled) return _bullet;
 
     _bullet.smoke_timer -= frame_scale;

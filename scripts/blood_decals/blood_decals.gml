@@ -12,6 +12,7 @@ function blood_surface_reset()
     raid_blood_surface_y = raid_room_y1;
     raid_blood_surface_width = max(1, ceil(raid_room_x2 - raid_room_x1));
     raid_blood_surface_height = max(1, ceil(raid_room_y2 - raid_room_y1));
+    if (!global.graphics_settings.blood_effects) return;
     raid_blood_surface = surface_create(raid_blood_surface_width, raid_blood_surface_height);
 
     if (surface_exists(raid_blood_surface))
@@ -24,6 +25,7 @@ function blood_surface_reset()
 
 function blood_surface_ensure()
 {
+    if (!global.graphics_settings.blood_effects) return false;
     if (surface_exists(raid_blood_surface)) return true;
 
     raid_blood_surface = surface_create(raid_blood_surface_width, raid_blood_surface_height);
@@ -37,6 +39,7 @@ function blood_surface_ensure()
 
 function blood_surface_draw()
 {
+    if (!global.graphics_settings.blood_effects) return;
     if (!blood_surface_ensure()) return;
     draw_surface(raid_blood_surface, raid_blood_surface_x, raid_blood_surface_y);
 }
@@ -122,6 +125,7 @@ function blood_stamp_streak(_x, _y, _direction, _scale = 1)
 
 function blood_hit_effect(_x, _y, _hit_direction, _intensity = 1)
 {
+    if (!global.graphics_settings.blood_effects) return;
     var _medium_hit = _intensity > 1;
     var _splat_count = _medium_hit ? irandom_range(2, 4) : irandom_range(1, 2);
 
@@ -147,6 +151,7 @@ function blood_hit_effect(_x, _y, _hit_direction, _intensity = 1)
 
 function blood_death_effect(_x, _y, _hit_direction)
 {
+    if (!global.graphics_settings.blood_effects) return;
     var _splat_count = irandom_range(2, 4);
     var _pool_count = irandom_range(1, 2);
     var _streak_count = irandom_range(2, 3);

@@ -13,6 +13,7 @@ function draw_raid()
 
     if (raid.state == RaidState.DEATH)
     {
+        draw_raid_character_shadows();
         draw_raid_enemy_death_effects();
         draw_raid_player();
         return;
@@ -30,6 +31,7 @@ function draw_raid()
 	draw_raid_lootables();
 	draw_raid_ground_items();
 	draw_raid_extract();
+	draw_raid_character_shadows();
 	draw_raid_enemy_death_effects();
     draw_raid_player();
 	draw_raid_gun();

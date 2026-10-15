@@ -62,6 +62,7 @@ part_type_alpha3(projectile_smoke_particle_type, 0.24, 0.12, 0);
 part_type_speed(projectile_smoke_particle_type, 0.03, 0.10, 0, 0.01);
 part_type_life(projectile_smoke_particle_type, 14, 24);
 part_type_blend(projectile_smoke_particle_type, false);
+graphics_settings_load();
 //debug
 debug_console_open = false;
 debug_input = "";

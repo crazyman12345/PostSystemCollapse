@@ -9,8 +9,9 @@ function raid_spawn_reward_lootable(_reward_type)
 
 
     // Put it slightly above room center
-    _cy -= 55;
+    _cy -= 95;
 
+    var _visual = raid_lootable_visuals[_reward_type];
 
     var _lootable = {
         lootable_x: _cx,
@@ -27,8 +28,24 @@ function raid_spawn_reward_lootable(_reward_type)
         },
 
         width: 34,
-        height: 22
+        height: 22,
+
+        sprite_index: _visual.sprite,
+        image_index: 0,
+        image_xscale: _visual.scale,
+        image_yscale: _visual.scale,
+        image_angle: 0,
+        shadow_offset_x: variable_struct_exists(_visual, "shadow_offset_x") ? _visual.shadow_offset_x : 0,
+        shadow_offset_y: variable_struct_exists(_visual, "shadow_offset_y") ? _visual.shadow_offset_y : 0
     };
+
+    // Place the configured art's visible bottom-center on the lootable's floor.
+    var _sprite = _lootable.sprite_index;
+    var _sprite_scale = _lootable.image_xscale;
+    var _visible_center_x = (sprite_get_bbox_left(_sprite) + sprite_get_bbox_right(_sprite)) * 0.5;
+    var _ground_y = _cy + _lootable.height * 0.5;
+    _lootable.sprite_x = _cx - (_visible_center_x - sprite_get_xoffset(_sprite)) * _sprite_scale;
+    _lootable.sprite_y = _ground_y - (sprite_get_bbox_bottom(_sprite) - sprite_get_yoffset(_sprite)) * _lootable.image_yscale;
 
     switch (_reward_type)
     {

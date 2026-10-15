@@ -21,6 +21,19 @@ enum RaidRewardType
     BACKROOM_STASH
 }
 
+raid_lootable_visuals = [
+    {sprite: spr_filing_cabinet, scale: 0.098, shadow_offset_x: 0, shadow_offset_y: -12}, // FILING_CABINETS
+    {sprite: spr_crate, scale: 0.07, shadow_offset_x: 0, shadow_offset_y: -12}, // SUPPLY_CRATES
+    {sprite: spr_toolbox, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}, // TOOLBOX
+    {sprite: spr_cashregister, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}, // CASH_REGISTER
+    {sprite: spr_crate, scale: 0.07, shadow_offset_x: 0, shadow_offset_y: -12}, // MEDICAL_CRATE
+    {sprite: spr_shelves, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}, // ELECTRONICS
+    {sprite: spr_foodshelf, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}, // FOOD_STORAGE
+    {sprite: spr_crate, scale: 0.07, shadow_offset_x: 0, shadow_offset_y: -12}, // WEAPON_CRATE
+    {sprite: spr_crate, scale: 0.07, shadow_offset_x: 0, shadow_offset_y: -12}, // ARMOR_CRATE
+    {sprite: spr_shelves, scale: 0.08, shadow_offset_x: 0, shadow_offset_y: -12}  // BACKROOM_STASH
+];
+
 enum RaidEnemyType
 {
     BURST_SHOOTER,
@@ -80,7 +93,10 @@ raid =
     junction_key: "",
     junction_action_index: 0,
 	visited_junctions: {},
-    pause_menu_index: 7,
+    pause_menu_index: 2,
+    pause_menu_tab: 0,
+    pause_graphics_index: 0,
+    pause_graphics_scroll: 0,
     pause_fps_index: 1,
     // Selection references the carried grid item; it never removes it from storage.
     inventory_item: undefined,
@@ -173,25 +189,39 @@ raid_colored_lighting_surface = -1;
 raid_emissive_surface = -1;
 raid_bloom_blur_surface = -1;
 raid_bloom_surface = -1;
-raid_lighting_ambient_alpha = 0.72;
-raid_colored_light_strength = 0.2;
+raid_color_grade_saturation = 1.30;
+raid_color_grade_contrast = 1.15;
+raid_color_grade_brightness = 1.0;
+raid_lighting_ambient_alpha = 0.62;
+raid_lighting_clip_offset = 46;
+raid_colored_light_strength = 0.38;
 raid_smoke_min_light = 0.525;
 raid_smoke_light_response = 1.4;
 raid_smoke_colored_light_strength = 2.75;
 raid_smoke_alpha_scale = 1.75;
 raid_bloom_enabled = true;
-raid_bloom_intensity = 1.2;
-raid_bloom_blur_radius = 8;
+raid_bloom_intensity = 0.6;
+raid_bloom_blur_radius = 3;
 raid_bloom_blur_passes = 2;
-raid_bloom_wall_lamp_source_scale = 2;
+raid_bloom_wall_lamp_source_scale = 2.0;
 raid_bloom_projectile_source_scale = 1.5;
-raid_bloom_muzzle_flash_source_scale = 1.35;
+raid_bloom_muzzle_flash_source_scale = 1.6;
 raid_bloom_explosion_source_scale = 1;
-raid_player_light_radius = 130;
-raid_player_light_strength = 1;
+raid_player_light_radius = 55;
+raid_player_light_strength = 0.22;
+raid_player_light_color = make_color_rgb(255, 220, 175);
+raid_player_light_offset_y = -8;
+raid_enemy_light_strength = 0.14;
 raid_light_sources = [];
 raid_wall_lights = [];
+raid_room_clear_light = undefined;
 raid_temporary_lights = [];
+raid_shadow_occluders = [];
+raid_shadow_silhouette_cache = {};
+raid_shadow_debug = false;
+raid_character_shadows_enabled = true;
+raid_character_shadow_size = 20;
+raid_character_shadow_opacity = 0.35;
 raid_blood_surface = -1;
 raid_blood_surface_x = 0;
 raid_blood_surface_y = 0;

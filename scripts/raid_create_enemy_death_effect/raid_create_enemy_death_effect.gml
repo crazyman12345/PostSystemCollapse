@@ -1,5 +1,6 @@
 function raid_create_enemy_death_effect(_enemy)
 {
+    if (!global.graphics_settings.death_gibs) return;
     var _sprite = _enemy.enemy_sprite;
     var _bbox_left = sprite_get_bbox_left(_sprite);
     var _bbox_top = sprite_get_bbox_top(_sprite);

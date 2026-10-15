@@ -249,6 +249,7 @@ function step_raid_enemies()
     {
         raid.room_cleared = true;
         raid.reward_unlocked = true;
+        if (is_struct(raid_room_clear_light)) raid_room_clear_light.enabled = true;
 
         raid.rooms_cleared++;
         raid.rooms_in_section++;

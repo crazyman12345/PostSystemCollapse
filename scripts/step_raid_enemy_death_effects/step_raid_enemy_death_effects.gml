@@ -1,5 +1,10 @@
 function step_raid_enemy_death_effects()
 {
+    if (!global.graphics_settings.death_gibs)
+    {
+        raid_enemy_death_effects = [];
+        return;
+    }
     for (
         var i = array_length(raid_enemy_death_effects) - 1;
         i >= 0;

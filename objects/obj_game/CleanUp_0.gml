@@ -1,3 +1,10 @@
 part_system_destroy(smoke_particle_system);
 part_type_destroy(smoke_particle_type);
 part_type_destroy(projectile_smoke_particle_type);
+raid_lighting_surface = graphics_settings_release_surface(raid_lighting_surface);
+raid_colored_lighting_surface = graphics_settings_release_surface(raid_colored_lighting_surface);
+raid_emissive_surface = graphics_settings_release_surface(raid_emissive_surface);
+raid_bloom_blur_surface = graphics_settings_release_surface(raid_bloom_blur_surface);
+raid_bloom_surface = graphics_settings_release_surface(raid_bloom_surface);
+raid_map_surface = graphics_settings_release_surface(raid_map_surface);
+blood_surface_destroy();
