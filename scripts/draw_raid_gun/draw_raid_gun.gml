@@ -1,5 +1,7 @@
-function draw_raid_gun()
+function draw_raid_gun(_lighting_mask = false, _mask_alpha = 1)
 {
+    var _draw_alpha = _lighting_mask ? _mask_alpha : 1;
+    draw_set_alpha(_draw_alpha);
     var _weapon = raid_update_active_weapon();
 
     if (raid_gun_tuning_active)
@@ -58,7 +60,7 @@ function draw_raid_gun()
         var _handle_side_x = lengthdir_x(3, _knife_dir + 90);
         var _handle_side_y = lengthdir_y(3, _knife_dir + 90);
 
-        for (var i = 0; i < array_length(raid_knife_trail); i++)
+        for (var i = 0; !_lighting_mask && i < array_length(raid_knife_trail); i++)
         {
             var _trail = raid_knife_trail[i];
             var _trail_handle_end_x = _trail.trail_hand_x + lengthdir_x(7, _trail.trail_dir);
@@ -81,7 +83,7 @@ function draw_raid_gun()
             );
         }
 
-        draw_set_alpha(1);
+        draw_set_alpha(_draw_alpha);
         draw_set_color(c_black);
         draw_triangle(
             _hand_x + _handle_side_x,
@@ -142,8 +144,9 @@ function draw_raid_gun()
             false
         );
 
-        draw_sprite_ext(spr_hand, 0, round(_hand_x), round(_hand_y), 1, 1, _knife_dir, c_white, 1);
+        draw_sprite_ext(spr_hand, 0, round(_hand_x), round(_hand_y), 1, 1, _knife_dir, c_white, _draw_alpha);
         draw_set_color(c_white);
+        draw_set_alpha(1);
         return;
     }
 
@@ -216,7 +219,7 @@ draw_sprite_ext(
     _weapon_scale * _flip_y,
     _dir,
     c_white,
-    1
+    _draw_alpha
 );
 
 if (is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
@@ -266,7 +269,7 @@ if (is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
 		    _flip_y,
 		    _dir,
 		    c_white,
-		    1
+		    _draw_alpha
 		);
 
 
@@ -310,11 +313,11 @@ if (is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
 		    _flip_y,
 		    _dir,
 		    c_white,
-		    1
+		    _draw_alpha
 		);
 		    }
 
-    if (raid_gun_tuning_active)
+    if (raid_gun_tuning_active && !_lighting_mask)
     {
 		draw_set_font(fnt_terminal_tiny);
         draw_set_color(c_yellow);
@@ -336,4 +339,5 @@ if (is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
         draw_text(_gun_x + lengthdir_x(44, _dir), _gun_y + lengthdir_y(44, _dir), "aim");
         draw_set_color(c_white);
     }
+    draw_set_alpha(1);
 }

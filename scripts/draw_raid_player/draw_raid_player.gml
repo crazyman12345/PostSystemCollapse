@@ -1,4 +1,4 @@
-function draw_raid_player()
+function draw_raid_player(_lighting_mask = false, _mask_alpha = 1)
 {
     if (raid.state == RaidState.DEATH)
     {
@@ -13,7 +13,7 @@ function draw_raid_player()
                 raid_player_death_scale,
                 0,
                 c_red,
-                1
+                _lighting_mask ? _mask_alpha : 1
             );
         }
 
@@ -57,7 +57,7 @@ function draw_raid_player()
     // DASH TRAIL - BEHIND PLAYER
     // ==============================
 
-    for (var i = 0; i < array_length(raid_player_dash_trail); i++)
+    for (var i = 0; !_lighting_mask && i < array_length(raid_player_dash_trail); i++)
     {
         var _trail = raid_player_dash_trail[i];
         var _trail_alpha =
@@ -85,7 +85,8 @@ function draw_raid_player()
         member.bag,
         _frame,
         _x,
-        _y
+        _y,
+        _lighting_mask ? _mask_alpha : 1
     );
 
 
@@ -102,7 +103,7 @@ function draw_raid_player()
         1,
         0,
         c_white,
-        _player_alpha
+        _lighting_mask ? _mask_alpha : _player_alpha
     );
 
 
@@ -114,7 +115,8 @@ function draw_raid_player()
         member.armor_chest,
         _frame,
         _x,
-        _y
+        _y,
+        _lighting_mask ? _mask_alpha : 1
     );
 
 
@@ -126,6 +128,7 @@ function draw_raid_player()
         member.armor_head,
         _frame,
         _x,
-        _y
+        _y,
+        _lighting_mask ? _mask_alpha : 1
     );
 }

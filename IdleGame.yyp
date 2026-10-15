@@ -333,6 +333,7 @@
     {"id":{"name":"workshop_upgrade_interact","path":"scripts/workshop_upgrade_interact/workshop_upgrade_interact.yy",},},
     {"id":{"name":"workshop_upgrade","path":"scripts/workshop_upgrade/workshop_upgrade.yy",},},
     {"id":{"name":"shd_raid_bloom_blur","path":"shaders/shd_raid_bloom_blur/shd_raid_bloom_blur.yy",},},
+    {"id":{"name":"shd_raid_character_light_mask","path":"shaders/shd_raid_character_light_mask/shd_raid_character_light_mask.yy",},},
     {"id":{"name":"shd_raid_color_grade","path":"shaders/shd_raid_color_grade/shd_raid_color_grade.yy",},},
     {"id":{"name":"shd_raid_shadow_visibility","path":"shaders/shd_raid_shadow_visibility/shd_raid_shadow_visibility.yy",},},
     {"id":{"name":"shd_raid_smoke_lighting","path":"shaders/shd_raid_smoke_lighting/shd_raid_smoke_lighting.yy",},},

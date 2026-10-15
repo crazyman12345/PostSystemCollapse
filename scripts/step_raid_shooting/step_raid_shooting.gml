@@ -511,31 +511,25 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 			);
 		}
 
-        var _muzzle_flash_radius = 62;
-        var _muzzle_flash_lifetime = 5;
-        var _muzzle_flash_intensity = 0.9;
-        var _muzzle_flash_color = make_color_rgb(255, 205, 105);
+        var _muzzle_flash_radius = raid_muzzle_flash_radius;
+        var _muzzle_flash_lifetime = raid_muzzle_flash_lifetime;
 
         if (_pellet_count > 1)
         {
-            _muzzle_flash_radius = 95;
-            _muzzle_flash_lifetime = 7;
-            _muzzle_flash_intensity = 1;
-            _muzzle_flash_color = make_color_rgb(255, 165, 70);
+            _muzzle_flash_radius = raid_muzzle_flash_shotgun_radius;
+            _muzzle_flash_lifetime = raid_muzzle_flash_shotgun_lifetime;
         }
         else if (array_length(_weapon.fire_modes) > 1)
         {
-            _muzzle_flash_radius = 50;
-            _muzzle_flash_lifetime = 4;
-            _muzzle_flash_intensity = 0.8;
+            _muzzle_flash_radius = raid_muzzle_flash_auto_radius;
+            _muzzle_flash_lifetime = raid_muzzle_flash_auto_lifetime;
         }
 
-        raid_muzzle_flash_light = raid_spawn_temporary_light(
+        raid_muzzle_flash_light = raid_refresh_muzzle_flash_light(
+            raid_muzzle_flash_light,
             _muzzle_x,
             _muzzle_y,
             _muzzle_flash_radius,
-            _muzzle_flash_color,
-            _muzzle_flash_intensity,
             _muzzle_flash_lifetime
         );
         raid_muzzle_flash_light.flash_scale = random_range(0.8, 1.2);

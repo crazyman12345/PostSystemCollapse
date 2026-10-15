@@ -186,6 +186,9 @@ function draw_raid_lighting()
             draw_raid_darkness_lights(_camera_x, _camera_y, _surface_width, _surface_height, _projectile_lists, _projectile_light_scale, _shadow_occluders);
         }
 
+        gpu_set_scissor(_clip_left, _clip_top, max(0, _clip_right - _clip_left), max(0, _clip_bottom - _clip_top));
+        if (_use_darkness) draw_raid_character_light_masks(_camera_x, _camera_y);
+
         gpu_set_scissor(_previous_scissor.x, _previous_scissor.y, _previous_scissor.w, _previous_scissor.h);
         surface_reset_target();
     }
@@ -351,6 +354,41 @@ function draw_raid_lighting()
     draw_set_alpha(_previous_alpha);
 }
 
+function draw_raid_character_light_masks(_camera_x, _camera_y)
+{
+    var _settings = global.graphics_settings;
+    var _player_minimum = clamp(_settings.player_minimum_brightness, 0, 1);
+    var _enemy_minimum = clamp(_settings.enemy_minimum_brightness, 0, 1);
+    var _ambient_illumination = 1 - clamp(raid_lighting_ambient_alpha, 0, 1);
+    if (_player_minimum <= _ambient_illumination && _enemy_minimum <= _ambient_illumination) return;
+
+    var _previous_world_matrix = matrix_get(matrix_world);
+    matrix_set(matrix_world, matrix_build(-_camera_x, -_camera_y, 0, 0, 0, 0, 1, 1, 1));
+    gpu_set_blendmode_ext_sepalpha(bm_zero, bm_one, bm_one, bm_one);
+    gpu_set_blendequation_sepalpha(bm_eq_add, bm_eq_min);
+    shader_set(shd_raid_character_light_mask);
+    var _minimum_uniform = shader_get_uniform(shd_raid_character_light_mask, "u_minimum_brightness");
+
+    if (_player_minimum > _ambient_illumination)
+    {
+        shader_set_uniform_f(_minimum_uniform, _player_minimum);
+        draw_raid_player(true, 1);
+        if (raid.state != RaidState.DEATH) draw_raid_gun(true, 1);
+    }
+
+    if (raid.state != RaidState.DEATH && _enemy_minimum > _ambient_illumination)
+    {
+        shader_set_uniform_f(_minimum_uniform, _enemy_minimum);
+        draw_raid_enemies(true, 1);
+    }
+
+    shader_reset();
+    gpu_set_blendequation_sepalpha(bm_eq_add, bm_eq_add);
+    matrix_set(matrix_world, _previous_world_matrix);
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+}
+
 function draw_raid_character_shadows()
 {
     if (!global.graphics_settings.contact_shadows || !raid_character_shadows_enabled) return;
@@ -479,13 +517,7 @@ function draw_raid_darkness_lights(_camera_x, _camera_y, _surface_width, _surfac
     for (var _temporary_index = 0; _temporary_index < array_length(raid_temporary_lights); _temporary_index++)
     {
         var _temporary_light = raid_temporary_lights[_temporary_index];
-        draw_raid_radial_light(
-            _temporary_light.x - _camera_x,
-            _temporary_light.y - _camera_y,
-            _temporary_light.radius,
-            _temporary_light.intensity,
-            _temporary_light.color
-        );
+        draw_raid_temporary_light(_temporary_light, _shadow_occluders, _camera_x, _camera_y);
     }
 
     for (var _projectile_list_index = 0; _projectile_list_index < array_length(_projectile_lists); _projectile_list_index++)
@@ -582,13 +614,7 @@ function draw_raid_colored_lights(_camera_x, _camera_y, _surface_width, _surface
     for (var _temporary_color_index = 0; _temporary_color_index < array_length(raid_temporary_lights); _temporary_color_index++)
     {
         var _temporary_color_light = raid_temporary_lights[_temporary_color_index];
-        draw_raid_radial_light(
-            _temporary_color_light.x - _camera_x,
-            _temporary_color_light.y - _camera_y,
-            _temporary_color_light.radius,
-            _temporary_color_light.intensity * raid_colored_light_strength,
-            _temporary_color_light.color
-        );
+        draw_raid_temporary_light(_temporary_color_light, _shadow_occluders, _camera_x, _camera_y, raid_colored_light_strength);
     }
 
     for (var _projectile_color_list_index = 0; _projectile_color_list_index < array_length(_projectile_lists); _projectile_color_list_index++)
@@ -944,11 +970,20 @@ function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_
     var _sprite_textures = [];
     var _rectangle_count = 0;
     var _sprite_count = 0;
+    var _cull_occluders = variable_struct_exists(_light, "muzzle_flash") && _light.muzzle_flash;
 
     for (var _occluder_index = 0; _occluder_index < array_length(_occluders); _occluder_index++)
     {
         var _occluder = _occluders[_occluder_index];
         if (!_occluder.enabled) continue;
+
+        if (_cull_occluders)
+        {
+            var _occluder_reach = _occluder.geometry.type == "rectangle"
+                ? point_distance(0, 0, _occluder.geometry.width * 0.5, _occluder.geometry.depth * 0.5)
+                : _occluder.geometry.width * 0.5;
+            if (point_distance(_light.x, _light.y, _occluder.position.x, _occluder.position.y) > _light.radius + _occluder_reach) continue;
+        }
 
         if (_occluder.geometry.type == "rectangle" && _rectangle_count < 16)
         {
@@ -1215,6 +1250,23 @@ function draw_raid_light_core(_light, _camera_x, _camera_y, _strength_scale = 1)
     );
 }
 
+function draw_raid_temporary_light(_light, _occluders, _camera_x, _camera_y, _strength_scale = 1)
+{
+    if (variable_struct_exists(_light, "muzzle_flash") && _light.muzzle_flash
+    && !global.graphics_settings.muzzle_flash_lighting) return;
+
+    var _strength = _light.intensity * _strength_scale;
+    if (_light.casts_shadows && array_length(_occluders) > 0)
+        draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_y, _strength, _light.color);
+    else
+        draw_raid_radial_light(_light.x - _camera_x, _light.y - _camera_y, _light.radius, _strength, _light.color);
+
+    var _decay_scale = variable_struct_exists(_light, "initial_intensity") && _light.initial_intensity > 0
+        ? _light.intensity / _light.initial_intensity
+        : 1;
+    draw_raid_light_core(_light, _camera_x, _camera_y, _strength_scale * _decay_scale);
+}
+
 function raid_spawn_temporary_light(_x, _y, _radius, _color, _intensity, _lifetime, _height = 16, _casts_shadows = false, _shadow_height = undefined)
 {
     if (_radius <= 0 || _intensity <= 0 || _lifetime <= 0) return undefined;
@@ -1225,7 +1277,10 @@ function raid_spawn_temporary_light(_x, _y, _radius, _color, _intensity, _lifeti
         radius: _radius,
         color: _color,
         intensity: _intensity,
+        initial_intensity: _intensity,
         lifetime: _lifetime,
+        initial_lifetime: _lifetime,
+        decay_power: 1,
         height: _height,
         shadow_height: is_undefined(_shadow_height) ? _height : _shadow_height,
         casts_shadows: _casts_shadows
@@ -1235,7 +1290,37 @@ function raid_spawn_temporary_light(_x, _y, _radius, _color, _intensity, _lifeti
     return _light;
 }
 
-function raid_spawn_wall_light(_x, _y, _rotation = 0, _enabled = true, _radius = 125, _color = c_orange, _intensity = 0.44, _height = 64, _casts_shadows = false, _shadow_occluder_index = -1, _inward_reach_multiplier = 1.15, _shadow_height = 100)
+function raid_refresh_muzzle_flash_light(_light, _x, _y, _radius, _lifetime)
+{
+    var _was_active = is_struct(_light) && _light.lifetime > 0;
+    if (!_was_active)
+    {
+        _light = raid_spawn_temporary_light(
+            _x, _y, _radius, raid_muzzle_flash_color, raid_muzzle_flash_intensity,
+            _lifetime, raid_muzzle_flash_shadow_height, true, raid_muzzle_flash_shadow_height
+        );
+    }
+
+    _light.x = _x;
+    _light.y = _y;
+    _light.radius = _radius;
+    _light.color = raid_muzzle_flash_color;
+    _light.intensity = raid_muzzle_flash_intensity;
+    _light.initial_intensity = raid_muzzle_flash_intensity;
+    _light.lifetime = _lifetime;
+    _light.initial_lifetime = _lifetime;
+    _light.decay_power = raid_muzzle_flash_decay_power;
+    _light.height = raid_muzzle_flash_shadow_height;
+    _light.shadow_height = raid_muzzle_flash_shadow_height;
+    _light.casts_shadows = true;
+    _light.muzzle_flash = true;
+    _light.core_radius = raid_muzzle_flash_core_radius;
+    _light.core_intensity = raid_muzzle_flash_core_intensity;
+    _light.core_color = make_color_rgb(255, 248, 220);
+    return _light;
+}
+
+function raid_spawn_wall_light(_x, _y, _rotation = 0, _enabled = true, _radius = 125, _color = c_orange, _intensity = 0.44, _height = 64, _casts_shadows = false, _shadow_occluder_index = -1, _inward_reach_multiplier = 1.15, _shadow_height = 80)
 {
     var _fixture = {
         x: _x,

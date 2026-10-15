@@ -1,5 +1,5 @@
 // TEST
-function draw_raid_enemies()
+function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
 {
     draw_set_font(fnt_terminal_small);
 
@@ -42,8 +42,14 @@ function draw_raid_enemies()
             _draw_scale,
             0,
             _enemy_color,
-            1
+            _lighting_mask ? _mask_alpha : 1
         );
+
+        if (_lighting_mask)
+        {
+            draw_raid_enemy_gun_and_hands(e, true, _mask_alpha);
+            continue;
+        }
 
         if (
             variable_struct_exists(e, "boss_transition_dialogue")

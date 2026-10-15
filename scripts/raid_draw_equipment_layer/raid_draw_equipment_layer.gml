@@ -1,4 +1,4 @@
-function raid_draw_equipment_layer(_item_key, _frame, _x, _y)
+function raid_draw_equipment_layer(_item_key, _frame, _x, _y, _alpha = 1)
 {
     if (_item_key == "")
         return;
@@ -40,6 +40,6 @@ function raid_draw_equipment_layer(_item_key, _frame, _x, _y)
         1,
         0,
         c_white,
-        1
+        _alpha
     );
 }

@@ -1,4 +1,4 @@
-function draw_raid_enemy_gun_and_hands(_enemy)
+function draw_raid_enemy_gun_and_hands(_enemy, _lighting_mask = false, _mask_alpha = 1)
 {
     if (_enemy.weapon == -1 || is_undefined(_enemy.weapon))
         return;
@@ -95,7 +95,7 @@ function draw_raid_enemy_gun_and_hands(_enemy)
         _weapon_scale * _flip,
         _dir,
         c_white,
-        1
+        _lighting_mask ? _mask_alpha : 1
     );
 
     if (is_struct(_enemy.enemy_muzzle_flash_light) && _enemy.enemy_muzzle_flash_light.lifetime > 0)
@@ -163,7 +163,7 @@ function draw_raid_enemy_gun_and_hands(_enemy)
             _s * _flip,
             _dir,
             c_white,
-            1
+            _lighting_mask ? _mask_alpha : 1
         );
     }
 
@@ -214,7 +214,7 @@ function draw_raid_enemy_gun_and_hands(_enemy)
             _s * _flip,
             _dir,
             c_white,
-            1
+            _lighting_mask ? _mask_alpha : 1
         );
     }
 }

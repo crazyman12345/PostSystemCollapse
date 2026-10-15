@@ -34,9 +34,11 @@ function step_raid()
         for (var _light_index = array_length(raid_temporary_lights) - 1; _light_index >= 0; _light_index--)
         {
             var _light = raid_temporary_lights[_light_index];
-            var _previous_lifetime = _light.lifetime;
             _light.lifetime = max(0, _light.lifetime - frame_scale);
-            _light.intensity *= _previous_lifetime > 0 ? _light.lifetime / _previous_lifetime : 0;
+            var _initial_lifetime = variable_struct_exists(_light, "initial_lifetime") ? _light.initial_lifetime : max(0.001, _light.lifetime + frame_scale);
+            var _initial_intensity = variable_struct_exists(_light, "initial_intensity") ? _light.initial_intensity : _light.intensity;
+            var _decay_power = variable_struct_exists(_light, "decay_power") ? _light.decay_power : 1;
+            _light.intensity = _initial_intensity * power(clamp(_light.lifetime / _initial_lifetime, 0, 1), _decay_power);
 
             if (_light.lifetime <= 0)
                 array_delete(raid_temporary_lights, _light_index, 1);

@@ -2,6 +2,7 @@ function graphics_settings_defaults()
 {
     return {
         dynamic_lighting: true,
+        muzzle_flash_lighting: true,
         ambient_darkness: true,
         colored_lighting: true,
         light_falloff: true,
@@ -12,7 +13,9 @@ function graphics_settings_defaults()
         blood_effects: true,
         death_gibs: true,
         projectile_glow: true,
-        bloom: true
+        bloom: true,
+        player_minimum_brightness: 0.90,
+        enemy_minimum_brightness: 0.80
     };
 }
 
@@ -26,6 +29,7 @@ function graphics_settings_load()
             ini_open("settings.ini");
             var _settings = global.graphics_settings;
             _settings.dynamic_lighting = ini_read_real("Graphics", "dynamic_lighting", 1) > 0;
+            _settings.muzzle_flash_lighting = ini_read_real("Graphics", "muzzle_flash_lighting", 1) > 0;
             _settings.ambient_darkness = ini_read_real("Graphics", "ambient_darkness", 1) > 0;
             _settings.colored_lighting = ini_read_real("Graphics", "colored_lighting", 1) > 0;
             _settings.light_falloff = ini_read_real("Graphics", "light_falloff", 1) > 0;
@@ -37,6 +41,8 @@ function graphics_settings_load()
             _settings.death_gibs = ini_read_real("Graphics", "death_gibs", 1) > 0;
             _settings.projectile_glow = ini_read_real("Graphics", "projectile_glow", 1) > 0;
             _settings.bloom = ini_read_real("Graphics", "bloom", 1) > 0;
+            _settings.player_minimum_brightness = clamp(ini_read_real("Graphics", "player_minimum_brightness", 0.90), 0, 1);
+            _settings.enemy_minimum_brightness = clamp(ini_read_real("Graphics", "enemy_minimum_brightness", 0.80), 0, 1);
             ini_close();
         }
         catch (_error)
@@ -53,6 +59,7 @@ function graphics_settings_save()
     var _settings = global.graphics_settings;
     ini_open("settings.ini");
     ini_write_real("Graphics", "dynamic_lighting", _settings.dynamic_lighting);
+    ini_write_real("Graphics", "muzzle_flash_lighting", _settings.muzzle_flash_lighting);
     ini_write_real("Graphics", "ambient_darkness", _settings.ambient_darkness);
     ini_write_real("Graphics", "colored_lighting", _settings.colored_lighting);
     ini_write_real("Graphics", "light_falloff", _settings.light_falloff);
@@ -64,6 +71,8 @@ function graphics_settings_save()
     ini_write_real("Graphics", "death_gibs", _settings.death_gibs);
     ini_write_real("Graphics", "projectile_glow", _settings.projectile_glow);
     ini_write_real("Graphics", "bloom", _settings.bloom);
+    ini_write_real("Graphics", "player_minimum_brightness", _settings.player_minimum_brightness);
+    ini_write_real("Graphics", "enemy_minimum_brightness", _settings.enemy_minimum_brightness);
     ini_close();
 }
 
