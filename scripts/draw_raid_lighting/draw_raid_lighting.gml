@@ -924,6 +924,10 @@ function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_
     var _draw_y = _light.y + lengthdir_y(_light.radius * _inward_center_offset, _falloff_rotation) - _camera_y;
     _falloff_x_scale *= _inward_reach_multiplier;
 
+    // Avoid all occluder packing, uniform uploads, and shader work when this
+    // light cannot touch the current surface/scissor region.
+    if (!raid_radial_light_is_visible(_draw_x, _draw_y, _light.radius, _falloff_x_scale, _falloff_y_scale)) return;
+
     var _rectangle_positions = array_create(32, 0);
     var _rectangle_half_sizes = array_create(32, 0);
     var _rectangle_heights = array_create(16, 0);
@@ -1108,14 +1112,43 @@ function raid_light_get_shadow_height(_light)
 function draw_raid_radial_light(_x, _y, _radius, _strength, _color = c_white, _rotation = 0, _x_scale = 1, _y_scale = 1, _segments = 32, _soft_falloff = false)
 {
     if (_radius <= 0 || _strength <= 0) return;
+    if (!raid_radial_light_is_visible(_x, _y, _radius, _x_scale, _y_scale)) return;
 
     var _alpha = clamp(_strength, 0, 1);
-    var _angle_step = 360 / _segments;
     var _ring_radius = global.graphics_settings.light_falloff ? [0, 0.10, 0.38, 0.72, 1] : [0, 1];
     var _ring_alpha = global.graphics_settings.light_falloff
         ? (_soft_falloff ? [1, 0.96, 0.68, 0.30, 0] : [1, 0.96, 0.58, 0.15, 0])
         : [1, 1];
 
+    // Every light uses one of a few segment counts. Cache the unit circle so
+    // the same trigonometry is not repeated for every ring, light, and pass.
+    static _unit_circle_cache = {};
+    var _cache_key = "segments_" + string(_segments);
+    var _unit_circle;
+    if (variable_struct_exists(_unit_circle_cache, _cache_key)) _unit_circle = variable_struct_get(_unit_circle_cache, _cache_key);
+    else
+    {
+        var _unit_x = array_create(_segments + 1, 0);
+        var _unit_y = array_create(_segments + 1, 0);
+        var _angle_step = 360 / _segments;
+        for (var _cache_point = 0; _cache_point <= _segments; _cache_point++)
+        {
+            var _cache_angle = _cache_point * _angle_step;
+            _unit_x[_cache_point] = lengthdir_x(1, _cache_angle);
+            _unit_y[_cache_point] = lengthdir_y(1, _cache_angle);
+        }
+        _unit_circle = {x: _unit_x, y: _unit_y};
+        variable_struct_set(_unit_circle_cache, _cache_key, _unit_circle);
+    }
+
+    var _rotation_x = lengthdir_x(1, _rotation);
+    var _rotation_y = lengthdir_y(1, _rotation);
+    var _previous_x = 0;
+    var _previous_y = 0;
+
+    // Degenerate connector vertices keep all rings in one triangle strip,
+    // preserving the existing piecewise-linear gradient with one submission.
+    draw_primitive_begin(pr_trianglestrip);
     for (var _ring = 0; _ring < array_length(_ring_radius) - 1; _ring++)
     {
         var _inner_radius = _radius * _ring_radius[_ring];
@@ -1123,26 +1156,46 @@ function draw_raid_radial_light(_x, _y, _radius, _strength, _color = c_white, _r
         var _inner_alpha = _alpha * _ring_alpha[_ring];
         var _outer_alpha = _alpha * _ring_alpha[_ring + 1];
 
-        // A strip produces the same ring with two vertices per point instead
-        // of repeating six vertices for every segment.
-        draw_primitive_begin(pr_trianglestrip);
+        if (_ring > 0)
+        {
+            var _bridge_outer_local_x = _unit_circle.x[0] * _outer_radius * _x_scale;
+            var _bridge_outer_local_y = _unit_circle.y[0] * _outer_radius * _y_scale;
+            var _bridge_outer_x = _x + _bridge_outer_local_x * _rotation_x - _bridge_outer_local_y * _rotation_y;
+            var _bridge_outer_y = _y + _bridge_outer_local_x * _rotation_y + _bridge_outer_local_y * _rotation_x;
+            draw_vertex_colour(_previous_x, _previous_y, _color, _inner_alpha);
+            draw_vertex_colour(_bridge_outer_x, _bridge_outer_y, _color, _outer_alpha);
+        }
+
         for (var _point = 0; _point <= _segments; _point++)
         {
-            var _angle = _point * _angle_step;
-            var _inner_x = lengthdir_x(_inner_radius * _x_scale, _angle);
-            var _inner_y = lengthdir_y(_inner_radius * _y_scale, _angle);
-            var _outer_x = lengthdir_x(_outer_radius * _x_scale, _angle);
-            var _outer_y = lengthdir_y(_outer_radius * _y_scale, _angle);
-            var _inner_draw_x = _x + lengthdir_x(_inner_x, _rotation) - lengthdir_y(_inner_y, _rotation);
-            var _inner_draw_y = _y + lengthdir_y(_inner_x, _rotation) + lengthdir_x(_inner_y, _rotation);
-            var _outer_draw_x = _x + lengthdir_x(_outer_x, _rotation) - lengthdir_y(_outer_y, _rotation);
-            var _outer_draw_y = _y + lengthdir_y(_outer_x, _rotation) + lengthdir_x(_outer_y, _rotation);
+            var _unit_x = _unit_circle.x[_point];
+            var _unit_y = _unit_circle.y[_point];
+            var _inner_x = _unit_x * _inner_radius * _x_scale;
+            var _inner_y = _unit_y * _inner_radius * _y_scale;
+            var _outer_x = _unit_x * _outer_radius * _x_scale;
+            var _outer_y = _unit_y * _outer_radius * _y_scale;
+            var _inner_draw_x = _x + _inner_x * _rotation_x - _inner_y * _rotation_y;
+            var _inner_draw_y = _y + _inner_x * _rotation_y + _inner_y * _rotation_x;
+            var _outer_draw_x = _x + _outer_x * _rotation_x - _outer_y * _rotation_y;
+            var _outer_draw_y = _y + _outer_x * _rotation_y + _outer_y * _rotation_x;
 
             draw_vertex_colour(_outer_draw_x, _outer_draw_y, _color, _outer_alpha);
             draw_vertex_colour(_inner_draw_x, _inner_draw_y, _color, _inner_alpha);
+            _previous_x = _inner_draw_x;
+            _previous_y = _inner_draw_y;
         }
-        draw_primitive_end();
     }
+    draw_primitive_end();
+}
+
+function raid_radial_light_is_visible(_x, _y, _radius, _x_scale = 1, _y_scale = 1)
+{
+    var _extent = _radius * max(abs(_x_scale), abs(_y_scale));
+    var _scissor = gpu_get_scissor();
+    return _x + _extent >= _scissor.x
+        && _x - _extent <= _scissor.x + _scissor.w
+        && _y + _extent >= _scissor.y
+        && _y - _extent <= _scissor.y + _scissor.h;
 }
 
 function draw_raid_light_core(_light, _camera_x, _camera_y, _strength_scale = 1)
