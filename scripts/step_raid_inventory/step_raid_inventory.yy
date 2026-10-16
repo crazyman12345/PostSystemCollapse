@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_raid_inventory",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_raid_inventory",
+  "parent":{
+    "name":"input",
+    "path":"folders/inventory/input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

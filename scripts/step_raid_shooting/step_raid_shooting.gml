@@ -473,10 +473,10 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 			: 0;
 		var _lethal_aim = skill_node_find(skill_node_get_nodes("marksmanship"), "lethal_aim");
 		var _gun_damage_multiplier = !is_undefined(_lethal_aim) && skill_node_is_unlocked("marksmanship", _lethal_aim) ? 1.05 : 1;
-		var _default_light_radius = _pellet_count > 1 ? 14 : 30;
-		var _default_light_intensity = _pellet_count > 1 ? 0.07 : 0.22;
+		var _default_light_radius = raid_projectile_light_radius;
+		var _default_light_intensity = raid_projectile_light_intensity;
 		var _bullet_light_enabled = variable_struct_exists(_weapon, "light_enabled") ? _weapon.light_enabled : true;
-		var _bullet_light_color = variable_struct_exists(_weapon, "light_color") ? _weapon.light_color : make_color_rgb(255, 190, 80);
+		var _bullet_light_color = variable_struct_exists(_weapon, "light_color") ? _weapon.light_color : raid_player_projectile_light_color;
 		var _bullet_light_radius = variable_struct_exists(_weapon, "light_radius") ? _weapon.light_radius : _default_light_radius;
 		var _bullet_light_intensity = variable_struct_exists(_weapon, "light_intensity") ? _weapon.light_intensity : _default_light_intensity;
 		var _bullet_smoke_enabled = variable_struct_exists(_weapon, "projectile_smoke_enabled") ? _weapon.projectile_smoke_enabled : true;

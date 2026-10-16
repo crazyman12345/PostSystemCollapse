@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"skill_xp_for_level",
   "parent":{
-    "name":"misc",
-    "path":"folders/misc.yy",
+    "name":"Progression",
+    "path":"folders/Progression.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

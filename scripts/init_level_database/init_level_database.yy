@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"init_level_database",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"init_level_database",
+  "parent":{
+    "name":"Levels",
+    "path":"folders/Raid/Levels.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

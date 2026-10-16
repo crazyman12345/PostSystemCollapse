@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"skill_get_level",
   "parent":{
-    "name":"hideout",
-    "path":"folders/hideout.yy",
+    "name":"Progression",
+    "path":"folders/Progression.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

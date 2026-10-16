@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"enums",
   "parent":{
-    "name":"init",
-    "path":"folders/init.yy",
+    "name":"Core",
+    "path":"folders/Core.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"init_inventory",
   "parent":{
-    "name":"init",
-    "path":"folders/init.yy",
+    "name":"stash",
+    "path":"folders/inventory/stash.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -1,4 +1,4 @@
-function init_stash()
+ function init_stash()
 {
     stash = {
         grid_width: 10,
@@ -26,5 +26,4 @@ function init_stash()
             items: []
         }
     };
-
 }

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_item_info_popup",
   "parent":{
-    "name":"trader_draw",
-    "path":"folders/trader/trader_draw.yy",
+    "name":"traders",
+    "path":"folders/hideout/traders.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_inventory_grid_item",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_inventory_grid_item",
+  "parent":{
+    "name":"stash",
+    "path":"folders/hideout/stash.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

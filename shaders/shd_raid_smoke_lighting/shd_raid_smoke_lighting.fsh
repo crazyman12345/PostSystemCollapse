@@ -14,7 +14,8 @@ void main()
 {
     vec4 smoke = v_vColour * texture2D(gm_BaseTexture, v_vTexcoord);
     float darkness = texture2D(u_darkness_texture, v_vScreenCoord).a;
-    vec3 colored_light = texture2D(u_colored_light_texture, v_vScreenCoord).rgb;
+    vec3 colored_light = texture2D(u_colored_light_texture, v_vScreenCoord).rgb
+        + texture2D(u_darkness_texture, v_vScreenCoord).rgb;
     float illumination = clamp(1.0 - darkness, 0.0, 1.0);
     float ambient_illumination = 1.0 - clamp(u_ambient_darkness, 0.0, 1.0);
     float light_amount = clamp((illumination - ambient_illumination) / max(1.0 - ambient_illumination, 0.001), 0.0, 1.0);

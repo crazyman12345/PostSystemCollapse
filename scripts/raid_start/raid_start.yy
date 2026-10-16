@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_start",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"core",
+    "path":"folders/Raid/core.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

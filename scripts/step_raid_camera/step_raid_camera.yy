@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid_camera",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"camera",
+    "path":"folders/graphics/camera.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

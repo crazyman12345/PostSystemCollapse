@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"format_compact_number",
   "parent":{
-    "name":"inventory",
-    "path":"folders/inventory.yy",
+    "name":"stash",
+    "path":"folders/hideout/stash.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

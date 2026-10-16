@@ -13,8 +13,8 @@
   "name":"obj_game",
   "overriddenProperties":[],
   "parent":{
-    "name":"IdleGame",
-    "path":"IdleGame.yyp",
+    "name":"Core",
+    "path":"folders/Core.yy",
   },
   "parentObjectId":null,
   "persistent":false,

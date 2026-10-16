@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_hideout_salvage",
   "parent":{
-    "name":"hideout",
-    "path":"folders/hideout.yy",
+    "name":"salvage",
+    "path":"folders/hideout/salvage.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

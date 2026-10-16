@@ -13,13 +13,6 @@ function overlay_open(_mode)
             break;
         }
 
-        case OverlayMode.CREW_SKILLS:
-        {
-            //crew_skill_index = 0;
-            //crew_skill_crew_index = 0;
-            break;
-        }
-
         case OverlayMode.LOADOUT:
         {
             loadout_focus =
@@ -38,9 +31,6 @@ function overlay_open(_mode)
 
         case OverlayMode.INVENTORY:
         {
-            inventory_index = 0;
-            inventory_scroll = 0;
-
             break;
         }
     }

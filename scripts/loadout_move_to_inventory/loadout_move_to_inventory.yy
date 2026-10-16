@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"loadout_move_to_inventory",
   "parent":{
-    "name":"bag",
-    "path":"folders/RAID/bag.yy",
+    "name":"Backpack",
+    "path":"folders/inventory/Backpack.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

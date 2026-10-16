@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_debug_terminal",
   "parent":{
-    "name":"step",
-    "path":"folders/step.yy",
+    "name":"debug",
+    "path":"folders/debug.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid_shooting",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"Weapons",
+    "path":"folders/Raid/Weapons.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

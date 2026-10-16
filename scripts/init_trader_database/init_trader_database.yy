@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"init_trader_database",
   "parent":{
-    "name":"init",
-    "path":"folders/init.yy",
+    "name":"traders",
+    "path":"folders/hideout/traders.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

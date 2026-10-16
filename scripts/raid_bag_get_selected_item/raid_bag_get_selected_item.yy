@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_bag_get_selected_item",
   "parent":{
-    "name":"bag",
-    "path":"folders/RAID/bag.yy",
+    "name":"Backpack",
+    "path":"folders/inventory/Backpack.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

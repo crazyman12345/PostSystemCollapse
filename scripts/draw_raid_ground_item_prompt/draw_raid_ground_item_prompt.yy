@@ -6,7 +6,7 @@
   "name":"draw_raid_ground_item_prompt",
   "parent":{
     "name":"loot",
-    "path":"folders/RAID/loot.yy",
+    "path":"folders/Raid/loot.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

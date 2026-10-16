@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"progress_set_flag",
   "parent":{
-    "name":"misc",
-    "path":"folders/misc.yy",
+    "name":"Progression",
+    "path":"folders/Progression.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

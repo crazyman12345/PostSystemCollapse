@@ -6,7 +6,7 @@
   "name":"raid_hotbar_validate",
   "parent":{
     "name":"hotbar",
-    "path":"folders/RAID/hotbar.yy",
+    "path":"folders/inventory/hotbar.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

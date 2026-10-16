@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_handle_shortcuts",
   "parent":{
-    "name":"step",
-    "path":"folders/step.yy",
+    "name":"Core",
+    "path":"folders/Core.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

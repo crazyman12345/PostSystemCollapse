@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"skill_db_get",
   "parent":{
-    "name":"skills",
-    "path":"folders/sounds/skills.yy",
+    "name":"Progression",
+    "path":"folders/Progression.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

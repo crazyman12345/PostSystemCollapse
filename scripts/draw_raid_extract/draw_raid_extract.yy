@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_raid_extract",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"Extraction",
+    "path":"folders/Raid/Extraction.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -7,7 +7,6 @@ function step_hideout_salvage(){
 			var salvaged_item = item_get(salvage_item_key);
 
 			if (workshop_salvage_item(salvage_item_key)){
-				log_add("You salvaged " + salvaged_item.name + ".");
 				salvage_message = "SALVAGED: " + salvaged_item.name;
 			} else {
 				salvage_message = "NOT ENOUGH STASH SPACE";

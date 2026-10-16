@@ -6,7 +6,7 @@
   "name":"workshop_get_upgrade_requirements",
   "parent":{
     "name":"workshop",
-    "path":"folders/workshop.yy",
+    "path":"folders/hideout/workshop.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

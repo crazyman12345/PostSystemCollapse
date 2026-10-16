@@ -780,8 +780,8 @@ function init_item_database()
         accuracy_bonus: -0.05,
         light_enabled: true,
         light_color: make_color_rgb(255, 190, 80),
-        light_radius: 28,
-        light_intensity: 0.20,
+        light_radius: 20,
+        light_intensity: 0.15,
 
         ammo_key: "ammo_9mm",
         ammo_per_attack: 1,

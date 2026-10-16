@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_equipment_slot",
   "parent":{
-    "name":"loadout raid UI",
-    "path":"folders/draw_functions/loadout raid UI.yy",
+    "name":"drawing",
+    "path":"folders/inventory/drawing.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

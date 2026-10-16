@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_gun_tuning_get",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"debug",
+    "path":"folders/debug.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

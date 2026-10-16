@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"burst_shooter",
   "parent":{
-    "name":"enemy_AI",
-    "path":"folders/RAID/enemy_AI.yy",
+    "name":"EnemyTypes",
+    "path":"folders/Raid/EnemyTypes.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_trader_buy",
   "parent":{
-    "name":"trader_step",
-    "path":"folders/trader/trader_step.yy",
+    "name":"traders",
+    "path":"folders/hideout/traders.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -32,9 +32,9 @@ function draw_hideout_raid_select()
     var box_width = (grid_width - gap) / 2;
     var box_height = (grid_height - (gap * 5)) / 6;
 
-    for (var i = 0; i < array_length(combat_area_db); i++)
+    for (var i = 0; i < array_length(level_db); i++)
     {
-        var area = combat_area_db[i];
+        var area = level_db[i];
 
         var col = i mod cols;
         var row = floor(i / cols);

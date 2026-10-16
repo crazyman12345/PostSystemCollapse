@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"init_workbench_database",
   "parent":{
-    "name":"init",
-    "path":"folders/init.yy",
+    "name":"workshop",
+    "path":"folders/hideout/workshop.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

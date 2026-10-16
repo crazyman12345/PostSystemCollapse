@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_radial_light_is_visible",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_radial_light_is_visible",
+  "parent":{
+    "name":"lighting",
+    "path":"folders/graphics/lighting.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"core",
+    "path":"folders/Raid/core.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

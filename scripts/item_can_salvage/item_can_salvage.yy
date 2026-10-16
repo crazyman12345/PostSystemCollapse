@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"item_can_salvage",
   "parent":{
-    "name":"item",
-    "path":"folders/item.yy",
+    "name":"salvage",
+    "path":"folders/hideout/salvage.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

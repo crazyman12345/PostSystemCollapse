@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"overlay_toggle",
   "parent":{
-    "name":"UI_tools",
-    "path":"folders/UI_tools.yy",
+    "name":"Overlays",
+    "path":"folders/UI/Overlays.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

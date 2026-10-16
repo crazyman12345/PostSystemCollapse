@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_hideout",
   "parent":{
-    "name":"hideout",
-    "path":"folders/hideout.yy",
+    "name":"core",
+    "path":"folders/hideout/core.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

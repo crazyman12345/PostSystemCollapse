@@ -88,10 +88,6 @@ function raid_combat_loss()
         + " was critically injured.\n"
         + "Backpack and equipment lost. Secure contents kept.";
 
-    log_add(
-        "Raid failed."
-    );
-
     raid_set_state(RaidState.RESULT);
 }
 

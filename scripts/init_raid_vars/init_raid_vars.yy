@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"init_raid_vars",
   "parent":{
-    "name":"init",
-    "path":"folders/init.yy",
+    "name":"core",
+    "path":"folders/Raid/core.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

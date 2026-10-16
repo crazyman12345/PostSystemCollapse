@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid_enemies",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"enemies",
+    "path":"folders/Raid/enemies.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

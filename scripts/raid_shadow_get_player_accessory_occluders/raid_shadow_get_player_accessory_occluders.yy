@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_shadow_get_player_accessory_occluders",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_shadow_get_player_accessory_occluders",
+  "parent":{
+    "name":"shadows",
+    "path":"folders/graphics/shadows.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_skills_overlay",
   "parent":{
-    "name":"skills",
-    "path":"folders/sounds/skills.yy",
+    "name":"Overlays",
+    "path":"folders/UI/Overlays.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

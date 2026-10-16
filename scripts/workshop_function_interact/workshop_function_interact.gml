@@ -1,11 +1,9 @@
 function workshop_function_interact(_key)
 {
-    var bench = variable_struct_get(workshop_db, _key);
     var level = variable_struct_get(workshop_progress, _key);
 
     if (level <= 0)
     {
-        log_add("You need to build the " + bench.name + " first.");
         return;
     }
 

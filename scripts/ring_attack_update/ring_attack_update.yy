@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"ring_attack_update",
   "parent":{
-    "name":"enemy",
-    "path":"folders/RAID/enemy.yy",
+    "name":"projectiles",
+    "path":"folders/Raid/projectiles.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

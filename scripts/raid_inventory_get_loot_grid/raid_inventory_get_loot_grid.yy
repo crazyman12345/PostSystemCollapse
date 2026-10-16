@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_inventory_get_loot_grid",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_inventory_get_loot_grid",
+  "parent":{
+    "name":"grid",
+    "path":"folders/inventory/grid.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

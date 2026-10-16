@@ -2,7 +2,6 @@ function raid_start(_area)
 {
 	if (!is_undefined(stash.held_item))
 	{
-		log_add("Place the held item before starting a raid.");
 		return;
 	}
 	// Carry the existing grids and their item instances directly into the raid.

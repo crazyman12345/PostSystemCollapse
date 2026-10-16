@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_enter_normal_room",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"Rooms",
+    "path":"folders/Raid/Rooms.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

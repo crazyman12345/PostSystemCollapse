@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_raid_player",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"player",
+    "path":"folders/Raid/player.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

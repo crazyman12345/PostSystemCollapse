@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_hideout_raid_select",
   "parent":{
-    "name":"hideout",
-    "path":"folders/hideout.yy",
+    "name":"raid select",
+    "path":"folders/hideout/raid select.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

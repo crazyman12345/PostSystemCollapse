@@ -29,20 +29,21 @@ frame_scale = 1;
 music_volume = 50;
 music_instance = audio_play_sound(theme_song, 0, true);
 audio_sound_gain(music_instance, music_volume / 100, 0);
+
 init_item_database();
-init_loot_tables();
-init_enemy_database();
 init_trader_database();
 init_flag_database();
 init_skill_database();
 init_recipe_database();
 init_workbench_database();
-init_area_database();
+init_level_database();
 init_raid_vars();
+
 smoke_particle_system = part_system_create();
 part_system_automatic_update(smoke_particle_system, false);
 part_system_automatic_draw(smoke_particle_system, false);
 smoke_particle_update_accumulator = 0;
+smoke_particle_count = 0;
 
 smoke_particle_type = part_type_create();
 part_type_shape(smoke_particle_type, pt_shape_smoke);
@@ -241,4 +242,3 @@ workshop_tab = WorkshopTab.UPGRADES;
 // ==============================
 event_log = [];
 event_log_max = 2;
-log_add("CONNECTED TO POST COLLAPSE NETWORK");

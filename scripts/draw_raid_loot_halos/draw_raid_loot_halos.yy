@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_raid_loot_halos",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_raid_loot_halos",
+  "parent":{
+    "name":"lighting",
+    "path":"folders/graphics/lighting.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

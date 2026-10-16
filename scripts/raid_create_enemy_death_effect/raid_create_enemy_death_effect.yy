@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_create_enemy_death_effect",
   "parent":{
-    "name":"enemy",
-    "path":"folders/RAID/enemy.yy",
+    "name":"enemies",
+    "path":"folders/Raid/enemies.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

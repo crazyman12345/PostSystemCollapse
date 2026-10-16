@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_light_get_shadow_height",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_light_get_shadow_height",
+  "parent":{
+    "name":"lighting",
+    "path":"folders/graphics/lighting.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

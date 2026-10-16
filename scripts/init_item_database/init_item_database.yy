@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"init_item_database",
   "parent":{
-    "name":"init",
-    "path":"folders/init.yy",
+    "name":"items",
+    "path":"folders/inventory/items.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

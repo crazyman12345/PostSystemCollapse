@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_spawn_enemy",
   "parent":{
-    "name":"enemy",
-    "path":"folders/RAID/enemy.yy",
+    "name":"enemies",
+    "path":"folders/Raid/enemies.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"init_flag_database",
   "parent":{
-    "name":"init",
-    "path":"folders/init.yy",
+    "name":"Progression",
+    "path":"folders/Progression.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

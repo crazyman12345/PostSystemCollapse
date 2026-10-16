@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_raid_shadow_debug",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_raid_shadow_debug",
+  "parent":{
+    "name":"shadows",
+    "path":"folders/graphics/shadows.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

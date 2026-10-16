@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_hideout_traders",
   "parent":{
-    "name":"hideout",
-    "path":"folders/hideout.yy",
+    "name":"traders",
+    "path":"folders/hideout/traders.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

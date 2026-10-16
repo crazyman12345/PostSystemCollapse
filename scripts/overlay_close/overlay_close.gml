@@ -8,12 +8,6 @@ function overlay_close()
             break;
         }
 
-        case OverlayMode.CREW_SKILLS:
-        {
-            //crew_skill_index = 0;
-            //crew_skill_crew_index = 0;
-            break;
-        }
 
         case OverlayMode.LOADOUT:
         {
@@ -36,12 +30,6 @@ function overlay_close()
             break;
         }
 
-        case OverlayMode.INVENTORY:
-        {
-            inventory_index = 0;
-            inventory_scroll = 0;
-            break;
-        }
     }
 
     overlay_mode = OverlayMode.NONE;

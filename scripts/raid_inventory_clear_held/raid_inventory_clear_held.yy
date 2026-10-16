@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_inventory_clear_held",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_inventory_clear_held",
+  "parent":{
+    "name":"input",
+    "path":"folders/inventory/input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_loadout_line",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"drawing",
+    "path":"folders/inventory/drawing.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"blood_decals",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"blood",
+    "path":"folders/graphics/blood.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

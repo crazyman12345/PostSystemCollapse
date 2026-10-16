@@ -5,7 +5,7 @@ function step_hideout_raid()
     // AREA SELECT
     // ==========================================
 
-        var count = array_length(combat_area_db);
+        var count = array_length(level_db);
 
         if (keyboard_check_pressed(ord("A")) && combat_area_index mod 2 == 1)
 		{ 
@@ -46,7 +46,7 @@ function step_hideout_raid()
         {
             // STORE SELECTED RAID LOCATION
             raid.selected_area_index = combat_area_index;
-            raid.selected_area = combat_area_db[combat_area_index];
+            raid.selected_area = level_db[combat_area_index];
 
             // OPEN RAID EQUIPMENT SCREEN
             overlay_mode = OverlayMode.LOADOUT;

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_get_weapon_in_slot",
   "parent":{
-    "name":"player",
-    "path":"folders/RAID/player.yy",
+    "name":"Weapons",
+    "path":"folders/Raid/Weapons.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

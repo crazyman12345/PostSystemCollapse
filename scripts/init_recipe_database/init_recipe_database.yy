@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"init_recipe_database",
   "parent":{
-    "name":"init",
-    "path":"folders/init.yy",
+    "name":"crafting",
+    "path":"folders/hideout/crafting.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

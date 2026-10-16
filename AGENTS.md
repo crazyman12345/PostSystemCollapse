@@ -65,3 +65,14 @@ NEVER use Git to restore, reset, checkout, clean, revert, or replace current wor
 Assume uncommitted changes are intentional and must be preserved.
 When editing a system that already has uncommitted changes, modify the current version in place and preserve existing functionality.
 After completing changes, you may inspect `git diff` to review what you changed, but do not automatically revert or reconcile differences against the last commit.
+
+### GameMaker Script Organization
+
+- Organize scripts by system and responsibility.
+- Prefer one main public function per script, with the script named after that function.
+- Small, tightly related helper functions may share a script when they directly support its main function.
+- Never append unrelated functions to an existing script.
+- Avoid large multipurpose scripts containing numerous independent functions.
+- Create and register new GameMaker script resources correctly (`.gml`, `.yy`, `.yyp`).
+- Place scripts in the appropriate Asset Browser folders.
+- Prioritize readability, maintainability, and minimal code duplication over rigid file-count rules.

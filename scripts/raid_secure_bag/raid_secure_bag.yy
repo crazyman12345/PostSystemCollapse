@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_secure_bag",
   "parent":{
-    "name":"loot",
-    "path":"folders/RAID/bag/loot.yy",
+    "name":"Backpack",
+    "path":"folders/inventory/Backpack.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

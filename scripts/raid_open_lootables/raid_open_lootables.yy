@@ -6,7 +6,7 @@
   "name":"raid_open_lootables",
   "parent":{
     "name":"loot",
-    "path":"folders/RAID/loot.yy",
+    "path":"folders/Raid/loot.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

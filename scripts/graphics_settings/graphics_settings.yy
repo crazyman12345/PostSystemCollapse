@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"graphics_settings",
   "parent":{
-    "name":"IdleGame",
-    "path":"IdleGame.yyp",
+    "name":"settings",
+    "path":"folders/graphics/settings.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

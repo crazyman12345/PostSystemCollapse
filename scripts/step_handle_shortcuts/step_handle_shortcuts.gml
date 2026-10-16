@@ -5,19 +5,10 @@ function step_handle_shortcuts(){
 	        OverlayMode.SKILLS
 	    );
 	} 
-
-
 	if (keyboard_check_pressed(ord("L")))
 	{
 	    overlay_toggle(
 	        OverlayMode.LOADOUT
-	    );
-	}
-
-	if (keyboard_check_pressed(ord("I")))
-	{
-	    overlay_toggle(
-	        OverlayMode.INVENTORY
 	    );
 	}
 }

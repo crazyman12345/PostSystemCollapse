@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid_combat_input",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"player",
+    "path":"folders/Raid/player.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_raid_lighting",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"lighting",
+    "path":"folders/graphics/lighting.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -1,8 +1,12 @@
 function smoke_create(_x1, _y1, _x2, _y2, _amount = 8)
 {
     if (!global.graphics_settings.smoke_effects) return;
-    for (var i = 0; i < _amount; i++)
+    var _spawn_count = min(_amount, max(0, 256 - smoke_particle_count));
+    for (var i = 0; i < _spawn_count; i++)
+    {
         part_particles_create(smoke_particle_system, random_range(_x1, _x2), random_range(_y1, _y2), smoke_particle_type, 1);
+        smoke_particle_count++;
+    }
 }
 
 function projectile_smoke_update(_bullet, _previous_x, _previous_y)
@@ -20,10 +24,11 @@ function projectile_smoke_update(_bullet, _previous_x, _previous_y)
         var _smoke_x = lerp(_previous_x, _bullet.bx, _step_position) - lengthdir_x(3, _bullet.bdirection) + lengthdir_x(_trail_offset, _bullet.bdirection + 90);
         var _smoke_y = lerp(_previous_y, _bullet.by, _step_position) - lengthdir_y(3, _bullet.bdirection) + lengthdir_y(_trail_offset, _bullet.bdirection + 90);
 
-        if (part_particles_count(smoke_particle_system) < 256)
+        if (smoke_particle_count < 256)
         {
             part_type_direction(projectile_smoke_particle_type, _bullet.bdirection + 150, _bullet.bdirection + 210, 0, 4);
             part_particles_create(smoke_particle_system, _smoke_x, _smoke_y, projectile_smoke_particle_type, 1);
+            smoke_particle_count++;
         }
 
         _bullet.smoke_timer += random_range(max(1, _bullet.smoke_interval - 0.5), _bullet.smoke_interval + 0.5);

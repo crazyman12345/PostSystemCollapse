@@ -3,8 +3,6 @@ function debug_command_items()
     var item_keys =
         variable_struct_get_names(global.items);
 
-    log_add("ITEM DATABASE:");
-
     for (var i = 0; i < array_length(item_keys); i++)
     {
         var item_key = item_keys[i];

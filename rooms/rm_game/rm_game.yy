@@ -17,8 +17,8 @@
   ],
   "name":"rm_game",
   "parent":{
-    "name":"IdleGame",
-    "path":"IdleGame.yyp",
+    "name":"Core",
+    "path":"folders/Core.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

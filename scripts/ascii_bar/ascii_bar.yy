@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"ascii_bar",
   "parent":{
-    "name":"UI_tools",
-    "path":"folders/UI_tools.yy",
+    "name":"ASCII",
+    "path":"folders/UI/ASCII.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

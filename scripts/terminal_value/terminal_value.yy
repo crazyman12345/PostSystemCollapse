@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"terminal_value",
   "parent":{
-    "name":"UI_tools",
-    "path":"folders/UI_tools.yy",
+    "name":"terminal",
+    "path":"folders/UI/terminal.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_shadow_character_accessory",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_shadow_character_accessory",
+  "parent":{
+    "name":"shadows",
+    "path":"folders/graphics/shadows.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

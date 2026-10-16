@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_get_random_reward",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"loot",
+    "path":"folders/Raid/loot.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

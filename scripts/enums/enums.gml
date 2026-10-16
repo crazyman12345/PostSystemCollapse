@@ -117,7 +117,6 @@ function enums(){
 	    NONE,
 	    SKILLS,
 	    LOADOUT,
-	    CREW_SKILLS,
 	    INVENTORY
 	}
 	enum WorkshopFocus

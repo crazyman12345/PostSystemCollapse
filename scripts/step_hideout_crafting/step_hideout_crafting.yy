@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_hideout_crafting",
   "parent":{
-    "name":"hideout",
-    "path":"folders/hideout.yy",
+    "name":"crafting",
+    "path":"folders/hideout/crafting.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

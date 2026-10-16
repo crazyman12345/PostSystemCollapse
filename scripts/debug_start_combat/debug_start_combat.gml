@@ -23,8 +23,4 @@ function debug_start_combat(_args)
     raid_set_enemy(
         _enemy_key
     );
-
-    log_add(
-        "[DEBUG] Combat test started."
-    );
 }

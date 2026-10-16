@@ -6,7 +6,7 @@
   "name":"step_raid_result",
   "parent":{
     "name":"results",
-    "path":"folders/RAID/results.yy",
+    "path":"folders/Raid/results.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

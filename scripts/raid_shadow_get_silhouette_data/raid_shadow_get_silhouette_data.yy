@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_shadow_get_silhouette_data",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_shadow_get_silhouette_data",
+  "parent":{
+    "name":"shadows",
+    "path":"folders/graphics/shadows.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -3,8 +3,8 @@
   "%Name":"shd_raid_shadow_visibility",
   "name":"shd_raid_shadow_visibility",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"shaders",
+    "path":"folders/graphics/shaders.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

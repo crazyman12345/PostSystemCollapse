@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_raid_enemies",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"enemies",
+    "path":"folders/Raid/enemies.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

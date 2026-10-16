@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"item_get",
   "parent":{
-    "name":"item",
-    "path":"folders/item.yy",
+    "name":"items",
+    "path":"folders/inventory/items.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

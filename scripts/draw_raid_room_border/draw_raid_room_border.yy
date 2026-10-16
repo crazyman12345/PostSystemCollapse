@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_raid_room_border",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"environment",
+    "path":"folders/graphics/environment.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

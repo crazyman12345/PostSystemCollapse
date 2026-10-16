@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid_extract",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"Extraction",
+    "path":"folders/Raid/Extraction.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

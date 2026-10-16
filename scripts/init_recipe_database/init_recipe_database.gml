@@ -231,6 +231,5 @@ function recipe_craft(_skill_key, _recipe)
     if (variable_struct_exists(_recipe, "xp") && _recipe.xp > 0)
         player_skill_add_xp(_skill_key, _recipe.xp);
 
-    log_add("Crafted " + _recipe.name + ".");
     return true;
 }

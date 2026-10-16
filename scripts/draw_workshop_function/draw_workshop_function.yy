@@ -6,7 +6,7 @@
   "name":"draw_workshop_function",
   "parent":{
     "name":"workshop",
-    "path":"folders/workshop.yy",
+    "path":"folders/hideout/workshop.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_get_max_weight",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"Backpack",
+    "path":"folders/inventory/Backpack.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_start_raid_panel",
   "parent":{
-    "name":"loadout raid UI",
-    "path":"folders/draw_functions/loadout raid UI.yy",
+    "name":"raid select",
+    "path":"folders/hideout/raid select.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

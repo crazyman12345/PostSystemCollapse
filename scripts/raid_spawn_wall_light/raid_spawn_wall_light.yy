@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_spawn_wall_light",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_spawn_wall_light",
+  "parent":{
+    "name":"lighting",
+    "path":"folders/graphics/lighting.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

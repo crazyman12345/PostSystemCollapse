@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_interact_prompt",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"UI",
+    "path":"folders/UI.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

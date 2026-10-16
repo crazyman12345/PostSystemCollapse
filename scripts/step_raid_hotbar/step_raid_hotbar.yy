@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid_hotbar",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"hotbar",
+    "path":"folders/inventory/hotbar.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

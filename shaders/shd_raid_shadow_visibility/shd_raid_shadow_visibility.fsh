@@ -31,6 +31,7 @@ uniform sampler2D u_sprite_texture_5;
 uniform sampler2D u_sprite_texture_6;
 uniform sampler2D u_sprite_texture_7;
 uniform float u_debug_visibility;
+uniform float u_rgb_scale;
 
 vec2 rotate_into_rectangle(vec2 position, int index)
 {
@@ -182,5 +183,5 @@ void main()
         vec3 debug_color = mix(vec3(1.0, 0.08, 0.04), vec3(0.05, 0.8, 0.25), visibility);
         gl_FragColor = vec4(debug_color, v_vColour.a * 0.45);
     }
-    else gl_FragColor = v_vColour * visibility;
+    else gl_FragColor = vec4(v_vColour.rgb * u_rgb_scale, v_vColour.a) * visibility;
 }

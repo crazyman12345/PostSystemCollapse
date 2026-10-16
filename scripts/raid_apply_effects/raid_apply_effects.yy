@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_apply_effects",
   "parent":{
-    "name":"effects",
-    "path":"folders/araid_OLD/effects.yy",
+    "name":"Health",
+    "path":"folders/Raid/Health.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

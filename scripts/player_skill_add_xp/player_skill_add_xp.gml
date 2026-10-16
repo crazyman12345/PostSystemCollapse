@@ -14,12 +14,6 @@ function player_skill_add_xp(_skill_key, _amount)
     for (var level = previous_level + 1; level <= skill.level; level++)
     {
         skill_notification_queue_level_up(_skill_key, level);
-        log_add(
-            skill_db_get(_skill_key).name
-            + " increased to level "
-            + string(level)
-            + "."
-        );
     }
     variable_struct_set(
         player_skills,

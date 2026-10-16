@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid_room_exit",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"Rooms",
+    "path":"folders/Raid/Rooms.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

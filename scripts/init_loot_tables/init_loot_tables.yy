@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"init_loot_tables",
   "parent":{
-    "name":"init",
-    "path":"folders/init.yy",
+    "name":"loot",
+    "path":"folders/Raid/loot.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

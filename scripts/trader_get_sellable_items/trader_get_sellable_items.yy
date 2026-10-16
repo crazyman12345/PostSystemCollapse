@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"trader_get_sellable_items",
   "parent":{
-    "name":"trader",
-    "path":"folders/trader.yy",
+    "name":"traders",
+    "path":"folders/hideout/traders.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

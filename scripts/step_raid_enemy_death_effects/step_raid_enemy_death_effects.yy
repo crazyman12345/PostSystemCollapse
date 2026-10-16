@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid_enemy_death_effects",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"particles",
+    "path":"folders/graphics/particles.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

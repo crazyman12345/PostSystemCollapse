@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"smoke_update",
   "parent":{
-    "name":"smoke_effect",
-    "path":"folders/smoke_effect.yy",
+    "name":"particles",
+    "path":"folders/graphics/particles.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

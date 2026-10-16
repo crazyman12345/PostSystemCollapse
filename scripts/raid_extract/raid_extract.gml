@@ -1,7 +1,5 @@
 function raid_extract()
 {
-    log_add("EXTRACTION SUCCESSFUL");
-
     raid.result_title =
         "EXTRACTION SUCCESSFUL";
 

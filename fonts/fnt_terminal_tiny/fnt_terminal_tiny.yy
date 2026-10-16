@@ -120,8 +120,8 @@
   "maintainGms1Font":false,
   "name":"fnt_terminal_tiny",
   "parent":{
-    "name":"misc",
-    "path":"folders/misc.yy",
+    "name":"fonts",
+    "path":"folders/UI/fonts.yy",
   },
   "pointRounding":0,
   "ranges":[

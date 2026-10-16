@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_inventory_get_hotbar_rect",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_inventory_get_hotbar_rect",
+  "parent":{
+    "name":"drawing",
+    "path":"folders/inventory/drawing.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

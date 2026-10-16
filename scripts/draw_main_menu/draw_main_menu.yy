@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_main_menu",
   "parent":{
-    "name":"menus",
-    "path":"folders/draw_functions/menus.yy",
+    "name":"Overlays",
+    "path":"folders/UI/Overlays.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

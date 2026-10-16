@@ -52,7 +52,7 @@ function draw_raid_pause_menu()
         var _labels = [
             "FPS", "DYNAMIC LIGHTING", "MUZZLE FLASH LIGHTING", "AMBIENT DARKNESS", "COLORED LIGHTING", "LIGHT FALLOFF",
             "ENVIRONMENTAL SHADOWS", "CHARACTER SHADOWS", "CONTACT SHADOWS", "SMOKE EFFECTS",
-            "BLOOD EFFECTS", "DEATH GIBS", "PROJECTILE GLOW", "BLOOM",
+            "BLOOD EFFECTS", "DEATH GIBS", "PROJECTILE GLOW", "PROJECTILE LIGHTING", "BLOOM",
             "PLAYER MINIMUM BRIGHTNESS", "ENEMY MINIMUM BRIGHTNESS", "BLOOM INTENSITY",
             "BLUR RADIUS", "BLUR PASSES", "SATURATION", "CONTRAST", "BRIGHTNESS",
             "RESTORE DEFAULTS", "CONTINUE"
@@ -71,6 +71,7 @@ function draw_raid_pause_menu()
             _settings.blood_effects ? "ON" : "OFF",
             _settings.death_gibs ? "ON" : "OFF",
             _settings.projectile_glow ? "ON" : "OFF",
+            _settings.projectile_lighting ? "ON" : "OFF",
             _settings.bloom ? "ON" : "OFF",
             string(round(_settings.player_minimum_brightness * 100)) + "%",
             string(round(_settings.enemy_minimum_brightness * 100)) + "%",
@@ -96,16 +97,16 @@ function draw_raid_pause_menu()
             var _row_y = _first_y + _visible_index * _row_step;
             var _prefix = raid.pause_graphics_index == _graphics_index ? "> " : "  ";
             draw_text(_label_x, _row_y, _prefix + _labels[_graphics_index]);
-            if ((_graphics_index >= 14 && _graphics_index <= 15)
-            || (_graphics_index >= 19 && _graphics_index <= 21))
+            if ((_graphics_index >= 15 && _graphics_index <= 16)
+            || (_graphics_index >= 20 && _graphics_index <= 22))
             {
-                var _character_brightness_slider = _graphics_index <= 15;
+                var _character_brightness_slider = _graphics_index <= 16;
                 var _slider_value = _character_brightness_slider
-                    ? (_graphics_index == 14 ? _settings.player_minimum_brightness : _settings.enemy_minimum_brightness)
-                    : (_graphics_index == 19 ? raid_color_grade_saturation
-                        : (_graphics_index == 20 ? raid_color_grade_contrast : raid_color_grade_brightness));
-                var _slider_min = _character_brightness_slider || _graphics_index == 19 ? 0 : 0.5;
-                var _slider_max = _character_brightness_slider ? 1 : (_graphics_index == 19 ? 2 : 1.5);
+                    ? (_graphics_index == 15 ? _settings.player_minimum_brightness : _settings.enemy_minimum_brightness)
+                    : (_graphics_index == 20 ? raid_color_grade_saturation
+                        : (_graphics_index == 21 ? raid_color_grade_contrast : raid_color_grade_brightness));
+                var _slider_min = _character_brightness_slider || _graphics_index == 20 ? 0 : 0.5;
+                var _slider_max = _character_brightness_slider ? 1 : (_graphics_index == 20 ? 2 : 1.5);
                 var _slider_progress = clamp((_slider_value - _slider_min) / (_slider_max - _slider_min), 0, 1);
                 var _slider_width = 90;
                 var _slider_y = _row_y + 10;
@@ -114,7 +115,7 @@ function draw_raid_pause_menu()
                 draw_rectangle(_slider_knob_x - 2, _slider_y - 5, _slider_knob_x + 2, _slider_y + 5, false);
                 draw_text(_value_x + _slider_width + 12, _row_y, _values[_graphics_index]);
             }
-            else if (_graphics_index < 22) draw_text(_value_x, _row_y, _values[_graphics_index]);
+            else if (_graphics_index < 23) draw_text(_value_x, _row_y, _values[_graphics_index]);
         }
 
         draw_set_halign(fa_center);

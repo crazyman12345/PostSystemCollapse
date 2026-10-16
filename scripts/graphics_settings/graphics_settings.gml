@@ -13,6 +13,7 @@ function graphics_settings_defaults()
         blood_effects: true,
         death_gibs: true,
         projectile_glow: true,
+        projectile_lighting: true,
         bloom: true,
         player_minimum_brightness: 0.90,
         enemy_minimum_brightness: 0.80
@@ -40,6 +41,7 @@ function graphics_settings_load()
             _settings.blood_effects = ini_read_real("Graphics", "blood_effects", 1) > 0;
             _settings.death_gibs = ini_read_real("Graphics", "death_gibs", 1) > 0;
             _settings.projectile_glow = ini_read_real("Graphics", "projectile_glow", 1) > 0;
+            _settings.projectile_lighting = ini_read_real("Graphics", "projectile_lighting", 1) > 0;
             _settings.bloom = ini_read_real("Graphics", "bloom", 1) > 0;
             _settings.player_minimum_brightness = clamp(ini_read_real("Graphics", "player_minimum_brightness", 0.90), 0, 1);
             _settings.enemy_minimum_brightness = clamp(ini_read_real("Graphics", "enemy_minimum_brightness", 0.80), 0, 1);
@@ -70,6 +72,7 @@ function graphics_settings_save()
     ini_write_real("Graphics", "blood_effects", _settings.blood_effects);
     ini_write_real("Graphics", "death_gibs", _settings.death_gibs);
     ini_write_real("Graphics", "projectile_glow", _settings.projectile_glow);
+    ini_write_real("Graphics", "projectile_lighting", _settings.projectile_lighting);
     ini_write_real("Graphics", "bloom", _settings.bloom);
     ini_write_real("Graphics", "player_minimum_brightness", _settings.player_minimum_brightness);
     ini_write_real("Graphics", "enemy_minimum_brightness", _settings.enemy_minimum_brightness);
@@ -106,6 +109,7 @@ function graphics_settings_apply()
     {
         part_particles_clear(smoke_particle_system);
         smoke_particle_update_accumulator = 0;
+        smoke_particle_count = 0;
     }
     if (!_settings.blood_effects) blood_surface_destroy();
     if (!_settings.death_gibs) raid_enemy_death_effects = [];

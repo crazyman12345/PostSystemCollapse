@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_raid_bullets",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"projectiles",
+    "path":"folders/Raid/projectiles.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

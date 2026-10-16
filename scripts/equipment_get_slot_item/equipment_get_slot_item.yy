@@ -6,7 +6,7 @@
   "name":"equipment_get_slot_item",
   "parent":{
     "name":"equipment",
-    "path":"folders/equipment.yy",
+    "path":"folders/inventory/equipment.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

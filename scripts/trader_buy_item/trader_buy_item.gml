@@ -55,12 +55,6 @@ function trader_buy_item(_trader_key, _stock_index)
 
     if (get_cash() < price)
     {
-        log_add(
-            "Not enough cash to buy "
-            + item.name
-            + "."
-        );
-
         return false;
     }
 
@@ -77,7 +71,6 @@ function trader_buy_item(_trader_key, _stock_index)
     if (!stash_add(stock_entry.item_key, 1))
     {
         stash_add("cash", price);
-        log_add("Not enough stash space to buy " + item.name + ".");
         return false;
     }
 
@@ -87,14 +80,6 @@ function trader_buy_item(_trader_key, _stock_index)
     // ==============================
 
     player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade);
-
-    log_add(
-        "Purchased "
-        + item.name
-        + " for $"
-        + string(price)
-        + "."
-    );
 
     return true;
 }

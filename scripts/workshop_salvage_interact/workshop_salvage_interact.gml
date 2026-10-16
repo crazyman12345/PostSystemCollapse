@@ -6,11 +6,8 @@ function workshop_salvage_interact()
     workshop_content_index = clamp(workshop_content_index, 0, array_length(items) - 1);
 
     var key = items[workshop_content_index];
-    var item = item_get(key);
 
     if (!workshop_salvage_item(key)) return;
-
-    log_add("Salvaged " + item.name + ".");
 
     // Fix cursor if the last copy of the item disappeared
     var new_items = workshop_get_salvageable_items();

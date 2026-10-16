@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_raid_pause_menu",
   "parent":{
-    "name":"raid step",
-    "path":"folders/RAID/raid step.yy",
+    "name":"Overlays",
+    "path":"folders/UI/Overlays.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

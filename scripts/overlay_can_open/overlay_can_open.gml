@@ -6,11 +6,6 @@ function overlay_can_open(_mode)
 	
     switch (_mode)
     {
-        case OverlayMode.INVENTORY:
-        {
-            // Hideout inventory cannot be opened during raid
-            return raid.state == RaidState.INACTIVE || raid.state == RaidState.RESULT;
-        }
 
         case OverlayMode.LOADOUT:
         {
@@ -23,10 +18,6 @@ function overlay_can_open(_mode)
             return true;
         }
 
-        case OverlayMode.CREW_SKILLS:
-        {
-            return true;
-        }
     }
 
     return false;

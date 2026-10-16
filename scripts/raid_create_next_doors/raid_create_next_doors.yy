@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"raid_create_next_doors",
   "parent":{
-    "name":"RAID",
-    "path":"folders/RAID.yy",
+    "name":"Rooms",
+    "path":"folders/Raid/Rooms.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

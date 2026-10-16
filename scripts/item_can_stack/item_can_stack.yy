@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"item_can_stack",
   "parent":{
-    "name":"inventory",
-    "path":"folders/inventory.yy",
+    "name":"items",
+    "path":"folders/inventory/items.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

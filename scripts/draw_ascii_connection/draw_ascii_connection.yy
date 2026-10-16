@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_ascii_connection",
   "parent":{
-    "name":"UI_tools",
-    "path":"folders/UI_tools.yy",
+    "name":"ASCII",
+    "path":"folders/UI/ASCII.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

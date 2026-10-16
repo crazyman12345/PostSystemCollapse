@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_inventory_set_equipped_item",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_inventory_set_equipped_item",
+  "parent":{
+    "name":"equipment",
+    "path":"folders/inventory/equipment.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_stash_equipment_and_carried_storage",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_stash_equipment_and_carried_storage",
+  "parent":{
+    "name":"stash",
+    "path":"folders/hideout/stash.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

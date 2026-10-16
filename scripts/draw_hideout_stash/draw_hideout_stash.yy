@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_hideout_stash",
   "parent":{
-    "name":"hideout",
-    "path":"folders/hideout.yy",
+    "name":"stash",
+    "path":"folders/hideout/stash.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

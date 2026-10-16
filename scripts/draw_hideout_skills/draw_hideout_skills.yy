@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_hideout_skills",
   "parent":{
-    "name":"hideout",
-    "path":"folders/hideout.yy",
+    "name":"skills",
+    "path":"folders/hideout/skills.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

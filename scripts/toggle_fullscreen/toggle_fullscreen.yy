@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"toggle_fullscreen",
   "parent":{
-    "name":"IdleGame",
-    "path":"IdleGame.yyp",
+    "name":"Core",
+    "path":"folders/Core.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

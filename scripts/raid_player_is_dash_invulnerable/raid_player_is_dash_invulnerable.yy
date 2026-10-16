@@ -6,7 +6,7 @@
   "name":"raid_player_is_dash_invulnerable",
   "parent":{
     "name":"player",
-    "path":"folders/RAID/player.yy",
+    "path":"folders/Raid/player.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

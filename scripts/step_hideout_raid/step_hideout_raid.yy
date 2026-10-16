@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"step_hideout_raid",
   "parent":{
-    "name":"hideout",
-    "path":"folders/hideout.yy",
+    "name":"raid select",
+    "path":"folders/hideout/raid select.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

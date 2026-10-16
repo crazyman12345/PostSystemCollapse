@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_raid_enemy_death_effects",
   "parent":{
-    "name":"raid draw",
-    "path":"folders/RAID/raid draw.yy",
+    "name":"particles",
+    "path":"folders/graphics/particles.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

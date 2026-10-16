@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"draw_post_collapse_network",
   "parent":{
-    "name":"misc",
-    "path":"folders/misc.yy",
+    "name":"ASCII",
+    "path":"folders/UI/ASCII.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
