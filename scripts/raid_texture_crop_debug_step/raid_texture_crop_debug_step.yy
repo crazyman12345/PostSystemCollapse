@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_texture_crop_debug_step",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_texture_crop_debug_step",
+  "parent":{
+    "name":"debug",
+    "path":"folders/debug.yy"
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0"
+}

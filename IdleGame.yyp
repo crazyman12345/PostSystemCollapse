@@ -162,6 +162,7 @@
     {"id":{"name":"draw_raid_shadow_debug","path":"scripts/draw_raid_shadow_debug/draw_raid_shadow_debug.yy",},},
     {"id":{"name":"draw_raid_shadowed_radial_light","path":"scripts/draw_raid_shadowed_radial_light/draw_raid_shadowed_radial_light.yy",},},
     {"id":{"name":"draw_raid_temporary_light","path":"scripts/draw_raid_temporary_light/draw_raid_temporary_light.yy",},},
+    {"id":{"name":"draw_raid_texture_crop_debug","path":"scripts/draw_raid_texture_crop_debug/draw_raid_texture_crop_debug.yy",},},
     {"id":{"name":"draw_raid_wall_lights","path":"scripts/draw_raid_wall_lights/draw_raid_wall_lights.yy",},},
     {"id":{"name":"draw_raid","path":"scripts/draw_raid/draw_raid.yy",},},
     {"id":{"name":"draw_skills_overlay","path":"scripts/draw_skills_overlay/draw_skills_overlay.yy",},},
@@ -300,6 +301,8 @@
     {"id":{"name":"raid_start","path":"scripts/raid_start/raid_start.yy",},},
     {"id":{"name":"raid_switch_weapon","path":"scripts/raid_switch_weapon/raid_switch_weapon.yy",},},
     {"id":{"name":"raid_take_loot","path":"scripts/raid_take_loot/raid_take_loot.yy",},},
+    {"id":{"name":"raid_texture_crop_debug_config","path":"scripts/raid_texture_crop_debug_config/raid_texture_crop_debug_config.yy",},},
+    {"id":{"name":"raid_texture_crop_debug_step","path":"scripts/raid_texture_crop_debug_step/raid_texture_crop_debug_step.yy",},},
     {"id":{"name":"raid_update_active_weapon","path":"scripts/raid_update_active_weapon/raid_update_active_weapon.yy",},},
     {"id":{"name":"raid_weapon_finish_reload","path":"scripts/raid_weapon_finish_reload/raid_weapon_finish_reload.yy",},},
     {"id":{"name":"randomize_enemy_timer","path":"scripts/randomize_enemy_timer/randomize_enemy_timer.yy",},},
@@ -505,6 +508,7 @@
     {"id":{"name":"spr_screws","path":"sprites/spr_screws/spr_screws.yy",},},
     {"id":{"name":"spr_security_vest_idle","path":"sprites/spr_security_vest_idle/spr_security_vest_idle.yy",},},
     {"id":{"name":"spr_shelf_tile_1","path":"sprites/spr_shelf_tile_1/spr_shelf_tile_1.yy",},},
+    {"id":{"name":"spr_shelf_tile_2","path":"sprites/spr_shelf_tile_2/spr_shelf_tile_2.yy",},},
     {"id":{"name":"spr_shelf_tile_4","path":"sprites/spr_shelf_tile_4/spr_shelf_tile_4.yy",},},
     {"id":{"name":"spr_shelf_tile","path":"sprites/spr_shelf_tile/spr_shelf_tile.yy",},},
     {"id":{"name":"spr_shelves","path":"sprites/spr_shelves/spr_shelves.yy",},},
@@ -553,6 +557,6 @@
   ],
   "templateType":"game",
   "TextureGroups":[
-    {"$GMTextureGroup":"","%Name":"Default","autocrop":false,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMTextureGroup":"","%Name":"Default","autocrop":false,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":false,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
   ],
 }

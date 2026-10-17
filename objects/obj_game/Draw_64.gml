@@ -71,6 +71,7 @@ draw_overlay(overlay_mode);
 
 if (!(state == GameState.RAID && raid.state == RaidState.DEATH)) skill_notifications_draw();
 
+draw_raid_texture_crop_debug();
 draw_debug_console();
 // Debug console always on top
 

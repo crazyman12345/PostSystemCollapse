@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_shelf_tile",
   "bboxMode":0,
-  "bbox_bottom":1535,
+  "bbox_bottom":1799,
   "bbox_left":0,
-  "bbox_right":1023,
+  "bbox_right":1199,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -16,7 +16,7 @@
   ],
   "gridX":0,
   "gridY":0,
-  "height":1536,
+  "height":1800,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"d620c266-a2f1-4c4a-a8b2-3b67a1032be6","blendMode":0,"displayName":"default","isLocked":false,"name":"d620c266-a2f1-4c4a-a8b2-3b67a1032be6","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":1024,
+  "width":1200,
 }

@@ -7,6 +7,12 @@ function step_raid()
     if (!_raid_transition_blocks_input) step_debug_terminal();
     if (debug_console_open) return;
 
+    if (raid_texture_crop_debug_step())
+    {
+        raid_environment_update();
+        return;
+    }
+
     if (keyboard_check_pressed(vk_f3)) raid_shadow_debug = !raid_shadow_debug;
     if (keyboard_check_pressed(vk_f4)) raid_environment.enabled = !raid_environment.enabled;
     if (keyboard_check_pressed(vk_f5)) raid_environment.debug = !raid_environment.debug;
