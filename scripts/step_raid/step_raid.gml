@@ -8,6 +8,9 @@ function step_raid()
     if (debug_console_open) return;
 
     if (keyboard_check_pressed(vk_f3)) raid_shadow_debug = !raid_shadow_debug;
+    if (keyboard_check_pressed(vk_f4)) raid_environment.enabled = !raid_environment.enabled;
+    if (keyboard_check_pressed(vk_f5)) raid_environment.debug = !raid_environment.debug;
+    raid_environment_update();
 
     // Debug movement proves that visibility is rebuilt from live light/caster data.
     if (raid_shadow_debug && array_length(raid_wall_lights) > 0)

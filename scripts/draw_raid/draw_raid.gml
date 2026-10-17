@@ -17,6 +17,7 @@ function draw_raid()
         draw_raid_character_shadows();
         draw_raid_enemy_death_effects();
         draw_raid_player();
+        draw_raid_environment(true);
         return;
     }
 
@@ -45,6 +46,7 @@ function draw_raid()
         draw_raid_room_border();
         draw_raid_wall_lights();
     }
+    draw_raid_environment(true);
 
 }
 

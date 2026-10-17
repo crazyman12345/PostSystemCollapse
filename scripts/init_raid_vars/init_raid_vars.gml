@@ -266,6 +266,7 @@ raid_temporary_lights = [];
 raid_shadow_occluders = [];
 raid_shadow_silhouette_cache = {};
 raid_shadow_debug = false;
+raid_environment_init();
 raid_character_shadows_enabled = true;
 raid_character_shadow_size = 20;
 raid_character_shadow_opacity = 0.35;

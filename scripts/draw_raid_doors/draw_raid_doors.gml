@@ -36,6 +36,7 @@ function draw_raid_doors()
 
 function draw_raid_door_backgrounds()
 {
+    if (raid_environment.enabled) return;
     if (!raid.doors_active && raid.state != RaidState.EXITING)
         return;
 
@@ -76,6 +77,7 @@ function draw_raid_door_backgrounds()
 
 function draw_raid_door_overlay()
 {
+    if (raid_environment.enabled) return;
     if (!raid.doors_active && raid.state != RaidState.EXITING)
         return;
 

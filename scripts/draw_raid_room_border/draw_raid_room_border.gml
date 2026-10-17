@@ -1,5 +1,11 @@
 function draw_raid_room_border()
 {
+    if (raid_environment.enabled)
+    {
+        draw_raid_environment(false);
+        return;
+    }
+
     // Measured inner edges of the transparent room opening in the source image.
     var _source_inner_left = 80;
     var _source_inner_top = 80;

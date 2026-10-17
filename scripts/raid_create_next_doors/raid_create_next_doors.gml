@@ -63,4 +63,5 @@ function raid_create_next_doors()
     }
 
     raid.doors_active = true;
+    raid_environment_build();
 }

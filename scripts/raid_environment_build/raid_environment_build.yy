@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_environment_build",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_environment_build",
+  "parent":{
+    "name":"environment",
+    "path":"folders/graphics/environment.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
