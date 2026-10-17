@@ -1,6 +1,6 @@
 function raid_environment_init()
 {
-    var _inner_face_material = raid_environment_material(spr_shelf_tile_2);
+    var _inner_face_material = raid_environment_material(spr_shelf_texture);
     _inner_face_material.offset_x = 33;
     _inner_face_material.offset_y = -17;
     _inner_face_material.uv_offset_v = 97;
