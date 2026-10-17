@@ -294,18 +294,6 @@ function init_item_database()
 		icon_sprite: spr_alcohol
     };
 
-    global.items.painkillers = {
-        item_key: "painkillers",
-        name: "Painkillers",
-        category: ItemCategory.MATERIAL,
-        description: "Medication used for pain relief and advanced medical crafting.",
-        base_value: 30,
-        weight: 0.1,
-        stackable: true,
-		max_stack: 5,
-		icon_sprite: spr_painkillers
-    };
-
     global.items.rare_weapon_parts = {
         item_key: "rare_weapon_parts",
         name: "Rare Weapon Parts",
@@ -944,19 +932,91 @@ function init_item_database()
         item_key: "bandage",
         name: "Bandage",
         category: ItemCategory.MEDICAL,
-        description: "A simple cloth bandage used to treat minor wounds.",
+        description: "A simple cloth bandage that stops light bleeding.",
         base_value: 35,
         weight: 0.2,
-        stackable: true,
+        stackable: false,
         combat_usable: true,
-		max_stack: 3,
 		icon_sprite: spr_bandage,
-        use_effects: [
-            {
-                type: EffectType.HEAL,
-                amount: 10
-            }
-        ]
+        treatment_effect: "light_bleed",
+        treatment_duration: 1.5,
+        medical_capacity: 2
+    };
+
+    global.items.tourniquet = {
+        item_key: "tourniquet",
+        name: "Tourniquet",
+        category: ItemCategory.MEDICAL,
+        description: "A field tourniquet that stops heavy bleeding.",
+        base_value: 65,
+        weight: 0.2,
+        stackable: false,
+        combat_usable: true,
+        icon_sprite: spr_tourniquet,
+        treatment_effect: "heavy_bleed",
+        treatment_duration: 2,
+        medical_capacity: 2
+    };
+
+    global.items.painkillers = {
+        item_key: "painkillers",
+        name: "Painkillers",
+        category: ItemCategory.MEDICAL,
+        description: "Suppresses injury penalties for 60 seconds.",
+        base_value: 30,
+        weight: 0.1,
+        stackable: false,
+        combat_usable: true,
+		icon_sprite: spr_painkillers,
+        treatment_effect: "painkillers",
+        treatment_duration: 1,
+        medical_capacity: 3
+    };
+
+    global.items.splint = {
+        item_key: "splint",
+        name: "Splint",
+        category: ItemCategory.MEDICAL,
+        description: "Stabilizes and repairs a fractured limb.",
+        base_value: 75,
+        weight: 0.5,
+        stackable: false,
+        combat_usable: true,
+        icon_sprite: spr_splint,
+        treatment_effect: "fracture",
+        treatment_duration: 3,
+        medical_capacity: 2
+    };
+
+    global.items.medkit = {
+        item_key: "medkit",
+        name: "IFAK",
+        category: ItemCategory.MEDICAL,
+        description: "Restores up to 10 HP to one global or limb health target.",
+        base_value: 100,
+        weight: 1,
+        stackable: false,
+        combat_usable: true,
+        icon_sprite: spr_ifak,
+        treatment_effect: "heal",
+        treatment_duration: 3,
+        medical_capacity: 100
+    };
+
+    global.items.surgical_kit = {
+        item_key: "surgical_kit",
+        name: "Surgical Kit",
+        category: ItemCategory.MEDICAL,
+        description: "Restores a blacked-out limb to 10 HP.",
+        base_value: 180,
+        weight: 1.5,
+        stackable: false,
+        combat_usable: true,
+        icon_sprite: spr_surgicalkit,
+        grid_width: 2,
+        treatment_effect: "surgery",
+        treatment_duration: 6,
+        medical_capacity: 2
     };
 
 
@@ -1178,29 +1238,6 @@ function init_item_database()
         weight: 3.2,
         stackable: false,
         bag_capacity: 32.0
-    };
-
-
-    // ------------------------------------------------------------
-    // OLD MEDICAL
-    // ------------------------------------------------------------
-
-    global.items.medkit = {
-        item_key: "medkit",
-        name: "Medkit",
-        category: ItemCategory.MEDICAL,
-        description: "A heavy duty medical kit containing multiple implements.",
-        base_value: 100,
-        weight: 1,
-        stackable: true,
-        combat_usable: true,
-
-        use_effects: [
-            {
-                type: EffectType.HEAL,
-                amount: 45
-            }
-        ]
     };
 
 

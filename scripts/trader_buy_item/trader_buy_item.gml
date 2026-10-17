@@ -1,4 +1,4 @@
-function trader_buy_item(_trader_key, _stock_index)
+function trader_buy_item(_trader_key, _stock_index, _quantity = 1)
 {
     // ==============================
     // GET TRADER
@@ -46,7 +46,7 @@ function trader_buy_item(_trader_key, _stock_index)
     // ==============================
 
     var price =
-        trader_get_buy_price(stock_entry.price);
+        trader_get_buy_price(stock_entry.price) * _quantity;
 
 
     // ==============================
@@ -68,7 +68,7 @@ function trader_buy_item(_trader_key, _stock_index)
         return false;
     }
 
-    if (!stash_add(stock_entry.item_key, 1))
+    if (!stash_add(stock_entry.item_key, _quantity))
     {
         stash_add("cash", price);
         return false;
@@ -79,7 +79,7 @@ function trader_buy_item(_trader_key, _stock_index)
     // LOG
     // ==============================
 
-    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade);
+    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade * _quantity);
 
     return true;
 }

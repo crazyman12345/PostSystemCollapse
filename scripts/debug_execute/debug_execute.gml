@@ -58,6 +58,11 @@ function debug_execute(_command)
 			raid_godmode = !raid_godmode;
 			debug_log_add("Godmode " + (raid_godmode ? "enabled" : "disabled"));
 			break;
+
+		case "hit_regions":
+			raid_hit_region_debug_enabled = !raid_hit_region_debug_enabled;
+			debug_log_add("Hit region overlay " + (raid_hit_region_debug_enabled ? "enabled" : "disabled"));
+			break;
 		
 		case "unlock_tables":
 			debug_command_unlock_tables();

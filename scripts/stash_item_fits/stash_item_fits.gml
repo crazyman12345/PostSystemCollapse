@@ -4,6 +4,10 @@ function stash_item_fits(_item_key, _x, _y, _rotation, _container = stash)
 
     if (is_undefined(definition)) return false;
 
+    if (variable_struct_exists(_container, "single_cell_slots")
+    && _container.single_cell_slots
+    && (definition.grid_width != 1 || definition.grid_height != 1)) return false;
+
     var width = definition.grid_width;
     var height = definition.grid_height;
 

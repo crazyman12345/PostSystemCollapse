@@ -10,8 +10,11 @@ function step_hideout_stash(){
     var container_cell_size = 60;
     var backpack_grid_left = middle_left + 165;
     var backpack_grid_top = grid_top;
+    var pockets_grid_left = middle_left;
+    var pockets_grid_top = backpack_grid_top + 328;
+    var pockets_cell_stride = 66;
     var secure_grid_left = middle_left + 165;
-    var secure_grid_top = backpack_grid_top + 320;
+    var secure_grid_top = pockets_grid_top + 122;
     var backpack_slot_w = 150;
     var backpack_slot_h = 220;
     var member = crew[0];
@@ -27,14 +30,17 @@ function step_hideout_stash(){
             stash.backpack.grid_width = backpack_definition.grid_width;
             stash.backpack.grid_height = backpack_definition.grid_height;
             array_push(grids, { key: "backpack", storage: stash.backpack, left: backpack_grid_left, top: backpack_grid_top, cell_size: container_cell_size });
-            secure_grid_top = backpack_grid_top + (stash.backpack.grid_height * container_cell_size) + 150;
+            pockets_grid_top = backpack_grid_top + max(328, (stash.backpack.grid_height * container_cell_size) + 28);
+            secure_grid_top = pockets_grid_top + 122;
         }
     }
 
+    array_push(grids, { key: "pockets", storage: stash.pockets, left: pockets_grid_left, top: pockets_grid_top, cell_size: cell_size, cell_stride: pockets_cell_stride });
     array_push(grids, { key: "secure", storage: stash.secure_container, left: secure_grid_left, top: secure_grid_top + 48, cell_size: cell_size });
 
     var gui_mouse_x = device_mouse_x_to_gui(0);
     var gui_mouse_y = device_mouse_y_to_gui(0);
+    if (inventory_character_tab_input(330)) return;
     var equipment_center = 575;
     var equipment_slot = -1;
 
@@ -42,6 +48,7 @@ function step_hideout_stash(){
     {
         var cancel_container = undefined;
         if (stash.held_source == "backpack") cancel_container = stash.backpack;
+        else if (stash.held_source == "pockets") cancel_container = stash.pockets;
         else if (stash.held_source == "secure") cancel_container = stash.secure_container;
         else if (stash.held_source == "stash") cancel_container = stash;
         if (!is_undefined(cancel_container))
@@ -55,7 +62,8 @@ function step_hideout_stash(){
         }
     }
 
-    if (gui_mouse_x >= equipment_center - 45 && gui_mouse_x < equipment_center + 45
+    if (inventory_character_tab == InventoryCharacterTab.EQUIPMENT
+    && gui_mouse_x >= equipment_center - 45 && gui_mouse_x < equipment_center + 45
     && gui_mouse_y >= grid_top + 5 && gui_mouse_y < grid_top + 95)
     {
         equipment_slot = EquipmentSlot.HEAD;
@@ -87,10 +95,15 @@ function step_hideout_stash(){
     for (var grid_index = 0; grid_index < array_length(grids); grid_index++)
     {
         var grid = grids[grid_index];
-        var grid_x = floor((gui_mouse_x - grid.left) / grid.cell_size);
-        var grid_y = floor((gui_mouse_y - grid.top) / grid.cell_size);
+        var grid_stride = variable_struct_exists(grid, "cell_stride") ? grid.cell_stride : grid.cell_size;
+        var grid_local_x = gui_mouse_x - grid.left;
+        var grid_local_y = gui_mouse_y - grid.top;
+        var grid_x = floor(grid_local_x / grid_stride);
+        var grid_y = floor(grid_local_y / grid_stride);
+        var inside_cell = (grid_local_x mod grid_stride) < grid.cell_size
+            && (grid_local_y mod grid_stride) < grid.cell_size;
 
-        if (grid_x >= 0 && grid_x < grid.storage.grid_width && grid_y >= 0 && grid_y < grid.storage.grid_height)
+        if (inside_cell && grid_x >= 0 && grid_x < grid.storage.grid_width && grid_y >= 0 && grid_y < grid.storage.grid_height)
         {
             hovered_grid = grid;
             mouse_grid_x = grid_x;
@@ -105,6 +118,30 @@ function step_hideout_stash(){
         stash.hover_x = is_undefined(hovered_grid) ? -1 : mouse_grid_x;
         stash.hover_y = is_undefined(hovered_grid) ? -1 : mouse_grid_y;
         stash.hover_container = is_undefined(hovered_grid) ? "" : hovered_grid.key;
+
+        if (inventory_character_tab == InventoryCharacterTab.HEALTH
+        && !is_undefined(held_definition)
+        && variable_struct_exists(held_definition, "treatment_effect")
+        && mouse_check_button_pressed(mb_left))
+        {
+            var medical_target = player_health_treatment_get_manual_target(gui_mouse_x, gui_mouse_y, 350, grid_top);
+            var medical_source = undefined;
+            if (stash.held_source == "backpack") medical_source = stash.backpack;
+            else if (stash.held_source == "pockets") medical_source = stash.pockets;
+            else if (stash.held_source == "secure") medical_source = stash.secure_container;
+            else if (stash.held_source == "stash") medical_source = stash;
+
+            if (!is_undefined(medical_target)
+            && player_health_treatment_start_held(stash.held_item, medical_source, medical_target.type, medical_target.limb, true))
+            {
+                stash.held_item = undefined;
+                stash.held_source = "";
+                stash.hover_x = -1;
+                stash.hover_y = -1;
+                stash.hover_container = "";
+                return;
+            }
+        }
 
         if (keyboard_check_pressed(ord("R")) && !is_undefined(held_definition))
         {
@@ -138,7 +175,7 @@ function step_hideout_stash(){
         }
 
         if (equipment_slot != -1
-        && (held_source == "stash" || held_source == "equipment")
+        && (held_source == "stash" || held_source == "pockets" || held_source == "equipment")
         && equipment_slot_item == ""
         && equipment_slot_valid
         && mouse_check_button_pressed(mb_left))
@@ -258,6 +295,39 @@ function step_hideout_stash(){
                 equipped_item = { item_key: equipped_item_key, quantity: 1, x: 0, y: 0, rotation: 0 };
             }
 
+            if (keyboard_check(vk_shift))
+            {
+                if (stash_place_existing_item(equipped_item, stash))
+                {
+                    switch (equipment_slot)
+                    {
+                        case EquipmentSlot.WEAPON:
+                            member.weapon = "";
+                            stash.equipped_weapon_item = undefined;
+                            break;
+
+                        case EquipmentSlot.WEAPON_2:
+                            member.weapon_2 = "";
+                            stash.equipped_weapon_2_item = undefined;
+                            break;
+
+                        case EquipmentSlot.HEAD:
+                            member.armor_head = "";
+                            stash.equipped_armor_head_item = undefined;
+                            break;
+
+                        case EquipmentSlot.CHEST:
+                            member.armor_chest = "";
+                            stash.equipped_armor_chest_item = undefined;
+                            break;
+                    }
+
+                    crew[0] = member;
+                    stash_index = array_length(stash.items) - 1;
+                }
+                return;
+            }
+
             var stash_has_space = false;
 
             for (var stash_y = 0; stash_y < stash.grid_height && !stash_has_space; stash_y++)
@@ -322,6 +392,18 @@ function step_hideout_stash(){
                 equipped_bag_item = { item_key: member.bag, quantity: 1, x: 0, y: 0, rotation: 0 };
             }
 
+            if (keyboard_check(vk_shift))
+            {
+                if (stash_place_existing_item(equipped_bag_item, stash))
+                {
+                    stash.equipped_bag_item = undefined;
+                    member.bag = "";
+                    crew[0] = member;
+                    stash_index = array_length(stash.items) - 1;
+                }
+                return;
+            }
+
             var stash_has_space = false;
 
             for (var stash_y = 0; stash_y < stash.grid_height && !stash_has_space; stash_y++)
@@ -368,6 +450,89 @@ function step_hideout_stash(){
             if (mouse_grid_x >= item.x && mouse_grid_x < item.x + item_width
             && mouse_grid_y >= item.y && mouse_grid_y < item.y + item_height)
             {
+                if (keyboard_check(vk_shift) && hovered_grid.storage == stash)
+                {
+                    var quick_equip_slot = -1;
+
+                    switch (definition.category)
+                    {
+                        case ItemCategory.WEAPON:
+                            if (member.weapon == "") quick_equip_slot = EquipmentSlot.WEAPON;
+                            else if (member.weapon_2 == "") quick_equip_slot = EquipmentSlot.WEAPON_2;
+                            break;
+
+                        case ItemCategory.HEAD_ARMOR:
+                            if (member.armor_head == "") quick_equip_slot = EquipmentSlot.HEAD;
+                            break;
+
+                        case ItemCategory.BODY_ARMOR:
+                            if (member.armor_chest == "") quick_equip_slot = EquipmentSlot.CHEST;
+                            break;
+
+                        case ItemCategory.BAG:
+                            if (member.bag == "") quick_equip_slot = EquipmentSlot.BAG;
+                            break;
+                    }
+
+                    if (quick_equip_slot != -1)
+                    {
+                        stash_remove_item(item, stash);
+
+                        switch (quick_equip_slot)
+                        {
+                            case EquipmentSlot.WEAPON:
+                                member.weapon = item.item_key;
+                                stash.equipped_weapon_item = item;
+                                break;
+
+                            case EquipmentSlot.WEAPON_2:
+                                member.weapon_2 = item.item_key;
+                                stash.equipped_weapon_2_item = item;
+                                break;
+
+                            case EquipmentSlot.HEAD:
+                                member.armor_head = item.item_key;
+                                stash.equipped_armor_head_item = item;
+                                break;
+
+                            case EquipmentSlot.CHEST:
+                                member.armor_chest = item.item_key;
+                                stash.equipped_armor_chest_item = item;
+                                break;
+
+                            case EquipmentSlot.BAG:
+                                member.bag = item.item_key;
+                                stash.equipped_bag_item = item;
+                                stash.backpack.grid_width = definition.grid_width;
+                                stash.backpack.grid_height = definition.grid_height;
+                                break;
+                        }
+
+                        crew[0] = member;
+                        stash_index = clamp(stash_index, 0, max(0, array_length(stash.items) - 1));
+                    }
+                    return;
+                }
+
+                if (keyboard_check(vk_control))
+                {
+                    var quick_transfer_destinations = [];
+                    if (hovered_grid.storage == stash)
+                    {
+                        if (member.bag != "") array_push(quick_transfer_destinations, stash.backpack);
+                        array_push(quick_transfer_destinations, stash.pockets);
+                        array_push(quick_transfer_destinations, stash.secure_container);
+                    }
+                    else
+                    {
+                        array_push(quick_transfer_destinations, stash);
+                    }
+
+                    inventory_quick_transfer(item, hovered_grid.storage, quick_transfer_destinations);
+                    stash_index = clamp(stash_index, 0, max(0, array_length(stash.items) - 1));
+                    return;
+                }
+
                 stash.held_item = item;
                 stash_remove_item(item, hovered_grid.storage);
                 stash.held_source = hovered_grid.key;

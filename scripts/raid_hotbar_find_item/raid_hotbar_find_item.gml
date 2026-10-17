@@ -1,6 +1,6 @@
 function raid_hotbar_find_item(_item)
 {
-    var containers = [stash.backpack, stash.secure_container];
+    var containers = [stash.backpack, stash.pockets, stash.secure_container];
     for (var i = 0; i < array_length(containers); i++)
     {
         var container = containers[i];

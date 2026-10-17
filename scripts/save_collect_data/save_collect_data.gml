@@ -34,6 +34,27 @@ function save_collect_data()
         variable_struct_set(workshop, workshop_keys[i], variable_struct_get(workshop_progress, workshop_keys[i]));
 
     var member = crew[0];
+    var saved_limbs = [];
+    for (var i = 0; i < array_length(health_limbs); i++)
+    {
+        var limb = health_limbs[i];
+        var saved_bleeds = [];
+        for (var j = 0; j < array_length(limb.bleeds); j++)
+        {
+            var bleed = limb.bleeds[j];
+            array_push(saved_bleeds, {
+                type: bleed.type,
+                tick_remaining: bleed.tick_remaining,
+                recovery_remaining: bleed.recovery_remaining
+            });
+        }
+        array_push(saved_limbs, {
+            hp: limb.hp,
+            fractured: limb.fractured,
+            bleed: limb.bleed,
+            bleeds: saved_bleeds
+        });
+    }
     return {
         version: save_format_version,
         meta: { unfinished_raid: save_unfinished_raid },
@@ -48,12 +69,20 @@ function save_collect_data()
             skills: skills,
             skill_unlocks: unlocks
         },
+        health: {
+            hp: raid_player_hp,
+            painkiller_remaining: health_painkiller_remaining,
+            limbs: saved_limbs
+        },
         inventory: {
             stash: save_items_to_data(stash.items),
             backpack: {
                 grid_width: stash.backpack.grid_width,
                 grid_height: stash.backpack.grid_height,
                 items: save_items_to_data(stash.backpack.items)
+            },
+            pockets: {
+                items: save_items_to_data(stash.pockets.items)
             },
             secure_container: {
                 grid_width: stash.secure_container.grid_width,
@@ -87,12 +116,14 @@ function save_items_to_data(_items)
 function save_item_to_data(_item)
 {
     if (is_undefined(_item)) return {};
+    var _state = {};
+    if (variable_struct_exists(_item, "durability")) _state.durability = _item.durability;
     return {
         item_key: _item.item_key,
         quantity: _item.quantity,
         x: _item.x,
         y: _item.y,
         rotation: _item.rotation,
-        state: {}
+        state: _state
     };
 }

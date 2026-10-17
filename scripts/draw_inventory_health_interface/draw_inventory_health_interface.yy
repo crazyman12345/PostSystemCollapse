@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_inventory_health_interface",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_inventory_health_interface",
+  "parent":{"name":"drawing","path":"folders/inventory/drawing.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

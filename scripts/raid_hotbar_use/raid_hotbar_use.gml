@@ -9,6 +9,16 @@ function raid_hotbar_use(_slot)
     var definition = item_get(item.item_key);
     if (!raid_hotbar_is_usable(definition)) return false;
 
+    if (variable_struct_exists(definition, "treatment_effect"))
+    {
+        var target = player_health_treatment_get_auto_target(definition);
+        if (!is_undefined(target) && player_health_treatment_start(item, target.type, target.limb, _slot)) return true;
+        raid.hotbar_feedback_slot = _slot;
+        raid.hotbar_feedback_timer = 12;
+        raid.hotbar_feedback_success = false;
+        return false;
+    }
+
     for (var i = 0; i < array_length(definition.use_effects); i++)
     {
         var effect = definition.use_effects[i];
@@ -23,12 +33,6 @@ function raid_hotbar_use(_slot)
 
     var hp_before = raid_player_hp;
     raid_apply_effects(definition.use_effects);
-    for (var i = 0; i < array_length(definition.use_effects); i++)
-    {
-        var effect = definition.use_effects[i];
-        if (effect.type == EffectType.HEAL)
-            raid_player_hp = min(raid_player_max_hp, raid_player_hp + effect.amount);
-    }
     var container = raid_hotbar_find_item(item);
     if (is_undefined(container)) return false;
 

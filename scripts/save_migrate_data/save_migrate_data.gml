@@ -14,6 +14,12 @@ function save_migrate_data(_data)
                 version = 1;
                 break;
 
+            case 1:
+                _data.version = 2;
+                if (!variable_struct_exists(_data, "health")) _data.health = {};
+                version = 2;
+                break;
+
             default:
                 return undefined;
         }

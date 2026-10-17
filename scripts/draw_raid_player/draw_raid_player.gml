@@ -132,3 +132,72 @@ function draw_raid_player(_lighting_mask = false, _mask_alpha = 1)
         _lighting_mask ? _mask_alpha : 1
     );
 }
+
+function draw_raid_player_hit_region_debug()
+{
+    if (!raid_hit_region_debug_enabled || raid.state == RaidState.DEATH) return;
+
+    var _bbox = raid_player_get_collision_bbox();
+    var _height = max(1, _bbox.bottom - _bbox.top);
+    var _head_bottom = _bbox.top + _height * health_config.hit_region_head_end;
+    var _torso_bottom = _bbox.top + _height * health_config.hit_region_torso_end;
+
+    draw_set_alpha(0.25);
+    draw_set_color(c_red);
+    draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _head_bottom, false);
+    draw_set_color(c_yellow);
+    draw_rectangle(_bbox.left, _head_bottom, _bbox.right, _torso_bottom, false);
+    draw_set_color(c_lime);
+    draw_rectangle(_bbox.left, _torso_bottom, _bbox.right, _bbox.bottom, false);
+
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+    draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);
+    draw_line(_bbox.left, _head_bottom, _bbox.right, _head_bottom);
+    draw_line(_bbox.left, _torso_bottom, _bbox.right, _torso_bottom);
+
+    if (!is_undefined(raid_hit_region_debug_impact_x) && !is_undefined(raid_hit_region_debug_impact_y))
+    {
+        var _impact_x = raid_hit_region_debug_impact_x;
+        var _impact_y = raid_hit_region_debug_impact_y;
+        draw_set_color(c_aqua);
+        draw_circle(_impact_x, _impact_y, 3, true);
+        draw_line(_impact_x - 5, _impact_y, _impact_x + 5, _impact_y);
+        draw_line(_impact_x, _impact_y - 5, _impact_x, _impact_y + 5);
+    }
+
+    draw_set_font(fnt_terminal_small);
+    draw_set_color(c_white);
+    draw_text(_bbox.right + 5, _bbox.top, "REGION: " + raid_hit_region_debug_region + "\nLIMB: " + raid_hit_region_debug_limb);
+    draw_set_font(fnt_terminal);
+}
+
+function draw_player_health_treatment_progress()
+{
+    if (!player_health_treatment_is_active()) return;
+    var _width = 36;
+    var _height = 4;
+    var _left = round(raid_player_x - (_width * 0.5));
+    var _top = round(raid_player_y - 54);
+    var _progress = 1 - (raid.treatment.remaining / max(0.001, raid.treatment.duration));
+
+    draw_set_color(make_color_rgb(24, 24, 24));
+    draw_rectangle(_left - 1, _top - 1, _left + _width + 1, _top + _height + 1, false);
+    draw_set_color(c_white);
+    draw_rectangle(_left, _top, _left + (_width * clamp(_progress, 0, 1)), _top + _height, false);
+    draw_set_color(make_color_rgb(24, 24, 24));
+    draw_rectangle(_left, _top, _left + _width, _top + _height, true);
+    draw_set_color(c_white);
+}
+
+function draw_player_health_treatment_inventory_status()
+{
+    if (!player_health_treatment_is_active()) return;
+    var _definition = item_get(raid.treatment.item_key);
+    if (is_undefined(_definition)) return;
+    draw_set_font(fnt_terminal_small);
+    draw_set_color(c_white);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_text(820, 98, "Using " + _definition.name + " — " + string_format(max(0, raid.treatment.remaining), 0, 1) + "s left");
+}

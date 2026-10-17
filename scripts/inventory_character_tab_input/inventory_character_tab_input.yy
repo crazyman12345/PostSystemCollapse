@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"inventory_character_tab_input",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"inventory_character_tab_input",
+  "parent":{"name":"input","path":"folders/inventory/input.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

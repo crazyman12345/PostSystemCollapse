@@ -4,9 +4,8 @@ function raid_apply_effect(_effect)
     {
 		case EffectType.HEAL:
 		{
-			 var member =
-				 crew[raid.crew_index];
-				 member.hp += _effect.amount;
+			player_health_heal_global(_effect.amount);
+			break;
 		}
     }
 }

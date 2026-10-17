@@ -99,6 +99,10 @@ function raid_generate_reward_loot(_reward_type)
             _pool = [
                 raid_loot_entry("medical_supplies", 30, 1, 2),
                 raid_loot_entry("bandage", 20, 1, 1),
+                raid_loot_entry("tourniquet", 10, 1, 1),
+                raid_loot_entry("splint", 10, 1, 1),
+                raid_loot_entry("medkit", 8, 1, 1),
+                raid_loot_entry("surgical_kit", 3, 1, 1),
                 raid_loot_entry("alcohol", 20, 1, 2),
                 raid_loot_entry("painkillers", 15, 1, 1),
                 raid_loot_entry("cloth", 10, 1, 3),

@@ -77,6 +77,32 @@ function enums(){
 	    CHEST,
 	    BAG
 	}
+	enum InventoryCharacterTab
+	{
+	    EQUIPMENT,
+	    HEALTH
+	}
+	enum PlayerLimb
+	{
+	    HEAD,
+	    CHEST,
+	    LEFT_ARM,
+	    RIGHT_ARM,
+	    LEFT_LEG,
+	    RIGHT_LEG
+	}
+	enum LimbInjuryState
+	{
+	    HEALTHY,
+	    WOUNDED,
+	    BLACKED_OUT
+	}
+	enum LimbBleedState
+	{
+	    NONE,
+	    LIGHT,
+	    HEAVY
+	}
 	enum LoadoutFocus
 	{
 	    EQUIPMENT,

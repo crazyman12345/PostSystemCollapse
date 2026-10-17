@@ -177,6 +177,14 @@ function draw_item_stats(_item, _x, _y, _bottom)
                 array_push(_lines,
                     "VALUE: $" + string(_item.base_value));
 
+            if (variable_struct_exists(_item, "medical_capacity"))
+                array_push(_lines,
+                    "CAPACITY: " + string(_item.medical_capacity));
+
+            if (variable_struct_exists(_item, "treatment_duration"))
+                array_push(_lines,
+                    "USE TIME: " + string(_item.treatment_duration) + "s");
+
             if (variable_struct_exists(_item, "use_effects"))
             {
                 for (

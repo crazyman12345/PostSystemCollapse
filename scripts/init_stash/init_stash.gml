@@ -20,6 +20,12 @@
             grid_height: 0,
             items: []
         },
+        pockets: {
+            grid_width: 4,
+            grid_height: 1,
+            single_cell_slots: true,
+            items: []
+        },
         secure_container: {
             grid_width: 2,
             grid_height: 2,

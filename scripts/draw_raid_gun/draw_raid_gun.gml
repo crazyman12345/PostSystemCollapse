@@ -1,5 +1,6 @@
 function draw_raid_gun(_lighting_mask = false, _mask_alpha = 1)
 {
+    if (player_health_treatment_is_active()) return;
     var _draw_alpha = _lighting_mask ? _mask_alpha : 1;
     draw_set_alpha(_draw_alpha);
     var _weapon = raid_update_active_weapon();

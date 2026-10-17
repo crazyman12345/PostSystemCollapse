@@ -37,8 +37,12 @@ function draw_hideout_stash()
     var backpack_grid_left = middle_left + 165;
     var backpack_grid_top = grid_top;
 
+    var pockets_grid_left = middle_left;
+    var pockets_grid_top = backpack_grid_top + 328;
+    var pockets_cell_stride = 66;
+
     var secure_grid_left = middle_left + 165;
-    var secure_grid_top = backpack_grid_top + 320;
+    var secure_grid_top = pockets_grid_top + 122;
 
     var item_count = array_length(stash.items);
     var member = crew[0];
@@ -142,16 +146,19 @@ function draw_hideout_stash()
         {
             stash.backpack.grid_width = backpack_definition.grid_width;
             stash.backpack.grid_height = backpack_definition.grid_height;
-            secure_grid_top = backpack_grid_top + (stash.backpack.grid_height * container_cell_size) + 150;
+            pockets_grid_top = backpack_grid_top + max(328, (stash.backpack.grid_height * container_cell_size) + 28);
+            secure_grid_top = pockets_grid_top + 122;
             array_push(item_grids, { key: "backpack", storage: stash.backpack, left: backpack_grid_left, top: backpack_grid_top, cell_size: container_cell_size });
         }
     }
 
+    array_push(item_grids, { key: "pockets", storage: stash.pockets, left: pockets_grid_left, top: pockets_grid_top, cell_size: stash_cell_size, cell_stride: pockets_cell_stride });
     array_push(item_grids, { key: "secure", storage: stash.secure_container, left: secure_grid_left, top: secure_grid_top + 48, cell_size: stash_cell_size });
 
     for (var grid_index = 0; grid_index < array_length(item_grids); grid_index++)
     {
         var item_grid = item_grids[grid_index];
+        var item_grid_stride = variable_struct_exists(item_grid, "cell_stride") ? item_grid.cell_stride : item_grid.cell_size;
 
         for (var i = 0; i < array_length(item_grid.storage.items); i++)
         {
@@ -172,9 +179,9 @@ function draw_hideout_stash()
                 item_height = size;
             }
 
-            var item_left = item_grid.left + (stash_item.x * item_grid.cell_size);
+            var item_left = item_grid.left + (stash_item.x * item_grid_stride);
 
-            var item_top = item_grid.top + (stash_item.y * item_grid.cell_size);
+            var item_top = item_grid.top + (stash_item.y * item_grid_stride);
 
             var item_right = item_left + (item_width * item_grid.cell_size);
 
@@ -227,8 +234,9 @@ function draw_hideout_stash()
 
             if (item_grid.key == stash.hover_container)
             {
-                var preview_left = item_grid.left + (stash.hover_x * item_grid.cell_size);
-                var preview_top = item_grid.top + (stash.hover_y * item_grid.cell_size);
+                var preview_stride = variable_struct_exists(item_grid, "cell_stride") ? item_grid.cell_stride : item_grid.cell_size;
+                var preview_left = item_grid.left + (stash.hover_x * preview_stride);
+                var preview_top = item_grid.top + (stash.hover_y * preview_stride);
                 var preview_valid = inventory_can_place_item(stash.held_item, stash.hover_x, stash.hover_y, item_grid.storage);
 
                 draw_set_alpha(0.45);

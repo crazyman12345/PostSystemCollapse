@@ -3,6 +3,7 @@ function raid_set_state(_state)
     if (raid.state == _state) return;
 
     var _previous_state = raid.state;
+    if (_previous_state == RaidState.COMBAT && _state != RaidState.COMBAT) player_health_treatment_cancel();
     raid.state = _state;
 
     switch (_state)

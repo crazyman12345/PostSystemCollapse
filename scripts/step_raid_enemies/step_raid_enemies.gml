@@ -144,7 +144,9 @@ function step_raid_enemies()
 		    && _enemy_collision_bbox.bottom >= _player_bbox.top
 		)
 		{
-		    raid_player_take_damage(10, point_direction(e.enemy_x, e.enemy_y, raid_player_x, raid_player_y));
+			var _random_limb = e.enemy_type == RaidEnemyType.KNIFE_STALKER
+				|| e.enemy_type == RaidEnemyType.KNIFE_DASHER;
+		    raid_player_take_damage(10, point_direction(e.enemy_x, e.enemy_y, raid_player_x, raid_player_y), e.enemy_x, e.enemy_y, false, _random_limb);
 
 		    if (raid.state != RaidState.COMBAT)
 		        return;

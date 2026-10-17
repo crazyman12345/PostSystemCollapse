@@ -1,9 +1,13 @@
 function step_raid_combat()
 {
+    player_health_treatment_update();
     var _allow_combat_input = step_raid_combat_input();
     if (raid.state != RaidState.COMBAT) return;
 
     // Player
+    player_health_update();
+    if (raid_combat_update_should_stop()) return;
+    _allow_combat_input = _allow_combat_input && !player_health_treatment_is_active();
     step_raid_player(_allow_combat_input);
     step_raid_player_damage();
     if (raid_combat_update_should_stop()) return;

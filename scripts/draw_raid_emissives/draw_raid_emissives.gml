@@ -35,7 +35,7 @@ function draw_raid_emissives(_camera_x, _camera_y, _scale_x, _scale_y, _include_
 
     if (!_include_explosions) gpu_set_blendmode(bm_normal);
 
-    if (is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
+    if (!player_health_treatment_is_active() && is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
     {
         draw_sprite_ext(
             spr_muzzle_flash,

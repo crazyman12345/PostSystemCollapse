@@ -1,6 +1,7 @@
 function raid_shadow_get_player_accessory_occluders(_feet_x, _feet_y)
 {
     var _accessories = [];
+    if (player_health_treatment_is_active()) return _accessories;
     var _weapon = raid_update_active_weapon();
     if (raid_gun_tuning_active) _weapon = item_get(raid_gun_tuning_weapon_key);
 

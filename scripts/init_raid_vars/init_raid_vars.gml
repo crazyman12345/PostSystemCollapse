@@ -107,6 +107,19 @@ raid =
     hotbar_feedback_slot: -1,
     hotbar_feedback_timer: 0,
     hotbar_feedback_success: false,
+    treatment: {
+        active: false,
+        item: undefined,
+        source: undefined,
+        item_key: "",
+        target_type: "",
+        limb: -1,
+        duration: 0,
+        remaining: 0,
+        amount: 0,
+        hotbar_slot: -1
+    },
+    medical_selected_item: undefined,
     // Loot currently on ground
     last_loot: [],
     loot_index: 0,
@@ -154,8 +167,9 @@ raid.current_room_type = RaidRoomType.START;
 raid.room_cleared = true;
 raid.extract_active = false;
 loadout_focused_item_key = "";
-raid_player_max_hp = 30;
-raid_player_hp = 30;
+raid_player_max_hp = 40;
+raid_player_hp = 40;
+player_health_init();
 combat_area_index = 0;
 combat_menu_focus = CombatMenuFocus.AREAS;
 raid_player_armor = 0;
@@ -165,6 +179,11 @@ raid_player_invincible = false;
 raid_player_invincible_timer = 0;
 raid_player_invincible_time = 90; // about 1 second at 60 FPS
 raid_godmode = false;
+raid_hit_region_debug_enabled = false;
+raid_hit_region_debug_impact_x = undefined;
+raid_hit_region_debug_impact_y = undefined;
+raid_hit_region_debug_region = "NONE";
+raid_hit_region_debug_limb = "NONE";
 
 raid_player_moving = false;
 raid_player_anim_frame = 0;

@@ -1,6 +1,6 @@
 function save_system_init()
 {
-    save_format_version = 1;
+    save_format_version = 2;
     save_filename = "player_save.json";
     save_backup_filename = "player_save.backup.json";
     save_temp_filename = "player_save.tmp.json";

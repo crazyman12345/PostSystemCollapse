@@ -37,6 +37,7 @@ function raid_combat_loss()
     stash.backpack.items = [];
     stash.backpack.grid_width = 0;
     stash.backpack.grid_height = 0;
+    stash.pockets.items = [];
     stash.equipped_bag_item = undefined;
     stash.equipped_weapon_item = undefined;
     stash.equipped_weapon_2_item = undefined;
@@ -86,9 +87,10 @@ function raid_combat_loss()
     raid.result_message =
         member.name
         + " was critically injured.\n"
-        + "Backpack and equipment lost. Secure contents kept.";
+        + "Backpack, pockets, and equipment lost. Secure contents kept.";
 
     raid_set_state(RaidState.RESULT);
+    player_health_recover_after_death();
     save_unfinished_raid = false;
     save_mark_dirty();
     save_game();

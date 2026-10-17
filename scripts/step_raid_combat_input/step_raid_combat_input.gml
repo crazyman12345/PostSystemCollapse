@@ -29,5 +29,5 @@ function step_raid_combat_input()
         return false;
     }
 
-    return _allow_combat_input;
+    return _allow_combat_input && !player_health_treatment_is_active();
 }

@@ -5,6 +5,7 @@ if (
 {
     draw_raid();
     draw_raid_lighting();
+    draw_raid_player_hit_region_debug();
     if (raid.state != RaidState.DEATH)
     {
         draw_raid_lootables(true);

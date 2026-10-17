@@ -37,7 +37,14 @@ function step_raid_enemy_bullets()
             && b.by <= _player_bbox.bottom
         )
         {
-            raid_player_take_damage(10, b.bdirection);
+            if (raid_hit_region_debug_enabled)
+            {
+                raid_hit_region_debug_impact_x = b.bx;
+                raid_hit_region_debug_impact_y = b.by;
+                raid_hit_region_debug_region = "BLOCKED";
+                raid_hit_region_debug_limb = "NONE";
+            }
+            raid_player_take_damage(10, b.bdirection, b.bx, b.by, true);
 
 
             // ==============================================

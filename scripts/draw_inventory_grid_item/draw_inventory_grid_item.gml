@@ -3,7 +3,10 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
     var item_right = _left + (_grid_width * _cell_size);
     var item_bottom = _top + (_grid_height * _cell_size);
 
-    draw_set_color(_selected ? c_lime : c_gray);
+    var _treatment_flash = player_health_treatment_is_active()
+        && raid.treatment.item == _stored_item
+        && floor(current_time / 150) mod 2 == 0;
+    draw_set_color(_treatment_flash ? c_white : (_selected ? c_lime : c_gray));
     draw_rectangle(_left + 4, _top + 4, item_right - 4, item_bottom - 4, false);
 
     var grid_sprite = -1;
@@ -47,12 +50,50 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
         draw_text_ext(_left + 10, _top + 10, _definition.name, 20, (_grid_width * _cell_size) - 20);
     }
 
-    if (_stored_item.quantity > 1)
+    if (variable_struct_exists(_definition, "medical_capacity"))
+    {
+        var _durability = variable_struct_exists(_stored_item, "durability")
+            ? _stored_item.durability
+            : _definition.medical_capacity;
+        var _previous_font = draw_get_font();
+        var _previous_halign = draw_get_halign();
+        var _previous_valign = draw_get_valign();
+        var _previous_alpha = draw_get_alpha();
+        draw_set_font(fnt_terminal_tiny);
+        draw_set_color(c_black);
+        draw_set_alpha(1);
+        if (_definition.item_key == "medkit")
+        {
+            draw_set_halign(fa_left);
+            draw_set_valign(fa_top);
+            draw_text(_left + 8, _top + 6, string(_durability));
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_middle);
+            draw_text((_left + item_right) * 0.5, (_top + item_bottom) * 0.5, "/");
+            draw_set_halign(fa_right);
+            draw_set_valign(fa_bottom);
+            draw_text(item_right - 8, item_bottom - 6, string(_definition.medical_capacity));
+        }
+        else
+        {
+            draw_set_halign(fa_right);
+            draw_set_valign(fa_top);
+            draw_text(item_right - 8, _top + 8, string(_durability) + "/" + string(_definition.medical_capacity));
+        }
+        draw_set_halign(_previous_halign);
+        draw_set_valign(_previous_valign);
+        draw_set_font(_previous_font);
+        draw_set_alpha(_previous_alpha);
+    }
+    else if (_stored_item.quantity > 1)
     {
         var previous_halign = draw_get_halign();
+        var previous_alpha = draw_get_alpha();
         draw_set_color(c_black);
+        draw_set_alpha(1);
         draw_set_halign(fa_right);
         draw_text(item_right - 8, _top + 8, "x" + format_compact_number(_stored_item.quantity));
         draw_set_halign(previous_halign);
+        draw_set_alpha(previous_alpha);
     }
 }

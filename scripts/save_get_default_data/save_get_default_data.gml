@@ -12,12 +12,13 @@ function save_reset_to_defaults()
 {
     init_flag_database();
     init_skill_database();
+    player_health_init();
     init_workbench_database();
     init_inventory();
 
     var member = crew[0];
-    member.hp = 100;
-    member.max_hp = 100;
+    member.hp = raid_player_hp;
+    member.max_hp = raid_player_max_hp;
     member.status = CrewStatus.READY;
     member.injury_end_time = 0;
     member.weapon = "";

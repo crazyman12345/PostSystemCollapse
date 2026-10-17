@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"player_health_get_max_hp",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"player_health_get_max_hp",
+  "parent":{"name":"Health","path":"folders/Raid/Health.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

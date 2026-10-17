@@ -186,6 +186,6 @@ if (array_length(trader.stock) > 0)
 }
 
     terminal_prompt(
-        "W/S: SELECT    ENTER: BUY    D: SELL    ESC: BACK"
+        "W/S: SELECT    ENTER: BUY    SHIFT+ENTER: BUY 10    D: SELL    ESC: BACK"
     );
 }

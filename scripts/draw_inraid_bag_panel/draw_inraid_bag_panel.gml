@@ -4,6 +4,7 @@ function draw_inraid_bag_panel()
     terminal_panel(20, 80, 1880, 970, "RAID INVENTORY");
     draw_stash_equipment_and_carried_storage(crew[raid.crew_index], true, 20, 1880);
     draw_raid_hotbar(true);
+    draw_player_health_treatment_inventory_status();
     draw_player_status_panel(85, 790, 360, true);
 
     var loot_grid = raid_inventory_get_loot_grid();
@@ -58,16 +59,23 @@ function draw_inraid_bag_panel()
         for (var preview_index = 0; preview_index < array_length(preview_grids); preview_index++)
         {
             var preview_grid = preview_grids[preview_index];
-            var preview_x = floor((device_mouse_x_to_gui(0) - preview_grid.left) / 60);
-            var preview_y = floor((device_mouse_y_to_gui(0) - preview_grid.top) / 60);
-            if (preview_x >= 0 && preview_y >= 0 && preview_x < preview_grid.storage.grid_width && preview_y < preview_grid.storage.grid_height)
+            var preview_cell_size = variable_struct_exists(preview_grid, "cell_size") ? preview_grid.cell_size : 60;
+            var preview_stride = variable_struct_exists(preview_grid, "cell_stride") ? preview_grid.cell_stride : preview_cell_size;
+            var preview_local_x = device_mouse_x_to_gui(0) - preview_grid.left;
+            var preview_local_y = device_mouse_y_to_gui(0) - preview_grid.top;
+            var preview_x = floor(preview_local_x / preview_stride);
+            var preview_y = floor(preview_local_y / preview_stride);
+            if (preview_x >= 0 && preview_y >= 0 && preview_x < preview_grid.storage.grid_width && preview_y < preview_grid.storage.grid_height
+            && (preview_local_x mod preview_stride) < preview_cell_size && (preview_local_y mod preview_stride) < preview_cell_size)
             {
                 var preview_definition = item_get(raid.inventory_item.item_key);
                 var preview_width = raid.inventory_rotation == 90 ? preview_definition.grid_height : preview_definition.grid_width;
                 var preview_height = raid.inventory_rotation == 90 ? preview_definition.grid_width : preview_definition.grid_height;
                 draw_set_alpha(0.45);
                 draw_set_color(inventory_can_place_item(raid.inventory_item, preview_x, preview_y, preview_grid.storage) ? c_lime : c_red);
-                draw_rectangle(preview_grid.left + preview_x * 60 + 4, preview_grid.top + preview_y * 60 + 4, preview_grid.left + (preview_x + preview_width) * 60 - 4, preview_grid.top + (preview_y + preview_height) * 60 - 4, false);
+                var preview_left = preview_grid.left + (preview_x * preview_stride);
+                var preview_top = preview_grid.top + (preview_y * preview_stride);
+                draw_rectangle(preview_left + 4, preview_top + 4, preview_left + (preview_width * preview_cell_size) - 4, preview_top + (preview_height * preview_cell_size) - 4, false);
                 draw_set_alpha(1);
                 break;
             }

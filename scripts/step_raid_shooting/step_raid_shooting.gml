@@ -296,9 +296,10 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
         raid_reload_active = true;
 		var _quick_hands = skill_node_find(skill_node_get_nodes("marksmanship"), "quick_hands_1");
 		var _reload_time_multiplier = !is_undefined(_quick_hands) && skill_node_is_unlocked("marksmanship", _quick_hands) ? 0.95 : 1;
+		var _health_penalties = player_health_get_penalties();
 
         raid_reload_timer =
-			_weapon.reload_time * _reload_time_multiplier;
+			_weapon.reload_time * _reload_time_multiplier / _health_penalties.reload;
 
         raid_burst_remaining = 0;
 
@@ -549,7 +550,7 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 
         raid_weapon_mag--;
 		player_skill_add_xp("marksmanship", skill_xp_awards.marksmanship_shot);
-		raid_gun_recoil = 5;
+		raid_gun_recoil = 5 * player_health_get_penalties().recoil;
 
         // ----------------------------------------------
         // FIRE RATE

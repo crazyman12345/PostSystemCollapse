@@ -4,6 +4,8 @@ function step_raid_player(_allow_dodge)
     var _start_y = raid_player_y;
     var _mx = keyboard_check(ord("D")) - keyboard_check(ord("A"));
     var _my = keyboard_check(ord("S")) - keyboard_check(ord("W"));
+    var _health_penalties = player_health_get_penalties();
+    var _treatment_move_multiplier = player_health_treatment_is_active() ? 0.5 : 1;
 
     if (!_allow_dodge && raid_player_dash_active)
     {
@@ -18,12 +20,13 @@ function step_raid_player(_allow_dodge)
 
     raid_player_stamina = min(
         raid_player_max_stamina,
-        raid_player_stamina + raid_player_stamina_regen * frame_scale
+        raid_player_stamina + raid_player_stamina_regen * _health_penalties.stamina * frame_scale
     );
 
     if (
         !raid_player_dash_active
         && _allow_dodge
+        && !player_health_treatment_is_active()
         && raid_player_stamina >= raid_player_dash_stamina_cost
         && keyboard_check_pressed(vk_space)
     )
@@ -87,8 +90,8 @@ function step_raid_player(_allow_dodge)
         }
 
         var _dash_step = min(frame_scale, raid_player_dash_timer);
-        raid_player_x += raid_player_dash_x * raid_player_dash_speed * _dash_step;
-        raid_player_y += raid_player_dash_y * raid_player_dash_speed * _dash_step;
+        raid_player_x += raid_player_dash_x * raid_player_dash_speed * _health_penalties.dash * _dash_step;
+        raid_player_y += raid_player_dash_y * raid_player_dash_speed * _health_penalties.dash * _dash_step;
 
         raid_player_dash_timer -= frame_scale;
 
@@ -107,8 +110,8 @@ function step_raid_player(_allow_dodge)
         _mx /= _len;
         _my /= _len;
 
-        raid_player_x += _mx * raid_player_speed * _move_speed_multiplier * frame_scale;
-        raid_player_y += _my * raid_player_speed * _move_speed_multiplier * frame_scale;
+        raid_player_x += _mx * raid_player_speed * _move_speed_multiplier * _health_penalties.movement * _treatment_move_multiplier * frame_scale;
+        raid_player_y += _my * raid_player_speed * _move_speed_multiplier * _health_penalties.movement * _treatment_move_multiplier * frame_scale;
     }
 
     for (

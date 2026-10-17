@@ -11,6 +11,8 @@ function step_loadout_overlay()
         return;
     }
 
+    if (inventory_character_tab_input(20)) return;
+
     // ======================================================
     // START RAID CONFIRMATION
     // ======================================================

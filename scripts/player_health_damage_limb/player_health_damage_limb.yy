@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"player_health_damage_limb",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"player_health_damage_limb",
+  "parent":{"name":"Health","path":"folders/Raid/Health.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

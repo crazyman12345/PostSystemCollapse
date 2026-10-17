@@ -161,4 +161,43 @@ function draw_raid_health_ui()
         string(raid_player_hp)
         + " HP"
     );
+
+    // ==============================
+    // INJURIES
+    // ==============================
+
+    var _injury_counts = [0, 0, 0, 0];
+    for (var i = 0; i < array_length(health_limbs); i++)
+    {
+        var _limb = health_limbs[i];
+        _injury_counts[0] += player_health_limb_bleed_count(_limb, LimbBleedState.LIGHT);
+        _injury_counts[1] += player_health_limb_bleed_count(_limb, LimbBleedState.HEAVY);
+        if (_limb.fractured) _injury_counts[2]++;
+        if (_limb.injury == LimbInjuryState.BLACKED_OUT) _injury_counts[3]++;
+    }
+
+    var _icon_size = 18;
+    var _icon_scale = _icon_size / sprite_get_width(Health_icons);
+    var _indicator_x = _x;
+    var _indicator_y = _stamina_y + _stamina_h + 6;
+    draw_set_font(fnt_terminal_tiny);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_middle);
+    draw_set_color(c_white);
+
+    for (var i = 0; i < array_length(_injury_counts); i++)
+    {
+        var _count = _injury_counts[i];
+        if (_count <= 0) continue;
+
+        draw_sprite_ext(Health_icons, i, _indicator_x, _indicator_y, _icon_scale, _icon_scale, 0, c_white, 1);
+        _indicator_x += _icon_size;
+        if (_count > 1)
+        {
+            var _count_text = string(_count) + "x";
+            draw_text(_indicator_x + 3, _indicator_y + (_icon_size * 0.5), _count_text);
+            _indicator_x += 3 + string_width(_count_text);
+        }
+        _indicator_x += 8;
+    }
 }

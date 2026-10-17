@@ -20,6 +20,7 @@ function player_skill_add_xp(_skill_key, _amount)
         _skill_key,
         skill
     );
+    if (_skill_key == "vitality" && skill.level != previous_level) player_health_refresh_maximums(true);
     save_mark_dirty();
     return true;
 }

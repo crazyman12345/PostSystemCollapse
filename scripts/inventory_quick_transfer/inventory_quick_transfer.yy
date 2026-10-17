@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"inventory_quick_transfer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"inventory_quick_transfer",
+  "parent":{
+    "name":"grid",
+    "path":"folders/inventory/grid.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

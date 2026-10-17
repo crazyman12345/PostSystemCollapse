@@ -14,7 +14,14 @@ function step_raid_inventory()
     && raid.inventory_equipment_slot == -1)
         raid_inventory_clear_held();
 
-    if (mouse_check_button_pressed(mb_right)) raid_inventory_clear_held();
+    if (mouse_check_button_pressed(mb_right))
+    {
+        var _mouse_x = device_mouse_x_to_gui(0);
+        var _mouse_y = device_mouse_y_to_gui(0);
+        if (player_health_treatment_select_inventory_item(_mouse_x, _mouse_y)) return;
+        raid.medical_selected_item = undefined;
+        raid_inventory_clear_held();
+    }
     if (!is_undefined(raid.inventory_item)
     && keyboard_check_pressed(ord("R")))
     {
@@ -33,7 +40,32 @@ function step_raid_inventory()
     if (!mouse_check_button_pressed(mb_left)) return;
     var gui_mouse_x = device_mouse_x_to_gui(0);
     var gui_mouse_y = device_mouse_y_to_gui(0);
-    var equipment_slot = raid_inventory_get_equipment_slot(gui_mouse_x, gui_mouse_y);
+    if (inventory_character_tab_input(20)) return;
+    if (inventory_character_tab == InventoryCharacterTab.HEALTH && !is_undefined(raid.medical_selected_item))
+    {
+        var _medical_target = player_health_treatment_get_manual_target(gui_mouse_x, gui_mouse_y);
+        if (!is_undefined(_medical_target))
+        {
+            if (player_health_treatment_start(raid.medical_selected_item, _medical_target.type, _medical_target.limb))
+                raid.medical_selected_item = undefined;
+            return;
+        }
+    }
+    else if (inventory_character_tab == InventoryCharacterTab.HEALTH && !is_undefined(raid.inventory_item))
+    {
+        var _held_medical_target = player_health_treatment_get_manual_target(gui_mouse_x, gui_mouse_y);
+        if (!is_undefined(_held_medical_target)
+        && player_health_treatment_start_held(raid.inventory_item, raid.inventory_container, _held_medical_target.type, _held_medical_target.limb))
+        {
+            raid.inventory_item = undefined;
+            raid.inventory_container = undefined;
+            raid.inventory_equipment_slot = -1;
+            return;
+        }
+    }
+    var equipment_slot = inventory_character_tab == InventoryCharacterTab.EQUIPMENT
+        ? raid_inventory_get_equipment_slot(gui_mouse_x, gui_mouse_y)
+        : -1;
     if (equipment_slot != -1)
     {
         if (!is_undefined(raid.inventory_item))
@@ -94,9 +126,14 @@ function step_raid_inventory()
     for (var i = 0; i < array_length(grids); i++)
     {
         var grid = grids[i];
-        var grid_x = floor((device_mouse_x_to_gui(0) - grid.left) / 60);
-        var grid_y = floor((device_mouse_y_to_gui(0) - grid.top) / 60);
-        if (grid_x < 0 || grid_y < 0 || grid_x >= grid.storage.grid_width || grid_y >= grid.storage.grid_height) continue;
+        var grid_cell_size = variable_struct_exists(grid, "cell_size") ? grid.cell_size : 60;
+        var grid_stride = variable_struct_exists(grid, "cell_stride") ? grid.cell_stride : grid_cell_size;
+        var grid_local_x = device_mouse_x_to_gui(0) - grid.left;
+        var grid_local_y = device_mouse_y_to_gui(0) - grid.top;
+        var grid_x = floor(grid_local_x / grid_stride);
+        var grid_y = floor(grid_local_y / grid_stride);
+        if (grid_x < 0 || grid_y < 0 || grid_x >= grid.storage.grid_width || grid_y >= grid.storage.grid_height
+        || (grid_local_x mod grid_stride) >= grid_cell_size || (grid_local_y mod grid_stride) >= grid_cell_size) continue;
 
         if (!is_undefined(raid.inventory_item))
         {
@@ -134,6 +171,18 @@ function step_raid_inventory()
             var height = item.rotation == 90 ? definition.grid_width : definition.grid_height;
             if (grid_x >= item.x && grid_x < item.x + width && grid_y >= item.y && grid_y < item.y + height)
             {
+                if (keyboard_check(vk_control)
+                && variable_struct_exists(grid, "key")
+                && grid.key == "loot")
+                {
+                    var quick_transfer_destinations = [];
+                    if (crew[raid.crew_index].bag != "") array_push(quick_transfer_destinations, stash.backpack);
+                    array_push(quick_transfer_destinations, stash.pockets);
+                    array_push(quick_transfer_destinations, stash.secure_container);
+                    inventory_quick_transfer(item, grid.storage, quick_transfer_destinations);
+                    return;
+                }
+
                 // Selection stays in its source grid until a valid move is committed.
                 raid.inventory_item = item;
                 raid.inventory_container = grid.storage;

@@ -156,6 +156,7 @@ inventory_hover_candidate_left = 0;
 inventory_hover_candidate_top = 0;
 inventory_hover_candidate_right = 0;
 inventory_hover_candidate_bottom = 0;
+inventory_character_tab = InventoryCharacterTab.EQUIPMENT;
 stash_index = 0;
 salvage_active = false;
 salvage_item_key = "";

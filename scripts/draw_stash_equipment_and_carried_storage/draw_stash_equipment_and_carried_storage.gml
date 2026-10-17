@@ -10,10 +10,15 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
     var equipment_center = equipment_left + (equipment_width * 0.5);
     var backpack_grid_left = middle_left + 165;
     var backpack_grid_top = grid_top;
+    var pockets_grid_left = middle_left;
+    var pockets_grid_top = backpack_grid_top + 328;
+    var pockets_cell_stride = 66;
     var secure_grid_left = middle_left + 165;
-    var secure_grid_top = backpack_grid_top + 320;
+    var secure_grid_top = pockets_grid_top + 122;
 
-    draw_text(equipment_left, grid_top - 25, "EQUIPMENT");
+    draw_inventory_character_tabs(equipment_left, 90);
+    draw_set_font(fnt_terminal_small);
+    draw_text(equipment_left, grid_top - 25, inventory_character_tab == InventoryCharacterTab.HEALTH ? "HEALTH" : "EQUIPMENT");
     draw_line(equipment_left, grid_top - 7, equipment_left + equipment_width, grid_top - 7);
     draw_text(middle_left, grid_top - 25, "CARRIED STORAGE");
     draw_line(middle_left, grid_top - 7, middle_left + middle_width, grid_top - 7);
@@ -30,10 +35,17 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
         draw_set_alpha(1);
     }
 
-    draw_equipment_slot(equipment_center - 45, grid_top + 5, 90, 90, "HELMET", _member.armor_head, false, true);
-    draw_equipment_slot(equipment_center - 75, grid_top + 100, 150, 220, "CHEST", _member.armor_chest, false, true);
-    draw_equipment_slot(equipment_center - 180, grid_top + 350, 360, 100, "WEAPON 1", _member.weapon, false, true);
-    draw_equipment_slot(equipment_center - 180, grid_top + 470, 360, 100, "WEAPON 2", _member.weapon_2, false, true);
+    if (inventory_character_tab == InventoryCharacterTab.EQUIPMENT)
+    {
+        draw_equipment_slot(equipment_center - 45, grid_top + 5, 90, 90, "HELMET", _member.armor_head, false, true);
+        draw_equipment_slot(equipment_center - 75, grid_top + 100, 150, 220, "CHEST", _member.armor_chest, false, true);
+        draw_equipment_slot(equipment_center - 180, grid_top + 350, 360, 100, "WEAPON 1", _member.weapon, false, true);
+        draw_equipment_slot(equipment_center - 180, grid_top + 470, 360, 100, "WEAPON 2", _member.weapon_2, false, true);
+    }
+    else
+    {
+        draw_inventory_health_interface(equipment_left, grid_top);
+    }
     draw_equipment_slot(middle_left, grid_top, 150, 220, "BACKPACK", _member.bag, false, true);
 
     var preview_item = raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT ? raid.inventory_item : stash.held_item;
@@ -44,17 +56,20 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
 
         if (!is_undefined(held_definition))
         {
-            var held_source_valid = (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT) || stash.held_source == "stash" || stash.held_source == "equipment";
+            var held_source_valid = (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT) || stash.held_source == "stash" || stash.held_source == "pockets" || stash.held_source == "equipment";
             var bag_source_valid = (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT) || stash.held_source == "stash";
             var gui_mouse_x = device_mouse_x_to_gui(0);
             var gui_mouse_y = device_mouse_y_to_gui(0);
             var equipment_previews = [
-                { slot: EquipmentSlot.HEAD, item_key: _member.armor_head, category: ItemCategory.HEAD_ARMOR, left: equipment_center - 45, top: grid_top + 5, right: equipment_center + 45, bottom: grid_top + 95, source: held_source_valid },
-                { slot: EquipmentSlot.CHEST, item_key: _member.armor_chest, category: ItemCategory.BODY_ARMOR, left: equipment_center - 75, top: grid_top + 100, right: equipment_center + 75, bottom: grid_top + 320, source: held_source_valid },
-                { slot: EquipmentSlot.WEAPON, item_key: _member.weapon, category: ItemCategory.WEAPON, left: equipment_center - 180, top: grid_top + 350, right: equipment_center + 180, bottom: grid_top + 450, source: held_source_valid },
-                { slot: EquipmentSlot.WEAPON_2, item_key: _member.weapon_2, category: ItemCategory.WEAPON, left: equipment_center - 180, top: grid_top + 470, right: equipment_center + 180, bottom: grid_top + 570, source: held_source_valid },
                 { slot: EquipmentSlot.BAG, item_key: _member.bag, category: ItemCategory.BAG, left: middle_left, top: grid_top, right: middle_left + 150, bottom: grid_top + 220, source: bag_source_valid }
             ];
+            if (inventory_character_tab == InventoryCharacterTab.EQUIPMENT)
+            {
+                array_push(equipment_previews, { slot: EquipmentSlot.HEAD, item_key: _member.armor_head, category: ItemCategory.HEAD_ARMOR, left: equipment_center - 45, top: grid_top + 5, right: equipment_center + 45, bottom: grid_top + 95, source: held_source_valid });
+                array_push(equipment_previews, { slot: EquipmentSlot.CHEST, item_key: _member.armor_chest, category: ItemCategory.BODY_ARMOR, left: equipment_center - 75, top: grid_top + 100, right: equipment_center + 75, bottom: grid_top + 320, source: held_source_valid });
+                array_push(equipment_previews, { slot: EquipmentSlot.WEAPON, item_key: _member.weapon, category: ItemCategory.WEAPON, left: equipment_center - 180, top: grid_top + 350, right: equipment_center + 180, bottom: grid_top + 450, source: held_source_valid });
+                array_push(equipment_previews, { slot: EquipmentSlot.WEAPON_2, item_key: _member.weapon_2, category: ItemCategory.WEAPON, left: equipment_center - 180, top: grid_top + 470, right: equipment_center + 180, bottom: grid_top + 570, source: held_source_valid });
+            }
 
             for (var preview_index = 0; preview_index < array_length(equipment_previews); preview_index++)
             {
@@ -84,14 +99,17 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
     var weapon_2_item = variable_struct_exists(stash, "equipped_weapon_2_item") ? stash.equipped_weapon_2_item : undefined;
     var bag_item = variable_struct_exists(stash, "equipped_bag_item") ? stash.equipped_bag_item : undefined;
 	var secure_container_item = variable_struct_exists(stash, "equipped_secure_container_item") ? stash.equipped_secure_container_item : undefined;
-    if (is_undefined(head_item)) inventory_hover_consider_key(_member.armor_head, equipment_center - 45, grid_top + 5, equipment_center + 45, grid_top + 95);
-    else inventory_hover_consider(head_item, equipment_center - 45, grid_top + 5, equipment_center + 45, grid_top + 95);
-    if (is_undefined(chest_item)) inventory_hover_consider_key(_member.armor_chest, equipment_center - 75, grid_top + 100, equipment_center + 75, grid_top + 320);
-    else inventory_hover_consider(chest_item, equipment_center - 75, grid_top + 100, equipment_center + 75, grid_top + 320);
-    if (is_undefined(weapon_item)) inventory_hover_consider_key(_member.weapon, equipment_center - 180, grid_top + 350, equipment_center + 180, grid_top + 450);
-    else inventory_hover_consider(weapon_item, equipment_center - 180, grid_top + 350, equipment_center + 180, grid_top + 450);
-    if (is_undefined(weapon_2_item)) inventory_hover_consider_key(_member.weapon_2, equipment_center - 180, grid_top + 470, equipment_center + 180, grid_top + 570);
-    else inventory_hover_consider(weapon_2_item, equipment_center - 180, grid_top + 470, equipment_center + 180, grid_top + 570);
+    if (inventory_character_tab == InventoryCharacterTab.EQUIPMENT)
+    {
+        if (is_undefined(head_item)) inventory_hover_consider_key(_member.armor_head, equipment_center - 45, grid_top + 5, equipment_center + 45, grid_top + 95);
+        else inventory_hover_consider(head_item, equipment_center - 45, grid_top + 5, equipment_center + 45, grid_top + 95);
+        if (is_undefined(chest_item)) inventory_hover_consider_key(_member.armor_chest, equipment_center - 75, grid_top + 100, equipment_center + 75, grid_top + 320);
+        else inventory_hover_consider(chest_item, equipment_center - 75, grid_top + 100, equipment_center + 75, grid_top + 320);
+        if (is_undefined(weapon_item)) inventory_hover_consider_key(_member.weapon, equipment_center - 180, grid_top + 350, equipment_center + 180, grid_top + 450);
+        else inventory_hover_consider(weapon_item, equipment_center - 180, grid_top + 350, equipment_center + 180, grid_top + 450);
+        if (is_undefined(weapon_2_item)) inventory_hover_consider_key(_member.weapon_2, equipment_center - 180, grid_top + 470, equipment_center + 180, grid_top + 570);
+        else inventory_hover_consider(weapon_2_item, equipment_center - 180, grid_top + 470, equipment_center + 180, grid_top + 570);
+    }
     if (is_undefined(bag_item)) inventory_hover_consider_key(_member.bag, middle_left, grid_top, middle_left + 150, grid_top + 220);
     else inventory_hover_consider(bag_item, middle_left, grid_top, middle_left + 150, grid_top + 220);
 
@@ -117,11 +135,24 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
                 }
             }
 
-            secure_grid_top = backpack_grid_top + (stash.backpack.grid_height * cell_size) + 150;
+            pockets_grid_top = backpack_grid_top + max(328, (stash.backpack.grid_height * cell_size) + 28);
+            secure_grid_top = pockets_grid_top + 122;
         }
     }
 
-    draw_equipment_slot(middle_left, secure_grid_top, 150, 150, "CONTAINER", _member.secure_container, false, true);
+    draw_set_font(fnt_terminal_small);
+    draw_set_color(c_lime);
+    draw_text(pockets_grid_left, pockets_grid_top - 25, "POCKETS");
+    for (var pocket_x = 0; pocket_x < stash.pockets.grid_width; pocket_x++)
+    {
+        var pocket_cell_left = pockets_grid_left + (pocket_x * pockets_cell_stride);
+        draw_set_color(c_dkgray);
+        draw_rectangle(pocket_cell_left, pockets_grid_top, pocket_cell_left + cell_size, pockets_grid_top + cell_size, false);
+        draw_set_color(c_green);
+        draw_rectangle(pocket_cell_left, pockets_grid_top, pocket_cell_left + cell_size, pockets_grid_top + cell_size, true);
+    }
+
+    draw_equipment_slot(middle_left, secure_grid_top, 150, 150, "SECURE CONTAINER", _member.secure_container, false, true);
 	if (is_undefined(secure_container_item)) inventory_hover_consider_key(_member.secure_container, middle_left, secure_grid_top, middle_left + 150, secure_grid_top + 150);
 	else inventory_hover_consider(secure_container_item, middle_left, secure_grid_top, middle_left + 150, secure_grid_top + 150);
 
@@ -142,6 +173,7 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
 
     var containers = [
         { storage: stash.backpack, left: backpack_grid_left, top: backpack_grid_top, visible: _member.bag != "" },
+        { storage: stash.pockets, left: pockets_grid_left, top: pockets_grid_top, cell_stride: pockets_cell_stride, visible: true },
         { storage: stash.secure_container, left: secure_grid_left, top: secure_grid_top + 48, visible: true }
     ];
 
@@ -149,6 +181,7 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
     {
         var container = containers[container_index];
         if (!container.visible) continue;
+        var container_stride = variable_struct_exists(container, "cell_stride") ? container.cell_stride : cell_size;
 
         for (var item_index = 0; item_index < array_length(container.storage.items); item_index++)
         {
@@ -164,8 +197,8 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
                 item_height = item_size;
             }
 
-            var item_left = container.left + (stored_item.x * cell_size);
-            var item_top = container.top + (stored_item.y * cell_size);
+            var item_left = container.left + (stored_item.x * container_stride);
+            var item_top = container.top + (stored_item.y * container_stride);
             draw_inventory_grid_item(stored_item, definition, item_left, item_top, item_width, item_height, cell_size, false);
             inventory_hover_consider(stored_item, item_left, item_top, item_left + (item_width * cell_size), item_top + (item_height * cell_size));
         }

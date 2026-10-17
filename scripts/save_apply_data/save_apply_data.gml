@@ -13,6 +13,12 @@ function save_apply_data(_data)
     stash.backpack.grid_width = max(0, save_number(backpack_data, "grid_width", 0));
     stash.backpack.grid_height = max(0, save_number(backpack_data, "grid_height", 0));
 
+    var pockets_data = save_value(inventory, "pockets", {});
+    stash.pockets.items = [];
+    stash.pockets.grid_width = 4;
+    stash.pockets.grid_height = 1;
+    stash.pockets.single_cell_slots = true;
+
     var secure_data = save_value(inventory, "secure_container", {});
     stash.secure_container.items = [];
     stash.secure_container.grid_width = max(1, save_number(secure_data, "grid_width", 2));
@@ -45,6 +51,7 @@ function save_apply_data(_data)
             save_apply_items(save_value(backpack_data, "items", []), stash.backpack);
         }
     }
+    save_apply_items(save_value(pockets_data, "items", []), stash.pockets);
     save_apply_items(save_value(secure_data, "items", []), stash.secure_container);
 
     var player = save_value(_data, "player", {});
@@ -59,6 +66,66 @@ function save_apply_data(_data)
 
     save_apply_skills(save_value(player, "skills", {}));
     save_apply_unlocks(save_value(player, "skill_unlocks", {}));
+    player_health_refresh_maximums(false);
+
+    var health_data = save_value(_data, "health", {});
+    raid_player_hp = clamp(save_number(health_data, "hp", raid_player_max_hp), 0, raid_player_max_hp);
+    health_painkiller_remaining = max(0, save_number(health_data, "painkiller_remaining", 0));
+    var saved_limbs = save_value(health_data, "limbs", []);
+    if (is_array(saved_limbs))
+    {
+        for (var i = 0; i < min(array_length(saved_limbs), array_length(health_limbs)); i++)
+        {
+            var saved_limb = saved_limbs[i];
+            if (!is_struct(saved_limb)) continue;
+            var limb = health_limbs[i];
+            limb.hp = clamp(save_number(saved_limb, "hp", limb.max_hp), 0, limb.max_hp);
+            limb.fractured = player_health_limb_can_fracture(i)
+                && save_value(saved_limb, "fractured", false) == true;
+            limb.bleeds = [];
+            var saved_bleeds = save_value(saved_limb, "bleeds", undefined);
+            if (is_array(saved_bleeds))
+            {
+                for (var j = 0; j < array_length(saved_bleeds); j++)
+                {
+                    var saved_bleed = saved_bleeds[j];
+                    if (!is_struct(saved_bleed)) continue;
+                    var bleed_type = clamp(floor(save_number(saved_bleed, "type", LimbBleedState.NONE)), LimbBleedState.NONE, LimbBleedState.HEAVY);
+                    if (bleed_type == LimbBleedState.NONE) continue;
+                    var interval = bleed_type == LimbBleedState.LIGHT
+                        ? health_config.light_bleed_interval_seconds
+                        : health_config.heavy_bleed_interval_seconds;
+                    array_push(limb.bleeds, {
+                        type: bleed_type,
+                        tick_remaining: clamp(save_number(saved_bleed, "tick_remaining", interval), 0, interval),
+                        recovery_remaining: bleed_type == LimbBleedState.LIGHT
+                            ? clamp(save_number(saved_bleed, "recovery_remaining", health_config.light_bleed_recovery_seconds), 0, health_config.light_bleed_recovery_seconds)
+                            : -1
+                    });
+                }
+            }
+            else
+            {
+                var legacy_bleed = clamp(floor(save_number(saved_limb, "bleed", LimbBleedState.NONE)), LimbBleedState.NONE, LimbBleedState.HEAVY);
+                if (legacy_bleed != LimbBleedState.NONE)
+                {
+                    var interval = legacy_bleed == LimbBleedState.LIGHT
+                        ? health_config.light_bleed_interval_seconds
+                        : health_config.heavy_bleed_interval_seconds;
+                    array_push(limb.bleeds, {
+                        type: legacy_bleed,
+                        tick_remaining: interval,
+                        recovery_remaining: legacy_bleed == LimbBleedState.LIGHT
+                            ? health_config.light_bleed_recovery_seconds
+                            : -1
+                    });
+                }
+            }
+            player_health_sync_limb_bleed_state(limb);
+            player_health_update_limb_state(limb);
+        }
+    }
+    player_health_sync_crew();
 
     var progression = save_value(_data, "progression", {});
     global.progress.danger_level = max(0, save_number(progression, "danger_level", 0));
@@ -107,13 +174,19 @@ function save_item_from_data(_data)
     var max_stack = item_get_max_stack(definition);
     var quantity = floor(clamp(save_number(_data, "quantity", 1), 1, max_stack));
     var rotation = save_number(_data, "rotation", 0) == 90 ? 90 : 0;
-    return {
+    var item = {
         item_key: item_key,
         quantity: quantity,
         x: floor(save_number(_data, "x", 0)),
         y: floor(save_number(_data, "y", 0)),
         rotation: rotation
     };
+    if (variable_struct_exists(definition, "medical_capacity"))
+    {
+        var state = save_value(_data, "state", {});
+        item.durability = clamp(save_number(state, "durability", definition.medical_capacity), 1, definition.medical_capacity);
+    }
+    return item;
 }
 
 function save_item_key(_item)
@@ -178,10 +251,12 @@ function save_resolve_unfinished_raid()
     stash.backpack.items = [];
     stash.backpack.grid_width = 0;
     stash.backpack.grid_height = 0;
+    stash.pockets.items = [];
     stash.equipped_bag_item = undefined;
     stash.equipped_weapon_item = undefined;
     stash.equipped_weapon_2_item = undefined;
     stash.equipped_armor_head_item = undefined;
     stash.equipped_armor_chest_item = undefined;
+    player_health_recover_after_death();
     save_unfinished_raid = false;
 }
