@@ -505,6 +505,7 @@
     {"id":{"name":"spr_screws","path":"sprites/spr_screws/spr_screws.yy",},},
     {"id":{"name":"spr_security_vest_idle","path":"sprites/spr_security_vest_idle/spr_security_vest_idle.yy",},},
     {"id":{"name":"spr_shelf_tile_1","path":"sprites/spr_shelf_tile_1/spr_shelf_tile_1.yy",},},
+    {"id":{"name":"spr_shelf_tile_4","path":"sprites/spr_shelf_tile_4/spr_shelf_tile_4.yy",},},
     {"id":{"name":"spr_shelf_tile","path":"sprites/spr_shelf_tile/spr_shelf_tile.yy",},},
     {"id":{"name":"spr_shelves","path":"sprites/spr_shelves/spr_shelves.yy",},},
     {"id":{"name":"spr_silhouette","path":"sprites/spr_silhouette/spr_silhouette.yy",},},
@@ -552,6 +553,6 @@
   ],
   "templateType":"game",
   "TextureGroups":[
-    {"$GMTextureGroup":"","%Name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMTextureGroup":"","%Name":"Default","autocrop":false,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
   ],
 }

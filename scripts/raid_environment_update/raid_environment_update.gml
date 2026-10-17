@@ -29,8 +29,10 @@ function raid_environment_geometry_is_current()
     || _geometry.wall_height != max(1, raid_environment.wall_height)
     || _geometry.wall_thickness != max(1, raid_environment.wall_thickness)
     || _geometry.vertical_projection != raid_environment.vertical_projection
-    || _geometry.tile_width != raid_environment.tile_width
-    || _geometry.tile_height != raid_environment.tile_height) return false;
+    || _geometry.north_segments != max(1, floor(raid_environment.wall_segments.north))
+    || _geometry.south_segments != max(1, floor(raid_environment.wall_segments.south))
+    || _geometry.east_segments != max(1, floor(raid_environment.wall_segments.east))
+    || _geometry.west_segments != max(1, floor(raid_environment.wall_segments.west))) return false;
 
     var _doors_visible = raid.doors_active || raid.state == RaidState.EXITING;
     var _expected_count = _doors_visible ? array_length(raid_doors) : 0;

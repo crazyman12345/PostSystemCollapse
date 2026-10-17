@@ -65,6 +65,8 @@ function raid_start(_area)
 
 	raid_room_x2 = 1160;
 	raid_room_y2 = 740;
+	if (variable_struct_exists(_area, "arena_wall_segments"))
+		raid_environment.wall_segments = _area.arena_wall_segments;
 	raid_player_setup_health();
     raid_reset_active_weapon();
     active_weapon_slot = EquipmentSlot.WEAPON;

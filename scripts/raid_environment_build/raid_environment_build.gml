@@ -7,6 +7,11 @@ function raid_environment_build()
     var _thickness = max(1, _settings.wall_thickness);
     var _projection_depth = _height * max(0, _settings.vertical_projection);
     var _openings = raid_environment_get_door_openings();
+    var _segments = _settings.wall_segments;
+    var _north_segments = max(1, floor(_segments.north));
+    var _south_segments = max(1, floor(_segments.south));
+    var _east_segments = max(1, floor(_segments.east));
+    var _west_segments = max(1, floor(_segments.west));
     var _geometry = {
         room_x1: raid_room_x1,
         room_y1: raid_room_y1,
@@ -15,8 +20,10 @@ function raid_environment_build()
         wall_height: _height,
         wall_thickness: _thickness,
         vertical_projection: _settings.vertical_projection,
-        tile_width: _settings.tile_width,
-        tile_height: _settings.tile_height,
+        north_segments: _north_segments,
+        south_segments: _south_segments,
+        east_segments: _east_segments,
+        west_segments: _west_segments,
         openings: _openings,
         back_inner_faces: [],
         back_caps: [],
@@ -25,77 +32,79 @@ function raid_environment_build()
     };
     var _inner_face_color = make_color_rgb(190, 194, 198);
     var _cap_color = make_color_rgb(190, 194, 198);
+    var _room_width = raid_room_x2 - raid_room_x1;
 
-    // North wall: anchor every face base to the room boundary and leave the
-    // existing door spans open. Caps remain rectangular at arena corners.
-    var _segment_start = raid_room_x1;
+    // Keep the original north-wall door openings and corner projection. Only
+    // the UV boundaries are divided into configurable equal wall sections.
+    var _span_start = raid_room_x1;
     for (var _opening_index = 0; _opening_index <= array_length(_openings); _opening_index++)
     {
-        var _segment_end = _opening_index < array_length(_openings)
+        var _span_end = _opening_index < array_length(_openings)
             ? _openings[_opening_index].left
             : raid_room_x2;
-        if (_segment_end > _segment_start)
+        if (_span_end > _span_start)
         {
-            var _at_left_corner = _segment_start == raid_room_x1;
-            var _at_right_corner = _segment_end == raid_room_x2;
-            var _top_start = _segment_start - (_at_left_corner ? _projection_depth : 0);
-            var _top_end = _segment_end + (_at_right_corner ? _projection_depth : 0);
-            raid_environment_add_inner_face_tiles(_geometry.back_inner_faces,
+            var _at_left_corner = _span_start == raid_room_x1;
+            var _at_right_corner = _span_end == raid_room_x2;
+            var _top_start = _span_start - (_at_left_corner ? _projection_depth : 0);
+            var _top_end = _span_end + (_at_right_corner ? _projection_depth : 0);
+            var _fraction_start = (_span_start - raid_room_x1) / _room_width;
+            var _fraction_end = (_span_end - raid_room_x1) / _room_width;
+            raid_environment_add_inner_face_sections(_geometry.back_inner_faces,
                 _top_start, raid_room_y1, _top_end, raid_room_y1,
-                _segment_start, raid_room_y1, _segment_end, raid_room_y1,
-                _height, _inner_face_color, 0, -1);
-            raid_environment_add_cap_rectangle(
-                _geometry,
-                false,
+                _span_start, raid_room_y1, _span_end, raid_room_y1,
+                _height, _inner_face_color, 0, -1,
+                _fraction_start, _fraction_end, _north_segments);
+            raid_environment_add_cap_sections(_geometry, false,
                 _top_start - (_at_left_corner ? _thickness : 0),
                 raid_room_y1 - _projection_depth - _thickness,
                 _top_end + (_at_right_corner ? _thickness : 0),
                 raid_room_y1 - _projection_depth,
-                _height, _cap_color
-            );
+                _height, _cap_color, true,
+                _fraction_start, _fraction_end, _north_segments);
         }
 
         if (_opening_index < array_length(_openings))
-            _segment_start = _openings[_opening_index].right;
+            _span_start = _openings[_opening_index].right;
     }
 
     // South remains in the foreground pass so the inward-facing wall can
     // overlap actors at the southern boundary.
-    raid_environment_add_inner_face_tiles(_geometry.front_inner_faces,
+    raid_environment_add_inner_face_sections(_geometry.front_inner_faces,
         raid_room_x1 - _projection_depth, raid_room_y2,
         raid_room_x2 + _projection_depth, raid_room_y2,
         raid_room_x1, raid_room_y2, raid_room_x2, raid_room_y2,
-        _height, _inner_face_color, 0, 1);
-    raid_environment_add_cap_rectangle(_geometry, true,
+        _height, _inner_face_color, 0, 1, 0, 1, _south_segments);
+    raid_environment_add_cap_sections(_geometry, true,
         raid_room_x1 - _projection_depth - _thickness,
         raid_room_y2 + _projection_depth,
         raid_room_x2 + _projection_depth + _thickness,
         raid_room_y2 + _projection_depth + _thickness,
-        _height, _cap_color);
+        _height, _cap_color, true, 0, 1, _south_segments);
 
-    raid_environment_add_inner_face_tiles(_geometry.back_inner_faces,
+    raid_environment_add_inner_face_sections(_geometry.back_inner_faces,
         raid_room_x1, raid_room_y1 - _projection_depth,
         raid_room_x1, raid_room_y2 + _projection_depth,
         raid_room_x1, raid_room_y1, raid_room_x1, raid_room_y2,
-        _height, _inner_face_color, -1, 0);
-    raid_environment_add_cap_rectangle(_geometry, false,
+        _height, _inner_face_color, -1, 0, 0, 1, _west_segments);
+    raid_environment_add_cap_sections(_geometry, false,
         raid_room_x1 - _projection_depth - _thickness,
         raid_room_y1 - _projection_depth,
         raid_room_x1 - _projection_depth,
         raid_room_y2 + _projection_depth,
-        _height, _cap_color);
+        _height, _cap_color, false, 0, 1, _west_segments);
 
-    raid_environment_add_inner_face_tiles(_geometry.back_inner_faces,
+    raid_environment_add_inner_face_sections(_geometry.back_inner_faces,
         raid_room_x2, raid_room_y1 - _projection_depth,
         raid_room_x2, raid_room_y2 + _projection_depth,
         raid_room_x2, raid_room_y1, raid_room_x2, raid_room_y2,
-        _height, _inner_face_color, 1, 0);
-    raid_environment_add_cap_rectangle(_geometry, false,
+        _height, _inner_face_color, 1, 0, 0, 1, _east_segments);
+    raid_environment_add_cap_sections(_geometry, false,
         raid_room_x2 + _projection_depth,
         raid_room_y1 - _projection_depth,
         raid_room_x2 + _projection_depth + _thickness,
         raid_room_y2 + _projection_depth,
-        _height, _cap_color);
+        _height, _cap_color, false, 0, 1, _east_segments);
 
     raid_environment.geometry = _geometry;
     raid_environment_project_geometry();
@@ -120,97 +129,89 @@ function raid_environment_get_door_openings()
 }
 
 
-function raid_environment_add_inner_face_tiles(_batch,
+function raid_environment_add_inner_face_sections(_batch,
     _top_ax, _top_ay, _top_bx, _top_by,
     _base_ax, _base_ay, _base_bx, _base_by,
-    _height, _color, _projection_x, _projection_y)
+    _height, _color, _projection_x, _projection_y,
+    _span_start, _span_end, _segment_count)
 {
-    var _length = point_distance(_top_ax, _top_ay, _top_bx, _top_by);
-    if (_length <= 0 || _height <= 0) return;
+    if (_span_end <= _span_start || _height <= 0) return;
 
-    var _tile_width = max(1, raid_environment.tile_width);
-    var _material_sprite = raid_environment.inner_face_material.sprite;
-    var _tile_height = _tile_width * sprite_get_height(_material_sprite) / max(1, sprite_get_width(_material_sprite));
-    _tile_height = max(1, _tile_height);
-    var _length_tiles = max(1, ceil(_length / _tile_width));
-    var _height_tiles = max(1, ceil(_height / _tile_height));
-
-    for (var _length_index = 0; _length_index < _length_tiles; _length_index++)
+    for (var _segment_index = 0; _segment_index < _segment_count; _segment_index++)
     {
-        var _distance_start = _length_index * _tile_width;
-        var _distance_end = min(_length, _distance_start + _tile_width);
-        var _length_start = _distance_start / _length;
-        var _length_end = _distance_end / _length;
-        var _u_end = (_distance_end - _distance_start) / _tile_width;
+        var _segment_start = _segment_index / _segment_count;
+        var _segment_end = (_segment_index + 1) / _segment_count;
+        var _section_start = max(_span_start, _segment_start);
+        var _section_end = min(_span_end, _segment_end);
+        if (_section_end <= _section_start) continue;
 
-        for (var _height_index = 0; _height_index < _height_tiles; _height_index++)
-        {
-            var _distance_from_top = _height_index * _tile_height;
-            var _distance_from_top_end = min(_height, _distance_from_top + _tile_height);
-            var _top_height = _height - _distance_from_top;
-            var _bottom_height = _height - _distance_from_top_end;
-            var _top_amount = _top_height / _height;
-            var _bottom_amount = _bottom_height / _height;
-            var _v_end = (_distance_from_top_end - _distance_from_top) / _tile_height;
+        var _local_start = (_section_start - _span_start) / (_span_end - _span_start);
+        var _local_end = (_section_end - _span_start) / (_span_end - _span_start);
+        var _u_start = (_section_start - _segment_start) * _segment_count;
+        var _u_end = (_section_end - _segment_start) * _segment_count;
+        var _section_top_ax = lerp(_top_ax, _top_bx, _local_start);
+        var _section_top_ay = lerp(_top_ay, _top_by, _local_start);
+        var _section_top_bx = lerp(_top_ax, _top_bx, _local_end);
+        var _section_top_by = lerp(_top_ay, _top_by, _local_end);
+        var _section_base_ax = lerp(_base_ax, _base_bx, _local_start);
+        var _section_base_ay = lerp(_base_ay, _base_by, _local_start);
+        var _section_base_bx = lerp(_base_ax, _base_bx, _local_end);
+        var _section_base_by = lerp(_base_ay, _base_by, _local_end);
 
-            var _top_x1 = lerp(lerp(_base_ax, _base_bx, _length_start), lerp(_top_ax, _top_bx, _length_start), _top_amount);
-            var _top_y1 = lerp(lerp(_base_ay, _base_by, _length_start), lerp(_top_ay, _top_by, _length_start), _top_amount);
-            var _top_x2 = lerp(lerp(_base_ax, _base_bx, _length_end), lerp(_top_ax, _top_bx, _length_end), _top_amount);
-            var _top_y2 = lerp(lerp(_base_ay, _base_by, _length_end), lerp(_top_ay, _top_by, _length_end), _top_amount);
-            var _bottom_x1 = lerp(lerp(_base_ax, _base_bx, _length_start), lerp(_top_ax, _top_bx, _length_start), _bottom_amount);
-            var _bottom_y1 = lerp(lerp(_base_ay, _base_by, _length_start), lerp(_top_ay, _top_by, _length_start), _bottom_amount);
-            var _bottom_x2 = lerp(lerp(_base_ax, _base_bx, _length_end), lerp(_top_ax, _top_bx, _length_end), _bottom_amount);
-            var _bottom_y2 = lerp(lerp(_base_ay, _base_by, _length_end), lerp(_top_ay, _top_by, _length_end), _bottom_amount);
-            array_push(_batch, {
-                color: _color,
-                vertices: [
-                    raid_environment_vertex(_top_x1, _top_y1, _top_height, 0, 0, _projection_x, _projection_y),
-                    raid_environment_vertex(_top_x2, _top_y2, _top_height, _u_end, 0, _projection_x, _projection_y),
-                    raid_environment_vertex(_bottom_x2, _bottom_y2, _bottom_height, _u_end, _v_end, _projection_x, _projection_y),
-                    raid_environment_vertex(_bottom_x1, _bottom_y1, _bottom_height, 0, _v_end, _projection_x, _projection_y)
-                ]
-            });
-        }
+        array_push(_batch, {
+            color: _color,
+            vertices: [
+                raid_environment_vertex(_section_top_ax, _section_top_ay, _height, _u_start, 0, _projection_x, _projection_y),
+                raid_environment_vertex(_section_top_bx, _section_top_by, _height, _u_end, 0, _projection_x, _projection_y),
+                raid_environment_vertex(_section_base_bx, _section_base_by, 0, _u_end, 1, _projection_x, _projection_y),
+                raid_environment_vertex(_section_base_ax, _section_base_ay, 0, _u_start, 1, _projection_x, _projection_y)
+            ]
+        });
     }
 }
 
 
-function raid_environment_add_cap_rectangle(_geometry, _foreground,
-    _left, _top, _right, _bottom, _height, _cap_color)
+function raid_environment_add_cap_sections(_geometry, _foreground,
+    _left, _top, _right, _bottom, _height, _color, _horizontal,
+    _span_start, _span_end, _segment_count)
 {
-    var _tile_width = max(1, raid_environment.tile_width);
-    var _tile_height = max(1, raid_environment.tile_height);
     var _caps = _foreground ? _geometry.front_caps : _geometry.back_caps;
-    var _first_column = floor(_left / _tile_width);
-    var _last_column = ceil(_right / _tile_width) - 1;
-    var _first_row = floor(_top / _tile_height);
-    var _last_row = ceil(_bottom / _tile_height) - 1;
-
-    for (var _column = _first_column; _column <= _last_column; _column++)
+    for (var _segment_index = 0; _segment_index < _segment_count; _segment_index++)
     {
-        var _tile_left = _column * _tile_width;
-        var _x1 = max(_left, _tile_left);
-        var _x2 = min(_right, _tile_left + _tile_width);
-        var _u1 = (_x1 - _tile_left) / _tile_width;
-        var _u2 = (_x2 - _tile_left) / _tile_width;
+        var _segment_start = _segment_index / _segment_count;
+        var _segment_end = (_segment_index + 1) / _segment_count;
+        var _section_start = max(_span_start, _segment_start);
+        var _section_end = min(_span_end, _segment_end);
+        if (_section_end <= _section_start) continue;
 
-        for (var _row = _first_row; _row <= _last_row; _row++)
-        {
-            var _tile_top = _row * _tile_height;
-            var _y1 = max(_top, _tile_top);
-            var _y2 = min(_bottom, _tile_top + _tile_height);
-            var _v1 = (_y1 - _tile_top) / _tile_height;
-            var _v2 = (_y2 - _tile_top) / _tile_height;
-            array_push(_caps, {
-                color: _cap_color,
-                vertices: [
-                    raid_environment_vertex(_x1, _y1, _height, _u1, _v1, 0, 0),
-                    raid_environment_vertex(_x2, _y1, _height, _u2, _v1, 0, 0),
-                    raid_environment_vertex(_x2, _y2, _height, _u2, _v2, 0, 0),
-                    raid_environment_vertex(_x1, _y2, _height, _u1, _v2, 0, 0)
+        var _local_start = (_section_start - _span_start) / (_span_end - _span_start);
+        var _local_end = (_section_end - _span_start) / (_span_end - _span_start);
+        var _uv_start = (_section_start - _segment_start) * _segment_count;
+        var _uv_end = (_section_end - _segment_start) * _segment_count;
+        var _inner_left = _left + (_horizontal && _span_start == 0 ? _geometry.wall_thickness : 0);
+        var _inner_right = _right - (_horizontal && _span_end == 1 ? _geometry.wall_thickness : 0);
+        var _x1 = _horizontal ? lerp(_inner_left, _inner_right, _local_start) : _left;
+        var _x2 = _horizontal ? lerp(_inner_left, _inner_right, _local_end) : _right;
+        if (_horizontal && _section_start == 0) _x1 = _left;
+        if (_horizontal && _section_end == 1) _x2 = _right;
+        var _y1 = _horizontal ? _top : lerp(_top, _bottom, _local_start);
+        var _y2 = _horizontal ? _bottom : lerp(_top, _bottom, _local_end);
+        array_push(_caps, {
+            color: _color,
+            vertices: _horizontal
+                ? [
+                    raid_environment_vertex(_x1, _y1, _height, _uv_start, 0, 0, 0),
+                    raid_environment_vertex(_x2, _y1, _height, _uv_end, 0, 0, 0),
+                    raid_environment_vertex(_x2, _y2, _height, _uv_end, 1, 0, 0),
+                    raid_environment_vertex(_x1, _y2, _height, _uv_start, 1, 0, 0)
                 ]
-            });
-        }
+                : [
+                    raid_environment_vertex(_x1, _y1, _height, 0, _uv_start, 0, 0),
+                    raid_environment_vertex(_x2, _y1, _height, 1, _uv_start, 0, 0),
+                    raid_environment_vertex(_x2, _y2, _height, 1, _uv_end, 0, 0),
+                    raid_environment_vertex(_x1, _y2, _height, 0, _uv_end, 0, 0)
+                ]
+        });
     }
 }
 
