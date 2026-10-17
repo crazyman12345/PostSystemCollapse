@@ -534,5 +534,6 @@ function skill_node_purchase(_skill_key, _node)
 		variable_struct_set(skill_node_unlocks, _skill_key, {});
 	var unlocks = variable_struct_get(skill_node_unlocks, _skill_key);
 	variable_struct_set(unlocks, _node.key, true);
+	save_mark_dirty();
 	return true;
 }

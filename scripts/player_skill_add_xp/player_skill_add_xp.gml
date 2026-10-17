@@ -20,6 +20,7 @@ function player_skill_add_xp(_skill_key, _amount)
         _skill_key,
         skill
     );
+    save_mark_dirty();
     return true;
 }
 

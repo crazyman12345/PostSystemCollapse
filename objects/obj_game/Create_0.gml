@@ -242,3 +242,5 @@ workshop_tab = WorkshopTab.UPGRADES;
 // ==============================
 event_log = [];
 event_log_max = 2;
+
+save_system_init();

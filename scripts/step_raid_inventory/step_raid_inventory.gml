@@ -1,5 +1,6 @@
 function step_raid_inventory()
 {
+    if (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right) || keyboard_check_pressed(ord("R"))) save_mark_dirty();
     if (keyboard_check_pressed(vk_escape))
     {
         raid_inventory_clear_held();

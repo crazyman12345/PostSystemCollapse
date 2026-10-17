@@ -16,8 +16,27 @@ function draw_main_menu()
     }
     draw_set_font(fnt_terminal);
 
-    terminal_menu_item(760, 600, "ENTER NETWORK", menu_index == 0);
-    terminal_menu_item(760, 660, "EXIT", menu_index == 1);
+    if (save_continue_available)
+    {
+        terminal_menu_item(760, 570, "CONTINUE", menu_index == 0);
+        terminal_menu_item(760, 630, "NEW GAME", menu_index == 1);
+        terminal_menu_item(760, 690, "EXIT", menu_index == 2);
+    }
+    else
+    {
+        terminal_menu_item(760, 570, "NEW GAME", menu_index == 0);
+        terminal_menu_item(760, 630, "EXIT", menu_index == 1);
+    }
+
+    if (save_new_game_confirm)
+    {
+        terminal_panel(660, 500, 600, 300, "OVERWRITE PLAYER SAVE?");
+        draw_set_halign(fa_center);
+        draw_text(960, 575, "Existing progress will be replaced.");
+        draw_set_halign(fa_left);
+        terminal_menu_item(760, 650, "YES - NEW GAME", save_new_game_confirm_index == 0);
+        terminal_menu_item(760, 710, "NO - KEEP SAVE", save_new_game_confirm_index == 1);
+    }
 
     terminal_prompt(
         "W/S: SELECT    ENTER: CONFIRM    F11: FULLSCREEN"

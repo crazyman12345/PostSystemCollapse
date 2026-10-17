@@ -18,6 +18,7 @@ function raid_bag_add(_item_key, _quantity)
         _quantity -= added;
     }
     for (var i = 0; i < array_length(additions); i++) array_push(stash.backpack.items, additions[i]);
+    save_mark_dirty();
     return true;
 }
 

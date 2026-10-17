@@ -1,5 +1,7 @@
 function step_hideout_stash(){
 
+    if (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right) || keyboard_check_pressed(ord("R"))) save_mark_dirty();
+
     var stash_right_margin = 25;
     var grid_top = 150;
     var cell_size = 60;

@@ -89,6 +89,9 @@ function raid_combat_loss()
         + "Backpack and equipment lost. Secure contents kept.";
 
     raid_set_state(RaidState.RESULT);
+    save_unfinished_raid = false;
+    save_mark_dirty();
+    save_game();
 }
 
 function raid_player_death_start()

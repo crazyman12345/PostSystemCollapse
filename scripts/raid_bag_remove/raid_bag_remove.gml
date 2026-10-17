@@ -11,5 +11,6 @@ function raid_bag_remove(_item_key, _quantity)
         _quantity -= removed;
         if (item.quantity == 0) stash_remove_item(item, stash.backpack);
     }
+    save_mark_dirty();
     return true;
 }

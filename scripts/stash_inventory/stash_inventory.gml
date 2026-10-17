@@ -82,6 +82,7 @@ function stash_add(_item_key, _quantity, _storage = stash)
     }
 
     for (var i = 0; i < array_length(additions); i++) array_push(_storage.items, additions[i]);
+    save_mark_dirty();
     return true;
 }
 
@@ -101,5 +102,6 @@ function stash_remove(_item_key, _quantity)
         if (item.quantity <= 0) stash_remove_item(item);
     }
 
+    save_mark_dirty();
     return true;
 }

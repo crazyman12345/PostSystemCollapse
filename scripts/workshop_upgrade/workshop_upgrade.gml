@@ -15,5 +15,6 @@ function workshop_upgrade(_bench_key)
     }
 
     variable_struct_set(workshop_progress, _bench_key, level + 1);
+    save_mark_dirty();
     return true;
 }

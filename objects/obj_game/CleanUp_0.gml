@@ -8,3 +8,4 @@ raid_bloom_blur_surface = graphics_settings_release_surface(raid_bloom_blur_surf
 raid_bloom_surface = graphics_settings_release_surface(raid_bloom_surface);
 raid_map_surface = graphics_settings_release_surface(raid_map_surface);
 blood_surface_destroy();
+if (variable_instance_exists(id, "save_dirty") && save_dirty && save_can_write_now()) save_game();

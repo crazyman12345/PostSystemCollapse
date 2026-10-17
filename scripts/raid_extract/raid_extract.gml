@@ -26,4 +26,7 @@ function raid_extract()
     raid_muzzle_flash_light = undefined;
 
     raid_set_state(RaidState.RESULT);
+    save_unfinished_raid = false;
+    save_mark_dirty();
+    save_game();
 }

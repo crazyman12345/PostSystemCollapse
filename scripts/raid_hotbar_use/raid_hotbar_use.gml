@@ -33,6 +33,7 @@ function raid_hotbar_use(_slot)
     if (is_undefined(container)) return false;
 
     item.quantity -= 1;
+    save_mark_dirty();
     if (item.quantity <= 0)
     {
         stash_remove_item(item, container);

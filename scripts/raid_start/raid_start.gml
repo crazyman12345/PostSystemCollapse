@@ -4,6 +4,13 @@ function raid_start(_area)
 	{
 		return;
 	}
+	save_unfinished_raid = true;
+	if (!save_game())
+	{
+		save_unfinished_raid = false;
+		debug_log_add("Raid start blocked: player save failed.");
+		return;
+	}
 	// Carry the existing grids and their item instances directly into the raid.
 	var backpack = item_get(crew[raid.crew_index].bag);
 	stash.backpack.grid_width = is_undefined(backpack) ? 0 : backpack.grid_width;

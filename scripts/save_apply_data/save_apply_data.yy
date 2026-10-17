@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"save_apply_data",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"save_apply_data",
+  "parent":{"name":"SaveSystem","path":"folders/SaveSystem.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
