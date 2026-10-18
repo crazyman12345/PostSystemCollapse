@@ -28,6 +28,7 @@ function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_
     var _sprite_source_axes = array_create(48, 0);
     var _sprite_shared_anchor_projections = array_create(24, 0);
     var _sprite_projection_height_scales = array_create(24, 1);
+    var _sprite_projection_sample_offsets = array_create(48, 0);
     var _sprite_texture_indices = array_create(24, 0);
     var _sprite_textures = [];
     var _rectangle_count = 0;
@@ -101,6 +102,8 @@ function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_
             _sprite_source_axes[_sprite_offset + 1] = lengthdir_y(1, _occluder.rotation);
             _sprite_shared_anchor_projections[_sprite_count] = variable_struct_exists(_occluder, "shared_anchor_projection") && _occluder.shared_anchor_projection;
             _sprite_projection_height_scales[_sprite_count] = variable_struct_exists(_occluder, "projection_height_scale") ? _occluder.projection_height_scale : 1;
+            _sprite_projection_sample_offsets[_sprite_offset] = variable_struct_exists(_occluder, "projection_sample_offset_x") ? _occluder.projection_sample_offset_x : 0;
+            _sprite_projection_sample_offsets[_sprite_offset + 1] = variable_struct_exists(_occluder, "projection_sample_offset_y") ? _occluder.projection_sample_offset_y : 0;
             _sprite_texture_indices[_sprite_count] = _texture_slot;
             _sprite_count++;
         }
@@ -134,6 +137,7 @@ function draw_raid_shadowed_radial_light(_light, _occluders, _camera_x, _camera_
     shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_source_axis"), _sprite_source_axes);
     shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_shared_anchor_projection"), _sprite_shared_anchor_projections);
     shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_projection_height_scale"), _sprite_projection_height_scales);
+    shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_projection_sample_offset"), _sprite_projection_sample_offsets);
     shader_set_uniform_f_array(shader_get_uniform(shd_raid_shadow_visibility, "u_sprite_texture_index"), _sprite_texture_indices);
     for (var _texture_index = 0; _texture_index < array_length(_sprite_textures); _texture_index++)
     {

@@ -27,6 +27,7 @@ function raid_environment_geometry_is_current()
     if (_geometry.room_x1 != raid_room_x1 || _geometry.room_y1 != raid_room_y1
     || _geometry.room_x2 != raid_room_x2 || _geometry.room_y2 != raid_room_y2
     || _geometry.wall_height != max(1, raid_environment.wall_height)
+    || _geometry.door_opening_height != clamp(raid_environment.door_opening_height, 0, max(1, raid_environment.wall_height))
     || _geometry.wall_thickness != max(1, raid_environment.wall_thickness)
     || _geometry.vertical_projection != raid_environment.vertical_projection
     || _geometry.north_segments != max(1, floor(raid_environment.wall_segments.north))

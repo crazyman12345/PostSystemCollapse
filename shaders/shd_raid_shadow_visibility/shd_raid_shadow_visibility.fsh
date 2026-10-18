@@ -21,6 +21,7 @@ uniform float u_sprite_flip_y[24];
 uniform vec2 u_sprite_source_axis[24];
 uniform float u_sprite_shared_anchor_projection[24];
 uniform float u_sprite_projection_height_scale[24];
+uniform vec2 u_sprite_projection_sample_offset[24];
 uniform float u_sprite_texture_index[24];
 uniform sampler2D u_sprite_texture_0;
 uniform sampler2D u_sprite_texture_1;
@@ -143,6 +144,8 @@ bool sprite_blocks_light(int index, vec2 sample_position)
         horizontal = dot(intersection - u_sprite_ground_position[index], axis) / u_sprite_size[index].x + 0.5;
         vertical = 1.0 - (along_ray * u_light_height / u_sprite_size[index].y);
     }
+    horizontal += u_sprite_projection_sample_offset[index].x / u_sprite_size[index].x;
+    vertical += u_sprite_projection_sample_offset[index].y / u_sprite_size[index].y;
     if (horizontal < 0.0 || horizontal > 1.0 || vertical < 0.0 || vertical > 1.0) return false;
     if (u_sprite_flip[index] > 0.5) horizontal = 1.0 - horizontal;
     if (u_sprite_flip_y[index] > 0.5) vertical = 1.0 - vertical;

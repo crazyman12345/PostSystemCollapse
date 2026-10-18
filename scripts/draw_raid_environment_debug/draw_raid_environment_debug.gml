@@ -48,7 +48,8 @@ function raid_environment_debug_batch(_batch)
         for (var _vertex_index = 0; _vertex_index < 4; _vertex_index++)
         {
             var _vertex = _vertices[_vertex_index];
-            draw_point(_vertex.draw_x, _vertex.draw_y);
+            var _next_vertex = _vertices[(_vertex_index + 1) mod 4];
+            draw_line(_vertex.draw_x, _vertex.draw_y, _next_vertex.draw_x, _next_vertex.draw_y);
         }
     }
 }

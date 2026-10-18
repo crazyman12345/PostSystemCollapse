@@ -1,16 +1,36 @@
 function raid_environment_init()
 {
-    var _inner_face_material = raid_environment_material(spr_shelf_texture);
-    _inner_face_material.offset_x = 33;
-    _inner_face_material.offset_y = -17;
-    _inner_face_material.uv_offset_v = 97;
-    _inner_face_material.scale_x = 20;
-    _inner_face_material.scale_y = 49;
+    var _inner_face_sprites = [spr_shelf1, spr_shelf2, spr_shelf3, spr_shelf4, spr_shelf5];
+    var _inner_face_materials = [];
+    for (var _sprite_index = 0; _sprite_index < array_length(_inner_face_sprites); _sprite_index++)
+    {
+        var _material = raid_environment_material(_inner_face_sprites[_sprite_index], 0, 0, 45, -29);
+        _material.offset_x = -10;
+        _material.offset_y = 32;
+        _material.uv_offset_v = 6;
+        _material.scale_x = 84;
+        _material.scale_y = 66;
+        array_push(_inner_face_materials, _material);
+    }
+
+    var _door_inner_face_material = raid_environment_material(spr_door1, 0, 0, 45, -29);
+    _door_inner_face_material.offset_x = -10;
+    _door_inner_face_material.offset_y = 32;
+    _door_inner_face_material.uv_offset_v = 6;
+    _door_inner_face_material.scale_x = 84;
+    _door_inner_face_material.scale_y = 66;
+
+    var _cap_material = raid_environment_material(topcap1, 0, 6, 30, -24);
+    _cap_material.offset_x = 35;
+    _cap_material.offset_y = 45;
+    _cap_material.scale_x = 10;
+    _cap_material.scale_y = 10;
 
     raid_environment = {
         enabled: true,
         debug: false,
         wall_height: 48,
+        door_opening_height: 36,
         wall_thickness: 28,
         vertical_projection: 0.75,
         perspective_strength_x: 4,
@@ -19,8 +39,10 @@ function raid_environment_init()
         tile_width: 32,
         tile_height: 16,
         wall_segments: {north: 5, south: 5, east: 5, west: 5},
-        cap_material: raid_environment_material(tile1),
-        inner_face_material: _inner_face_material,
+        cap_material: _cap_material,
+        inner_face_material: _inner_face_materials[0],
+        inner_face_materials: _inner_face_materials,
+        door_inner_face_material: _door_inner_face_material,
         perspective_x: 0,
         perspective_y: 0,
         geometry: undefined

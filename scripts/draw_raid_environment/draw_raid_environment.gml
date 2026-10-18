@@ -7,12 +7,12 @@ function draw_raid_environment(_foreground = false)
 
     if (!_foreground)
     {
-        raid_environment_draw_batch(_geometry.back_inner_faces, raid_environment.inner_face_material);
+        raid_environment_draw_inner_faces(_geometry.back_inner_faces);
         raid_environment_draw_batch(_geometry.back_caps, raid_environment.cap_material);
     }
     else
     {
-        raid_environment_draw_batch(_geometry.front_inner_faces, raid_environment.inner_face_material);
+        raid_environment_draw_inner_faces(_geometry.front_inner_faces);
         raid_environment_draw_batch(_geometry.front_caps, raid_environment.cap_material);
     }
 
@@ -22,13 +22,30 @@ function draw_raid_environment(_foreground = false)
 }
 
 
-function raid_environment_draw_batch(_batch, _material)
+function raid_environment_draw_inner_faces(_batch)
+{
+    var _door_material = raid_environment.door_inner_face_material;
+    var _materials = raid_environment.inner_face_materials;
+    for (var _material_index = 0; _material_index < array_length(_materials); _material_index++)
+        raid_environment_draw_batch(_batch, _materials[_material_index], false, _material_index);
+
+    if (!is_undefined(_door_material))
+    {
+        raid_environment_draw_batch(_batch, _door_material, true);
+    }
+}
+
+
+function raid_environment_draw_batch(_batch, _material, _door_segments_only = undefined, _material_index = undefined)
 {
     if (array_length(_batch) <= 0) return;
     draw_primitive_begin_texture(pr_trianglelist, _material.texture);
     for (var _quad_index = 0; _quad_index < array_length(_batch); _quad_index++)
     {
         var _quad = _batch[_quad_index];
+        var _is_door_segment = variable_struct_exists(_quad, "door_segment") && _quad.door_segment;
+        if (!is_undefined(_door_segments_only) && _is_door_segment != _door_segments_only) continue;
+        if (!is_undefined(_material_index) && _quad.material_index != _material_index) continue;
         var _vertices = _quad.vertices;
         raid_environment_draw_vertex(_vertices[0], _material, _quad.color);
         raid_environment_draw_vertex(_vertices[1], _material, _quad.color);

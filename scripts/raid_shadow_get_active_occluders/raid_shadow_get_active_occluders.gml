@@ -16,15 +16,28 @@ function raid_shadow_get_active_occluders()
     {
         if (raid_player_death_phase <= 1 && raid_player_death_sprite >= 0 && sprite_exists(raid_player_death_sprite))
         {
+            var _death_feet_x = raid_player_death_x + (
+                (sprite_get_bbox_left(raid_player_death_sprite) + sprite_get_bbox_right(raid_player_death_sprite)) * 0.5
+                - sprite_get_xoffset(raid_player_death_sprite)
+            ) * raid_player_death_facing * raid_player_death_scale;
+            var _death_feet_y = raid_player_death_y + (
+                sprite_get_bbox_bottom(raid_player_death_sprite) - sprite_get_yoffset(raid_player_death_sprite)
+            ) * raid_player_death_scale;
             var _death_caster = raid_shadow_occluder_sprite(
                 raid_player_death_sprite,
                 raid_player_death_frame,
                 raid_player_death_x,
                 raid_player_death_y,
                 raid_player_death_facing * raid_player_death_scale,
-                raid_player_death_scale
+                raid_player_death_scale,
+                0,
+                undefined,
+                _death_feet_x,
+                _death_feet_y
             );
             _death_caster.character_caster = true;
+            _death_caster.projection_sample_offset_x = raid_player_projected_shadow_offset_x;
+            _death_caster.projection_sample_offset_y = raid_player_projected_shadow_offset_y;
             _death_caster.exclude_source_from_shadow = true;
             array_push(_active, _death_caster);
         }
@@ -32,22 +45,38 @@ function raid_shadow_get_active_occluders()
     else if (global.graphics_settings.character_shadows)
     {
         var _player_sprite = raid_player_moving ? spr_player_run : spr_player_idle;
+        var _player_feet_x = round(raid_player_x + (
+            (sprite_get_bbox_left(_player_sprite) + sprite_get_bbox_right(_player_sprite)) * 0.5
+            - sprite_get_xoffset(_player_sprite)
+        ) * raid_player_facing);
+        var _player_feet_y = round(raid_player_y) - 1;
         var _player_caster = raid_shadow_occluder_sprite(
             _player_sprite,
             floor(raid_player_anim_frame),
             raid_player_x,
             raid_player_y,
             raid_player_facing,
-            1
+            1,
+            0,
+            undefined,
+            _player_feet_x,
+            _player_feet_y
         );
         _player_caster.character_caster = true;
         _player_caster.player_shadow_body = true;
+        _player_caster.projection_sample_offset_x = raid_player_projected_shadow_offset_x;
+        _player_caster.projection_sample_offset_y = raid_player_projected_shadow_offset_y;
         _player_caster.exclude_source_from_shadow = true;
         array_push(_active, _player_caster);
         _character_accessories = raid_shadow_get_player_accessory_occluders(
             _player_caster.position.x,
             _player_caster.position.y
         );
+        for (var _player_accessory_index = 0; _player_accessory_index < array_length(_character_accessories); _player_accessory_index++)
+        {
+            _character_accessories[_player_accessory_index].projection_sample_offset_x = raid_player_projected_shadow_offset_x;
+            _character_accessories[_player_accessory_index].projection_sample_offset_y = raid_player_projected_shadow_offset_y;
+        }
 
         for (var _enemy_index = 0; _enemy_index < array_length(raid_enemies); _enemy_index++)
         {
@@ -57,13 +86,18 @@ function raid_shadow_get_active_occluders()
             var _enemy_bbox_height = sprite_get_bbox_bottom(_enemy.enemy_sprite)
                 - sprite_get_bbox_top(_enemy.enemy_sprite) + 1;
             var _enemy_draw_scale = 0.75 * (40 / max(1, _enemy_bbox_height)) * _enemy.size_multiplier;
+            var _enemy_bbox = raid_enemy_get_collision_bbox(_enemy);
             var _enemy_caster = raid_shadow_occluder_sprite(
                 _enemy.enemy_sprite,
                 floor(_enemy.enemy_frame),
                 _enemy.enemy_x,
                 _enemy.enemy_y,
                 _enemy.enemy_facing * _enemy_draw_scale,
-                _enemy_draw_scale
+                _enemy_draw_scale,
+                0,
+                undefined,
+                (_enemy_bbox.left + _enemy_bbox.right) * 0.5,
+                _enemy_bbox.bottom
             );
             _enemy_caster.character_caster = true;
             _enemy_caster.exclude_source_from_shadow = true;

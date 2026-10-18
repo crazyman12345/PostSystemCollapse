@@ -4,6 +4,7 @@ function raid_environment_build()
 
     var _settings = raid_environment;
     var _height = max(1, _settings.wall_height);
+    var _door_opening_height = clamp(_settings.door_opening_height, 0, _height);
     var _thickness = max(1, _settings.wall_thickness);
     var _projection_depth = _height * max(0, _settings.vertical_projection);
     var _openings = raid_environment_get_door_openings();
@@ -18,6 +19,7 @@ function raid_environment_build()
         room_x2: raid_room_x2,
         room_y2: raid_room_y2,
         wall_height: _height,
+        door_opening_height: _door_opening_height,
         wall_thickness: _thickness,
         vertical_projection: _settings.vertical_projection,
         north_segments: _north_segments,
@@ -33,9 +35,20 @@ function raid_environment_build()
     var _inner_face_color = make_color_rgb(190, 194, 198);
     var _cap_color = make_color_rgb(190, 194, 198);
     var _room_width = raid_room_x2 - raid_room_x1;
+    var _door_segments = array_create(_north_segments, false);
+    for (var _opening_index = 0; _opening_index < array_length(_openings); _opening_index++)
+    {
+        var _opening = _openings[_opening_index];
+        for (var _segment_index = 0; _segment_index < _north_segments; _segment_index++)
+        {
+            var _segment_left = raid_room_x1 + _room_width * _segment_index / _north_segments;
+            var _segment_right = raid_room_x1 + _room_width * (_segment_index + 1) / _north_segments;
+            if (_opening.right > _segment_left && _opening.left < _segment_right)
+                _door_segments[_segment_index] = true;
+        }
+    }
 
-    // Keep the original north-wall door openings and corner projection. Only
-    // the UV boundaries are divided into configurable equal wall sections.
+    // Cut door openings from the north inner face while keeping the top caps continuous.
     var _span_start = raid_room_x1;
     for (var _opening_index = 0; _opening_index <= array_length(_openings); _opening_index++)
     {
@@ -54,19 +67,36 @@ function raid_environment_build()
                 _top_start, raid_room_y1, _top_end, raid_room_y1,
                 _span_start, raid_room_y1, _span_end, raid_room_y1,
                 _height, _inner_face_color, 0, -1,
-                _fraction_start, _fraction_end, _north_segments);
-            raid_environment_add_cap_sections(_geometry, false,
-                _top_start - (_at_left_corner ? _thickness : 0),
-                raid_room_y1 - _projection_depth - _thickness,
-                _top_end + (_at_right_corner ? _thickness : 0),
-                raid_room_y1 - _projection_depth,
-                _height, _cap_color, true,
-                _fraction_start, _fraction_end, _north_segments);
+                _fraction_start, _fraction_end, _north_segments,
+                0, 0, 1, _door_segments);
         }
 
         if (_opening_index < array_length(_openings))
             _span_start = _openings[_opening_index].right;
     }
+
+    if (_door_opening_height < _height)
+    {
+        var _lintel_v = 1 - _door_opening_height / _height;
+        for (var _opening_index = 0; _opening_index < array_length(_openings); _opening_index++)
+        {
+            var _opening = _openings[_opening_index];
+            var _fraction_start = (_opening.left - raid_room_x1) / _room_width;
+            var _fraction_end = (_opening.right - raid_room_x1) / _room_width;
+            raid_environment_add_inner_face_sections(_geometry.back_inner_faces,
+                _opening.left, raid_room_y1, _opening.right, raid_room_y1,
+                _opening.left, raid_room_y1, _opening.right, raid_room_y1,
+                _height, _inner_face_color, 0, -1,
+                _fraction_start, _fraction_end, _north_segments,
+                _door_opening_height, 0, _lintel_v, _door_segments);
+        }
+    }
+    raid_environment_add_cap_sections(_geometry, false,
+        raid_room_x1 - _projection_depth - _thickness,
+        raid_room_y1 - _projection_depth - _thickness,
+        raid_room_x2 + _projection_depth + _thickness,
+        raid_room_y1 - _projection_depth,
+        _height, _cap_color, true, 0, 1, _north_segments);
 
     // South remains in the foreground pass so the inward-facing wall can
     // overlap actors at the southern boundary.
@@ -133,7 +163,8 @@ function raid_environment_add_inner_face_sections(_batch,
     _top_ax, _top_ay, _top_bx, _top_by,
     _base_ax, _base_ay, _base_bx, _base_by,
     _height, _color, _projection_x, _projection_y,
-    _span_start, _span_end, _segment_count)
+    _span_start, _span_end, _segment_count,
+    _base_height = 0, _v_start = 0, _v_end = 1, _door_segments = undefined)
 {
     if (_span_end <= _span_start || _height <= 0) return;
 
@@ -149,6 +180,11 @@ function raid_environment_add_inner_face_sections(_batch,
         var _local_end = (_section_end - _span_start) / (_span_end - _span_start);
         var _u_start = (_section_start - _segment_start) * _segment_count;
         var _u_end = (_section_end - _segment_start) * _segment_count;
+        if (_projection_x < 0 || _projection_y < 0)
+        {
+            _u_start = 1 - _u_start;
+            _u_end = 1 - _u_end;
+        }
         var _section_top_ax = lerp(_top_ax, _top_bx, _local_start);
         var _section_top_ay = lerp(_top_ay, _top_by, _local_start);
         var _section_top_bx = lerp(_top_ax, _top_bx, _local_end);
@@ -160,11 +196,13 @@ function raid_environment_add_inner_face_sections(_batch,
 
         array_push(_batch, {
             color: _color,
+            door_segment: is_array(_door_segments) && _door_segments[_segment_index],
+            material_index: irandom(array_length(raid_environment.inner_face_materials) - 1),
             vertices: [
-                raid_environment_vertex(_section_top_ax, _section_top_ay, _height, _u_start, 0, _projection_x, _projection_y),
-                raid_environment_vertex(_section_top_bx, _section_top_by, _height, _u_end, 0, _projection_x, _projection_y),
-                raid_environment_vertex(_section_base_bx, _section_base_by, 0, _u_end, 1, _projection_x, _projection_y),
-                raid_environment_vertex(_section_base_ax, _section_base_ay, 0, _u_start, 1, _projection_x, _projection_y)
+                raid_environment_vertex(_section_top_ax, _section_top_ay, _height, _u_start, _v_start, _projection_x, _projection_y),
+                raid_environment_vertex(_section_top_bx, _section_top_by, _height, _u_end, _v_start, _projection_x, _projection_y),
+                raid_environment_vertex(_section_base_bx, _section_base_by, _base_height, _u_end, _v_end, _projection_x, _projection_y),
+                raid_environment_vertex(_section_base_ax, _section_base_ay, _base_height, _u_start, _v_end, _projection_x, _projection_y)
             ]
         });
     }

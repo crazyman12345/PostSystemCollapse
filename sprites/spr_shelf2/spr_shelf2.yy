@@ -81,8 +81,8 @@
   "swatchColours":null,
   "swfPrecision":0.5,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"ArenaWall2",
+    "path":"texturegroups/ArenaWall2",
   },
   "type":0,
   "VTile":false,

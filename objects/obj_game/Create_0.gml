@@ -26,7 +26,7 @@ enums();
 state = GameState.MAIN_MENU;
 menu_index = 0;
 frame_scale = 1;
-music_volume = 50;
+music_volume = 0;
 music_instance = audio_play_sound(theme_song, 0, true);
 audio_sound_gain(music_instance, music_volume / 100, 0);
 
