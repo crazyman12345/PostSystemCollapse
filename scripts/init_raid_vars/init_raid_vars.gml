@@ -41,7 +41,8 @@ enum RaidEnemyType
     SPINNER,
     KNIFE_DASHER,
 	WALL_RUSHER,
-    BONES
+    BONES,
+    GRENADE_THROWER
 }
 
 enum RaidEnemyState

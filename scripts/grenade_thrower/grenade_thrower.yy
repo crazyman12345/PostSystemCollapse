@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"grenade_thrower",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"grenade_thrower",
+  "parent":{
+    "name":"EnemyTypes",
+    "path":"folders/Raid/EnemyTypes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

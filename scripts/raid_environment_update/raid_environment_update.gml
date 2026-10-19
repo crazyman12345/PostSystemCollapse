@@ -35,15 +35,13 @@ function raid_environment_geometry_is_current()
     || _geometry.east_segments != max(1, floor(raid_environment.wall_segments.east))
     || _geometry.west_segments != max(1, floor(raid_environment.wall_segments.west))) return false;
 
-    var _doors_visible = raid.doors_active || raid.state == RaidState.EXITING;
-    var _expected_count = _doors_visible ? array_length(raid_doors) : 0;
+    var _expected_openings = raid_environment_get_door_openings();
+    var _expected_count = array_length(_expected_openings);
     if (array_length(_geometry.openings) != _expected_count) return false;
     for (var _door_index = 0; _door_index < _expected_count; _door_index++)
     {
-        var _door = raid_doors[_door_index];
-        var _left = clamp(_door.door_x - _door.door_w * 0.5, raid_room_x1, raid_room_x2);
-        var _right = clamp(_door.door_x + _door.door_w * 0.5, raid_room_x1, raid_room_x2);
-        if (_geometry.openings[_door_index].left != _left || _geometry.openings[_door_index].right != _right) return false;
+        if (_geometry.openings[_door_index].left != _expected_openings[_door_index].left
+        || _geometry.openings[_door_index].right != _expected_openings[_door_index].right) return false;
     }
     return true;
 }

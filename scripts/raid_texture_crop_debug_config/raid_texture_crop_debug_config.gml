@@ -13,7 +13,9 @@ function raid_texture_crop_debug_init()
 
 function raid_texture_crop_debug_material(_tab = raid_texture_crop_debug_tab)
 {
-    return _tab == 0 ? raid_environment.inner_face_material : raid_environment.cap_material;
+    if (_tab == 0) return raid_environment.inner_face_material;
+    if (_tab == 1) return raid_environment.cap_material;
+    return raid_environment.door_inner_face_material;
 }
 
 
@@ -37,6 +39,26 @@ function raid_texture_crop_debug_environment_set(_field, _value)
 }
 
 
+function raid_texture_crop_debug_door_set(_field, _value)
+{
+    var _material_names = ["crop_left", "crop_right", "crop_top", "crop_bottom", "offset_x", "offset_y", "uv_offset_u", "uv_offset_v", "scale_x", "scale_y"];
+    if (_field < 10) raid_texture_crop_debug_set(raid_environment.door_inner_face_material, _material_names[_field], _value);
+    else if (_field == 10) raid_environment.door_opening_left_offset = clamp(round(_value), -100, 100);
+    else if (_field == 11) raid_environment.door_opening_right_offset = clamp(round(_value), -100, 100);
+    else raid_environment.door_opening_height = clamp(round(_value), 0, raid_environment.wall_height);
+}
+
+
+function raid_texture_crop_debug_door_value(_field)
+{
+    var _material_names = ["crop_left", "crop_right", "crop_top", "crop_bottom", "offset_x", "offset_y", "uv_offset_u", "uv_offset_v", "scale_x", "scale_y"];
+    if (_field < 10) return variable_struct_get(raid_environment.door_inner_face_material, _material_names[_field]);
+    if (_field == 10) return raid_environment.door_opening_left_offset;
+    if (_field == 11) return raid_environment.door_opening_right_offset;
+    return raid_environment.door_opening_height;
+}
+
+
 function raid_texture_crop_debug_set(_material, _name, _value)
 {
     if (_name == "scale_x" || _name == "scale_y")
@@ -55,9 +77,6 @@ function raid_texture_crop_debug_material_set(_tab, _name, _value)
         var _materials = raid_environment.inner_face_materials;
         for (var _material_index = 0; _material_index < array_length(_materials); _material_index++)
             raid_texture_crop_debug_set(_materials[_material_index], _name, _value);
-        if (variable_struct_exists(raid_environment, "door_inner_face_material")
-            && !is_undefined(raid_environment.door_inner_face_material))
-            raid_texture_crop_debug_set(raid_environment.door_inner_face_material, _name, _value);
         return;
     }
 
@@ -67,7 +86,7 @@ function raid_texture_crop_debug_material_set(_tab, _name, _value)
 
 function raid_texture_crop_debug_reset(_tab)
 {
-    if (_tab == 3)
+    if (_tab == 4)
     {
         raid_environment.vertical_projection = 0.75;
         raid_environment.perspective_strength_x = 4;
@@ -76,11 +95,20 @@ function raid_texture_crop_debug_reset(_tab)
         return;
     }
 
-    if (_tab == 2)
+    if (_tab == 3)
     {
         raid_player_projected_shadow_offset_x = 0;
         raid_player_projected_shadow_offset_y = -6;
         raid_shadow_gun_extra_offset_scale = 0.6;
+        return;
+    }
+
+
+    if (_tab == 2)
+    {
+        var _door_defaults = [0, 2, -42, -29, -23, 32, 100, 6, 20, 64, 3, -2, 33];
+        for (var _field = 0; _field < array_length(_door_defaults); _field++)
+            raid_texture_crop_debug_door_set(_field, _door_defaults[_field]);
         return;
     }
 
@@ -102,7 +130,7 @@ function raid_texture_crop_debug_data()
     var _inner = raid_environment.inner_face_material;
     var _cap = raid_environment.cap_material;
     return {
-        version: 6,
+        version: 8,
         inner_face: {
             crop_left: _inner.crop_left,
             crop_right: _inner.crop_right,
@@ -127,6 +155,21 @@ function raid_texture_crop_debug_data()
             scale_x: _cap.scale_x,
             scale_y: _cap.scale_y
         },
+        door: {
+            crop_left: raid_environment.door_inner_face_material.crop_left,
+            crop_right: raid_environment.door_inner_face_material.crop_right,
+            crop_top: raid_environment.door_inner_face_material.crop_top,
+            crop_bottom: raid_environment.door_inner_face_material.crop_bottom,
+            offset_x: raid_environment.door_inner_face_material.offset_x,
+            offset_y: raid_environment.door_inner_face_material.offset_y,
+            uv_offset_u: raid_environment.door_inner_face_material.uv_offset_u,
+            uv_offset_v: raid_environment.door_inner_face_material.uv_offset_v,
+            scale_x: raid_environment.door_inner_face_material.scale_x,
+            scale_y: raid_environment.door_inner_face_material.scale_y,
+            opening_left_offset: raid_environment.door_opening_left_offset,
+            opening_right_offset: raid_environment.door_opening_right_offset,
+            opening_top: raid_environment.door_opening_height
+        },
         player_shadow: {
             offset_x: raid_player_projected_shadow_offset_x,
             offset_y: raid_player_projected_shadow_offset_y,
@@ -149,6 +192,19 @@ function raid_texture_crop_debug_apply_data(_data)
         raid_texture_crop_debug_apply_inner_face_materials(_data.inner_face);
     if (variable_struct_exists(_data, "top_cap"))
         raid_texture_crop_debug_apply_material(raid_environment.cap_material, _data.top_cap);
+    if (variable_struct_exists(_data, "door") && is_struct(_data.door))
+    {
+        var _door_names = ["crop_left", "crop_right", "crop_top", "crop_bottom", "offset_x", "offset_y", "uv_offset_u", "uv_offset_v", "scale_x", "scale_y"];
+        for (var _door_field = 0; _door_field < array_length(_door_names); _door_field++)
+        {
+            var _door_name = _door_names[_door_field];
+            if (variable_struct_exists(_data.door, _door_name))
+                raid_texture_crop_debug_door_set(_door_field, variable_struct_get(_data.door, _door_name));
+        }
+        if (variable_struct_exists(_data.door, "opening_left_offset")) raid_texture_crop_debug_door_set(10, _data.door.opening_left_offset);
+        if (variable_struct_exists(_data.door, "opening_right_offset")) raid_texture_crop_debug_door_set(11, _data.door.opening_right_offset);
+        if (variable_struct_exists(_data.door, "opening_top")) raid_texture_crop_debug_door_set(12, _data.door.opening_top);
+    }
     if (variable_struct_exists(_data, "player_shadow") && is_struct(_data.player_shadow))
     {
         if (variable_struct_exists(_data.player_shadow, "offset_x"))
@@ -266,6 +322,20 @@ function raid_texture_crop_debug_copy()
         + "  UV Offset V: " + string(_cap.uv_offset_v) + "%\n"
         + "  Scale X: " + string(_cap.scale_x) + "%\n"
         + "  Scale Y: " + string(_cap.scale_y) + "%\n"
+        + "DOOR\n"
+        + "  Crop Left: " + string(raid_environment.door_inner_face_material.crop_left) + "%\n"
+        + "  Crop Right: " + string(raid_environment.door_inner_face_material.crop_right) + "%\n"
+        + "  Crop Top: " + string(raid_environment.door_inner_face_material.crop_top) + "%\n"
+        + "  Crop Bottom: " + string(raid_environment.door_inner_face_material.crop_bottom) + "%\n"
+        + "  Texture Offset X: " + string(raid_environment.door_inner_face_material.offset_x) + "%\n"
+        + "  Texture Offset Y: " + string(raid_environment.door_inner_face_material.offset_y) + "%\n"
+        + "  UV Offset U: " + string(raid_environment.door_inner_face_material.uv_offset_u) + "%\n"
+        + "  UV Offset V: " + string(raid_environment.door_inner_face_material.uv_offset_v) + "%\n"
+        + "  Scale X: " + string(raid_environment.door_inner_face_material.scale_x) + "%\n"
+        + "  Scale Y: " + string(raid_environment.door_inner_face_material.scale_y) + "%\n"
+        + "  Opening Left Offset: " + string(raid_environment.door_opening_left_offset) + " px\n"
+        + "  Opening Right Offset: " + string(raid_environment.door_opening_right_offset) + " px\n"
+        + "  Opening Top: " + string(raid_environment.door_opening_height) + " px\n"
         + "PLAYER PROJECTED SHADOW\n"
         + "  Offset X: " + string(raid_player_projected_shadow_offset_x) + "\n"
         + "  Offset Y: " + string(raid_player_projected_shadow_offset_y) + "\n"

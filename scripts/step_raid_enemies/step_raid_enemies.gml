@@ -59,6 +59,12 @@ function step_raid_enemies()
 			}
 			break;
 
+            case RaidEnemyType.GRENADE_THROWER:
+            {
+                e = grenade_thrower(e);
+            }
+            break;
+
 			case RaidEnemyType.BONES:
 			{
 				e = bones(e);

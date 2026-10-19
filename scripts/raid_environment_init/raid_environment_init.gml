@@ -13,12 +13,13 @@ function raid_environment_init()
         array_push(_inner_face_materials, _material);
     }
 
-    var _door_inner_face_material = raid_environment_material(spr_door1, 0, 0, 45, -29);
-    _door_inner_face_material.offset_x = -10;
+    var _door_inner_face_material = raid_environment_material(spr_door1, 0, 2, -42, -29);
+    _door_inner_face_material.offset_x = -23;
     _door_inner_face_material.offset_y = 32;
+    _door_inner_face_material.uv_offset_u = 100;
     _door_inner_face_material.uv_offset_v = 6;
-    _door_inner_face_material.scale_x = 84;
-    _door_inner_face_material.scale_y = 66;
+    _door_inner_face_material.scale_x = 20;
+    _door_inner_face_material.scale_y = 64;
 
     var _cap_material = raid_environment_material(topcap1, 0, 6, 30, -24);
     _cap_material.offset_x = 35;
@@ -30,7 +31,9 @@ function raid_environment_init()
         enabled: true,
         debug: false,
         wall_height: 48,
-        door_opening_height: 36,
+        door_opening_height: 33,
+        door_opening_left_offset: 3,
+        door_opening_right_offset: -2,
         wall_thickness: 28,
         vertical_projection: 0.75,
         perspective_strength_x: 4,

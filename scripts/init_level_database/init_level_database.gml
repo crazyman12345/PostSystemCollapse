@@ -5,64 +5,43 @@ function init_level_database()
             name: "ABANDONED STORE",
             danger_level: 1,
             sprite: -1,
+            enemy_spawns: [
+                {type: RaidEnemyType.KNIFE_STALKER, weight: 30},
+                {type: RaidEnemyType.BURST_SHOOTER, weight: 25},
+                {type: RaidEnemyType.SPINNER, weight: 20},
+                {type: RaidEnemyType.KNIFE_DASHER, weight: 15},
+                {type: RaidEnemyType.WALL_RUSHER, weight: 10}
+            ]
         },
         {
-            name: "TEST 1",
-            danger_level: 1,
-            sprite: -1
-        },
-        {
-            name: "TEST 2",
-            danger_level: 1,
-            sprite: -1
-        },
-        {
-            name: "TEST 3",
-            danger_level: 1,
-            sprite: -1
-        },
-        {
-            name: "TEST 4",
-            danger_level: 1,
-            sprite: -1
-        },
-        {
-            name: "TEST 5",
-            danger_level: 1,
-            sprite: -1
-        },
-        {
-            name: "TEST 6",
-            danger_level: 1,
-            sprite: -1
-        },
-        {
-            name: "TEST 7",
-            danger_level: 1,
-            sprite: -1
-        },
-        {
-            name: "TEST 8",
-            danger_level: 1,
+            name: "SEWER TUNNELS",
+            danger_level: 2,
             sprite: -1,
-            enemies: []
+            enemy_spawns: [
+                {type: RaidEnemyType.GRENADE_THROWER, weight: 100}
+            ]
         },
         {
-            name: "TEST 9",
-            danger_level: 1,
-            sprite: -1
-
-        },
-        {
-            name: "TEST 10",
+            name: "coming soon",
             danger_level: 1,
             sprite: -1
         },
         {
-            name: "TEST 11",
+            name: "coming soon",
+            danger_level: 1,
+            sprite: -1
+        },
+        {
+            name: "coming soon",
+            danger_level: 1,
+            sprite: -1
+        },
+        {
+            name: "coming soon",
             danger_level: 1,
             sprite: -1
         }
+     
     ];
 
     // Wall texture repetition can be tuned independently for each environment.

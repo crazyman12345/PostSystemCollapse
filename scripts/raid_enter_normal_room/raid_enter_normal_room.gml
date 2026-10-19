@@ -33,5 +33,5 @@ function raid_enter_normal_room(_reward_type)
 	step_raid_camera();
 
     raid_spawn_enemies();
-    raid_environment_build();
+    raid_create_next_doors(false);
 }

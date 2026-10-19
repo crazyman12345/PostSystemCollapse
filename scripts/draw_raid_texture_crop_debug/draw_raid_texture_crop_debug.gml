@@ -3,11 +3,13 @@ function draw_raid_texture_crop_debug()
     if (state != GameState.RAID || !raid_texture_crop_debug_active) return;
 
     var _material = raid_texture_crop_debug_tab >= 2 ? undefined : raid_texture_crop_debug_material();
-    var _names = raid_texture_crop_debug_tab == 3
+    var _names = raid_texture_crop_debug_tab == 4
         ? ["Vertical Projection", "Perspective Strength X", "Perspective Strength Y", "Perspective Smoothing"]
-        : (raid_texture_crop_debug_tab == 2
+        : (raid_texture_crop_debug_tab == 3
             ? ["Projection Crop X", "Projection Crop Y", "Gun Offset Scale"]
-            : ["Crop Left", "Crop Right", "Crop Top", "Crop Bottom", "Offset X", "Offset Y", "UV Offset U", "UV Offset V", "Scale X", "Scale Y"]);
+            : (raid_texture_crop_debug_tab == 2
+                ? ["Crop Left", "Crop Right", "Crop Top", "Crop Bottom", "Offset X", "Offset Y", "UV Offset U", "UV Offset V", "Scale X", "Scale Y", "Opening Left Offset", "Opening Right Offset", "Opening Top"]
+                : ["Crop Left", "Crop Right", "Crop Top", "Crop Bottom", "Offset X", "Offset Y", "UV Offset U", "UV Offset V", "Scale X", "Scale Y"]));
     var _fields = ["crop_left", "crop_right", "crop_top", "crop_bottom", "offset_x", "offset_y", "uv_offset_u", "uv_offset_v", "scale_x", "scale_y"];
     var _green = c_lime;
     var _selected = make_color_rgb(180, 255, 180);
@@ -23,33 +25,47 @@ function draw_raid_texture_crop_debug()
     draw_rectangle(40, 70, 550, 710, true);
     draw_text(60, 82, "RAID VISUAL TUNING  [F7 CLOSE]");
 
-    raid_texture_crop_debug_draw_button(50, 110, 120, 30, "INNER FACE", raid_texture_crop_debug_tab == 0, false);
-    raid_texture_crop_debug_draw_button(175, 110, 120, 30, "TOP CAP", raid_texture_crop_debug_tab == 1, false);
-    raid_texture_crop_debug_draw_button(300, 110, 120, 30, "SHADOW", raid_texture_crop_debug_tab == 2, false);
-    raid_texture_crop_debug_draw_button(425, 110, 120, 30, "ENVIRONMENT", raid_texture_crop_debug_tab == 3, false);
+    raid_texture_crop_debug_draw_button(50, 110, 96, 30, "INNER FACE", raid_texture_crop_debug_tab == 0, false);
+    raid_texture_crop_debug_draw_button(149, 110, 96, 30, "TOP CAP", raid_texture_crop_debug_tab == 1, false);
+    raid_texture_crop_debug_draw_button(248, 110, 96, 30, "DOOR", raid_texture_crop_debug_tab == 2, false);
+    raid_texture_crop_debug_draw_button(347, 110, 96, 30, "SHADOW", raid_texture_crop_debug_tab == 3, false);
+    raid_texture_crop_debug_draw_button(446, 110, 96, 30, "ENVIRONMENT", raid_texture_crop_debug_tab == 4, false);
 
     for (var _row = 0; _row < array_length(_names); _row++)
     {
-        var _row_y = 165 + _row * 40;
+        var _row_spacing = raid_texture_crop_debug_tab == 2 ? 30 : 40;
+        var _row_y = 165 + _row * _row_spacing;
         var _value;
-        if (raid_texture_crop_debug_tab == 3)
+        if (raid_texture_crop_debug_tab == 4)
             _value = _row == 0 ? raid_environment.vertical_projection
                 : (_row == 1 ? raid_environment.perspective_strength_x
                 : (_row == 2 ? raid_environment.perspective_strength_y : raid_environment.perspective_smoothing));
-        else if (raid_texture_crop_debug_tab == 2)
+        else if (raid_texture_crop_debug_tab == 3)
             _value = _row == 0 ? raid_player_projected_shadow_offset_x
                 : (_row == 1 ? raid_player_projected_shadow_offset_y : raid_shadow_gun_extra_offset_scale);
+        else if (raid_texture_crop_debug_tab == 2)
+            _value = raid_texture_crop_debug_door_value(_row);
         else _value = variable_struct_get(_material, _fields[_row]);
         draw_set_color(raid_texture_crop_debug_selection == _row ? _selected : _green);
         draw_text(60, _row_y + 3, _names[_row]);
         draw_line(210, _row_y + 12, 390, _row_y + 12);
         var _knob_x;
-        if (raid_texture_crop_debug_tab == 3)
+        if (raid_texture_crop_debug_tab == 4)
             _knob_x = 210 + (_value / (_row == 3 ? 1 : (_row == 0 ? 2 : 20))) * 180;
-        else if (raid_texture_crop_debug_tab == 2 && _row == 2)
+        else if (raid_texture_crop_debug_tab == 3 && _row == 2)
             _knob_x = 210 + (_value / 2) * 180;
-        else if (raid_texture_crop_debug_tab == 2)
+        else if (raid_texture_crop_debug_tab == 3)
             _knob_x = 210 + ((_value + 100) / 200) * 180;
+        else if (raid_texture_crop_debug_tab == 2 && _row < 6)
+            _knob_x = 210 + ((_value + 45) / 90) * 180;
+        else if (raid_texture_crop_debug_tab == 2 && _row < 8)
+            _knob_x = 210 + ((_value + 100) / 200) * 180;
+        else if (raid_texture_crop_debug_tab == 2 && _row < 10)
+            _knob_x = 210 + ((_value - 10) / 190) * 180;
+        else if (raid_texture_crop_debug_tab == 2 && _row < 12)
+            _knob_x = 210 + ((_value + 100) / 200) * 180;
+        else if (raid_texture_crop_debug_tab == 2)
+            _knob_x = 210 + (_value / raid_environment.wall_height) * 180;
         else if (_row < 6)
             _knob_x = 210 + ((_value + 45) / 90) * 180;
         else if (_row < 8)
@@ -59,18 +75,20 @@ function draw_raid_texture_crop_debug()
         draw_rectangle(_knob_x - 3, _row_y + 7, _knob_x + 3, _row_y + 17, false);
         raid_texture_crop_debug_draw_button(410, _row_y, 32, 24, "-", false, false);
         draw_set_halign(fa_center);
-        var _suffix = raid_texture_crop_debug_tab == 2 && _row < 2 ? " px" : (raid_texture_crop_debug_tab < 2 ? "%" : "");
-        draw_text(476, _row_y + 3, (raid_texture_crop_debug_tab == 3 ? string_format(_value, 0, 2) : string(_value)) + _suffix);
+        var _suffix = raid_texture_crop_debug_tab == 3 && _row < 2 ? " px"
+            : (raid_texture_crop_debug_tab == 2 ? (_row < 10 ? "%" : " px") : (raid_texture_crop_debug_tab < 2 ? "%" : ""));
+        draw_text(476, _row_y + 3, (raid_texture_crop_debug_tab == 4 ? string_format(_value, 0, 2) : string(_value)) + _suffix);
         draw_set_halign(fa_left);
         raid_texture_crop_debug_draw_button(510, _row_y, 32, 24, "+", false, false);
     }
 
     raid_texture_crop_debug_draw_button(60, 585, 225, 28,
-        raid_texture_crop_debug_tab == 3 ? "RESET ENVIRONMENT" : (raid_texture_crop_debug_tab == 2 ? "RESET PLAYER SHADOW" : "RESET CURRENT MATERIAL"),
-        false, raid_texture_crop_debug_selection == 10);
-    raid_texture_crop_debug_draw_button(305, 585, 225, 28, "RESET ALL", false, raid_texture_crop_debug_selection == 11);
-    raid_texture_crop_debug_draw_button(60, 625, 225, 28, "SAVE VALUES", false, raid_texture_crop_debug_selection == 12);
-    raid_texture_crop_debug_draw_button(305, 625, 225, 28, "COPY SETTINGS", false, raid_texture_crop_debug_selection == 13);
+        raid_texture_crop_debug_tab == 4 ? "RESET ENVIRONMENT" : (raid_texture_crop_debug_tab == 3 ? "RESET PLAYER SHADOW"
+        : (raid_texture_crop_debug_tab == 2 ? "RESET DOOR VALUES" : "RESET CURRENT MATERIAL")),
+        false, raid_texture_crop_debug_selection == 20);
+    raid_texture_crop_debug_draw_button(305, 585, 225, 28, "RESET ALL", false, raid_texture_crop_debug_selection == 21);
+    raid_texture_crop_debug_draw_button(60, 625, 225, 28, "SAVE VALUES", false, raid_texture_crop_debug_selection == 22);
+    raid_texture_crop_debug_draw_button(305, 625, 225, 28, "COPY SETTINGS", false, raid_texture_crop_debug_selection == 23);
 
     draw_set_color(_green);
     draw_text(60, 665, "TAB material  UP/DOWN select  LEFT/RIGHT adjust  ENTER activate");

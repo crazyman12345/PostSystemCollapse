@@ -1,4 +1,4 @@
-function raid_create_next_doors()
+function raid_create_next_doors(_activate = true)
 {
     raid_doors = [];
 
@@ -51,7 +51,7 @@ function raid_create_next_doors()
         }
     );
 
-    if (raid.current_room_type != RaidRoomType.START)
+    if (_activate && raid.current_room_type != RaidRoomType.START)
     {
         for (var i = 0; i < array_length(raid_doors); i++)
         {
@@ -66,6 +66,6 @@ function raid_create_next_doors()
         }
     }
 
-    raid.doors_active = true;
+    raid.doors_active = _activate;
     raid_environment_build();
 }

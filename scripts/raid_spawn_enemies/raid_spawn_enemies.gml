@@ -18,6 +18,9 @@ function raid_spawn_enemies()
     {
         var _type = raid_get_random_enemy_type();
 
+        if (is_undefined(_type))
+            continue;
+
         var _x = random_range(
             raid_room_x1 + 60,
             raid_room_x2 - 60

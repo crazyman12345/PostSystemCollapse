@@ -45,6 +45,37 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
             _lighting_mask ? _mask_alpha : 1
         );
 
+        if (
+            e.enemy_type == RaidEnemyType.GRENADE_THROWER
+            && (e.grenade_held || e.grenade_in_flight)
+        )
+        {
+            var _grenade_x = e.grenade_in_flight
+                ? e.grenade_x
+                : e.enemy_x + e.enemy_facing * 10;
+            var _grenade_y = e.grenade_in_flight
+                ? e.grenade_y
+                : e.enemy_y - 17;
+            var _grenade_rotation = e.grenade_in_flight ? e.grenade_rotation : 0;
+            var _grenade_scale = 0.009;
+            var _grenade_center_x = sprite_get_width(spr_frag_grenade) * _grenade_scale * 0.5;
+            var _grenade_center_y = sprite_get_height(spr_frag_grenade) * _grenade_scale * 0.5;
+            var _grenade_center_distance = point_distance(0, 0, _grenade_center_x, _grenade_center_y);
+            var _grenade_center_direction = point_direction(0, 0, _grenade_center_x, _grenade_center_y);
+
+            draw_sprite_ext(
+                spr_frag_grenade,
+                0,
+                _grenade_x - lengthdir_x(_grenade_center_distance, _grenade_center_direction + _grenade_rotation),
+                _grenade_y - lengthdir_y(_grenade_center_distance, _grenade_center_direction + _grenade_rotation),
+                _grenade_scale,
+                _grenade_scale,
+                _grenade_rotation,
+                c_white,
+                _lighting_mask ? _mask_alpha : 1
+            );
+        }
+
         if (_lighting_mask)
         {
             draw_raid_enemy_gun_and_hands(e, true, _mask_alpha);

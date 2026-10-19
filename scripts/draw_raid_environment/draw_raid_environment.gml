@@ -7,13 +7,18 @@ function draw_raid_environment(_foreground = false)
 
     if (!_foreground)
     {
-        raid_environment_draw_inner_faces(_geometry.back_inner_faces);
-        raid_environment_draw_batch(_geometry.back_caps, raid_environment.cap_material);
+        raid_environment_draw_inner_faces(_geometry.back_inner_faces, false);
+        raid_environment_draw_batch(_geometry.back_caps, raid_environment.cap_material, false);
     }
     else
     {
         raid_environment_draw_inner_faces(_geometry.front_inner_faces);
         raid_environment_draw_batch(_geometry.front_caps, raid_environment.cap_material);
+
+        var _door_material = raid_environment.door_inner_face_material;
+        if (!is_undefined(_door_material))
+            raid_environment_draw_batch(_geometry.back_inner_faces, _door_material, true);
+        raid_environment_draw_batch(_geometry.back_caps, raid_environment.cap_material, true);
     }
 
     gpu_set_texfilter(_previous_texfilter);
@@ -22,14 +27,14 @@ function draw_raid_environment(_foreground = false)
 }
 
 
-function raid_environment_draw_inner_faces(_batch)
+function raid_environment_draw_inner_faces(_batch, _draw_doors = true)
 {
     var _door_material = raid_environment.door_inner_face_material;
     var _materials = raid_environment.inner_face_materials;
     for (var _material_index = 0; _material_index < array_length(_materials); _material_index++)
         raid_environment_draw_batch(_batch, _materials[_material_index], false, _material_index);
 
-    if (!is_undefined(_door_material))
+    if (_draw_doors && !is_undefined(_door_material))
     {
         raid_environment_draw_batch(_batch, _door_material, true);
     }
