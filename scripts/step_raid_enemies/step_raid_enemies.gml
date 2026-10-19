@@ -269,7 +269,7 @@ function step_raid_enemies()
 
         if (raid.rooms_cleared >= 15)
         {
-            // boss later
+            raid.extract_active = true;
             return;
         }
 

@@ -42,10 +42,6 @@ function debug_execute(_command)
 			debug_show_mouse = !debug_show_mouse;
 			break;
 			
-		case "debug_start_combat":
-			debug_start_combat(args);
-			break;
-
 		case "debug_start_boss":
 			debug_start_boss();
 			break;

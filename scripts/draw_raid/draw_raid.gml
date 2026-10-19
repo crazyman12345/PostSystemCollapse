@@ -40,6 +40,7 @@ function draw_raid()
 	draw_raid_gun();
     draw_raid_enemies();
     draw_raid_ring_hazards();
+    explosion_draw();
 	draw_raid_door_overlay();
     if (raid.state == RaidState.ENTERING)
     {

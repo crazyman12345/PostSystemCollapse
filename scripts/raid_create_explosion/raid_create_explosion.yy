@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"debug_start_combat",
+  "%Name":"raid_create_explosion",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"debug_start_combat",
+  "name":"raid_create_explosion",
   "parent":{
-    "name":"debug",
-    "path":"folders/debug.yy",
+    "name":"particles",
+    "path":"folders/graphics/particles.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

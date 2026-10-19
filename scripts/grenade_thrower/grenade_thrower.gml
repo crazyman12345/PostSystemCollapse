@@ -2,6 +2,14 @@ function grenade_thrower(_enemy)
 {
     var e = _enemy;
 
+    if (e.grenade_landed)
+    {
+        e.grenade_landed_timer = max(0, e.grenade_landed_timer - frame_scale);
+
+        if (e.grenade_landed_timer <= 0)
+            e.grenade_landed = false;
+    }
+
     if (e.grenade_in_flight)
     {
         e.grenade_flight_timer = max(0, e.grenade_flight_timer - frame_scale);
@@ -16,6 +24,8 @@ function grenade_thrower(_enemy)
         {
             e.grenade_in_flight = false;
             e.grenade_held = true;
+            e.grenade_landed = true;
+            e.grenade_landed_timer = 120;
             e.grenade_x = e.grenade_target_x;
             e.grenade_y = e.grenade_target_y;
 
@@ -23,7 +33,7 @@ function grenade_thrower(_enemy)
                 e.grenade_x,
                 e.grenade_y,
                 120,
-                110,
+                70,
                 2,
                 10,
                 10,
@@ -62,16 +72,22 @@ function grenade_thrower(_enemy)
             e.grenade_timer -= frame_scale;
 
             if (e.grenade_timer <= 0)
+            {
                 e.enemy_state = RaidEnemyState.ATTACK;
+                e.grenade_throw_timer = e.grenade_throw_total;
+            }
         }
         break;
 
         case RaidEnemyState.ATTACK:
         {
+            e.grenade_throw_timer = max(0, e.grenade_throw_timer - frame_scale);
+            if (e.grenade_throw_timer > 0) break;
+
             e.grenade_held = false;
             e.grenade_in_flight = true;
-            e.grenade_start_x = e.enemy_x + e.enemy_facing * 10;
-            e.grenade_start_y = e.enemy_y - 17;
+            e.grenade_start_x = e.enemy_x + e.enemy_facing * 16;
+            e.grenade_start_y = e.enemy_y - 20;
             e.grenade_target_x = raid_player_x;
             e.grenade_target_y = raid_player_y;
             e.grenade_x = e.grenade_start_x;
@@ -79,7 +95,7 @@ function grenade_thrower(_enemy)
             e.grenade_flight_timer = e.grenade_flight_total;
             e.grenade_rotation = 0;
 
-            e.grenade_timer = 600;
+            e.grenade_timer = randomize_enemy_timer(420, 2 / 7);
 
             for (var _attempt = 0; _attempt < 6; _attempt++)
             {

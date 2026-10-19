@@ -6,7 +6,7 @@ function debug_start_boss()
         return;
     }
 
-    raid_start("prototype_block");
+    raid_start(level_db[0]);
 
     if (raid.state == RaidState.INACTIVE || raid.state == RaidState.RESULT || state != GameState.RAID)
         return;

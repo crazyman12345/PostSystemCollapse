@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"explosion_update",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"explosion_update",
+  "parent":{
+    "name":"particles",
+    "path":"folders/graphics/particles.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

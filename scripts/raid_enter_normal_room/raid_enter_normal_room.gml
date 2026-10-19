@@ -11,6 +11,8 @@ function raid_enter_normal_room(_reward_type)
     raid.current_reward_type = _reward_type;
 	part_particles_clear(smoke_particle_system);
 	smoke_particle_update_accumulator = 0;
+	part_particles_clear(explosion_particle_system);
+	explosion_particle_update_accumulator = 0;
     raid.room_cleared = false;
     raid.reward_unlocked = false;
     raid.doors_active = false;

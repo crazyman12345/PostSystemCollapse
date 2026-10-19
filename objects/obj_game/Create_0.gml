@@ -63,6 +63,35 @@ part_type_alpha3(projectile_smoke_particle_type, 0.24, 0.12, 0);
 part_type_speed(projectile_smoke_particle_type, 0.03, 0.10, 0, 0.01);
 part_type_life(projectile_smoke_particle_type, 14, 24);
 part_type_blend(projectile_smoke_particle_type, false);
+
+explosion_particle_system = part_system_create();
+part_system_automatic_update(explosion_particle_system, false);
+part_system_automatic_draw(explosion_particle_system, false);
+explosion_particle_update_accumulator = 0;
+
+explosion_fire_particle_type = part_type_create();
+part_type_shape(explosion_fire_particle_type, pt_shape_explosion);
+part_type_color3(explosion_fire_particle_type, c_white, make_color_rgb(255, 190, 55), make_color_rgb(220, 55, 10));
+part_type_alpha3(explosion_fire_particle_type, 1, 0.8, 0);
+part_type_direction(explosion_fire_particle_type, 0, 359, 0, 0);
+part_type_life(explosion_fire_particle_type, 8, 14);
+part_type_blend(explosion_fire_particle_type, true);
+
+explosion_spark_particle_type = part_type_create();
+part_type_shape(explosion_spark_particle_type, pt_shape_spark);
+part_type_color3(explosion_spark_particle_type, c_white, make_color_rgb(255, 170, 35), make_color_rgb(190, 45, 5));
+part_type_alpha3(explosion_spark_particle_type, 1, 0.75, 0);
+part_type_direction(explosion_spark_particle_type, 0, 359, 0, 0);
+part_type_life(explosion_spark_particle_type, 14, 28);
+part_type_blend(explosion_spark_particle_type, true);
+
+explosion_smoke_particle_type = part_type_create();
+part_type_shape(explosion_smoke_particle_type, pt_shape_smoke);
+part_type_color3(explosion_smoke_particle_type, make_color_rgb(95, 80, 65), make_color_rgb(60, 56, 52), make_color_rgb(35, 34, 32));
+part_type_alpha3(explosion_smoke_particle_type, 0.5, 0.3, 0);
+part_type_direction(explosion_smoke_particle_type, 0, 359, 0, 0);
+part_type_life(explosion_smoke_particle_type, 30, 50);
+part_type_blend(explosion_smoke_particle_type, false);
 graphics_settings_load();
 //debug
 debug_console_open = false;

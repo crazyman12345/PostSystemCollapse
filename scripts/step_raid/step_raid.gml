@@ -70,5 +70,9 @@ function step_raid()
     }
 
     // Cleanup
-    if (raid.state == RaidState.COMBAT || raid.state == RaidState.EXITING) smoke_update();
+    if (raid.state == RaidState.COMBAT || raid.state == RaidState.EXITING)
+    {
+        smoke_update();
+        explosion_update();
+    }
 }

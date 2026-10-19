@@ -2,6 +2,8 @@ function raid_enter_start_room()
 {
     part_particles_clear(smoke_particle_system);
     smoke_particle_update_accumulator = 0;
+    part_particles_clear(explosion_particle_system);
+    explosion_particle_update_accumulator = 0;
     raid.current_room_type = RaidRoomType.START;
 
     raid.room_cleared = true;

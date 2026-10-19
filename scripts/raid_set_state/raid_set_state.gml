@@ -31,6 +31,8 @@ function raid_set_state(_state)
         case RaidState.DEATH:
             part_particles_clear(smoke_particle_system);
             smoke_particle_update_accumulator = 0;
+            part_particles_clear(explosion_particle_system);
+            explosion_particle_update_accumulator = 0;
             raid_player_death_phase = 0;
             raid_player_death_timer = 0;
             raid_player_death_x = raid_player_x;
@@ -58,6 +60,8 @@ function raid_set_state(_state)
         case RaidState.RESULT:
             part_particles_clear(smoke_particle_system);
             smoke_particle_update_accumulator = 0;
+            part_particles_clear(explosion_particle_system);
+            explosion_particle_update_accumulator = 0;
             raid_gun_tuning_active = false;
             menu_index = 0;
         break;

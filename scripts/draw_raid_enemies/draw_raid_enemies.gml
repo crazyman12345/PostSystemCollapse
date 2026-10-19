@@ -45,35 +45,73 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
             _lighting_mask ? _mask_alpha : 1
         );
 
-        if (
-            e.enemy_type == RaidEnemyType.GRENADE_THROWER
-            && (e.grenade_held || e.grenade_in_flight)
-        )
+        if (e.enemy_type == RaidEnemyType.GRENADE_THROWER)
         {
-            var _grenade_x = e.grenade_in_flight
-                ? e.grenade_x
-                : e.enemy_x + e.enemy_facing * 10;
-            var _grenade_y = e.grenade_in_flight
-                ? e.grenade_y
-                : e.enemy_y - 17;
+            var _grenade_x = e.grenade_x;
+            var _grenade_y = e.grenade_y;
             var _grenade_rotation = e.grenade_in_flight ? e.grenade_rotation : 0;
-            var _grenade_scale = 0.009;
-            var _grenade_center_x = sprite_get_width(spr_frag_grenade) * _grenade_scale * 0.5;
-            var _grenade_center_y = sprite_get_height(spr_frag_grenade) * _grenade_scale * 0.5;
-            var _grenade_center_distance = point_distance(0, 0, _grenade_center_x, _grenade_center_y);
-            var _grenade_center_direction = point_direction(0, 0, _grenade_center_x, _grenade_center_y);
+            var _grenade_in_hand = e.grenade_held && !e.grenade_landed;
+            var _hand_x = e.enemy_x + e.enemy_facing * 6;
+            var _hand_y = e.enemy_y - 14;
+            var _hand_rotation = 0;
+
+            if (_grenade_in_hand)
+            {
+                var _throw_progress = e.enemy_state == RaidEnemyState.ATTACK
+                    ? 1 - (e.grenade_throw_timer / e.grenade_throw_total)
+                    : 0;
+
+                if (_throw_progress < 0.45)
+                {
+                    var _windup_progress = _throw_progress / 0.45;
+                    _grenade_x = e.enemy_x + e.enemy_facing * lerp(10, -5, _windup_progress);
+                    _grenade_y = e.enemy_y + lerp(-17, -28, _windup_progress);
+                }
+                else
+                {
+                    var _release_progress = (_throw_progress - 0.45) / 0.55;
+                    _grenade_x = e.enemy_x + e.enemy_facing * lerp(-5, 16, _release_progress);
+                    _grenade_y = e.enemy_y + lerp(-28, -20, _release_progress);
+                }
+
+                _grenade_rotation = e.enemy_facing * _throw_progress * 90;
+                _hand_x = _grenade_x - e.enemy_facing * 4;
+                _hand_y = _grenade_y + 3;
+                _hand_rotation = _grenade_rotation;
+            }
 
             draw_sprite_ext(
-                spr_frag_grenade,
+                spr_hand,
                 0,
-                _grenade_x - lengthdir_x(_grenade_center_distance, _grenade_center_direction + _grenade_rotation),
-                _grenade_y - lengthdir_y(_grenade_center_distance, _grenade_center_direction + _grenade_rotation),
-                _grenade_scale,
-                _grenade_scale,
-                _grenade_rotation,
+                round(_hand_x),
+                round(_hand_y),
+                1,
+                e.enemy_facing,
+                _hand_rotation,
                 c_white,
                 _lighting_mask ? _mask_alpha : 1
             );
+
+            if (e.grenade_held || e.grenade_in_flight || e.grenade_landed)
+            {
+                var _grenade_scale = 0.009;
+                var _grenade_center_x = sprite_get_width(spr_frag_grenade) * _grenade_scale * 0.5;
+                var _grenade_center_y = sprite_get_height(spr_frag_grenade) * _grenade_scale * 0.5;
+                var _grenade_center_distance = point_distance(0, 0, _grenade_center_x, _grenade_center_y);
+                var _grenade_center_direction = point_direction(0, 0, _grenade_center_x, _grenade_center_y);
+
+                draw_sprite_ext(
+                    spr_frag_grenade,
+                    0,
+                    _grenade_x - lengthdir_x(_grenade_center_distance, _grenade_center_direction + _grenade_rotation),
+                    _grenade_y - lengthdir_y(_grenade_center_distance, _grenade_center_direction + _grenade_rotation),
+                    _grenade_scale,
+                    _grenade_scale,
+                    _grenade_rotation,
+                    c_white,
+                    _lighting_mask ? _mask_alpha : 1
+                );
+            }
         }
 
         if (_lighting_mask)

@@ -39,6 +39,8 @@ function raid_spawn_enemy(_type, _x, _y)
         grenade_timer: 0,
         grenade_held: false,
         grenade_in_flight: false,
+        grenade_landed: false,
+        grenade_landed_timer: 0,
         grenade_x: _x,
         grenade_y: _y,
         grenade_start_x: _x,
@@ -47,6 +49,8 @@ function raid_spawn_enemy(_type, _x, _y)
         grenade_target_y: _y,
         grenade_flight_timer: 0,
         grenade_flight_total: 60,
+        grenade_throw_timer: 0,
+        grenade_throw_total: 18,
         grenade_rotation: 0,
 		
 		enemy_sprite: spr_knife_stalker_run,
@@ -183,15 +187,15 @@ function raid_spawn_enemy(_type, _x, _y)
 
         case RaidEnemyType.GRENADE_THROWER:
         {
-            enemy.enemy_sprite = spr_burst_shooter_idle;
-            enemy.enemy_sprite_idle = spr_burst_shooter_idle;
-            enemy.enemy_sprite_active = spr_burst_shooter_run;
-            enemy.enemy_tint = make_color_rgb(130, 155, 90);
+            enemy.enemy_sprite = spr_grenadethrower_idle;
+            enemy.enemy_sprite_idle = spr_grenadethrower_idle;
+            enemy.enemy_sprite_active = spr_grenadethrower_run2;
+            enemy.enemy_tint = c_white;
             enemy.enemy_hp = 26;
             enemy.enemy_max_hp = 26;
             enemy.enemy_speed = 1.15;
             enemy.enemy_state = RaidEnemyState.PAUSE;
-            enemy.grenade_timer = 120;
+            enemy.grenade_timer = randomize_enemy_timer(120, 1);
             enemy.grenade_held = true;
         }
         break;
