@@ -122,6 +122,7 @@ function save_item_to_data(_item)
     if (is_undefined(_item)) return {};
     var _state = {};
     if (variable_struct_exists(_item, "durability")) _state.durability = _item.durability;
+    if (variable_struct_exists(_item, "servings")) _state.servings = _item.servings;
     return {
         item_key: _item.item_key,
         quantity: _item.quantity,

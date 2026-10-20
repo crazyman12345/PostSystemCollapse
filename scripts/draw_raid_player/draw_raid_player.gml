@@ -178,7 +178,7 @@ function draw_player_health_treatment_progress()
     var _width = 36;
     var _height = 4;
     var _left = round(raid_player_x - (_width * 0.5));
-    var _top = round(raid_player_y - 54);
+    var _top = round(raid_player_y - 32);
     var _progress = 1 - (raid.treatment.remaining / max(0.001, raid.treatment.duration));
 
     draw_set_color(make_color_rgb(24, 24, 24));

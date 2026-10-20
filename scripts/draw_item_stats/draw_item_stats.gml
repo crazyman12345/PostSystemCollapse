@@ -213,6 +213,38 @@ function draw_item_stats(_item, _x, _y, _bottom)
 
 
         // ======================================
+        // FOOD AND DRINK
+        // ======================================
+
+        case ItemCategory.CONSUMABLE:
+
+            if (variable_struct_exists(_item, "weight"))
+                array_push(_lines, "WEIGHT: " + string(_item.weight));
+
+            if (variable_struct_exists(_item, "base_value"))
+                array_push(_lines, "VALUE: $" + string(_item.base_value));
+
+            if (variable_struct_exists(_item, "max_servings"))
+                array_push(_lines, "SERVINGS: " + string(_item.max_servings));
+
+            if (variable_struct_exists(_item, "use_duration"))
+                array_push(_lines, "USE TIME: " + string(_item.use_duration) + "s");
+
+            if (variable_struct_exists(_item, "use_effects"))
+            {
+                for (var i = 0; i < array_length(_item.use_effects); i++)
+                {
+                    var _effect = _item.use_effects[i];
+                    var _amount_text = _effect.amount > 0 ? "+" + string(_effect.amount) : string(_effect.amount);
+                    if (_effect.type == EffectType.ENERGY) array_push(_lines, "ENERGY: " + _amount_text);
+                    else if (_effect.type == EffectType.HYDRATION) array_push(_lines, "HYDRATION: " + _amount_text);
+                }
+            }
+
+        break;
+
+
+        // ======================================
         // DEFAULT
         // ======================================
 

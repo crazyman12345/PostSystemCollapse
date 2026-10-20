@@ -1021,6 +1021,92 @@ function init_item_database()
 
 
     // ============================================================
+    // FOOD AND DRINK
+    // ============================================================
+
+    global.items.canned_chicken = {
+        item_key: "canned_chicken", name: "Canned Chicken", category: ItemCategory.CONSUMABLE,
+        description: "Canned chicken packed for long-term storage.", base_value: 35, weight: 0.5,
+        stackable: false, combat_usable: true, grid_width: 1, grid_height: 1,
+        icon_sprite: spr_cannedchicken,
+        use_duration: 5, max_servings: 1, consumable_animation: "eat",
+        use_effects: [{ type: EffectType.ENERGY, amount: 50 }, { type: EffectType.HYDRATION, amount: -5 }]
+    };
+
+    global.items.canned_tuna = {
+        item_key: "canned_tuna", name: "Canned Tuna", category: ItemCategory.CONSUMABLE,
+        description: "A preserved tin of tuna.", base_value: 30, weight: 0.4,
+        stackable: false, combat_usable: true, grid_width: 1, grid_height: 1,
+        icon_sprite: spr_cannedtuna,
+        use_duration: 5, max_servings: 1, consumable_animation: "eat",
+        use_effects: [{ type: EffectType.ENERGY, amount: 45 }, { type: EffectType.HYDRATION, amount: -5 }]
+    };
+
+    global.items.canned_ravioli = {
+        item_key: "canned_ravioli", name: "Canned Ravioli", category: ItemCategory.CONSUMABLE,
+        description: "A filling can of ready-to-eat ravioli.", base_value: 40, weight: 0.6,
+        stackable: false, combat_usable: true, grid_width: 1, grid_height: 1,
+        icon_sprite: spr_cannedravioli,
+        use_duration: 5, max_servings: 1, consumable_animation: "eat",
+        use_effects: [{ type: EffectType.ENERGY, amount: 55 }, { type: EffectType.HYDRATION, amount: -3 }]
+    };
+
+    global.items.beef_jerky = {
+        item_key: "beef_jerky", name: "Beef Jerky", category: ItemCategory.CONSUMABLE,
+        description: "Dried beef split into several servings.", base_value: 55, weight: 0.3,
+        stackable: false, combat_usable: true, grid_width: 2, grid_height: 2,
+        icon_sprite: spr_beefjerky,
+        use_duration: 2, max_servings: 3, consumable_animation: "eat",
+        use_effects: [{ type: EffectType.ENERGY, amount: 20 }, { type: EffectType.HYDRATION, amount: -5 }]
+    };
+
+    global.items.snickers = {
+        item_key: "snickers", name: "Snickers", category: ItemCategory.CONSUMABLE,
+        description: "A sweet, calorie-dense chocolate bar.", base_value: 25, weight: 0.1,
+        stackable: false, combat_usable: true, grid_width: 2, grid_height: 1,
+        icon_sprite: spr_snickers,
+        use_duration: 2, max_servings: 1, consumable_animation: "eat",
+        use_effects: [{ type: EffectType.ENERGY, amount: 30 }, { type: EffectType.HYDRATION, amount: -15 }]
+    };
+
+    global.items.water_bottle = {
+        item_key: "water_bottle", name: "Water Bottle", category: ItemCategory.CONSUMABLE,
+        description: "A bottle containing three servings of water.", base_value: 30, weight: 0.8,
+        stackable: false, combat_usable: true, grid_width: 1, grid_height: 2,
+        icon_sprite: spr_waterbottle,
+        use_duration: 2, max_servings: 3, consumable_animation: "drink",
+        use_effects: [{ type: EffectType.ENERGY, amount: 0 }, { type: EffectType.HYDRATION, amount: 20 }]
+    };
+
+    global.items.fiji_water = {
+        item_key: "fiji_water", name: "Fiji Water", category: ItemCategory.CONSUMABLE,
+        description: "Premium bottled water with four servings.", base_value: 50, weight: 1.0,
+        stackable: false, combat_usable: true, grid_width: 1, grid_height: 2,
+        icon_sprite: spr_fiji,
+        use_duration: 2, max_servings: 4, consumable_animation: "drink",
+        use_effects: [{ type: EffectType.ENERGY, amount: 0 }, { type: EffectType.HYDRATION, amount: 20 }]
+    };
+
+    global.items.diet_coke = {
+        item_key: "diet_coke", name: "Diet Coke", category: ItemCategory.CONSUMABLE,
+        description: "A can of diet cola.", base_value: 20, weight: 0.4,
+        stackable: false, combat_usable: true, grid_width: 1, grid_height: 1,
+        icon_sprite: spr_dietcoke,
+        use_duration: 2, max_servings: 1, consumable_animation: "drink",
+        use_effects: [{ type: EffectType.ENERGY, amount: 5 }, { type: EffectType.HYDRATION, amount: 25 }]
+    };
+
+    global.items.red_bull = {
+        item_key: "red_bull", name: "Red Bull", category: ItemCategory.CONSUMABLE,
+        description: "A caffeinated energy drink.", base_value: 30, weight: 0.3,
+        stackable: false, combat_usable: true, grid_width: 1, grid_height: 1,
+        icon_sprite: spr_redbull,
+        use_duration: 2, max_servings: 1, consumable_animation: "drink",
+        use_effects: [{ type: EffectType.ENERGY, amount: 12 }, { type: EffectType.HYDRATION, amount: 20 }]
+    };
+
+
+    // ============================================================
     // CASH
     // ============================================================
 

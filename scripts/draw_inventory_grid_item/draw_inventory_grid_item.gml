@@ -50,7 +50,25 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
         draw_text_ext(_left + 10, _top + 10, _definition.name, 20, (_grid_width * _cell_size) - 20);
     }
 
-    if (variable_struct_exists(_definition, "medical_capacity"))
+    if (variable_struct_exists(_definition, "max_servings"))
+    {
+        var _servings = variable_struct_exists(_stored_item, "servings") ? _stored_item.servings : _definition.max_servings;
+        var _previous_font = draw_get_font();
+        var _previous_halign = draw_get_halign();
+        var _previous_valign = draw_get_valign();
+        var _previous_alpha = draw_get_alpha();
+        draw_set_font(fnt_terminal_tiny);
+        draw_set_color(c_black);
+        draw_set_alpha(1);
+        draw_set_halign(fa_right);
+        draw_set_valign(fa_top);
+        draw_text(item_right - 8, _top + 8, string(_servings) + "/" + string(_definition.max_servings));
+        draw_set_halign(_previous_halign);
+        draw_set_valign(_previous_valign);
+        draw_set_font(_previous_font);
+        draw_set_alpha(_previous_alpha);
+    }
+    else if (variable_struct_exists(_definition, "medical_capacity"))
     {
         var _durability = variable_struct_exists(_stored_item, "durability")
             ? _stored_item.durability

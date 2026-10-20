@@ -143,12 +143,15 @@ function raid_generate_reward_loot(_reward_type)
             _rolls = irandom_range(1, 2);
 
             _pool = [
-                raid_loot_entry("cash", 40, 10, 30),
-                raid_loot_entry("plastic", 20, 1, 3),
-                raid_loot_entry("alcohol", 15, 1, 1),
-                raid_loot_entry("cloth", 10, 1, 2),
-                raid_loot_entry("chemicals", 10, 1, 1),
-                raid_loot_entry("broken_toaster", 5, 1, 1)
+                raid_loot_entry("canned_chicken", 14, 1, 1),
+                raid_loot_entry("canned_tuna", 14, 1, 1),
+                raid_loot_entry("canned_ravioli", 14, 1, 1),
+                raid_loot_entry("beef_jerky", 10, 1, 1),
+                raid_loot_entry("snickers", 12, 1, 1),
+                raid_loot_entry("water_bottle", 14, 1, 1),
+                raid_loot_entry("fiji_water", 6, 1, 1),
+                raid_loot_entry("diet_coke", 9, 1, 1),
+                raid_loot_entry("red_bull", 7, 1, 1)
             ];
 
         break;

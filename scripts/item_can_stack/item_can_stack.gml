@@ -11,9 +11,12 @@ function item_can_stack(_first, _second)
 
     var first_definition = item_get(_first.item_key);
     var second_definition = item_get(_second.item_key);
+    var first_servings = variable_struct_exists(_first, "servings") ? _first.servings : -1;
+    var second_servings = variable_struct_exists(_second, "servings") ? _second.servings : -1;
     return !is_undefined(first_definition)
         && !is_undefined(second_definition)
         && first_definition.stackable
         && second_definition.stackable
-        && _first.item_key == _second.item_key;
+        && _first.item_key == _second.item_key
+        && first_servings == second_servings;
 }

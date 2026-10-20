@@ -5,11 +5,11 @@ function raid_environment_init()
 
     var _door_inner_face_material = raid_environment_door_material(spr_door1);
 
-    var _cap_material = raid_environment_material(topcap1, 0, 6, 30, -24);
+    var _cap_material = raid_environment_material(topcap1, -8, 14, -6, -24);
     _cap_material.offset_x = 35;
     _cap_material.offset_y = 45;
     _cap_material.scale_x = 10;
-    _cap_material.scale_y = 10;
+    _cap_material.scale_y = 14;
 
     raid_environment = {
         enabled: true,
@@ -40,13 +40,12 @@ function raid_environment_init()
 
 function raid_environment_door_material(_sprite, _settings = undefined)
 {
-    var _material = raid_environment_material(_sprite, 0, 2, -42, -29);
-    _material.offset_x = -23;
-    _material.offset_y = 32;
-    _material.uv_offset_u = 100;
-    _material.uv_offset_v = 6;
-    _material.scale_x = 20;
-    _material.scale_y = 64;
+    var _material = raid_environment_material(_sprite, 0, 3, -42, -29);
+    _material.offset_x = -13;
+    _material.offset_y = -32;
+    _material.uv_offset_v = 4;
+    _material.scale_x = 80;
+    _material.scale_y = 171;
 
     if (!is_undefined(_settings))
     {

@@ -106,9 +106,18 @@ function raid_texture_crop_debug_reset(_tab)
 
     if (_tab == 2)
     {
-        var _door_defaults = [0, 2, -42, -29, -23, 32, 100, 6, 20, 64, 3, -2, 33];
+        var _door_defaults = [0, 3, -42, -29, -13, -32, 0, 4, 80, 171, 3, -2, 33];
         for (var _field = 0; _field < array_length(_door_defaults); _field++)
             raid_texture_crop_debug_door_set(_field, _door_defaults[_field]);
+        return;
+    }
+
+    if (_tab == 1)
+    {
+        var _cap_defaults = [-8, 14, -6, -24, 35, 45, 0, 0, 10, 14];
+        var _material_names = ["crop_left", "crop_right", "crop_top", "crop_bottom", "offset_x", "offset_y", "uv_offset_u", "uv_offset_v", "scale_x", "scale_y"];
+        for (var _cap_field = 0; _cap_field < array_length(_cap_defaults); _cap_field++)
+            raid_texture_crop_debug_material_set(_tab, _material_names[_cap_field], _cap_defaults[_cap_field]);
         return;
     }
 

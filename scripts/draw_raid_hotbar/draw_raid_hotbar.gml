@@ -50,7 +50,12 @@ function draw_raid_hotbar(_inventory = false)
                 draw_sprite_ext(sprite, 0, sprite_x, sprite_y, scale_x, scale_y, 0, c_white, 1);
             }
             draw_set_color(c_black);
-            if (variable_struct_exists(definition, "medical_capacity"))
+            if (variable_struct_exists(definition, "max_servings"))
+            {
+                var servings = variable_struct_exists(item, "servings") ? item.servings : definition.max_servings;
+                draw_text(slot_x + 7, slot_y + 25, string(servings) + "/" + string(definition.max_servings));
+            }
+            else if (variable_struct_exists(definition, "medical_capacity"))
             {
                 var durability = variable_struct_exists(item, "durability") ? item.durability : definition.medical_capacity;
                 if (definition.item_key == "medkit")

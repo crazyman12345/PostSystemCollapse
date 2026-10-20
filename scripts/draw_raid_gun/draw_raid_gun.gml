@@ -1,6 +1,10 @@
 function draw_raid_gun(_lighting_mask = false, _mask_alpha = 1)
 {
-    if (player_health_treatment_is_active()) return;
+    if (player_health_treatment_is_active())
+    {
+        draw_raid_treatment_hands(_lighting_mask, _mask_alpha);
+        return;
+    }
     var _draw_alpha = _lighting_mask ? _mask_alpha : 1;
     draw_set_alpha(_draw_alpha);
     var _weapon = raid_update_active_weapon();
@@ -340,5 +344,93 @@ if (is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
         draw_text(_gun_x + lengthdir_x(44, _dir), _gun_y + lengthdir_y(44, _dir), "aim");
         draw_set_color(c_white);
     }
+    draw_set_alpha(1);
+}
+
+function draw_raid_treatment_hands(_lighting_mask = false, _mask_alpha = 1)
+{
+    var _elapsed = max(0, raid.treatment.duration - raid.treatment.remaining);
+    var _motion_x = dcos(_elapsed * 720) * 2;
+    var _motion_y = dsin(_elapsed * 720) * 2;
+    var _torso_x = raid_player_x;
+    var _torso_y = raid_player_y - 15;
+    var _item_x = _torso_x + (7 * raid_player_facing);
+    var _item_y = _torso_y;
+    var _alpha = _lighting_mask ? _mask_alpha : 1;
+    var _definition = item_get(raid.treatment.item_key);
+    var _hand1_x = _item_x + (5 * raid_player_facing);
+    var _hand1_y = _item_y + 3;
+    var _hand2_x = _item_x - (4 * raid_player_facing) + (_motion_x * raid_player_facing);
+    var _hand2_y = _item_y + 3 + _motion_y;
+
+    if (raid.treatment.kind == "consumable" && is_struct(_definition))
+    {
+        var _phase = frac(_elapsed);
+        var _reach = 0;
+        if (_definition.consumable_animation == "drink")
+        {
+            if (_phase < 0.25) _reach = _phase / 0.25;
+            else if (_phase < 0.75) _reach = 1;
+            else _reach = 1 - ((_phase - 0.75) / 0.25);
+        }
+        else _reach = (1 - dcos(_elapsed * 540)) * 0.5;
+
+        _hand1_x = _torso_x + ((8 + (4 * _reach)) * raid_player_facing);
+        _hand1_y = _torso_y + 4 - (5 * _reach);
+        _hand2_x = _torso_x - (7 * raid_player_facing);
+        _hand2_y = _torso_y + 5;
+        _item_x = _hand1_x - (3 * raid_player_facing);
+        _item_y = _hand1_y - 2;
+    }
+
+    if (is_struct(_definition) && variable_struct_exists(_definition, "icon_sprite")
+    && _definition.icon_sprite != -1 && sprite_exists(_definition.icon_sprite))
+    {
+        var _item_sprite = _definition.icon_sprite;
+        var _bbox_left = sprite_get_bbox_left(_item_sprite);
+        var _bbox_right = sprite_get_bbox_right(_item_sprite);
+        var _bbox_top = sprite_get_bbox_top(_item_sprite);
+        var _bbox_bottom = sprite_get_bbox_bottom(_item_sprite);
+        var _visible_width = max(1, _bbox_right - _bbox_left + 1);
+        var _visible_height = max(1, _bbox_bottom - _bbox_top + 1);
+        var _item_scale = 12 / max(_visible_width, _visible_height);
+        var _visible_center_x = ((_bbox_left + _bbox_right) * 0.5) - sprite_get_xoffset(_item_sprite);
+        var _visible_center_y = ((_bbox_top + _bbox_bottom) * 0.5) - sprite_get_yoffset(_item_sprite);
+
+        draw_sprite_ext(
+            _item_sprite,
+            0,
+            round(_item_x - (_visible_center_x * _item_scale * raid_player_facing)),
+            round(_item_y - (_visible_center_y * _item_scale)),
+            _item_scale * raid_player_facing,
+            _item_scale,
+            0,
+            c_white,
+            _alpha
+        );
+    }
+
+    draw_sprite_ext(
+        spr_hand,
+        0,
+        round(_hand1_x),
+        round(_hand1_y),
+        raid_player_facing,
+        1,
+        0,
+        c_white,
+        _alpha
+    );
+    draw_sprite_ext(
+        spr_hand,
+        0,
+        round(_hand2_x),
+        round(_hand2_y),
+        raid_player_facing,
+        1,
+        0,
+        c_white,
+        _alpha
+    );
     draw_set_alpha(1);
 }

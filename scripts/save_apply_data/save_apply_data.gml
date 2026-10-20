@@ -192,6 +192,11 @@ function save_item_from_data(_data)
         var state = save_value(_data, "state", {});
         item.durability = clamp(save_number(state, "durability", definition.medical_capacity), 1, definition.medical_capacity);
     }
+    if (variable_struct_exists(definition, "max_servings"))
+    {
+        var serving_state = save_value(_data, "state", {});
+        item.servings = floor(clamp(save_number(serving_state, "servings", definition.max_servings), 1, definition.max_servings));
+    }
     return item;
 }
 

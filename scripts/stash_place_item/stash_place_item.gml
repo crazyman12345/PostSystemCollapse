@@ -34,6 +34,7 @@ function stash_place_item(_item_key, _x, _y, _rotation, _container = stash)
         rotation: _rotation
     };
     if (variable_struct_exists(_definition, "medical_capacity")) item.durability = _definition.medical_capacity;
+    if (variable_struct_exists(_definition, "max_servings")) item.servings = _definition.max_servings;
 
     array_push(_container.items, item);
     return item;

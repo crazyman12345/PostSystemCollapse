@@ -126,6 +126,12 @@ function player_health_treatment_get_durability(_item, _definition)
     return clamp(_item.durability, 0, _definition.medical_capacity);
 }
 
+function player_health_consumable_get_servings(_item, _definition)
+{
+    if (!variable_struct_exists(_item, "servings")) _item.servings = _definition.max_servings;
+    return clamp(_item.servings, 0, _definition.max_servings);
+}
+
 function player_health_treatment_find_source(_item)
 {
     var _containers = [stash.backpack, stash.pockets, stash.secure_container, stash];
@@ -225,6 +231,7 @@ function player_health_treatment_start(_item, _target_type, _limb_index = -1, _h
     }
 
     raid.treatment.active = true;
+    raid.treatment.kind = "medical";
     raid.treatment.item = _item;
     raid.treatment.source = _source;
     raid.treatment.item_key = _item.item_key;
@@ -237,6 +244,52 @@ function player_health_treatment_start(_item, _target_type, _limb_index = -1, _h
     raid.medical_selected_item = undefined;
 
     if (_instant) return player_health_treatment_apply();
+
+    raid_player_dash_active = false;
+    raid_player_dash_timer = 0;
+    raid_player_dash_xp_pending = false;
+    raid_reload_active = false;
+    raid_reload_timer = 0;
+    raid_burst_remaining = 0;
+    raid_knife_attack_timer = 0;
+    raid_knife_trail = [];
+    raid_muzzle_flash_light = undefined;
+    return true;
+}
+
+function player_health_consumable_start(_item, _hotbar_slot = -1)
+{
+    if (raid.state != RaidState.COMBAT || player_health_treatment_is_active() || is_undefined(_item)) return false;
+    var _definition = item_get(_item.item_key);
+    if (is_undefined(_definition)
+    || !variable_struct_exists(_definition, "max_servings")
+    || !variable_struct_exists(_definition, "use_duration")
+    || !variable_struct_exists(_definition, "use_effects")) return false;
+    var _source = player_health_treatment_find_source(_item);
+    if (is_undefined(_source) || player_health_consumable_get_servings(_item, _definition) <= 0) return false;
+
+    var _can_restore = false;
+    for (var i = 0; i < array_length(_definition.use_effects); i++)
+    {
+        var _effect = _definition.use_effects[i];
+        if (_effect.amount <= 0) continue;
+        if (_effect.type == EffectType.ENERGY && player_energy < health_config.survival_max) _can_restore = true;
+        if (_effect.type == EffectType.HYDRATION && player_hydration < health_config.survival_max) _can_restore = true;
+        if (_effect.type == EffectType.HEAL && raid_player_hp < raid_player_max_hp) _can_restore = true;
+    }
+    if (!_can_restore) return false;
+
+    raid.treatment.active = true;
+    raid.treatment.kind = "consumable";
+    raid.treatment.item = _item;
+    raid.treatment.source = _source;
+    raid.treatment.item_key = _item.item_key;
+    raid.treatment.target_type = "";
+    raid.treatment.limb = -1;
+    raid.treatment.duration = _definition.use_duration;
+    raid.treatment.remaining = _definition.use_duration;
+    raid.treatment.amount = 1;
+    raid.treatment.hotbar_slot = _hotbar_slot;
 
     raid_player_dash_active = false;
     raid_player_dash_timer = 0;
@@ -268,6 +321,7 @@ function player_health_treatment_cancel()
 {
     if (!player_health_treatment_is_active()) return false;
     raid.treatment.active = false;
+    raid.treatment.kind = "";
     raid.treatment.item = undefined;
     raid.treatment.source = undefined;
     raid.treatment.item_key = "";
@@ -287,7 +341,45 @@ function player_health_treatment_apply()
     var _definition = item_get(_treatment.item_key);
     if (is_undefined(_item) || is_undefined(_definition)
     || !player_health_treatment_source_contains(_treatment.source, _item)
-    || _item.item_key != _treatment.item_key
+    || _item.item_key != _treatment.item_key)
+    {
+        player_health_treatment_cancel();
+        return false;
+    }
+
+    if (_treatment.kind == "consumable")
+    {
+        if (!variable_struct_exists(_definition, "use_effects")
+        || !variable_struct_exists(_definition, "max_servings")
+        || player_health_consumable_get_servings(_item, _definition) <= 0)
+        {
+            player_health_treatment_cancel();
+            return false;
+        }
+
+        raid_apply_effects(_definition.use_effects);
+        _item.servings = max(0, _item.servings - 1);
+        if (_item.servings <= 0)
+        {
+            stash_remove_item(_item, _treatment.source);
+            for (var consumable_slot = 0; consumable_slot < array_length(raid.hotbar); consumable_slot++)
+            {
+                if (raid.hotbar[consumable_slot] == _item) raid.hotbar[consumable_slot] = undefined;
+            }
+        }
+
+        if (_treatment.hotbar_slot >= 0)
+        {
+            raid.hotbar_feedback_slot = _treatment.hotbar_slot;
+            raid.hotbar_feedback_timer = 12;
+            raid.hotbar_feedback_success = true;
+        }
+        save_mark_dirty();
+        player_health_treatment_cancel();
+        return true;
+    }
+
+    if (!variable_struct_exists(_definition, "treatment_effect")
     || !player_health_treatment_target_is_valid(_definition.treatment_effect, _treatment.target_type, _treatment.limb))
     {
         player_health_treatment_cancel();

@@ -53,7 +53,8 @@ function init_trader_database()
 
         accepted_categories : [
             ItemCategory.LAB_MATERIAL,
-			ItemCategory.MATERIAL
+			ItemCategory.MATERIAL,
+			ItemCategory.CONSUMABLE
         ]
     };
 
@@ -77,13 +78,28 @@ function init_trader_database()
             },
 
             {
-                item_key : "medical_supplies",
-                price : 30
+                item_key : "tourniquet",
+                price : 70
             },
 
             {
-                item_key : "alcohol",
-                price : 25
+                item_key : "splint",
+                price : 80
+            },
+
+            {
+                item_key : "medkit",
+                price : 110
+            },
+
+            {
+                item_key : "canned_tuna",
+                price : 35
+            },
+
+            {
+                item_key : "water_bottle",
+                price : 35
             }
         ],
 
@@ -283,7 +299,8 @@ function init_trader_database()
 		ItemCategory.MEDICAL,
 		ItemCategory.MATERIAL,
 		ItemCategory.LAB_MATERIAL,
-		ItemCategory.PRODUCT
+		ItemCategory.PRODUCT,
+		ItemCategory.CONSUMABLE
 		]
 	};
 }

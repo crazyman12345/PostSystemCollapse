@@ -66,7 +66,8 @@ function enums(){
 		MEDICAL,
 		BAG,
 		CURRENCY,
-		SECURE_CONTAINER
+		SECURE_CONTAINER,
+		CONSUMABLE
 	}
 
 	enum EquipmentSlot

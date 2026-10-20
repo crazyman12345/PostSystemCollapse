@@ -19,6 +19,15 @@ function raid_hotbar_use(_slot)
         return false;
     }
 
+    if (variable_struct_exists(definition, "max_servings"))
+    {
+        if (player_health_consumable_start(item, _slot)) return true;
+        raid.hotbar_feedback_slot = _slot;
+        raid.hotbar_feedback_timer = 12;
+        raid.hotbar_feedback_success = false;
+        return false;
+    }
+
     for (var i = 0; i < array_length(definition.use_effects); i++)
     {
         var effect = definition.use_effects[i];

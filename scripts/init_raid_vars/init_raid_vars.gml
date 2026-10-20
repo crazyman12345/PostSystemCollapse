@@ -120,6 +120,7 @@ raid =
     hotbar_feedback_success: false,
     treatment: {
         active: false,
+        kind: "",
         item: undefined,
         source: undefined,
         item_key: "",
