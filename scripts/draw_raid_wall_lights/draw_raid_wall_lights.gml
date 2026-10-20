@@ -9,7 +9,7 @@ function draw_raid_wall_lights(_glow_only = false, _camera_x = 0, _camera_y = 0,
 
         var _sprite = _glow_only
             ? spr_wall_lamp_glow
-            : (_light.enabled ? spr_wall_lamp_on : spr_wall_lamp_off);
+            : spr_wall_lamp_off;
         var _sprite_scale = _scale * (_glow_only ? _emissive_scale : 1);
         var _offset_x = (sprite_get_width(_sprite) * 0.5 - sprite_get_xoffset(_sprite)) * _scale;
         var _offset_y = (sprite_get_height(_sprite) * 0.5 - sprite_get_yoffset(_sprite)) * _scale;
@@ -32,7 +32,22 @@ function draw_raid_wall_lights(_glow_only = false, _camera_x = 0, _camera_y = 0,
             _sprite_scale * _draw_scale_y,
             _light.rotation,
             _glow_only ? _light.color : c_white,
-            1
+            _glow_only ? _light.brightness : 1
         );
+
+        if (!_glow_only && _light.enabled)
+        {
+            draw_sprite_ext(
+                spr_wall_lamp_glow,
+                0,
+                (_light.x - lengthdir_x(_offset_distance, _offset_direction) - _camera_x) * _draw_scale_x,
+                (_light.y - lengthdir_y(_offset_distance, _offset_direction) - _camera_y) * _draw_scale_y,
+                _scale * _draw_scale_x,
+                _scale * _draw_scale_y,
+                _light.rotation,
+                _light.color,
+                _light.brightness
+            );
+        }
     }
 }

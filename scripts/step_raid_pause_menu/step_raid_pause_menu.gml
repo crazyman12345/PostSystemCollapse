@@ -34,7 +34,7 @@ function step_raid_pause_menu()
 
     if (raid.pause_menu_tab == 1)
     {
-        var _option_count = 26;
+        var _option_count = 28;
         var _visible_rows = 12;
         var _hover_index = -1;
         var _first_y = _gui_height * 0.32;
@@ -127,18 +127,32 @@ function step_raid_pause_menu()
         }
         else if (_index == 20 && (_option_change != 0 || _confirm))
         {
+            if (_confirm && _option_change == 0)
+                raid_bloom_projectile_intensity = raid_bloom_projectile_intensity >= 3 ? 0 : round((raid_bloom_projectile_intensity + 0.1) * 10) / 10;
+            else raid_bloom_projectile_intensity = clamp(round((raid_bloom_projectile_intensity + _option_change * 0.1) * 10) / 10, 0, 3);
+            scroll_sound();
+        }
+        else if (_index == 21 && (_option_change != 0 || _confirm))
+        {
+            raid_bloom_projectile_blur_radius = _confirm && _option_change == 0
+                ? (raid_bloom_projectile_blur_radius >= 16 ? 0 : raid_bloom_projectile_blur_radius + 1)
+                : clamp(raid_bloom_projectile_blur_radius + _option_change, 0, 16);
+            scroll_sound();
+        }
+        else if (_index == 22 && (_option_change != 0 || _confirm))
+        {
             raid_bloom_blur_passes = _confirm && _option_change == 0
                 ? (raid_bloom_blur_passes >= 4 ? 1 : raid_bloom_blur_passes + 1)
                 : clamp(raid_bloom_blur_passes + _option_change, 1, 4);
             scroll_sound();
         }
-        else if (_index >= 21 && _index <= 23 && (_option_change != 0 || _confirm))
+        else if (_index >= 23 && _index <= 25 && (_option_change != 0 || _confirm))
         {
-            var _slider_min = _index == 21 ? 0 : 0.5;
-            var _slider_max = _index == 21 ? 2 : 1.5;
-            var _slider_value = _index == 21
+            var _slider_min = _index == 23 ? 0 : 0.5;
+            var _slider_max = _index == 23 ? 2 : 1.5;
+            var _slider_value = _index == 23
                 ? raid_color_grade_saturation
-                : (_index == 22 ? raid_color_grade_contrast : raid_color_grade_brightness);
+                : (_index == 24 ? raid_color_grade_contrast : raid_color_grade_brightness);
             var _slider_left = _gui_width * 0.5 + 150;
             var _slider_width = 90;
 
@@ -154,12 +168,12 @@ function step_raid_pause_menu()
                 _slider_value = clamp(round((_slider_value + _slider_change * 0.05) * 20) / 20, _slider_min, _slider_max);
             }
 
-            if (_index == 21) raid_color_grade_saturation = _slider_value;
-            else if (_index == 22) raid_color_grade_contrast = _slider_value;
+            if (_index == 23) raid_color_grade_saturation = _slider_value;
+            else if (_index == 24) raid_color_grade_contrast = _slider_value;
             else raid_color_grade_brightness = _slider_value;
             scroll_sound();
         }
-        else if (_confirm && _index == 24)
+        else if (_confirm && _index == 26)
         {
             graphics_settings_restore_defaults();
             raid.pause_fps_index = 1;
@@ -167,12 +181,14 @@ function step_raid_pause_menu()
             raid_bloom_intensity = 0.6;
             raid_bloom_blur_radius = 3;
             raid_bloom_blur_passes = 2;
+            raid_bloom_projectile_intensity = 0.8;
+            raid_bloom_projectile_blur_radius = 3;
             raid_color_grade_saturation = 1.30;
             raid_color_grade_contrast = 1.15;
             raid_color_grade_brightness = 1.0;
             audio_play_sound(snd_interact, 0, false);
         }
-        else if (_confirm && _index == 25)
+        else if (_confirm && _index == 27)
         {
             audio_play_sound(snd_interact, 0, false);
             raid_set_state(RaidState.COMBAT);

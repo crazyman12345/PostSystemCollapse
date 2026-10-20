@@ -88,6 +88,13 @@ enum WeaponFireMode
     BURST,
     AUTO
 }
+
+enum RaidWallLightMode
+{
+    STABLE,
+    FAULTY,
+    DYING
+}
 raid =
 {
     state: RaidState.INACTIVE,
@@ -210,8 +217,10 @@ raid_map_surface = -1;
 raid_lighting_surface = -1;
 raid_colored_lighting_surface = -1;
 raid_emissive_surface = -1;
+raid_projectile_emissive_surface = -1;
 raid_bloom_blur_surface = -1;
 raid_bloom_surface = -1;
+raid_projectile_bloom_surface = -1;
 raid_color_grade_saturation = 1.15;
 raid_color_grade_contrast = 1.05;
 raid_color_grade_brightness = 1.0;
@@ -226,6 +235,8 @@ raid_bloom_enabled = true;
 raid_bloom_intensity = 0.6;
 raid_bloom_blur_radius = 3;
 raid_bloom_blur_passes = 2;
+raid_bloom_projectile_intensity = 0.8;
+raid_bloom_projectile_blur_radius = 3;
 raid_bloom_wall_lamp_source_scale = 2.0;
 raid_bloom_projectile_source_scale = 1.5;
 raid_bloom_muzzle_flash_source_scale = 1.6;

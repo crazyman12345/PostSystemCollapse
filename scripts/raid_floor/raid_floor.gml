@@ -1,13 +1,17 @@
 function raid_floor_generate()
 {
     raid_floor_tiles = [];
+    var _floor_sprites = [tile1, tile2, tile3, tile4];
+    if (variable_struct_exists(raid, "selected_area")
+        && variable_struct_exists(raid.selected_area, "floor_tiles"))
+        _floor_sprites = raid.selected_area.floor_tiles;
 
     for (var _row = 0; _row < 7; _row++)
     {
         for (var _column = 0; _column < 7; _column++)
         {
             array_push(raid_floor_tiles, {
-                sprite: choose(tile1, tile2, tile3, tile4),
+                sprite: _floor_sprites[irandom(array_length(_floor_sprites) - 1)],
                 rotation: (_row == 0 || _row == 6 || _column == 0 || _column == 6) ? 0 : irandom(3) * 90
             });
         }

@@ -1,39 +1,15 @@
-function draw_raid_emissives(_camera_x, _camera_y, _scale_x, _scale_y, _include_explosions = true, _wall_light_source_scale = 1, _projectile_source_scale = 1, _muzzle_flash_source_scale = 1, _explosion_source_scale = 1)
+function draw_raid_emissives(_camera_x, _camera_y, _scale_x, _scale_y, _include_explosions = true, _wall_light_source_scale = 1, _projectile_source_scale = 1, _muzzle_flash_source_scale = 1, _explosion_source_scale = 1, _include_projectiles = true)
 {
     draw_raid_wall_lights(true, _camera_x, _camera_y, _scale_x, _scale_y, _wall_light_source_scale);
 
     if (raid.state == RaidState.DEATH) return;
 
-    var _projectile_lists = [raid_bullets, raid_enemy_bullets];
-    if (!_include_explosions) gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_one, bm_zero, bm_one);
-
-    if (global.graphics_settings.projectile_glow) for (var _list_index = 0; _list_index < array_length(_projectile_lists); _list_index++)
+    if (_include_projectiles)
     {
-        var _projectiles = _projectile_lists[_list_index];
-        var _xscale = 0.30 * _scale_x * _projectile_source_scale;
-        var _yscale = 0.14 * _scale_y * _projectile_source_scale;
-        var _sprite = _list_index == 0 ? spr_player_bullet_glow : spr_enemy_bullet_glow;
-        var _color = _list_index == 0 ? make_color_rgb(255, 190, 80) : c_white;
-        var _alpha = _list_index == 0 ? 0.35 : 0.40;
-
-        for (var _projectile_index = 0; _projectile_index < array_length(_projectiles); _projectile_index++)
-        {
-            var _projectile = _projectiles[_projectile_index];
-            draw_sprite_ext(
-                _sprite,
-                0,
-                (_projectile.bx - _camera_x) * _scale_x,
-                (_projectile.by - _camera_y) * _scale_y,
-                _xscale,
-                _yscale,
-                _projectile.bdirection,
-                _color,
-                _alpha * (variable_struct_exists(_projectile, "alpha") ? _projectile.alpha : 1)
-            );
-        }
+        if (!_include_explosions) gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_one, bm_zero, bm_one);
+        draw_raid_projectile_emissives(_camera_x, _camera_y, _scale_x, _scale_y, _projectile_source_scale);
+        if (!_include_explosions) gpu_set_blendmode(bm_normal);
     }
-
-    if (!_include_explosions) gpu_set_blendmode(bm_normal);
 
     if (!player_health_treatment_is_active() && is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
     {
@@ -92,4 +68,36 @@ function draw_raid_emissives(_camera_x, _camera_y, _scale_x, _scale_y, _include_
 
     draw_set_color(c_white);
     draw_set_alpha(1);
+}
+
+function draw_raid_projectile_emissives(_camera_x, _camera_y, _scale_x, _scale_y, _source_scale = 1)
+{
+    if (!global.graphics_settings.projectile_glow || raid.state == RaidState.DEATH) return;
+
+    var _projectile_lists = [raid_bullets, raid_enemy_bullets];
+    for (var _list_index = 0; _list_index < array_length(_projectile_lists); _list_index++)
+    {
+        var _projectiles = _projectile_lists[_list_index];
+        var _xscale = 0.30 * _scale_x * _source_scale;
+        var _yscale = 0.14 * _scale_y * _source_scale;
+        var _sprite = _list_index == 0 ? spr_player_bullet_glow : spr_enemy_bullet_glow;
+        var _color = _list_index == 0 ? make_color_rgb(255, 190, 80) : c_white;
+        var _alpha = _list_index == 0 ? 0.35 : 0.40;
+
+        for (var _projectile_index = 0; _projectile_index < array_length(_projectiles); _projectile_index++)
+        {
+            var _projectile = _projectiles[_projectile_index];
+            draw_sprite_ext(
+                _sprite,
+                0,
+                (_projectile.bx - _camera_x) * _scale_x,
+                (_projectile.by - _camera_y) * _scale_y,
+                _xscale,
+                _yscale,
+                _projectile.bdirection,
+                _color,
+                _alpha * (variable_struct_exists(_projectile, "alpha") ? _projectile.alpha : 1)
+            );
+        }
+    }
 }

@@ -80,6 +80,14 @@ function draw_raid_lighting()
         raid_emissive_surface = surface_create(_bloom_width, _bloom_height);
     }
 
+    if (raid_bloom_enabled && (!surface_exists(raid_projectile_emissive_surface)
+    || surface_get_width(raid_projectile_emissive_surface) != _bloom_width
+    || surface_get_height(raid_projectile_emissive_surface) != _bloom_height))
+    {
+        if (surface_exists(raid_projectile_emissive_surface)) surface_free(raid_projectile_emissive_surface);
+        raid_projectile_emissive_surface = surface_create(_bloom_width, _bloom_height);
+    }
+
     if (raid_bloom_enabled && (!surface_exists(raid_bloom_blur_surface)
     || surface_get_width(raid_bloom_blur_surface) != _bloom_width
     || surface_get_height(raid_bloom_blur_surface) != _bloom_height))
@@ -96,20 +104,32 @@ function draw_raid_lighting()
         raid_bloom_surface = surface_create(_bloom_width, _bloom_height);
     }
 
+    if (raid_bloom_enabled && (!surface_exists(raid_projectile_bloom_surface)
+    || surface_get_width(raid_projectile_bloom_surface) != _bloom_width
+    || surface_get_height(raid_projectile_bloom_surface) != _bloom_height))
+    {
+        if (surface_exists(raid_projectile_bloom_surface)) surface_free(raid_projectile_bloom_surface);
+        raid_projectile_bloom_surface = surface_create(_bloom_width, _bloom_height);
+    }
+
     if (!_need_darkness_surface) raid_lighting_surface = graphics_settings_release_surface(raid_lighting_surface);
     if (!_need_colored_surface) raid_colored_lighting_surface = graphics_settings_release_surface(raid_colored_lighting_surface);
     if (!raid_bloom_enabled)
     {
         raid_emissive_surface = graphics_settings_release_surface(raid_emissive_surface);
+        raid_projectile_emissive_surface = graphics_settings_release_surface(raid_projectile_emissive_surface);
         raid_bloom_blur_surface = graphics_settings_release_surface(raid_bloom_blur_surface);
         raid_bloom_surface = graphics_settings_release_surface(raid_bloom_surface);
+        raid_projectile_bloom_surface = graphics_settings_release_surface(raid_projectile_bloom_surface);
     }
 
     if ((_need_darkness_surface && !surface_exists(raid_lighting_surface))
     || (_need_colored_surface && !surface_exists(raid_colored_lighting_surface))
     || (raid_bloom_enabled && (!surface_exists(raid_emissive_surface)
+    || !surface_exists(raid_projectile_emissive_surface)
     || !surface_exists(raid_bloom_blur_surface)
-    || !surface_exists(raid_bloom_surface)))) return;
+    || !surface_exists(raid_bloom_surface)
+    || !surface_exists(raid_projectile_bloom_surface)))) return;
 
     // Preserve sharp emissive feedback and projectile cores without doing any
     // lighting, shadow, smoke, or post-processing setup when all are disabled.
@@ -248,46 +268,27 @@ function draw_raid_lighting()
             raid_bloom_wall_lamp_source_scale,
             raid_bloom_projectile_source_scale,
             raid_bloom_muzzle_flash_source_scale,
-            raid_bloom_explosion_source_scale
+            raid_bloom_explosion_source_scale,
+            false
         );
         surface_reset_target();
 
-        var _blur_texel = shader_get_uniform(shd_raid_bloom_blur, "u_texel_size");
-        var _blur_direction = shader_get_uniform(shd_raid_bloom_blur, "u_direction");
-        var _blur_radius = shader_get_uniform(shd_raid_bloom_blur, "u_radius");
-        var _bloom_texel_x = 1 / surface_get_width(raid_emissive_surface);
-        var _bloom_texel_y = 1 / surface_get_height(raid_emissive_surface);
-        var _previous_texfilter = gpu_get_texfilter();
-        gpu_set_texfilter(true);
+        surface_set_target(raid_projectile_emissive_surface);
+        draw_clear_alpha(c_black, 0);
+        gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_one, bm_inv_src_alpha);
+        draw_raid_projectile_emissives(
+            _camera_x,
+            _camera_y,
+            _bloom_scale_x,
+            _bloom_scale_y,
+            raid_bloom_projectile_source_scale
+        );
+        surface_reset_target();
 
-        for (var _blur_pass = 0; _blur_pass < clamp(raid_bloom_blur_passes, 1, 4); _blur_pass++)
-        {
-            // Horizontal Gaussian pass.
-            surface_set_target(raid_bloom_blur_surface);
-            draw_clear_alpha(c_black, 0);
-            gpu_set_blendmode_ext_sepalpha(bm_one, bm_zero, bm_one, bm_zero);
-            shader_set(shd_raid_bloom_blur);
-            shader_set_uniform_f(_blur_texel, _bloom_texel_x, _bloom_texel_y);
-            shader_set_uniform_f(_blur_direction, 1, 0);
-            shader_set_uniform_f(_blur_radius, clamp(raid_bloom_blur_radius, 0, 16));
-            draw_surface(_blur_pass == 0 ? raid_emissive_surface : raid_bloom_surface, 0, 0);
-            shader_reset();
-            surface_reset_target();
-
-            // Vertical Gaussian pass.
-            surface_set_target(raid_bloom_surface);
-            draw_clear_alpha(c_black, 0);
-            gpu_set_blendmode_ext_sepalpha(bm_one, bm_zero, bm_one, bm_zero);
-            shader_set(shd_raid_bloom_blur);
-            shader_set_uniform_f(_blur_texel, _bloom_texel_x, _bloom_texel_y);
-            shader_set_uniform_f(_blur_direction, 0, 1);
-            shader_set_uniform_f(_blur_radius, clamp(raid_bloom_blur_radius, 0, 16));
-            draw_surface(raid_bloom_blur_surface, 0, 0);
-            shader_reset();
-            surface_reset_target();
-        }
-
-        gpu_set_texfilter(_previous_texfilter);
+        raid_bloom_process_surface(raid_emissive_surface, raid_bloom_surface, raid_bloom_blur_surface,
+            raid_bloom_blur_radius, raid_bloom_blur_passes);
+        raid_bloom_process_surface(raid_projectile_emissive_surface, raid_projectile_bloom_surface, raid_bloom_blur_surface,
+            raid_bloom_projectile_blur_radius, raid_bloom_blur_passes);
     }
 
     draw_set_color(c_white);
@@ -333,25 +334,13 @@ function draw_raid_lighting()
 
     if (raid_bloom_enabled)
     {
-        var _bloom_intensity = clamp(raid_bloom_intensity, 0, 3);
         var _previous_bloom_texfilter = gpu_get_texfilter();
         gpu_set_texfilter(true);
         gpu_set_blendmode_ext_sepalpha(bm_one, bm_one, bm_zero, bm_one);
-        while (_bloom_intensity > 0)
-        {
-            var _bloom_draw_strength = min(1, _bloom_intensity);
-            var _bloom_tint = make_color_rgb(255 * _bloom_draw_strength, 255 * _bloom_draw_strength, 255 * _bloom_draw_strength);
-            draw_surface_stretched_ext(
-                raid_bloom_surface,
-                _camera_x,
-                _camera_y,
-                _surface_width,
-                _surface_height,
-                _bloom_tint,
-                1
-            );
-            _bloom_intensity -= _bloom_draw_strength;
-        }
+        draw_raid_bloom_surface(raid_bloom_surface, _camera_x, _camera_y, _surface_width, _surface_height,
+            raid_bloom_intensity);
+        draw_raid_bloom_surface(raid_projectile_bloom_surface, _camera_x, _camera_y, _surface_width, _surface_height,
+            raid_bloom_projectile_intensity);
         gpu_set_texfilter(_previous_bloom_texfilter);
     }
 
@@ -376,4 +365,54 @@ function draw_raid_lighting()
     );
     draw_set_color(_previous_color);
     draw_set_alpha(_previous_alpha);
+}
+
+function raid_bloom_process_surface(_source_surface, _output_surface, _temporary_surface, _radius, _passes)
+{
+    var _blur_texel = shader_get_uniform(shd_raid_bloom_blur, "u_texel_size");
+    var _blur_direction = shader_get_uniform(shd_raid_bloom_blur, "u_direction");
+    var _blur_radius = shader_get_uniform(shd_raid_bloom_blur, "u_radius");
+    var _texel_x = 1 / surface_get_width(_source_surface);
+    var _texel_y = 1 / surface_get_height(_source_surface);
+    var _previous_texfilter = gpu_get_texfilter();
+    gpu_set_texfilter(true);
+
+    for (var _blur_pass = 0; _blur_pass < clamp(_passes, 1, 4); _blur_pass++)
+    {
+        surface_set_target(_temporary_surface);
+        draw_clear_alpha(c_black, 0);
+        gpu_set_blendmode_ext_sepalpha(bm_one, bm_zero, bm_one, bm_zero);
+        shader_set(shd_raid_bloom_blur);
+        shader_set_uniform_f(_blur_texel, _texel_x, _texel_y);
+        shader_set_uniform_f(_blur_direction, 1, 0);
+        shader_set_uniform_f(_blur_radius, clamp(_radius, 0, 16));
+        draw_surface(_blur_pass == 0 ? _source_surface : _output_surface, 0, 0);
+        shader_reset();
+        surface_reset_target();
+
+        surface_set_target(_output_surface);
+        draw_clear_alpha(c_black, 0);
+        gpu_set_blendmode_ext_sepalpha(bm_one, bm_zero, bm_one, bm_zero);
+        shader_set(shd_raid_bloom_blur);
+        shader_set_uniform_f(_blur_texel, _texel_x, _texel_y);
+        shader_set_uniform_f(_blur_direction, 0, 1);
+        shader_set_uniform_f(_blur_radius, clamp(_radius, 0, 16));
+        draw_surface(_temporary_surface, 0, 0);
+        shader_reset();
+        surface_reset_target();
+    }
+
+    gpu_set_texfilter(_previous_texfilter);
+}
+
+function draw_raid_bloom_surface(_surface, _x, _y, _width, _height, _intensity)
+{
+    var _remaining_intensity = clamp(_intensity, 0, 3);
+    while (_remaining_intensity > 0)
+    {
+        var _draw_strength = min(1, _remaining_intensity);
+        var _tint = make_color_rgb(255 * _draw_strength, 255 * _draw_strength, 255 * _draw_strength);
+        draw_surface_stretched_ext(_surface, _x, _y, _width, _height, _tint, 1);
+        _remaining_intensity -= _draw_strength;
+    }
 }

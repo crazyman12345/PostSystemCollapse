@@ -1,10 +1,16 @@
 function init_level_database()
 {
+    var _store_light = make_color_rgb(215, 175, 115);
+    var _sewer_teal = make_color_rgb(117, 166, 149);
     level_db = [
         {
             name: "ABANDONED STORE",
             danger_level: 1,
             sprite: -1,
+            floor_tiles: [tile4, tile3, tile4_1, tile4_2, tile4_3, tile4_4],
+            arena_wall_sprites: [spr_shelf1, spr_shelf2, spr_shelf3, spr_shelf4, spr_shelf5],
+            arena_door_sprite: spr_door1,
+            light_color: _store_light,
             enemy_spawns: [
                 {type: RaidEnemyType.KNIFE_STALKER, weight: 30},
                 {type: RaidEnemyType.BURST_SHOOTER, weight: 25},
@@ -19,6 +25,10 @@ function init_level_database()
             name: "SEWER TUNNELS",
             danger_level: 2,
             sprite: -1,
+            floor_tiles: [sewertile1, sewertile2, sewertile3, sewertile4, sewertile5, sewertile6],
+            arena_wall_sprites: [spr_swall1_1, spr_swall1_2, spr_swall1_3, spr_swall1_4],
+            arena_door_sprite: spr_sewerdoor,
+            light_color: _sewer_teal,
             enemy_spawns: [
                 {type: RaidEnemyType.GRENADE_THROWER, weight: 30},
                 {type: RaidEnemyType.BURST_DODGER, weight: 30},

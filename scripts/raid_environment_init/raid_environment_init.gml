@@ -1,25 +1,9 @@
 function raid_environment_init()
 {
     var _inner_face_sprites = [spr_shelf1, spr_shelf2, spr_shelf3, spr_shelf4, spr_shelf5];
-    var _inner_face_materials = [];
-    for (var _sprite_index = 0; _sprite_index < array_length(_inner_face_sprites); _sprite_index++)
-    {
-        var _material = raid_environment_material(_inner_face_sprites[_sprite_index], 0, 0, 45, -29);
-        _material.offset_x = -10;
-        _material.offset_y = 32;
-        _material.uv_offset_v = 6;
-        _material.scale_x = 84;
-        _material.scale_y = 66;
-        array_push(_inner_face_materials, _material);
-    }
+    var _inner_face_materials = raid_environment_wall_materials(_inner_face_sprites);
 
-    var _door_inner_face_material = raid_environment_material(spr_door1, 0, 2, -42, -29);
-    _door_inner_face_material.offset_x = -23;
-    _door_inner_face_material.offset_y = 32;
-    _door_inner_face_material.uv_offset_u = 100;
-    _door_inner_face_material.uv_offset_v = 6;
-    _door_inner_face_material.scale_x = 20;
-    _door_inner_face_material.scale_y = 64;
+    var _door_inner_face_material = raid_environment_door_material(spr_door1);
 
     var _cap_material = raid_environment_material(topcap1, 0, 6, 30, -24);
     _cap_material.offset_x = 35;
@@ -51,6 +35,50 @@ function raid_environment_init()
         geometry: undefined
     };
     raid_texture_crop_debug_init();
+}
+
+
+function raid_environment_door_material(_sprite, _settings = undefined)
+{
+    var _material = raid_environment_material(_sprite, 0, 2, -42, -29);
+    _material.offset_x = -23;
+    _material.offset_y = 32;
+    _material.uv_offset_u = 100;
+    _material.uv_offset_v = 6;
+    _material.scale_x = 20;
+    _material.scale_y = 64;
+
+    if (!is_undefined(_settings))
+    {
+        _material.crop_left = _settings.crop_left;
+        _material.crop_right = _settings.crop_right;
+        _material.crop_top = _settings.crop_top;
+        _material.crop_bottom = _settings.crop_bottom;
+        _material.offset_x = _settings.offset_x;
+        _material.offset_y = _settings.offset_y;
+        _material.uv_offset_u = _settings.uv_offset_u;
+        _material.uv_offset_v = _settings.uv_offset_v;
+        _material.scale_x = _settings.scale_x;
+        _material.scale_y = _settings.scale_y;
+    }
+    return _material;
+}
+
+
+function raid_environment_wall_materials(_sprites)
+{
+    var _materials = [];
+    for (var _sprite_index = 0; _sprite_index < array_length(_sprites); _sprite_index++)
+    {
+        var _material = raid_environment_material(_sprites[_sprite_index], 0, 0, 45, -29);
+        _material.offset_x = -10;
+        _material.offset_y = 32;
+        _material.uv_offset_v = 6;
+        _material.scale_x = 84;
+        _material.scale_y = 66;
+        array_push(_materials, _material);
+    }
+    return _materials;
 }
 
 

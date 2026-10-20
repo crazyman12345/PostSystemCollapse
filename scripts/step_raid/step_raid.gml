@@ -40,6 +40,8 @@ function step_raid()
 
     if (raid.state != RaidState.PAUSED && raid.state != RaidState.RESULT)
     {
+        step_raid_wall_lights();
+
         for (var _light_index = array_length(raid_temporary_lights) - 1; _light_index >= 0; _light_index--)
         {
             var _light = raid_temporary_lights[_light_index];
