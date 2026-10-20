@@ -6,8 +6,8 @@
   "name":"raid_texture_crop_debug_config",
   "parent":{
     "name":"debug",
-    "path":"folders/debug.yy"
+    "path":"folders/debug.yy",
   },
   "resourceType":"GMScript",
-  "resourceVersion":"2.0"
+  "resourceVersion":"2.0",
 }

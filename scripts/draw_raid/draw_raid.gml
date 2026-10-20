@@ -40,7 +40,6 @@ function draw_raid()
 	draw_raid_gun();
     draw_raid_enemies();
     draw_raid_ring_hazards();
-    explosion_draw();
 	draw_raid_door_overlay();
     if (raid.state == RaidState.ENTERING)
     {
@@ -74,12 +73,6 @@ function draw_raid_player_death_screen()
     draw_text_transformed(_center_x, _center_y - 80, "YOU DIED!", 1.7, 1.7, 0);
     draw_set_color(c_white);
     draw_text_transformed(_center_x, _center_y + 10, "ALL ITEMS LOST", 0.85, 0.85, 0);
-
-    if (raid_player_death_phase >= 3)
-    {
-        draw_set_color(c_lime);
-        draw_text_transformed(_center_x, _center_y + 90, "PRESS ENTER TO CONTINUE", 0.58, 0.58, 0);
-    }
 
     draw_set_alpha(1);
     draw_set_halign(fa_left);

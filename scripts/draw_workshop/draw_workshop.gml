@@ -105,8 +105,4 @@ function draw_workshop()
 
     draw_workshop_upgrades(bench, selected_key, right_x1, top, right_x2, bottom);
 
-    // BOTTOM CONTROLS
-    draw_set_halign(fa_center);
-    draw_text(gui_w * 0.5, gui_h - 40, "[W/S] SELECT BENCH    [ENTER] SELECT    [ESC] BACK");
-    draw_set_halign(fa_left);
 }

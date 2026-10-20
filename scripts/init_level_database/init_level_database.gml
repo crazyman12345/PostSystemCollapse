@@ -11,15 +11,22 @@ function init_level_database()
                 {type: RaidEnemyType.SPINNER, weight: 20},
                 {type: RaidEnemyType.KNIFE_DASHER, weight: 15},
                 {type: RaidEnemyType.WALL_RUSHER, weight: 10}
-            ]
+            ],
+            beginning_enemy_count: 3,
+            ending_enemy_count: 5
         },
         {
             name: "SEWER TUNNELS",
             danger_level: 2,
             sprite: -1,
             enemy_spawns: [
-                {type: RaidEnemyType.GRENADE_THROWER, weight: 100}
-            ]
+                {type: RaidEnemyType.GRENADE_THROWER, weight: 30},
+                {type: RaidEnemyType.BURST_DODGER, weight: 30},
+                {type: RaidEnemyType.SHOTGUN_BURSTER, weight: 25},
+                {type: RaidEnemyType.BOMBER, weight: 15}
+            ],
+            beginning_enemy_count: 3,
+            ending_enemy_count: 8
         },
         {
             name: "coming soon",

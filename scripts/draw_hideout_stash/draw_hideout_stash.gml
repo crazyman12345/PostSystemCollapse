@@ -284,24 +284,6 @@ function draw_hideout_stash()
     }
 
 
-    // ==========================================
-    // CONTROLS
-    // ==========================================
-
-    draw_set_color(c_lime);
-
-    draw_text(
-        equipment_left,
-        panel_top + 925,
-        "W/S: SELECT MAIN STASH ITEM"
-    );
-
-    draw_text(
-        equipment_left,
-        panel_top + 950,
-        "R: ROTATE HELD ITEM | ESC: CLOSE"
-    );
-
     draw_set_alpha(1);
     draw_set_font(fnt_terminal);
     inventory_hover_finish();

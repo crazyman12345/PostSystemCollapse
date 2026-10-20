@@ -11,17 +11,46 @@ function step_raid_enemy_bullets()
         // MOVE BULLET
         // ==================================================
 
-        b.bx += lengthdir_x(
-            b.bspeed * frame_scale,
-            b.bdirection
-        );
+        if (!b.stopped)
+        {
+            var _move_distance = b.bspeed * frame_scale;
 
-        b.by += lengthdir_y(
-            b.bspeed * frame_scale,
-            b.bdirection
-        );
+            if (b.travel_remaining >= 0)
+                _move_distance = min(_move_distance, b.travel_remaining);
 
-        b = projectile_smoke_update(b, _previous_x, _previous_y);
+            b.bx += lengthdir_x(_move_distance, b.bdirection);
+            b.by += lengthdir_y(_move_distance, b.bdirection);
+            b = projectile_smoke_update(b, _previous_x, _previous_y);
+
+            if (b.travel_remaining >= 0)
+            {
+                b.travel_remaining -= _move_distance;
+
+                if (b.travel_remaining <= 0)
+                    b.stopped = true;
+            }
+        }
+
+        if (b.stopped)
+        {
+            if (b.linger_timer > 0)
+            {
+                b.linger_timer -= frame_scale;
+            }
+            else
+            {
+                b.fade_timer -= frame_scale;
+                b.alpha = b.fade_duration > 0
+                    ? clamp(b.fade_timer / b.fade_duration, 0, 1)
+                    : 0;
+
+                if (b.fade_timer <= 0)
+                {
+                    array_delete(raid_enemy_bullets, i, 1);
+                    continue;
+                }
+            }
+        }
 
 
         // ==================================================

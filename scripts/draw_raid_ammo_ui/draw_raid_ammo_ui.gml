@@ -125,12 +125,4 @@ function draw_raid_ammo_ui()
             "RELOADING..."
         );
     }
-    else if (raid_weapon_mag < _weapon.mag_size)
-    {
-        draw_text(
-            _x,
-            _y + 64,
-            "[R] RELOAD"
-        );
-    }
 }

@@ -75,14 +75,4 @@ function draw_debug_console()
         "> " + debug_input + "_"
     );
 
-
-    // ==============================
-    // CONTROLS
-    // ==============================
-
-    draw_text(
-        console_left + 50,
-        console_top + console_height - 50,
-        "ENTER: EXECUTE    ESC/F1: CLOSE"
-    );
 }

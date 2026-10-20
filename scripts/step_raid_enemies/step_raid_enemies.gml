@@ -65,6 +65,24 @@ function step_raid_enemies()
             }
             break;
 
+            case RaidEnemyType.BURST_DODGER:
+            {
+                e = burst_dodger(e);
+            }
+            break;
+
+            case RaidEnemyType.SHOTGUN_BURSTER:
+            {
+                e = shotgun_burster(e);
+            }
+            break;
+
+            case RaidEnemyType.BOMBER:
+            {
+                e = bomber(e);
+            }
+            break;
+
 			case RaidEnemyType.BONES:
 			{
 				e = bones(e);

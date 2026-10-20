@@ -30,8 +30,8 @@
   "nineSlice":null,
   "origin":9,
   "parent":{
-    "name":"template",
-    "path":"folders/sprites/enemysprite/template.yy",
+    "name":"messing",
+    "path":"folders/sprites/enemysprite/template/messing.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

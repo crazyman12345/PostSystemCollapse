@@ -16,14 +16,14 @@ function raid_create_explosion(_x, _y, _radius)
     part_particles_create(explosion_particle_system, _x, _y, explosion_fire_particle_type, _fire_count);
     part_particles_create(explosion_particle_system, _x, _y, explosion_spark_particle_type, _spark_count);
     part_particles_create(explosion_particle_system, _x, _y, explosion_smoke_particle_type, _smoke_count);
+    audio_play_sound(smoke_sound, 0, false);
 
-    var _light = raid_refresh_muzzle_flash_light(
-        undefined,
-        _x,
-        _y,
-        _radius,
-        raid_muzzle_flash_lifetime
+    var _light = raid_spawn_temporary_light(
+        _x, _y, _radius, c_white, raid_explosion_light_intensity,
+        raid_explosion_light_lifetime, raid_explosion_light_shadow_height, true,
+        raid_explosion_light_shadow_height
     );
+    _light.decay_power = raid_explosion_light_decay_power;
 
     return _light;
 }

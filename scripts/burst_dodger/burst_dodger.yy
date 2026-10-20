@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"burst_dodger",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"burst_dodger",
+  "parent":{
+    "name":"EnemyTypes",
+    "path":"folders/Raid/EnemyTypes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -23,7 +23,7 @@ function draw_raid_texture_crop_debug()
     draw_set_alpha(1);
     draw_set_color(_green);
     draw_rectangle(40, 70, 550, 710, true);
-    draw_text(60, 82, "RAID VISUAL TUNING  [F7 CLOSE]");
+    draw_text(60, 82, "RAID VISUAL TUNING");
 
     raid_texture_crop_debug_draw_button(50, 110, 96, 30, "INNER FACE", raid_texture_crop_debug_tab == 0, false);
     raid_texture_crop_debug_draw_button(149, 110, 96, 30, "TOP CAP", raid_texture_crop_debug_tab == 1, false);
@@ -91,7 +91,6 @@ function draw_raid_texture_crop_debug()
     raid_texture_crop_debug_draw_button(305, 625, 225, 28, "COPY SETTINGS", false, raid_texture_crop_debug_selection == 23);
 
     draw_set_color(_green);
-    draw_text(60, 665, "TAB material  UP/DOWN select  LEFT/RIGHT adjust  ENTER activate");
     draw_text(60, 685, raid_texture_crop_debug_status);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);

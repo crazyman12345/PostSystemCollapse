@@ -294,7 +294,7 @@ function bones(_enemy)
                             11,
                             10,
                             make_color_rgb(255, 90, 90),
-                            make_color_rgb(120, 0, 0)
+                            make_color_rgb(120, 70, 20)
                         );
                         e.boss_attack_state = BossAttackState.SHOCKWAVE_WINDUP;
                     }

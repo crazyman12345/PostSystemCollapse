@@ -103,7 +103,6 @@ function draw_hideout_skills()
     terminal_panel(info_left, tree_top, info_right - info_left, tree_height, "SKILL TREE");
 
     var nodes = skill_node_get_nodes(selected_skill.key);
-    var node_help = "[W/S] TAB    [A/D OR MOUSE] NODE    [ENTER] UNLOCK    [ESC] BACK";
     var detail_width = 390;
     var detail_left = info_right - detail_width;
     var graph_left = info_left + 45;
@@ -188,14 +187,10 @@ function draw_hideout_skills()
             draw_set_font(fnt_terminal_small);
         }
 
-        draw_set_halign(fa_left);
-        draw_set_color(c_gray);
-        draw_text(tree_viewport.left + 10, tree_viewport.top + 8, "DRAG: PAN    WHEEL: ZOOM");
         hideout_skill_tree_end_clip(previous_scissor);
 
         var selected_node = nodes[hideout_skill_node_index];
         var selected_informational = selected_node.unlock_type == SkillNodeUnlockType.INFO;
-        if (selected_informational) node_help = "[W/S] TAB    [A/D OR MOUSE] NODE    [ESC] BACK";
         var selected_unlocked = skill_node_is_unlocked(selected_skill.key, selected_node);
         var selected_available = skill_node_can_purchase(selected_skill.key, selected_node);
         terminal_panel(detail_left, tree_top + 40, detail_width, tree_height - 60, "NODE DETAILS");
@@ -220,9 +215,6 @@ function draw_hideout_skills()
         draw_text_ext(detail_left + 20, tree_top + 270, selected_node.description, 24, detail_width - 40);
     }
 
-    draw_set_color(c_lime);
-    draw_set_halign(fa_center);
-    draw_text((tabs_left + gui_w) * 0.5, gui_h - 40, node_help);
     draw_set_halign(fa_left);
 }
 

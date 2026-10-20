@@ -23,7 +23,6 @@ function draw_skills_overlay()
     if (skill_count <= 0)
     {
         draw_text(x1 + 35, y1 + 105, "NO SKILLS AVAILABLE");
-        draw_text(x1 + 35, y2 - 50, "[K/ESC] CLOSE");
         return;
     }
 
@@ -99,5 +98,4 @@ function draw_skills_overlay()
 
     draw_set_color(c_lime);
     draw_text(x1 + 30, y2 - 85, "--------------------------------------------------");
-    draw_text(x1 + 35, y2 - 50, "[W/S] SELECT    [MOUSE] SELECT    [K/ESC] CLOSE");
 }

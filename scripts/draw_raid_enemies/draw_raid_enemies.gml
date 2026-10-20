@@ -45,6 +45,25 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
             _lighting_mask ? _mask_alpha : 1
         );
 
+        if (!_lighting_mask && e.enemy_type == RaidEnemyType.BOMBER && e.enemy_state == RaidEnemyState.ATTACK)
+        {
+            var _flash_rate = lerp(0.012, 0.04, 1 - clamp(e.bomb_windup_timer / e.bomb_windup_total, 0, 1));
+            var _flash_alpha = 0.15 + 0.5 * (0.5 + 0.5 * sin(current_time * _flash_rate));
+            gpu_set_blendmode(bm_add);
+            draw_sprite_ext(
+                e.enemy_sprite,
+                floor(e.enemy_frame),
+                e.enemy_x,
+                e.enemy_y,
+                e.enemy_facing * _draw_scale,
+                _draw_scale,
+                0,
+                c_white,
+                _flash_alpha
+            );
+            gpu_set_blendmode(bm_normal);
+        }
+
         if (e.enemy_type == RaidEnemyType.GRENADE_THROWER)
         {
             var _grenade_x = e.grenade_x;

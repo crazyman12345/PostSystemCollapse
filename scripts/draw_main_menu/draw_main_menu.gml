@@ -40,8 +40,4 @@ function draw_main_menu()
         terminal_menu_item(760, 650, "YES - NEW GAME", save_new_game_confirm_index == 0);
         terminal_menu_item(760, 710, "NO - KEEP SAVE", save_new_game_confirm_index == 1);
     }
-
-    terminal_prompt(
-        "W/S: SELECT    ENTER: CONFIRM    F11: FULLSCREEN"
-    );
 }

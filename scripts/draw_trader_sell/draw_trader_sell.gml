@@ -276,7 +276,4 @@ function draw_trader_sell()
 	        _selected_item_key
 	    );
 	}
-    terminal_prompt(
-        "W/S: SELECT    ENTER: SELL    A: BUY    ESC: BACK"
-    );
 }

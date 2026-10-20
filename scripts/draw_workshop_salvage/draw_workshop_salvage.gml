@@ -44,7 +44,4 @@ function draw_workshop_salvage(_x1, _top, _x2, _bottom)
         draw_text(_x1 + 50, _y, result_item.name + " x" + string(result.quantity));
         _y += 30;
     }
-
-    _y += 25;
-    draw_text(_x1 + 30, _y, "[ENTER] SALVAGE");
 }

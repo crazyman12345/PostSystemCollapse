@@ -107,6 +107,5 @@ function draw_inraid_bag_panel()
         );
     }
 
-    terminal_prompt("CLICK: SELECT / PLACE    R: ROTATE    RIGHT CLICK: CANCEL    U/ESC: CLOSE");
     draw_set_font(fnt_terminal);
 }

@@ -46,19 +46,25 @@ function ring_attack_draw(_attack)
     draw_set_valign(fa_middle);
     draw_set_font(fnt_explosion);
 
-    for (var _marker = 0; _marker < 8; _marker++)
-    {
-        var _marker_direction = _marker * 45;
-        var _marker_distance = _attack.max_radius - 20;
+    var _marker_scale = clamp(_attack.max_radius / 175, 0.35, 1);
+    var _marker_count = clamp(round(_attack.max_radius / 35), 4, 8);
+    var _marker_distance = max(0, _attack.max_radius - 20 * _marker_scale);
 
-        draw_text(
+    for (var _marker = 0; _marker < _marker_count; _marker++)
+    {
+        var _marker_direction = _marker * (360 / _marker_count);
+
+        draw_text_transformed(
             _attack.x
                 + lengthdir_x(_marker_distance, _marker_direction),
 
             _attack.y
                 + lengthdir_y(_marker_distance, _marker_direction),
 
-            "!"
+            "!",
+            _marker_scale,
+            _marker_scale,
+            0
         );
     }
 

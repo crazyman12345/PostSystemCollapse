@@ -1,4 +1,4 @@
-function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage)
+function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage, _projectile_config = undefined)
 {
     var e = _enemy;
 
@@ -85,13 +85,34 @@ function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage)
     // FIRE EXISTING BULLET FUNCTION
     // ==============================
 
-    raid_enemy_fire_bullet(
-        _muzzle_x,
-        _muzzle_y,
-        _dir,
-        _speed,
-        _damage
-    );
+    var _projectile_count = is_struct(_projectile_config) && variable_struct_exists(_projectile_config, "count")
+        ? max(1, floor(_projectile_config.count))
+        : 1;
+    var _projectile_spread = is_struct(_projectile_config) && variable_struct_exists(_projectile_config, "spread")
+        ? _projectile_config.spread
+        : 0;
+
+    for (var _projectile_index = 0; _projectile_index < _projectile_count; _projectile_index++)
+    {
+        var _spread_position = _projectile_count > 1
+            ? _projectile_index / (_projectile_count - 1) - 0.5
+            : 0;
+
+        raid_enemy_fire_bullet(
+            _muzzle_x,
+            _muzzle_y,
+            _dir + _projectile_spread * _spread_position,
+            _speed,
+            _damage,
+            true,
+            make_color_rgb(255, 70, 45),
+            20,
+            0.15,
+            true,
+            1.25,
+            _projectile_config
+        );
+    }
 
     var _muzzle_flash_radius = raid_muzzle_flash_radius;
     var _muzzle_flash_lifetime = raid_muzzle_flash_lifetime;
@@ -125,7 +146,10 @@ function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage)
     // ==============================
 
     e.enemy_gun_recoil = 3;
-	audio_play_sound(enemy_shot_sound,0,false);
+    var _shot_sound = is_struct(_projectile_config) && variable_struct_exists(_projectile_config, "sound")
+        ? _projectile_config.sound
+        : enemy_shot_sound;
+    audio_play_sound(_shot_sound, 0, false);
     return e;
 }
 

@@ -34,6 +34,8 @@ function raid_spawn_enemy(_type, _x, _y)
         // DASHERS
         dash_dir: 0,
         dash_speed: 0,
+        dash_duration: 0,
+        dash_cooldown: 0,
 
         // GRENADE THROWER
         grenade_timer: 0,
@@ -52,6 +54,12 @@ function raid_spawn_enemy(_type, _x, _y)
         grenade_throw_timer: 0,
         grenade_throw_total: 18,
         grenade_rotation: 0,
+
+        // BOMBER
+        bomb_timer: 0,
+        bomb_windup_timer: 0,
+        bomb_windup_total: 120,
+        bomb_indicator_radius: 118.75,
 		
 		enemy_sprite: spr_knife_stalker_run,
 		enemy_frame: 0,
@@ -187,16 +195,79 @@ function raid_spawn_enemy(_type, _x, _y)
 
         case RaidEnemyType.GRENADE_THROWER:
         {
-            enemy.enemy_sprite = spr_grenadethrower_idle;
-            enemy.enemy_sprite_idle = spr_grenadethrower_idle;
-            enemy.enemy_sprite_active = spr_grenadethrower_run2;
+            enemy.enemy_sprite = spr_grenadethroweridle;
+            enemy.enemy_sprite_idle = spr_grenadethroweridle;
+            enemy.enemy_sprite_active = spr_grenadethrowerrun;
             enemy.enemy_tint = c_white;
-            enemy.enemy_hp = 26;
-            enemy.enemy_max_hp = 26;
-            enemy.enemy_speed = 1.15;
+            enemy.enemy_hp = 45;
+            enemy.enemy_max_hp = 45;
+            enemy.enemy_speed = 1.3;
             enemy.enemy_state = RaidEnemyState.PAUSE;
-            enemy.grenade_timer = randomize_enemy_timer(120, 1);
+            enemy.grenade_timer = randomize_enemy_timer(90, 0.5);
             enemy.grenade_held = true;
+        }
+        break;
+
+
+        case RaidEnemyType.BURST_DODGER:
+        {
+            enemy.enemy_sprite = spr_burstdodge_run;
+            enemy.enemy_sprite_idle = spr_burstdodge_idle;
+            enemy.enemy_sprite_active = spr_burstdodge_run;
+            enemy.enemy_has_gun = true;
+            enemy.weapon = global.items.uzi;
+            enemy.enemy_gun_offset = 14;
+            enemy.enemy_muzzle_x = 19;
+            enemy.enemy_muzzle_y = 6;
+            enemy.enemy_hp = 34;
+            enemy.enemy_speed = 1.2;
+            enemy.lead_strength = 0.7;
+            enemy.shot_timer = randomize_enemy_timer(240, 0.1);
+            enemy.dash_speed = 8;
+            enemy.dash_duration = 9;
+            enemy = raid_enemy_pick_random_position(enemy);
+        }
+        break;
+
+
+        case RaidEnemyType.SHOTGUN_BURSTER:
+        {
+            enemy.enemy_sprite = spr_shotgun_burste;
+            enemy.enemy_sprite_idle = spr_shotgun_buster_idle;
+            enemy.enemy_sprite_active = spr_shotgun_burster_run;
+            enemy.enemy_has_gun = true;
+            enemy.weapon = global.items.double_barrel_shotgun;
+            enemy.enemy_gun_offset = 10;
+            enemy.enemy_muzzle_x = 28;
+            enemy.enemy_muzzle_y = 1;
+            enemy.enemy_hp = 40;
+            enemy.enemy_max_hp = 40;
+            enemy.dash_speed = 4;
+            enemy.dash_duration = 12;
+            enemy.shotgun_dash_pending = false;
+            enemy.enemy_state = RaidEnemyState.PAUSE;
+            enemy.state_timer = randomize_enemy_timer(90, 0.2);
+        }
+        break;
+
+
+        case RaidEnemyType.BOMBER:
+        {
+            enemy.enemy_sprite = spr_bomberrun;
+            enemy.enemy_sprite_idle = spr_bomberidle;
+            enemy.enemy_sprite_active = spr_bomberrun;
+            enemy.enemy_has_gun = true;
+            enemy.weapon = global.items.m1911;
+            enemy.enemy_gun_offset = 14;
+            enemy.enemy_muzzle_x = 14;
+            enemy.enemy_muzzle_y = 6;
+            enemy.enemy_hp = 40;
+            enemy.enemy_max_hp = 40;
+            enemy.enemy_speed = 1.0;
+            enemy.lead_strength = 0.35;
+            enemy.shot_timer = randomize_enemy_timer(75, 0.2);
+            enemy.bomb_timer = 600;
+            enemy = raid_enemy_pick_random_position(enemy);
         }
         break;
 

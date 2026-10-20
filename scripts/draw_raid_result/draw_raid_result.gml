@@ -27,8 +27,4 @@ function draw_raid_result()
         fnt_terminal
     );
 
-
-    terminal_prompt(
-        "ENTER: CONTINUE"
-    );
 }

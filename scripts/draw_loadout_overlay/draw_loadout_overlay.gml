@@ -48,11 +48,6 @@ function draw_loadout_overlay()
         {
             draw_start_raid_confirmation();
         }
-        else
-        {
-            terminal_prompt("ENTER: START RAID    ESC: BACK");
-        }
-
         draw_set_font(fnt_terminal);
         inventory_hover_finish();
         inventory_hover_draw();
@@ -114,20 +109,6 @@ function draw_loadout_overlay()
         draw_start_raid_confirmation();
     }
 
-
-    // ==============================
-    // NORMAL PROMPT
-    // ==============================
-
-    else
-    {
-        if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
-        {
-            terminal_prompt(
-                "A/D: PANEL    W/S: SELECT    ENTER: ACTION   X: DROP ITEM    U/ESC: CLOSE"
-            );
-        }
-    }
 
     inventory_hover_finish();
     inventory_hover_draw();

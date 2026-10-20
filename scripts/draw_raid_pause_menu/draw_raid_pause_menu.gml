@@ -53,7 +53,7 @@ function draw_raid_pause_menu()
             "FPS", "DYNAMIC LIGHTING", "MUZZLE FLASH LIGHTING", "AMBIENT DARKNESS", "COLORED LIGHTING", "LIGHT FALLOFF",
             "ENVIRONMENTAL SHADOWS", "CHARACTER SHADOWS", "CONTACT SHADOWS", "SMOKE EFFECTS",
             "BLOOD EFFECTS", "DEATH GIBS", "PROJECTILE GLOW", "PROJECTILE LIGHTING", "BLOOM",
-            "PLAYER MINIMUM BRIGHTNESS", "ENEMY MINIMUM BRIGHTNESS", "BLOOM INTENSITY",
+            "PLAYER MINIMUM BRIGHTNESS", "ENEMY MINIMUM BRIGHTNESS", "ATTACK RING MINIMUM BRIGHTNESS", "BLOOM INTENSITY",
             "BLUR RADIUS", "BLUR PASSES", "SATURATION", "CONTRAST", "BRIGHTNESS",
             "RESTORE DEFAULTS", "CONTINUE"
         ];
@@ -75,6 +75,7 @@ function draw_raid_pause_menu()
             _settings.bloom ? "ON" : "OFF",
             string(round(_settings.player_minimum_brightness * 100)) + "%",
             string(round(_settings.enemy_minimum_brightness * 100)) + "%",
+            string(round(_settings.attack_ring_minimum_brightness * 100)) + "%",
             string_format(raid_bloom_intensity, 1, 1),
             string(raid_bloom_blur_radius),
             string(raid_bloom_blur_passes),
@@ -97,16 +98,17 @@ function draw_raid_pause_menu()
             var _row_y = _first_y + _visible_index * _row_step;
             var _prefix = raid.pause_graphics_index == _graphics_index ? "> " : "  ";
             draw_text(_label_x, _row_y, _prefix + _labels[_graphics_index]);
-            if ((_graphics_index >= 15 && _graphics_index <= 16)
-            || (_graphics_index >= 20 && _graphics_index <= 22))
+            if ((_graphics_index >= 15 && _graphics_index <= 17)
+            || (_graphics_index >= 21 && _graphics_index <= 23))
             {
-                var _character_brightness_slider = _graphics_index <= 16;
+                var _character_brightness_slider = _graphics_index <= 17;
                 var _slider_value = _character_brightness_slider
-                    ? (_graphics_index == 15 ? _settings.player_minimum_brightness : _settings.enemy_minimum_brightness)
-                    : (_graphics_index == 20 ? raid_color_grade_saturation
-                        : (_graphics_index == 21 ? raid_color_grade_contrast : raid_color_grade_brightness));
-                var _slider_min = _character_brightness_slider || _graphics_index == 20 ? 0 : 0.5;
-                var _slider_max = _character_brightness_slider ? 1 : (_graphics_index == 20 ? 2 : 1.5);
+                    ? (_graphics_index == 15 ? _settings.player_minimum_brightness
+                        : (_graphics_index == 16 ? _settings.enemy_minimum_brightness : _settings.attack_ring_minimum_brightness))
+                    : (_graphics_index == 21 ? raid_color_grade_saturation
+                        : (_graphics_index == 22 ? raid_color_grade_contrast : raid_color_grade_brightness));
+                var _slider_min = _character_brightness_slider || _graphics_index == 21 ? 0 : 0.5;
+                var _slider_max = _character_brightness_slider ? 1 : (_graphics_index == 21 ? 2 : 1.5);
                 var _slider_progress = clamp((_slider_value - _slider_min) / (_slider_max - _slider_min), 0, 1);
                 var _slider_width = 90;
                 var _slider_y = _row_y + 10;
@@ -115,7 +117,7 @@ function draw_raid_pause_menu()
                 draw_rectangle(_slider_knob_x - 2, _slider_y - 5, _slider_knob_x + 2, _slider_y + 5, false);
                 draw_text(_value_x + _slider_width + 12, _row_y, _values[_graphics_index]);
             }
-            else if (_graphics_index < 23) draw_text(_value_x, _row_y, _values[_graphics_index]);
+            else if (_graphics_index < 24) draw_text(_value_x, _row_y, _values[_graphics_index]);
         }
 
         draw_set_halign(fa_center);
@@ -123,8 +125,5 @@ function draw_raid_pause_menu()
         if (_last_index < array_length(_labels)) draw_text(_gui_width * 0.70, _first_y + (_visible_rows - 1) * _row_step, "v");
         draw_text(_gui_width * 0.5, _gui_height * 0.85, "[" + string(raid.pause_graphics_index + 1) + "/" + string(array_length(_labels)) + "]");
     }
-
-    draw_set_halign(fa_center);
-    draw_text(_gui_width * 0.5, _gui_height * 0.90, "Q/E OR CLICK TAB    W/S OR WHEEL: SELECT    A/D OR ARROWS: CHANGE    ENTER/CLICK: CONFIRM");
     draw_set_halign(fa_left);
 }

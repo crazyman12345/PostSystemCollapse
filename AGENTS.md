@@ -76,3 +76,5 @@ After completing changes, you may inspect `git diff` to review what you changed,
 - Create and register new GameMaker script resources correctly (`.gml`, `.yy`, `.yyp`).
 - Place scripts in the appropriate Asset Browser folders.
 - Prioritize readability, maintainability, and minimal code duplication over rigid file-count rules.
+
+Never add control instructions, keybind hints, tutorial prompts, or input tips to any UI or gameplay screen unless explicitly requested. This includes text such as `W/S: SELECT`, `[E] INTERACT`, `ESC: BACK`, `PRESS ENTER`, and similar prompts.

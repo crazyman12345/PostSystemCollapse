@@ -3,8 +3,10 @@ function draw_raid_character_light_masks(_camera_x, _camera_y)
     var _settings = global.graphics_settings;
     var _player_minimum = clamp(_settings.player_minimum_brightness, 0, 1);
     var _enemy_minimum = clamp(_settings.enemy_minimum_brightness, 0, 1);
+    var _attack_ring_minimum = clamp(_settings.attack_ring_minimum_brightness, 0, 1);
     var _ambient_illumination = 1 - clamp(raid_lighting_ambient_alpha, 0, 1);
-    if (_player_minimum <= _ambient_illumination && _enemy_minimum <= _ambient_illumination) return;
+    if (_player_minimum <= _ambient_illumination && _enemy_minimum <= _ambient_illumination
+    && _attack_ring_minimum <= _ambient_illumination) return;
 
     var _previous_world_matrix = matrix_get(matrix_world);
     matrix_set(matrix_world, matrix_build(-_camera_x, -_camera_y, 0, 0, 0, 0, 1, 1, 1));
@@ -24,6 +26,12 @@ function draw_raid_character_light_masks(_camera_x, _camera_y)
     {
         shader_set_uniform_f(_minimum_uniform, _enemy_minimum);
         draw_raid_enemies(true, 1);
+    }
+
+    if (raid.state != RaidState.DEATH && _attack_ring_minimum > _ambient_illumination)
+    {
+        shader_set_uniform_f(_minimum_uniform, _attack_ring_minimum);
+        draw_raid_ring_hazards();
     }
 
     shader_reset();

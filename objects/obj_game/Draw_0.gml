@@ -5,6 +5,7 @@ if (
 {
     draw_raid();
     draw_raid_lighting();
+    if (raid.state != RaidState.DEATH) explosion_draw();
     draw_raid_environment_debug();
     draw_raid_player_hit_region_debug();
     if (raid.state != RaidState.DEATH)

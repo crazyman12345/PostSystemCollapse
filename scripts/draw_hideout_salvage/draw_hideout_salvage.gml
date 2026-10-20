@@ -80,7 +80,4 @@ function draw_hideout_salvage(){
 		draw_text(item_x, panel_top + panel_height - 95, "ITEM " + string(inventory_index + 1) + " / " + string(item_count));
 	}
 
-	var controls = "W/S: SELECT  E: SALVAGE  ESC: BACK";
-	if (salvage_active) controls = "SALVAGING...";
-	draw_text(item_x, panel_top + panel_height - 55, controls);
 }

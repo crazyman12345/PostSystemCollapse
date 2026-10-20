@@ -72,7 +72,8 @@ function draw_raid_colored_lights(_camera_x, _camera_y, _surface_width, _surface
             _color_projectile.bx - _camera_x,
             _color_projectile.by - _camera_y,
             variable_struct_exists(_color_projectile, "light_radius") ? _color_projectile.light_radius : raid_projectile_light_radius,
-            _color_projectile_intensity * raid_colored_light_strength,
+            _color_projectile_intensity * raid_colored_light_strength
+                * (variable_struct_exists(_color_projectile, "alpha") ? _color_projectile.alpha : 1),
             _projectile_light.color,
             0, 1, 1, 16
         );

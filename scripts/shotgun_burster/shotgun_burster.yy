@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"shotgun_burster",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"shotgun_burster",
+  "parent":{
+    "name":"EnemyTypes",
+    "path":"folders/Raid/EnemyTypes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

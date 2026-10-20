@@ -14,9 +14,6 @@ function draw_raid_gun_tuning_panel()
     draw_set_color(c_yellow);
     draw_text(_gui_x, _gui_y, "GUN TUNING: " + _weapon.name);
     draw_set_color(c_white);
-    draw_text(_gui_x, _gui_y + 20, "J / K weapon   Up/Down value   Left/Right adjust");
-    draw_text(_gui_x, _gui_y + 38, "Shift coarse   Ctrl fine   P print GML");
-
     for (var i = 0; i < array_length(_names); i++)
     {
         draw_set_color(i == raid_gun_tuning_value_index ? c_yellow : c_white);

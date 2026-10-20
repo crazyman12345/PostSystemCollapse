@@ -9,6 +9,9 @@ function raid_enemy_type_name(_type)
 		case RaidEnemyType.WALL_RUSHER: return "RUSHER";
 		case RaidEnemyType.BONES: return "BONES";
         case RaidEnemyType.GRENADE_THROWER: return "GRENADE THROWER";
+        case RaidEnemyType.BURST_DODGER: return "BURST DODGER";
+        case RaidEnemyType.SHOTGUN_BURSTER: return "SHOTGUN BURSTER";
+        case RaidEnemyType.BOMBER: return "BOMBER";
     }
 
     return "UNKNOWN";

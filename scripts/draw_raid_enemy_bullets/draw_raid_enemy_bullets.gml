@@ -10,7 +10,7 @@ function draw_raid_enemy_bullets()
     for (var i = 0; i < array_length(raid_enemy_bullets); i++)
     {
         var b = raid_enemy_bullets[i];
-        draw_sprite_ext(spr_enemy_bullet, 0, b.bx, b.by, _core_xscale, _core_yscale, b.bdirection, c_white, 1);
+        draw_sprite_ext(spr_enemy_bullet, 0, b.bx, b.by, _core_xscale, _core_yscale, b.bdirection, c_white, b.alpha);
     }
 
     gpu_set_blendmode_ext_sepalpha(

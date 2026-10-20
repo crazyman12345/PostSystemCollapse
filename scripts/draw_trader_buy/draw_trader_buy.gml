@@ -184,8 +184,4 @@ if (array_length(trader.stock) > 0)
         _selected_stock.item_key
     );
 }
-
-    terminal_prompt(
-        "W/S: SELECT    ENTER: BUY    SHIFT+ENTER: BUY 10    D: SELL    ESC: BACK"
-    );
 }

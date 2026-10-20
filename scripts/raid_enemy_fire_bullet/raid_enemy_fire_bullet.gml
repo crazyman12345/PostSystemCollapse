@@ -1,5 +1,15 @@
-function raid_enemy_fire_bullet(_x, _y, _dir, _speed, _damage, _light_enabled = true, _light_color = make_color_rgb(255, 70, 45), _light_radius = 20, _light_intensity = 0.15, _projectile_smoke_enabled = true, _projectile_smoke_interval = 1.25)
+function raid_enemy_fire_bullet(_x, _y, _dir, _speed, _damage, _light_enabled = true, _light_color = make_color_rgb(255, 70, 45), _light_radius = 20, _light_intensity = 0.15, _projectile_smoke_enabled = true, _projectile_smoke_interval = 1.25, _behavior = undefined)
 {
+    var _travel_distance = is_struct(_behavior) && variable_struct_exists(_behavior, "travel_distance")
+        ? max(0, _behavior.travel_distance)
+        : -1;
+    var _linger_duration = is_struct(_behavior) && variable_struct_exists(_behavior, "linger_duration")
+        ? max(0, _behavior.linger_duration)
+        : 0;
+    var _fade_duration = is_struct(_behavior) && variable_struct_exists(_behavior, "fade_duration")
+        ? max(0, _behavior.fade_duration)
+        : 0;
+
     array_push(
         raid_enemy_bullets,
         {
@@ -14,7 +24,13 @@ function raid_enemy_fire_bullet(_x, _y, _dir, _speed, _damage, _light_enabled = 
             light_intensity: _light_intensity,
             smoke_enabled: _projectile_smoke_enabled,
             smoke_interval: _projectile_smoke_interval,
-            smoke_timer: random_range(0, _projectile_smoke_interval)
+            smoke_timer: random_range(0, _projectile_smoke_interval),
+            travel_remaining: _travel_distance,
+            linger_timer: _linger_duration,
+            fade_timer: _fade_duration,
+            fade_duration: _fade_duration,
+            stopped: false,
+            alpha: 1
         }
     );
 }

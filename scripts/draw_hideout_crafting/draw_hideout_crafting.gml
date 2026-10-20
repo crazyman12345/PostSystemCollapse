@@ -77,12 +77,6 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
             "NO RECIPES AVAILABLE"
         );
 
-        draw_text(
-            list_left + padding,
-            panel_top + panel_height - 55,
-            "ESC: BACK"
-        );
-
         return;
     }
 
@@ -208,13 +202,6 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
         + string(selected_index + 1)
         + " / "
         + string(recipe_count)
-    );
-
-
-    draw_text(
-        list_left + padding,
-        panel_top + panel_height - 55,
-        "W/S: SELECT  ESC: BACK"
     );
 
 
@@ -409,16 +396,6 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
 
         details_y += 36;
     }
-
-
-    details_y += 30;
-
-
-    draw_text(
-        details_x,
-        details_y,
-        "[E] CRAFT"
-    );
 
 
     if (crafting_message != "")

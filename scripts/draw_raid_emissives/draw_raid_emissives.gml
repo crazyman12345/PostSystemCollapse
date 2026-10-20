@@ -28,7 +28,7 @@ function draw_raid_emissives(_camera_x, _camera_y, _scale_x, _scale_y, _include_
                 _yscale,
                 _projectile.bdirection,
                 _color,
-                _alpha
+                _alpha * (variable_struct_exists(_projectile, "alpha") ? _projectile.alpha : 1)
             );
         }
     }

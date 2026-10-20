@@ -42,7 +42,10 @@ enum RaidEnemyType
     KNIFE_DASHER,
 	WALL_RUSHER,
     BONES,
-    GRENADE_THROWER
+    GRENADE_THROWER,
+    BURST_DODGER,
+    SHOTGUN_BURSTER,
+    BOMBER
 }
 
 enum RaidEnemyState
@@ -244,6 +247,10 @@ raid_muzzle_flash_core_radius = 28;
 raid_muzzle_flash_core_intensity = 1.3;
 raid_muzzle_flash_shadow_height = 48;
 raid_muzzle_flash_decay_power = 2.4;
+raid_explosion_light_intensity = 1.5;
+raid_explosion_light_lifetime = 10;
+raid_explosion_light_shadow_height = 64;
+raid_explosion_light_decay_power = 2.4;
 raid_player_light_radius = 55;
 raid_player_light_strength = 0.22;
 raid_player_light_color = make_color_rgb(255, 220, 175);
@@ -296,8 +303,8 @@ raid_player_facing = 1;
 raid_player_radius = 16;
 raid_player_dash_active = false;
 raid_player_dash_timer = 0;
-raid_player_dash_time = 8;
-raid_player_dash_speed = 12;
+raid_player_dash_time = 6;
+raid_player_dash_speed = 10.8;
 raid_player_dash_x = 0;
 raid_player_dash_y = 0;
 raid_player_dash_xp_pending = false;

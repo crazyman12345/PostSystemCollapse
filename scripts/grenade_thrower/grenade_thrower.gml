@@ -37,7 +37,7 @@ function grenade_thrower(_enemy)
                 2,
                 10,
                 10,
-                make_color_rgb(230, 175, 70),
+                make_color_rgb(255, 90, 90),
                 make_color_rgb(120, 70, 20)
             );
         }
@@ -95,7 +95,7 @@ function grenade_thrower(_enemy)
             e.grenade_flight_timer = e.grenade_flight_total;
             e.grenade_rotation = 0;
 
-            e.grenade_timer = randomize_enemy_timer(420, 2 / 7);
+            e.grenade_timer = randomize_enemy_timer(330, 0.2);
 
             for (var _attempt = 0; _attempt < 6; _attempt++)
             {

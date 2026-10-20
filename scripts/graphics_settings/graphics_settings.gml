@@ -16,7 +16,8 @@ function graphics_settings_defaults()
         projectile_lighting: true,
         bloom: true,
         player_minimum_brightness: 0.90,
-        enemy_minimum_brightness: 0.80
+        enemy_minimum_brightness: 0.80,
+        attack_ring_minimum_brightness: 1.00
     };
 }
 
@@ -45,6 +46,7 @@ function graphics_settings_load()
             _settings.bloom = ini_read_real("Graphics", "bloom", 1) > 0;
             _settings.player_minimum_brightness = clamp(ini_read_real("Graphics", "player_minimum_brightness", 0.90), 0, 1);
             _settings.enemy_minimum_brightness = clamp(ini_read_real("Graphics", "enemy_minimum_brightness", 0.80), 0, 1);
+            _settings.attack_ring_minimum_brightness = clamp(ini_read_real("Graphics", "attack_ring_minimum_brightness", 1.00), 0, 1);
             ini_close();
         }
         catch (_error)
@@ -76,6 +78,7 @@ function graphics_settings_save()
     ini_write_real("Graphics", "bloom", _settings.bloom);
     ini_write_real("Graphics", "player_minimum_brightness", _settings.player_minimum_brightness);
     ini_write_real("Graphics", "enemy_minimum_brightness", _settings.enemy_minimum_brightness);
+    ini_write_real("Graphics", "attack_ring_minimum_brightness", _settings.attack_ring_minimum_brightness);
     ini_close();
 }
 

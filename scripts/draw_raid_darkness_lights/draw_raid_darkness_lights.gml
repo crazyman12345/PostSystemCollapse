@@ -70,7 +70,8 @@ function draw_raid_darkness_lights(_camera_x, _camera_y, _surface_width, _surfac
             _projectile.bx - _camera_x,
             _projectile.by - _camera_y,
             variable_struct_exists(_projectile, "light_radius") ? _projectile.light_radius : raid_projectile_light_radius,
-            variable_struct_exists(_projectile, "light_intensity") ? _projectile.light_intensity : raid_projectile_light_intensity,
+            (variable_struct_exists(_projectile, "light_intensity") ? _projectile.light_intensity : raid_projectile_light_intensity)
+                * (variable_struct_exists(_projectile, "alpha") ? _projectile.alpha : 1),
             _projectile_light.color,
             0, 1, 1, 16
         );
