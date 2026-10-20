@@ -71,6 +71,8 @@ function step_raid()
         case RaidState.RESULT: step_raid_result(); break;
     }
 
+    player_survival_update();
+
     // Cleanup
     if (raid.state == RaidState.COMBAT || raid.state == RaidState.EXITING)
     {

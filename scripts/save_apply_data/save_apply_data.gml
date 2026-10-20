@@ -127,6 +127,12 @@ function save_apply_data(_data)
     }
     player_health_sync_crew();
 
+    var survival_data = save_value(_data, "survival", {});
+    player_energy = clamp(save_number(survival_data, "energy", health_config.survival_max), 0, health_config.survival_max);
+    player_hydration = clamp(save_number(survival_data, "hydration", health_config.survival_max), 0, health_config.survival_max);
+    energy_zero_damage_remaining = health_config.energy_zero_damage_interval_seconds;
+    hydration_zero_damage_remaining = health_config.hydration_zero_damage_interval_seconds;
+
     var progression = save_value(_data, "progression", {});
     global.progress.danger_level = max(0, save_number(progression, "danger_level", 0));
     var flags = save_value(progression, "flags", {});

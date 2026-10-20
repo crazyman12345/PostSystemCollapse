@@ -1,7 +1,7 @@
 function draw_raid_enemy_bullets()
 {
-    var _core_xscale = 0.25;
-    var _core_yscale = 0.10;
+    var _core_xscale = 0.175;
+    var _core_yscale = 0.07;
     var _previous_blend_mode = gpu_get_blendmode_ext_sepalpha();
     var _previous_color = draw_get_color();
     var _previous_alpha = draw_get_alpha();

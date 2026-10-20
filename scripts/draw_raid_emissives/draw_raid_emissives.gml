@@ -78,8 +78,8 @@ function draw_raid_projectile_emissives(_camera_x, _camera_y, _scale_x, _scale_y
     for (var _list_index = 0; _list_index < array_length(_projectile_lists); _list_index++)
     {
         var _projectiles = _projectile_lists[_list_index];
-        var _xscale = 0.30 * _scale_x * _source_scale;
-        var _yscale = 0.14 * _scale_y * _source_scale;
+        var _xscale = 0.21 * _scale_x * _source_scale;
+        var _yscale = 0.098 * _scale_y * _source_scale;
         var _sprite = _list_index == 0 ? spr_player_bullet_glow : spr_enemy_bullet_glow;
         var _color = _list_index == 0 ? make_color_rgb(255, 190, 80) : c_white;
         var _alpha = _list_index == 0 ? 0.35 : 0.40;

@@ -44,10 +44,54 @@ function player_health_update()
     health_painkiller_remaining = max(0, health_painkiller_remaining - _seconds);
 }
 
+function player_survival_update()
+{
+    if (overlay_mode != OverlayMode.NONE) return;
+    if (raid.state != RaidState.COMBAT
+    && raid.state != RaidState.ENTERING
+    && raid.state != RaidState.EXITING) return;
+
+    var _seconds = frame_scale / 60;
+    var _energy_before = player_energy;
+    var _hydration_before = player_hydration;
+    player_energy = clamp(player_energy - ((health_config.energy_drain_per_minute / 60) * _seconds), 0, health_config.survival_max);
+    player_hydration = clamp(player_hydration - ((health_config.hydration_drain_per_minute / 60) * _seconds), 0, health_config.survival_max);
+
+    if (player_energy > 0)
+        energy_zero_damage_remaining = health_config.energy_zero_damage_interval_seconds;
+    else
+    {
+        energy_zero_damage_remaining -= _seconds;
+        while (energy_zero_damage_remaining <= 0 && raid_player_hp > 0)
+        {
+            player_health_apply_global_damage(health_config.energy_zero_damage);
+            energy_zero_damage_remaining += health_config.energy_zero_damage_interval_seconds;
+        }
+    }
+
+    if (player_hydration > 0)
+        hydration_zero_damage_remaining = health_config.hydration_zero_damage_interval_seconds;
+    else
+    {
+        hydration_zero_damage_remaining -= _seconds;
+        while (hydration_zero_damage_remaining <= 0 && raid_player_hp > 0)
+        {
+            player_health_apply_global_damage(health_config.hydration_zero_damage);
+            hydration_zero_damage_remaining += health_config.hydration_zero_damage_interval_seconds;
+        }
+    }
+
+    if (player_energy != _energy_before || player_hydration != _hydration_before)
+    {
+        if (!save_dirty) save_mark_dirty();
+    }
+}
+
 function player_health_update_post_raid_recovery()
 {
     var _seconds = frame_scale / 60;
     var _duration = max(1, health_config.post_raid_recovery_seconds);
+    var _survival_duration = max(1, health_config.survival_hideout_recovery_seconds);
     var _changed = false;
 
     if (raid_player_hp < raid_player_max_hp)
@@ -82,6 +126,20 @@ function player_health_update_post_raid_recovery()
             }
         }
         health_limbs[i] = _limb;
+    }
+
+    if (player_energy < health_config.survival_max)
+    {
+        player_energy = min(health_config.survival_max, player_energy + ((health_config.survival_max / _survival_duration) * _seconds));
+        if (player_energy > 0) energy_zero_damage_remaining = health_config.energy_zero_damage_interval_seconds;
+        _changed = true;
+    }
+
+    if (player_hydration < health_config.survival_max)
+    {
+        player_hydration = min(health_config.survival_max, player_hydration + ((health_config.survival_max / _survival_duration) * _seconds));
+        if (player_hydration > 0) hydration_zero_damage_remaining = health_config.hydration_zero_damage_interval_seconds;
+        _changed = true;
     }
 
     if (!_changed) return;

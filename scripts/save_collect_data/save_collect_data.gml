@@ -74,6 +74,10 @@ function save_collect_data()
             painkiller_remaining: health_painkiller_remaining,
             limbs: saved_limbs
         },
+        survival: {
+            energy: player_energy,
+            hydration: player_hydration
+        },
         inventory: {
             stash: save_items_to_data(stash.items),
             backpack: {

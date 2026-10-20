@@ -29,6 +29,20 @@ function raid_hotbar_use(_slot)
             raid.hotbar_feedback_success = false;
             return false;
         }
+        if (effect.type == EffectType.ENERGY && player_energy >= health_config.survival_max)
+        {
+            raid.hotbar_feedback_slot = _slot;
+            raid.hotbar_feedback_timer = 12;
+            raid.hotbar_feedback_success = false;
+            return false;
+        }
+        if (effect.type == EffectType.HYDRATION && player_hydration >= health_config.survival_max)
+        {
+            raid.hotbar_feedback_slot = _slot;
+            raid.hotbar_feedback_timer = 12;
+            raid.hotbar_feedback_success = false;
+            return false;
+        }
     }
 
     var hp_before = raid_player_hp;

@@ -131,7 +131,9 @@ function enums(){
 	//COMBAT
 	enum EffectType
 	{
-		HEAL
+		HEAL,
+		ENERGY,
+		HYDRATION
 	}
 	enum CrewStatus
 	{

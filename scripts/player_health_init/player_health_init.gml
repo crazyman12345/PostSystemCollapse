@@ -38,12 +38,24 @@ function player_health_init()
         painkiller_penalty_suppression: 1,
         blacked_repair_hp: 10,
         death_recovery_hp: 10,
-        post_raid_recovery_seconds: 300
+        post_raid_recovery_seconds: 300,
+        survival_max: 100,
+        energy_drain_per_minute: 3,
+        hydration_drain_per_minute: 4,
+        energy_zero_damage: 10,
+        hydration_zero_damage: 10,
+        energy_zero_damage_interval_seconds: 30,
+        hydration_zero_damage_interval_seconds: 50,
+        survival_hideout_recovery_seconds: 600
     };
 
     raid_player_max_hp = player_health_get_max_hp();
     raid_player_hp = raid_player_max_hp;
     health_painkiller_remaining = 0;
+    player_energy = health_config.survival_max;
+    player_hydration = health_config.survival_max;
+    energy_zero_damage_remaining = health_config.energy_zero_damage_interval_seconds;
+    hydration_zero_damage_remaining = health_config.hydration_zero_damage_interval_seconds;
     health_limbs = [];
 
     var _names = ["HEAD", "CHEST", "LEFT ARM", "RIGHT ARM", "LEFT LEG", "RIGHT LEG"];

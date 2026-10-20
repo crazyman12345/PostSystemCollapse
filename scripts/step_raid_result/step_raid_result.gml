@@ -79,11 +79,11 @@ function raid_result_get_treatment_quote()
         if (_limb.injury == LimbInjuryState.BLACKED_OUT) _blacked_limbs++;
     }
 
-    var _health_cost = ceil(_missing_health * 2);
-    var _heavy_cost = _heavy_bleeds * 150;
-    var _light_cost = _light_bleeds * 75;
-    var _fracture_cost = _fractures * 250;
-    var _blacked_cost = _blacked_limbs * 400;
+    var _health_cost = ceil(_missing_health * 1.2);
+    var _heavy_cost = _heavy_bleeds * 90;
+    var _light_cost = _light_bleeds * 45;
+    var _fracture_cost = _fractures * 150;
+    var _blacked_cost = _blacked_limbs * 240;
 
     return {
         missing_health: _missing_health,

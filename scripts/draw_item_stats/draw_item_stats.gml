@@ -202,6 +202,10 @@ function draw_item_stats(_item, _x, _y, _bottom)
                             "HEAL: "
                             + string(_effect.amount));
                     }
+                    else if (_effect.type == EffectType.ENERGY)
+                        array_push(_lines, "ENERGY: +" + string(_effect.amount));
+                    else if (_effect.type == EffectType.HYDRATION)
+                        array_push(_lines, "HYDRATION: +" + string(_effect.amount));
                 }
             }
 
