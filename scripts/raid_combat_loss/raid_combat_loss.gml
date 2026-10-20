@@ -89,8 +89,8 @@ function raid_combat_loss()
         + " was critically injured.\n"
         + "Backpack, pockets, and equipment lost. Secure contents kept.";
 
+    player_health_prepare_death_result();
     raid_set_state(RaidState.RESULT);
-    player_health_recover_after_death();
     save_unfinished_raid = false;
     save_mark_dirty();
     save_game();

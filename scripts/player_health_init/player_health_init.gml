@@ -37,7 +37,8 @@ function player_health_init()
         painkiller_duration_seconds: 60,
         painkiller_penalty_suppression: 1,
         blacked_repair_hp: 10,
-        death_recovery_hp: 10
+        death_recovery_hp: 10,
+        post_raid_recovery_seconds: 300
     };
 
     raid_player_max_hp = player_health_get_max_hp();

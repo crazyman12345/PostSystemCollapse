@@ -97,12 +97,20 @@ function player_health_use_painkillers(_duration_seconds = -1)
 function player_health_recover_after_death()
 {
     raid_player_hp = max(health_config.death_recovery_hp, raid_player_hp);
+    player_health_prepare_death_result();
+    player_health_recover_blacked_limbs();
+    player_health_sync_crew();
+    save_mark_dirty();
+}
+
+function player_health_prepare_death_result()
+{
     for (var i = 0; i < array_length(health_limbs); i++)
     {
-        health_limbs[i].hp = max(min(health_limbs[i].max_hp, health_config.death_recovery_hp), health_limbs[i].hp);
+        if (health_limbs[i].injury == LimbInjuryState.BLACKED_OUT) continue;
+        health_limbs[i].hp = min(health_limbs[i].max_hp, health_config.death_recovery_hp);
         player_health_update_limb_state(health_limbs[i]);
     }
-    player_health_clear_bleeds();
     player_health_sync_crew();
     save_mark_dirty();
 }

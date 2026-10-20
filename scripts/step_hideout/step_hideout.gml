@@ -1,5 +1,7 @@
 function step_hideout()
 {
+    player_health_update_post_raid_recovery();
+
     if (hideout_focus == HideoutFocus.SIDEBAR)
     {
         if (keyboard_check_pressed(vk_escape))
@@ -96,5 +98,4 @@ function step_hideout()
         case HideoutPage.WORKSHOP: step_workshop(); break;
     }
 }
-
 

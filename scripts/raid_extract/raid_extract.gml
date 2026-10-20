@@ -25,8 +25,6 @@ function raid_extract()
     raid_temporary_lights = [];
     raid_muzzle_flash_light = undefined;
 
-    player_health_clear_bleeds();
-    player_health_recover_blacked_limbs();
     raid_set_state(RaidState.RESULT);
     save_unfinished_raid = false;
     save_mark_dirty();
