@@ -285,6 +285,7 @@ raid_room_clear_light = undefined;
 raid_temporary_lights = [];
 raid_shadow_occluders = [];
 raid_shadow_silhouette_cache = {};
+raid_player_shadow_surface = -1;
 raid_shadow_debug = false;
 raid_environment_init();
 raid_character_shadows_enabled = true;

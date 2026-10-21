@@ -194,7 +194,7 @@ function init_trader_database()
             },
 
             {
-                item_key : "padded_jacket",
+                item_key : "paca",
                 price : 140
             },
 

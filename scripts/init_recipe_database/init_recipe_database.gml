@@ -71,14 +71,14 @@ function init_recipe_database()
         ],
         armorcrafting: [
             {
-                name: "PADDED JACKET",
+                name: "PACA SOFT ARMOR",
                 skill_level: 4,
                 ingredients: [
                     { item_key: "cloth", quantity: 8 },
                     { item_key: "leather", quantity: 2 },
                     { item_key: "adhesive", quantity: 2 }
                 ],
-                output: { item_key: "padded_jacket", quantity: 1 },
+                output: { item_key: "paca", quantity: 1 },
                 craft_time: 20,
                 xp: 25
             },

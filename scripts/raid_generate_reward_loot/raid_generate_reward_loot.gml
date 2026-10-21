@@ -223,7 +223,7 @@ function raid_generate_reward_loot(_reward_type)
 
                 raid_loot_entry("m1911", 3, 1, 1),
                 raid_loot_entry("sling_bag", 2, 1, 1),
-                raid_loot_entry("padded_jacket", 2, 1, 1),
+                raid_loot_entry("paca", 2, 1, 1),
                 raid_loot_entry("construction_helmet", 1, 1, 1),
 
                 raid_loot_entry("old_rifle", 2, 1, 1),

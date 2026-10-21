@@ -21,22 +21,17 @@ function draw_raid_player(_lighting_mask = false, _mask_alpha = 1)
     }
 
     var member = crew[0];
+    var _head = raid_player_get_head_sprite(member.armor_head);
+    var _body = raid_player_get_body_sprite(member.armor_chest);
 
-    var _base;
-
-    if (raid_player_moving)
-        _base = spr_player_run;
-    else
-        _base = spr_player_idle;
-	
-	
-	
+    var _legs = raid_player_moving ? spr_player_leglayer_run : spr_player_leglayer_idle;
     var _frame =
         floor(raid_player_anim_frame)
-        mod sprite_get_number(_base);
+        mod sprite_get_number(_legs);
 
     var _x = round(raid_player_x);
     var _y = round(raid_player_y);
+    var _head_bounce = raid_player_moving ? 0 : dsin(raid_player_anim_frame * 30) * 0.75;
 
 	var _player_alpha = 1;
 
@@ -64,16 +59,17 @@ function draw_raid_player(_lighting_mask = false, _mask_alpha = 1)
             (_trail.trail_timer / raid_player_dash_trail_time)
             * 0.5;
 
-        draw_sprite_ext(
-            spr_player_run,
-            _trail.trail_frame mod sprite_get_number(spr_player_run),
+        draw_raid_player_body_layers(
+            spr_player_leglayer_run,
+            _trail.trail_frame mod sprite_get_number(spr_player_leglayer_run),
             round(_trail.trail_x),
             round(_trail.trail_y),
             _trail.trail_facing,
-            1,
+            _trail_alpha,
             0,
-            c_white,
-            _trail_alpha
+            true,
+            _head,
+            _body
         );
     }
 
@@ -91,19 +87,20 @@ function draw_raid_player(_lighting_mask = false, _mask_alpha = 1)
 
 
     // ==============================
-    // BASE BODY
+    // LEGS AND TORSO
     // ==============================
 
-    draw_sprite_ext(
-        _base,
+    draw_raid_player_body_layers(
+        _legs,
         _frame,
         _x,
         _y,
         raid_player_facing,
-        1,
-        0,
-        c_white,
-        _lighting_mask ? _mask_alpha : _player_alpha
+        _lighting_mask ? _mask_alpha : _player_alpha,
+        _head_bounce,
+        false,
+        _head,
+        _body
     );
 
 
@@ -121,6 +118,23 @@ function draw_raid_player(_lighting_mask = false, _mask_alpha = 1)
 
 
     // ==============================
+    // HEAD
+    // ==============================
+
+    draw_sprite_ext(
+        _head,
+        0,
+        _x,
+        _y + _head_bounce,
+        raid_player_facing * 0.3125,
+        0.3125,
+        0,
+        c_white,
+        _lighting_mask ? _mask_alpha : _player_alpha
+    );
+
+
+    // ==============================
     // HELMET
     // ==============================
 
@@ -128,9 +142,46 @@ function draw_raid_player(_lighting_mask = false, _mask_alpha = 1)
         member.armor_head,
         _frame,
         _x,
-        _y,
+        _y + _head_bounce,
         _lighting_mask ? _mask_alpha : 1
     );
+}
+
+function draw_raid_player_body_layers(_legs, _frame, _x, _y, _facing, _alpha, _head_bounce = 0, _draw_head = true, _head_sprite = base_head, _body_sprite = base_torso)
+{
+    var _scale = 0.3125;
+
+    draw_sprite_ext(_legs, _frame, _x, _y, _facing * _scale, _scale, 0, c_white, _alpha);
+    draw_sprite_ext(_body_sprite, 0, _x, _y, _facing * _scale, _scale, 0, c_white, _alpha);
+
+    if (_draw_head)
+        draw_sprite_ext(_head_sprite, 0, _x, _y + _head_bounce, _facing * _scale, _scale, 0, c_white, _alpha);
+}
+
+function raid_player_get_head_sprite(_item_key)
+{
+    if (_item_key == "") return base_head;
+
+    var _item = item_get(_item_key);
+    if (!is_struct(_item) || !variable_struct_exists(_item, "head_sprite")) return base_head;
+
+    var _head_sprite = _item.head_sprite;
+    if (is_undefined(_head_sprite) || _head_sprite == -1 || !sprite_exists(_head_sprite)) return base_head;
+
+    return _head_sprite;
+}
+
+function raid_player_get_body_sprite(_item_key)
+{
+    if (_item_key == "") return base_torso;
+
+    var _item = item_get(_item_key);
+    if (!is_struct(_item) || !variable_struct_exists(_item, "body_sprite")) return base_torso;
+
+    var _body_sprite = _item.body_sprite;
+    if (is_undefined(_body_sprite) || _body_sprite == -1 || !sprite_exists(_body_sprite)) return base_torso;
+
+    return _body_sprite;
 }
 
 function draw_raid_player_hit_region_debug()

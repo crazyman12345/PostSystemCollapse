@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":9,
   "parent":{
-    "name":"baselayer",
-    "path":"folders/sprites/PLAYERSPRITES/baselayer.yy",
+    "name":"PLAYERSPRITES",
+    "path":"folders/sprites/PLAYERSPRITES.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

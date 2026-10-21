@@ -13,13 +13,22 @@ function draw_raid_shadow_debug(_occluders)
         {
             var _debug_color = variable_struct_exists(_occluder, "character_caster") ? c_fuchsia : c_aqua;
             var _silhouette = _occluder.geometry.silhouette;
-            draw_sprite_ext(_occluder.draw_sprite, _occluder.draw_subimage, _occluder.draw_x, _occluder.draw_y,
-                _occluder.draw_xscale, _occluder.draw_yscale, _occluder.rotation, _debug_color, 0.45);
+            var _draws_surface = variable_struct_exists(_occluder, "draw_surface");
+            if (_draws_surface)
+            {
+                draw_surface_ext(_occluder.draw_surface, _occluder.draw_x, _occluder.draw_y,
+                    _occluder.draw_xscale, _occluder.draw_yscale, _occluder.rotation, _debug_color, 0.45);
+            }
+            else
+            {
+                draw_sprite_ext(_occluder.draw_sprite, _occluder.draw_subimage, _occluder.draw_x, _occluder.draw_y,
+                    _occluder.draw_xscale, _occluder.draw_yscale, _occluder.rotation, _debug_color, 0.45);
+            }
 
             // Yellow is the alpha crop's rectangular projection domain; the
             // tinted sprite shows the actual alpha silhouette sampled inside it.
-            var _origin_x = sprite_get_xoffset(_occluder.draw_sprite);
-            var _origin_y = sprite_get_yoffset(_occluder.draw_sprite);
+            var _origin_x = _draws_surface ? 0 : sprite_get_xoffset(_occluder.draw_sprite);
+            var _origin_y = _draws_surface ? 0 : sprite_get_yoffset(_occluder.draw_sprite);
             var _source_x = [_silhouette.crop_left, _silhouette.crop_right, _silhouette.crop_right, _silhouette.crop_left];
             var _source_y = [_silhouette.crop_top, _silhouette.crop_top, _silhouette.crop_bottom, _silhouette.crop_bottom];
             var _bounds_x = [];

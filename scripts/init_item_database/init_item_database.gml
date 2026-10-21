@@ -799,18 +799,19 @@ function init_item_database()
     // CHEST ARMOR
     // ============================================================
 
-    global.items.padded_jacket = {
-        item_key: "padded_jacket",
-        name: "Padded Jacket",
+    global.items.paca = {
+        item_key: "paca",
+        name: "PACA Soft Armor",
         category: ItemCategory.BODY_ARMOR,
-        description: "A thick padded jacket offering minimal protection.",
+        description: "A level 1 body armor that offers minimal protection.",
         base_value: 100,
         weight: 2.0,
         armor: 10,
+		grid_width: 3,
+		grid_height: 3,
         stackable: false,
-
-        sprite_idle: spr_padded_jacket_idle,
-        sprite_run: spr_padded_jacket_run
+        body_sprite: paca_torso,
+		icon_sprite: spr_PACA
     };
 
     global.items.improvised_plate_vest = {
@@ -822,9 +823,6 @@ function init_item_database()
         weight: 6.0,
         armor: 20,
         stackable: false,
-
-        sprite_idle: -1,
-        sprite_run: -1
     };
 
 
@@ -841,9 +839,10 @@ function init_item_database()
         weight: 0.8,
         armor: 10,
         stackable: false,
-
-        sprite_idle: -1,
-        sprite_run: -1
+        head_sprite: construction_helmet_head,
+		icon_sprite: spr_conshelmet,
+		grid_width: 2,
+		grid_height: 2
     };
 
     global.items.improvised_steel_helmet = {
