@@ -1,6 +1,7 @@
 function step_raid_inventory()
 {
     if (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right) || keyboard_check_pressed(ord("R"))) save_mark_dirty();
+    if (inventory_context_menu_step()) return;
     if (keyboard_check_pressed(vk_escape))
     {
         raid_inventory_clear_held();
@@ -16,9 +17,45 @@ function step_raid_inventory()
 
     if (mouse_check_button_pressed(mb_right))
     {
+        if (!is_undefined(raid.inventory_item))
+        {
+            raid.medical_selected_item = undefined;
+            raid_inventory_clear_held();
+            return;
+        }
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);
-        if (player_health_treatment_select_inventory_item(_mouse_x, _mouse_y)) return;
+        var _equipment_slot = inventory_character_tab == InventoryCharacterTab.EQUIPMENT
+            ? raid_inventory_get_equipment_slot(_mouse_x, _mouse_y)
+            : -1;
+        if (_equipment_slot != -1)
+        {
+            var _equipped_key = equipment_get_slot_item(raid.crew_index, _equipment_slot);
+            var _equipped_item = raid_inventory_get_equipped_item(_equipment_slot);
+            if (_equipped_key != "")
+            {
+                if (is_undefined(_equipped_item) || _equipped_item.item_key != _equipped_key)
+                    _equipped_item = { item_key: _equipped_key, quantity: 1, x: 0, y: 0, rotation: 0 };
+                if (inventory_context_menu_open(_equipped_item, undefined, _equipment_slot, false, false, true)) return;
+            }
+        }
+
+        var _context_grids = raid_inventory_get_grids();
+        for (var _grid_index = 0; _grid_index < array_length(_context_grids); _grid_index++)
+        {
+            var _grid = _context_grids[_grid_index];
+            var _cell_size = variable_struct_exists(_grid, "cell_size") ? _grid.cell_size : 60;
+            var _stride = variable_struct_exists(_grid, "cell_stride") ? _grid.cell_stride : _cell_size;
+            var _local_x = _mouse_x - _grid.left;
+            var _local_y = _mouse_y - _grid.top;
+            var _grid_x = floor(_local_x / _stride);
+            var _grid_y = floor(_local_y / _stride);
+            if (_grid_x < 0 || _grid_y < 0 || _grid_x >= _grid.storage.grid_width || _grid_y >= _grid.storage.grid_height
+            || (_local_x mod _stride) >= _cell_size || (_local_y mod _stride) >= _cell_size) continue;
+            var _context_item = inventory_find_item_at(_grid.storage, _grid_x, _grid_y);
+            if (inventory_context_menu_open(_context_item, _grid.storage, -1, false, true, true)) return;
+            break;
+        }
         raid.medical_selected_item = undefined;
         raid_inventory_clear_held();
     }

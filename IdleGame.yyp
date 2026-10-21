@@ -205,6 +205,7 @@
     {"id":{"name":"init_trader_database","path":"scripts/init_trader_database/init_trader_database.yy",},},
     {"id":{"name":"init_workbench_database","path":"scripts/init_workbench_database/init_workbench_database.yy",},},
     {"id":{"name":"inventory_character_tab_input","path":"scripts/inventory_character_tab_input/inventory_character_tab_input.yy",},},
+    {"id":{"name":"inventory_context_menu","path":"scripts/inventory_context_menu/inventory_context_menu.yy",},},
     {"id":{"name":"inventory_hover","path":"scripts/inventory_hover/inventory_hover.yy",},},
     {"id":{"name":"inventory_merge_stacks","path":"scripts/inventory_merge_stacks/inventory_merge_stacks.yy",},},
     {"id":{"name":"inventory_quick_transfer","path":"scripts/inventory_quick_transfer/inventory_quick_transfer.yy",},},

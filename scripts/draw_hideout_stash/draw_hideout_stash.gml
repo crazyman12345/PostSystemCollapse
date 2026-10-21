@@ -288,4 +288,5 @@ function draw_hideout_stash()
     draw_set_font(fnt_terminal);
     inventory_hover_finish();
     inventory_hover_draw();
+    inventory_context_menu_draw();
 }

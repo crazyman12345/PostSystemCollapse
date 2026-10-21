@@ -64,19 +64,46 @@ function inventory_hover_finish()
 
 function inventory_hover_draw()
 {
-    if (inventory_hover_time < 0.3 || is_undefined(inventory_hover_item)) return;
-    if (!is_undefined(stash.held_item) || !is_undefined(raid.inventory_item)) return;
+    if (is_undefined(inventory_inspect_item))
+    {
+        if (inventory_context_active || is_undefined(inventory_hover_item)
+        || !is_undefined(stash.held_item) || !is_undefined(raid.inventory_item)) return;
+
+        var _definition = item_get(inventory_hover_item.item_key);
+        if (is_undefined(_definition)) return;
+        var _tooltip_alpha = clamp((inventory_hover_time - 0.2) / 0.15, 0, 1);
+        if (_tooltip_alpha <= 0) return;
+        draw_set_font(fnt_terminal_tiny);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        var _padding = 6;
+        var _width = string_width(_definition.name) + _padding * 2;
+        var _height = string_height(_definition.name) + _padding * 2;
+        var _left = clamp(device_mouse_x_to_gui(0) + 14, 0, display_get_gui_width() - _width);
+        var _top = clamp(device_mouse_y_to_gui(0) + 14, 0, display_get_gui_height() - _height);
+        draw_set_alpha(0.92 * _tooltip_alpha);
+        draw_set_color(c_black);
+        draw_rectangle(_left, _top, _left + _width, _top + _height, false);
+        draw_set_alpha(_tooltip_alpha);
+        draw_set_color(c_green);
+        draw_rectangle(_left, _top, _left + _width, _top + _height, true);
+        draw_set_color(c_lime);
+        draw_text(_left + _padding, _top + _padding, _definition.name);
+        draw_set_alpha(1);
+        draw_set_font(fnt_terminal);
+        return;
+    }
 
     var popup_width = 600;
     var popup_height = 600;
     var popup_gap = 10;
     var gui_width = display_get_gui_width();
     var gui_height = display_get_gui_height();
-    var popup_left = inventory_hover_candidate_right + popup_gap;
-    var popup_top = inventory_hover_candidate_top;
+    var popup_left = inventory_inspect_x + 104 + popup_gap;
+    var popup_top = inventory_inspect_y;
 
     if (popup_left + popup_width > gui_width)
-        popup_left = inventory_hover_candidate_left - popup_gap - popup_width;
+        popup_left = inventory_inspect_x - popup_gap - popup_width;
 
     if (popup_top + popup_height > gui_height)
         popup_top = gui_height - popup_height;
@@ -98,7 +125,7 @@ function inventory_hover_draw()
     surface_set_target(inventory_hover_surface);
     draw_clear_alpha(c_black, 0);
     draw_item_info_popup(
-        inventory_hover_item.item_key,
+        inventory_inspect_item.item_key,
         popup_left,
         popup_top,
         popup_width,

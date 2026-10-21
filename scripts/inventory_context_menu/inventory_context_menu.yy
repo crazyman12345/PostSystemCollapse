@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"inventory_context_menu",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"inventory_context_menu",
+  "parent":{
+    "name":"input",
+    "path":"folders/inventory/input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

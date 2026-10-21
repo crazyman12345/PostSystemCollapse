@@ -40,6 +40,7 @@ function step_hideout_stash(){
 
     var gui_mouse_x = device_mouse_x_to_gui(0);
     var gui_mouse_y = device_mouse_y_to_gui(0);
+    if (inventory_context_menu_step()) return;
     if (inventory_character_tab_input(330)) return;
     var equipment_center = 575;
     var equipment_slot = -1;
@@ -59,6 +60,7 @@ function step_hideout_stash(){
             stash.hover_x = -1;
             stash.hover_y = -1;
             stash.hover_container = "";
+            return;
         }
     }
 
@@ -109,6 +111,39 @@ function step_hideout_stash(){
             mouse_grid_x = grid_x;
             mouse_grid_y = grid_y;
             break;
+        }
+    }
+
+    if (is_undefined(stash.held_item) && mouse_check_button_pressed(mb_right))
+    {
+        var context_equipment_slot = equipment_slot;
+        if (context_equipment_slot == -1 && backpack_slot_hovered && is_undefined(hovered_grid))
+            context_equipment_slot = EquipmentSlot.BAG;
+
+        if (context_equipment_slot != -1)
+        {
+            var context_equipped_key = "";
+            var context_equipped_item = undefined;
+            switch (context_equipment_slot)
+            {
+                case EquipmentSlot.WEAPON: context_equipped_key = member.weapon; context_equipped_item = stash.equipped_weapon_item; break;
+                case EquipmentSlot.WEAPON_2: context_equipped_key = member.weapon_2; context_equipped_item = stash.equipped_weapon_2_item; break;
+                case EquipmentSlot.HEAD: context_equipped_key = member.armor_head; context_equipped_item = stash.equipped_armor_head_item; break;
+                case EquipmentSlot.CHEST: context_equipped_key = member.armor_chest; context_equipped_item = stash.equipped_armor_chest_item; break;
+                case EquipmentSlot.BAG: context_equipped_key = member.bag; context_equipped_item = stash.equipped_bag_item; break;
+            }
+            if (context_equipped_key != "")
+            {
+                if (is_undefined(context_equipped_item) || context_equipped_item.item_key != context_equipped_key)
+                    context_equipped_item = { item_key: context_equipped_key, quantity: 1, x: 0, y: 0, rotation: 0 };
+                if (inventory_context_menu_open(context_equipped_item, undefined, context_equipment_slot, false, false, false)) return;
+            }
+        }
+
+        if (!is_undefined(hovered_grid))
+        {
+            var context_item = inventory_find_item_at(hovered_grid.storage, mouse_grid_x, mouse_grid_y);
+            if (inventory_context_menu_open(context_item, hovered_grid.storage, -1, true, false, false)) return;
         }
     }
 
