@@ -110,7 +110,7 @@ function init_recipe_database()
                 xp: 20
             },
             {
-                name: "IMPROVISED STEEL HELMET",
+                name: "LSHZ LIGHTWEIGHT HELMET",
                 skill_level: 9,
                 ingredients: [
                     { item_key: "steel_plate", quantity: 1 },

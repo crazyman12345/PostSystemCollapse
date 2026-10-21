@@ -33,7 +33,7 @@ function draw_main_menu()
         draw_set_color(c_black);
         draw_rectangle(660, 500, 1260, 800, false);
         draw_set_color(c_lime);
-        terminal_panel(660, 500, 600, 300, "OVERWRITE PLAYER SAVE?");
+        terminal_panel(520, 450, 880, 370, "OVERWRITE PLAYER SAVE?");
         draw_set_halign(fa_center);
         draw_text(960, 575, "Existing progress will be replaced.");
         draw_set_halign(fa_left);

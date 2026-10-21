@@ -1,4 +1,4 @@
-function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_width, _grid_height, _cell_size, _selected, _text_color = c_black)
+function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_width, _grid_height, _cell_size, _selected, _text_color = c_black, _show_uses = true, _quantity_top_left = false)
 {
     var item_right = _left + (_grid_width * _cell_size);
     var item_bottom = _top + (_grid_height * _cell_size);
@@ -50,7 +50,7 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
         draw_text_ext(_left + 10, _top + 10, _definition.name, 20, (_grid_width * _cell_size) - 20);
     }
 
-    if (variable_struct_exists(_definition, "max_servings"))
+    if (_show_uses && variable_struct_exists(_definition, "max_servings"))
     {
         var _servings = variable_struct_exists(_stored_item, "servings") ? _stored_item.servings : _definition.max_servings;
         var _previous_font = draw_get_font();
@@ -68,7 +68,7 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
         draw_set_font(_previous_font);
         draw_set_alpha(_previous_alpha);
     }
-    else if (variable_struct_exists(_definition, "medical_capacity"))
+    else if (_show_uses && variable_struct_exists(_definition, "medical_capacity"))
     {
         var _durability = variable_struct_exists(_stored_item, "durability")
             ? _stored_item.durability
@@ -109,8 +109,8 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
         var previous_alpha = draw_get_alpha();
         draw_set_color(c_black);
         draw_set_alpha(1);
-        draw_set_halign(fa_right);
-        draw_text(item_right - 8, _top + 8, "x" + format_compact_number(_stored_item.quantity));
+        draw_set_halign(_quantity_top_left ? fa_left : fa_right);
+        draw_text(_quantity_top_left ? _left + 8 : item_right - 8, _top + 8, "x" + format_compact_number(_stored_item.quantity));
         draw_set_halign(previous_halign);
         draw_set_alpha(previous_alpha);
     }

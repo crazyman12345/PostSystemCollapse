@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"trader_sell_stored_item",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"trader_sell_stored_item",
+  "parent":{"name":"traders","path":"folders/hideout/traders.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

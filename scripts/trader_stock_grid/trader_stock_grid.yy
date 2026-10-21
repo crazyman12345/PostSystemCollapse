@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"trader_stock_grid",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"trader_stock_grid",
+  "parent":{"name":"traders","path":"folders/hideout/traders.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

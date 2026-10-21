@@ -159,6 +159,13 @@ current_trader_key = "";
 trader_menu_index = 0;
 trader_sell_index = 0;
 trader_mode = TraderMode.SELECT;
+trader_stock_layout = undefined;
+trader_stock_scroll_row = 0;
+trader_selected_stock_index = -1;
+trader_hovered_stock_index = -1;
+trader_purchase_quantity_text = "1";
+trader_quantity_focused = false;
+trader_quantity_keyboard_restore = "";
 // ==============================
 // RAID
 // ==============================
@@ -198,6 +205,7 @@ inventory_context_actions = [];
 inventory_context_x = 0;
 inventory_context_y = 0;
 inventory_context_raid = false;
+inventory_context_trader_key = "";
 stash_index = 0;
 salvage_active = false;
 salvage_item_key = "";

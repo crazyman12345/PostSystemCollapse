@@ -848,7 +848,7 @@ function init_item_database()
 
     global.items.improvised_steel_helmet = {
         item_key: "improvised_steel_helmet",
-        name: "Improvised Steel Helmet",
+        name: "LSHZ Lightweight Helmet",
         category: ItemCategory.HEAD_ARMOR,
         description: "A crude helmet fabricated from salvaged steel.",
         base_value: 200,

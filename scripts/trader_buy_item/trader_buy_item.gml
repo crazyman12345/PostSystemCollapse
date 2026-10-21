@@ -1,5 +1,6 @@
 function trader_buy_item(_trader_key, _stock_index, _quantity = 1)
 {
+    if (!trader_can_buy_item(_trader_key, _stock_index, _quantity)) return false;
     // ==============================
     // GET TRADER
     // ==============================
@@ -45,18 +46,9 @@ function trader_buy_item(_trader_key, _stock_index, _quantity = 1)
     // PRICE
     // ==============================
 
-    var price =
-        trader_get_buy_price(stock_entry.price) * _quantity;
-
-
-    // ==============================
-    // CHECK PLAYER CASH
-    // ==============================
-
-    if (get_cash() < price)
-    {
-        return false;
-    }
+    var unit_price = trader_get_buy_price(stock_entry.price);
+    if (_quantity > floor(2147483647 / unit_price)) return false;
+    var price = unit_price * _quantity;
 
 
     // ==============================
@@ -82,6 +74,18 @@ function trader_buy_item(_trader_key, _stock_index, _quantity = 1)
     player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade * _quantity);
 
     return true;
+}
+
+function trader_can_buy_item(_trader_key, _stock_index, _quantity)
+{
+    if (!is_real(_quantity) || _quantity != floor(_quantity) || _quantity <= 0) return false;
+    var _trader = trader_get(_trader_key);
+    if (is_undefined(_trader) || _stock_index < 0 || _stock_index >= array_length(_trader.stock)) return false;
+    var _stock_entry = _trader.stock[_stock_index];
+    if (is_undefined(item_get(_stock_entry.item_key))) return false;
+    var _unit_price = trader_get_buy_price(_stock_entry.price);
+    if (_quantity > floor(2147483647 / _unit_price)) return false;
+    return get_cash() >= _unit_price * _quantity && stash_can_add(_stock_entry.item_key, _quantity);
 }
 
 function trader_get_buy_price(_base_price)

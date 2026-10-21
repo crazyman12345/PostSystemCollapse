@@ -5,6 +5,7 @@ function inventory_context_menu_close()
     inventory_context_container = undefined;
     inventory_context_equipment_slot = -1;
     inventory_context_actions = [];
+    inventory_context_trader_key = "";
 }
 
 function inventory_context_menu_get_equip_slot(_definition, _crew_index)
@@ -23,7 +24,7 @@ function inventory_context_menu_get_equip_slot(_definition, _crew_index)
     return -1;
 }
 
-function inventory_context_menu_open(_item, _container, _equipment_slot, _allow_destroy, _allow_use, _raid_context)
+function inventory_context_menu_open(_item, _container, _equipment_slot, _allow_destroy, _allow_use, _raid_context, _trader_key = "")
 {
     if (is_undefined(_item)) return false;
     var _definition = item_get(_item.item_key);
@@ -32,27 +33,35 @@ function inventory_context_menu_open(_item, _container, _equipment_slot, _allow_
     var _actions = [{ key: "inspect", label: "INSPECT" }];
     var _crew_index = _raid_context ? raid.crew_index : 0;
     var _equip_slot = -1;
-    if (_equipment_slot != -1)
+    if (_trader_key != "")
     {
-        if (_equipment_slot != EquipmentSlot.BAG || array_length(stash.backpack.items) == 0)
-            array_push(_actions, { key: "unequip", label: "UNEQUIP" });
+        if (_container == stash && trader_will_buy_item(_trader_key, _item.item_key))
+            array_push(_actions, { key: "sell", label: "SELL" });
     }
     else
     {
-        _equip_slot = inventory_context_menu_get_equip_slot(_definition, _crew_index);
-        if (_equip_slot != -1) array_push(_actions, { key: "equip", label: "EQUIP" });
-    }
+        if (_equipment_slot != -1)
+        {
+            if (_equipment_slot != EquipmentSlot.BAG || array_length(stash.backpack.items) == 0)
+                array_push(_actions, { key: "unequip", label: "UNEQUIP" });
+        }
+        else
+        {
+            _equip_slot = inventory_context_menu_get_equip_slot(_definition, _crew_index);
+            if (_equip_slot != -1) array_push(_actions, { key: "equip", label: "EQUIP" });
+        }
 
-    if (_allow_use && raid_hotbar_is_usable(_definition))
-    {
-        var _use_label = "USE";
-        if (_definition.category == ItemCategory.CONSUMABLE
-        && variable_struct_exists(_definition, "consumable_animation"))
-            _use_label = _definition.consumable_animation == "drink" ? "DRINK" : "EAT";
-        array_push(_actions, { key: "use", label: _use_label });
+        if (_allow_use && raid_hotbar_is_usable(_definition))
+        {
+            var _use_label = "USE";
+            if (_definition.category == ItemCategory.CONSUMABLE
+            && variable_struct_exists(_definition, "consumable_animation"))
+                _use_label = _definition.consumable_animation == "drink" ? "DRINK" : "EAT";
+            array_push(_actions, { key: "use", label: _use_label });
+        }
+        if (_allow_destroy && !is_undefined(_container))
+            array_push(_actions, { key: "destroy", label: "DESTROY" });
     }
-    if (_allow_destroy && !is_undefined(_container))
-        array_push(_actions, { key: "destroy", label: "DESTROY" });
     if (array_length(_actions) == 0) return false;
 
     inventory_context_active = true;
@@ -61,6 +70,7 @@ function inventory_context_menu_open(_item, _container, _equipment_slot, _allow_
     inventory_context_equipment_slot = _equipment_slot;
     inventory_context_equip_slot = _equip_slot;
     inventory_context_raid = _raid_context;
+    inventory_context_trader_key = _trader_key;
     inventory_context_actions = _actions;
     inventory_context_x = clamp(device_mouse_x_to_gui(0), 0, display_get_gui_width() - 104);
     inventory_context_y = clamp(device_mouse_y_to_gui(0), 0, display_get_gui_height() - array_length(_actions) * 22);
@@ -112,6 +122,10 @@ function inventory_context_menu_execute(_action)
             for (var _slot = 0; _slot < array_length(raid.hotbar); _slot++)
                 if (raid.hotbar[_slot] == _item) raid.hotbar[_slot] = undefined;
             save_mark_dirty();
+            break;
+
+        case "sell":
+            trader_sell_stored_item(inventory_context_trader_key, _item, inventory_context_container);
             break;
 
         case "equip":

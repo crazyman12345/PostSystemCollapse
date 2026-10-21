@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"stash_can_add",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"stash_can_add",
+  "parent":{"name":"stash","path":"folders/inventory/stash.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
