@@ -134,7 +134,7 @@ function save_apply_data(_data)
     hydration_zero_damage_remaining = health_config.hydration_zero_damage_interval_seconds;
 
     var progression = save_value(_data, "progression", {});
-    global.progress.danger_level = max(0, save_number(progression, "danger_level", 0));
+    global.progress.danger_level = max(1, save_number(progression, "danger_level", 1));
     var flags = save_value(progression, "flags", {});
     var flag_keys = variable_struct_get_names(global.progress.flags);
     for (var i = 0; i < array_length(flag_keys); i++)
@@ -151,6 +151,9 @@ function save_apply_data(_data)
         var bench = variable_struct_get(workshop_db, key);
         variable_struct_set(workshop_progress, key, clamp(save_number(workshop, key, 0), 0, bench.max_level));
     }
+
+	quest_load_data(save_value(_data, "quests", {}));
+	dialogue_load_data(save_value(_data, "dialogue", {}));
 
     var meta = save_value(_data, "meta", {});
     save_unfinished_raid = save_value(meta, "unfinished_raid", false) == true;
@@ -269,5 +272,6 @@ function save_resolve_unfinished_raid()
     stash.equipped_armor_head_item = undefined;
     stash.equipped_armor_chest_item = undefined;
     player_health_recover_after_death();
+    onboarding_handle_raid_failure();
     save_unfinished_raid = false;
 }

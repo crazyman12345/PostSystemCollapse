@@ -15,7 +15,7 @@ function init_workbench_database()
 
             upgrade_requirements: [
                 [
-                    workshop_req("metal_scrap", 8),
+                    workshop_req("metal_scrap", 3),
                     workshop_req("wood", 4),
                     workshop_req("screws", 4),
                     workshop_req("bolts", 2)

@@ -37,6 +37,8 @@ init_skill_database();
 init_recipe_database();
 init_workbench_database();
 init_level_database();
+init_quest_database();
+init_dialogue_database();
 init_raid_vars();
 
 smoke_particle_system = part_system_create();
@@ -166,6 +168,10 @@ trader_hovered_stock_index = -1;
 trader_purchase_quantity_text = "1";
 trader_quantity_focused = false;
 trader_quantity_keyboard_restore = "";
+dialogue_current_node = undefined;
+dialogue_response_index = 0;
+dialogue_response_scroll = 0;
+dialogue_history = [];
 // ==============================
 // RAID
 // ==============================
@@ -274,6 +280,8 @@ skill_tree_drag_last_x = 0;
 skill_tree_drag_last_y = 0;
 skill_tree_pressed_node = -1;
 skill_notifications_init();
+quest_notifications_init();
+tutorial_callout_init();
 crew_skills_index = 0;
 crew_skills_crew_index = 0;
 crafting_recipe_index = 0;

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"onboarding_phase2",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"onboarding_phase2",
+  "parent":{
+    "name":"Progression",
+    "path":"folders/Progression.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -20,6 +20,27 @@ function save_migrate_data(_data)
                 version = 2;
                 break;
 
+			case 2:
+				_data.version = 3;
+				if (!variable_struct_exists(_data, "quests")) _data.quests = {};
+				version = 3;
+				break;
+
+			case 3:
+				_data.version = 4;
+				if (!variable_struct_exists(_data, "dialogue")) _data.dialogue = {};
+				version = 4;
+				break;
+
+			case 4:
+				_data.version = 5;
+				if (!variable_struct_exists(_data, "progression") || !is_struct(_data.progression)) _data.progression = {};
+				if (!variable_struct_exists(_data.progression, "flags") || !is_struct(_data.progression.flags)) _data.progression.flags = {};
+				_data.progression.flags.story_intro_complete = true;
+				_data.progression.flags.starting_crate_claimed = true;
+				version = 5;
+				break;
+
             default:
                 return undefined;
         }

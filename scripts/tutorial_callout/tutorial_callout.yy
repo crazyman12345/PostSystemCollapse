@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"tutorial_callout",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"tutorial_callout",
+  "parent":{"name":"Progression","path":"folders/Progression.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

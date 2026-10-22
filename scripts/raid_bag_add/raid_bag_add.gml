@@ -1,5 +1,6 @@
 function raid_bag_add(_item_key, _quantity)
 {
+	var collected_quantity = _quantity;
     var additions = raid_bag_prepare_add(_item_key, _quantity);
     if (is_undefined(additions)) return false;
 
@@ -18,6 +19,7 @@ function raid_bag_add(_item_key, _quantity)
         _quantity -= added;
     }
     for (var i = 0; i < array_length(additions); i++) array_push(stash.backpack.items, additions[i]);
+	quest_event(QuestObjectiveType.COLLECT_ITEM, _item_key, collected_quantity);
     save_mark_dirty();
     return true;
 }

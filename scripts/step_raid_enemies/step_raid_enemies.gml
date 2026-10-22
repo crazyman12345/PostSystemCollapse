@@ -135,7 +135,21 @@ function step_raid_enemies()
                 if (!e.enemy_invulnerable)
                 {
                     var _enemy_hp_before = e.enemy_hp;
-                    e.enemy_hp -= bullet.bdamage;
+                    var _bullet_damage = bullet.bdamage;
+
+                    if (bullet.damage_falloff_end > bullet.damage_falloff_start)
+                    {
+                        var _falloff_amount = clamp(
+                            (bullet.btravel_distance - bullet.damage_falloff_start)
+                            / (bullet.damage_falloff_end - bullet.damage_falloff_start),
+                            0,
+                            1
+                        );
+                        var _falloff_multiplier = lerp(1, bullet.damage_falloff_minimum, _falloff_amount);
+                        _bullet_damage = round(_bullet_damage * _falloff_multiplier);
+                    }
+
+                    e.enemy_hp -= _bullet_damage;
                     e.enemy_last_hit_direction = bullet.bdirection;
                     if (e.enemy_hp < _enemy_hp_before)
                         blood_hit_effect(e.enemy_x, e.enemy_y, bullet.bdirection);
@@ -232,6 +246,9 @@ function step_raid_enemies()
 
 		if (e.enemy_hp <= 0)
 		{
+			quest_event(QuestObjectiveType.KILL_ENEMY, e.enemy_type, 1);
+			if (e.enemy_boss) quest_event(QuestObjectiveType.DEFEAT_BOSS, e.enemy_type, 1);
+			if (e.enemy_type == RaidEnemyType.BONES) progress_complete_bones();
 		    player_skill_add_xp("marksmanship", skill_xp_awards.marksmanship_kill);
 
 		    if (
@@ -285,9 +302,15 @@ function step_raid_enemies()
         raid.current_reward_type
 		);
 
-        if (raid.rooms_cleared >= 15)
+        if (raid.current_room_type == RaidRoomType.BOSS)
         {
             raid.extract_active = true;
+            return;
+        }
+
+        if (raid.rooms_cleared >= raid.room_count)
+        {
+            raid_activate_checkpoint(true);
             return;
         }
 

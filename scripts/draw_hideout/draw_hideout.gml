@@ -1,5 +1,6 @@
 function draw_hideout()
 {
+    if (onboarding_draw_hideout()) return;
     var gui_w = display_get_gui_width();
     var gui_h = display_get_gui_height();
 
@@ -37,14 +38,15 @@ function draw_hideout()
 
         // MENU ITEM
         draw_set_halign(fa_left);
-        if (entry.bench_key != "" && variable_struct_get(workshop_progress, entry.bench_key) <= 0)
+        var entry_unlocked = hideout_entry_is_unlocked(entry);
+        if (!entry_unlocked)
             draw_set_color(c_gray);
         else
             draw_set_color(c_lime);
-        draw_text(margin, _y, cursor + entry.name);
+        draw_text(margin, _y, cursor + (entry_unlocked ? entry.name : "???"));
 
         // SKILL LEVEL
-        if (entry.skill_key != "")
+        if (entry_unlocked && entry.skill_key != "")
         {
             var level = skill_get_level(entry.skill_key);
 
@@ -77,15 +79,22 @@ function draw_hideout()
     draw_line(content_x1 + 20, content_y1 + 60, content_x2 - 20, content_y1 + 60);
 
     // RIGHT SIDE CONTENT
-    if (selected.bench_key != "" && variable_struct_get(workshop_progress, selected.bench_key) <= 0)
+    if (!hideout_entry_is_unlocked(selected))
     {
-        var bench = variable_struct_get(workshop_db, selected.bench_key);
         draw_text(content_x1 + 25, content_y1 + 75, "[LOCKED]");
-        draw_text(content_x1 + 25, content_y1 + 125, "BUILD THE " + bench.name + " IN THE WORKSHOP TO UNLOCK.");
+        if (selected.bench_key != "")
+        {
+            var bench = variable_struct_get(workshop_db, selected.bench_key);
+            draw_text(content_x1 + 25, content_y1 + 125, "BUILD THE " + bench.name + " IN THE WORKSHOP TO UNLOCK.");
+        }
     }
     else switch (selected.key)
     {
         case "traders":
+            draw_hideout_traders();
+        break;
+
+        case "messages":
             draw_hideout_traders();
         break;
 
@@ -119,6 +128,24 @@ function draw_hideout()
      
     }
 
+    var _trader_subscreen_open = (hideout_page == HideoutPage.TRADERS || hideout_page == HideoutPage.MESSAGES)
+        && trader_mode != TraderMode.SELECT;
+    if (!_trader_subscreen_open) draw_hideout_focus_outline(sidebar_w);
     draw_set_halign(fa_left);
     draw_set_color(c_white);
+}
+
+function draw_hideout_focus_outline(_sidebar_width)
+{
+    var _gui_width = display_get_gui_width();
+    var _gui_height = display_get_gui_height();
+    draw_set_color(c_lime);
+
+    for (var _i = 0; _i < 3; _i++)
+    {
+        if (hideout_focus == HideoutFocus.SIDEBAR)
+            draw_rectangle(1 + _i, 1 + _i, _sidebar_width - _i, _gui_height - _i, true);
+        else
+            draw_rectangle(_sidebar_width + _i, 1 + _i, _gui_width - _i, _gui_height - _i, true);
+    }
 }

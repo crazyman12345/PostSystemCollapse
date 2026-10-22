@@ -33,5 +33,11 @@ function overlay_open(_mode)
         {
             break;
         }
+
+		case OverlayMode.QUESTS:
+		{
+			quest_overlay_refresh();
+			break;
+		}
     }
 }

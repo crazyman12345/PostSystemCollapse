@@ -108,6 +108,7 @@ function skill_notifications_draw()
 {
     var gui_w = display_get_gui_width();
     var panel_right = gui_w - 30;
+    if (quest_tracker_is_visible()) panel_right -= 480;
     var panel_width = 300;
     var row_height = 36;
 

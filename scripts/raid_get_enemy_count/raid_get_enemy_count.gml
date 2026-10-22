@@ -39,7 +39,7 @@ function raid_get_scaled_enemy_count(_beginning_count, _ending_count, _room)
     }
 
     var _first_room = 1;
-    var _final_normal_room = 14;
+    var _final_normal_room = raid.room_count;
     var _progress = clamp(
         (_room - _first_room) / (_final_normal_room - _first_room),
         0,

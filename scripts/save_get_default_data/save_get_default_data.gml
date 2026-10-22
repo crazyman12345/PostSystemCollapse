@@ -14,6 +14,9 @@ function save_reset_to_defaults()
     init_skill_database();
     player_health_init();
     init_workbench_database();
+    init_quest_database();
+    init_dialogue_database();
+    onboarding_phase2_init();
     init_inventory();
 
     var member = crew[0];

@@ -35,6 +35,7 @@ function draw_hideout_raid_select()
     for (var i = 0; i < array_length(level_db); i++)
     {
         var area = level_db[i];
+        var available = raid_area_is_available(i);
 
         var col = i mod cols;
         var row = floor(i / cols);
@@ -44,13 +45,22 @@ function draw_hideout_raid_select()
         var box_left = grid_left + (col * (box_width + gap));
         var box_top = grid_top + (row * (box_height + gap));
 
-        var selected = (i == combat_area_index);
+        var selected = available && (i == combat_area_index);
 
         // ======================================
         // AREA BOX
         // ======================================
 
+        draw_set_color(available ? c_lime : c_gray);
         terminal_box(box_left, box_top, box_width, box_height);
+
+        if (!available)
+        {
+            draw_set_halign(fa_center);
+            draw_text(box_left + (box_width / 2), box_top + (box_height / 2) - 10, "?");
+            draw_set_halign(fa_left);
+            continue;
+        }
 
         if (selected && combat_menu_focus == CombatMenuFocus.AREAS)
             draw_rectangle(box_left + 4, box_top + 4, box_left + box_width - 4, box_top + box_height - 4, true);
@@ -94,5 +104,6 @@ function draw_hideout_raid_select()
 
 
 
+    draw_set_color(c_lime);
     draw_set_font(fnt_terminal);
 }

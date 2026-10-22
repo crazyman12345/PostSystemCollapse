@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"weapon_calculate_gear_score",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"weapon_calculate_gear_score",
+  "parent":{
+    "name":"items",
+    "path":"folders/inventory/items.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

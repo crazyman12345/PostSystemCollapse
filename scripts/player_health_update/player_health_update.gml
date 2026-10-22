@@ -41,6 +41,9 @@ function player_health_update()
     }
 
     if (_bleed_removed) save_mark_dirty();
+    if (health_limbs[PlayerLimb.HEAD].injury == LimbInjuryState.BLACKED_OUT)
+        raid_head_blur_phase = frac(raid_head_blur_phase + (_seconds / health_config.blacked_head_blur_cycle_seconds));
+    else raid_head_blur_phase = 0;
     health_painkiller_remaining = max(0, health_painkiller_remaining - _seconds);
 }
 
@@ -54,8 +57,9 @@ function player_survival_update()
     var _seconds = frame_scale / 60;
     var _energy_before = player_energy;
     var _hydration_before = player_hydration;
-    player_energy = clamp(player_energy - ((health_config.energy_drain_per_minute / 60) * _seconds), 0, health_config.survival_max);
-    player_hydration = clamp(player_hydration - ((health_config.hydration_drain_per_minute / 60) * _seconds), 0, health_config.survival_max);
+    var _survival_drain_multiplier = raid_get_encumbrance_penalties().survival_drain;
+    player_energy = clamp(player_energy - ((health_config.energy_drain_per_minute / 60) * _survival_drain_multiplier * _seconds), 0, health_config.survival_max);
+    player_hydration = clamp(player_hydration - ((health_config.hydration_drain_per_minute / 60) * _survival_drain_multiplier * _seconds), 0, health_config.survival_max);
 
     if (player_energy > 0)
         energy_zero_damage_remaining = health_config.energy_zero_damage_interval_seconds;
@@ -177,6 +181,8 @@ function player_health_sync_limb_bleed_state(_limb)
 function player_health_get_penalties()
 {
     var _severity = array_create(6, 0);
+    var _fractured_leg_count = 0;
+    var _blacked_leg_count = 0;
     for (var i = 0; i < array_length(health_limbs); i++)
     {
         var _limb = health_limbs[i];
@@ -185,6 +191,9 @@ function player_health_get_penalties()
         else if (_limb.injury == LimbInjuryState.WOUNDED)
             _value = (1 - (_limb.hp / max(1, _limb.max_hp))) * health_config.wounded_penalty_strength;
         if (_limb.fractured) _value = max(_value, health_config.fracture_penalty_strength);
+        if ((i == PlayerLimb.LEFT_LEG || i == PlayerLimb.RIGHT_LEG) && _limb.fractured) _fractured_leg_count++;
+        if ((i == PlayerLimb.LEFT_LEG || i == PlayerLimb.RIGHT_LEG)
+        && _limb.injury == LimbInjuryState.BLACKED_OUT) _blacked_leg_count++;
         _severity[i] = _value;
     }
 
@@ -192,13 +201,21 @@ function player_health_get_penalties()
     {
         var _remaining_penalty = 1 - health_config.painkiller_penalty_suppression;
         for (var i = 0; i < array_length(_severity); i++) _severity[i] *= _remaining_penalty;
+        _fractured_leg_count *= _remaining_penalty;
+        _blacked_leg_count *= _remaining_penalty;
     }
 
     var _arm = (_severity[PlayerLimb.LEFT_ARM] + _severity[PlayerLimb.RIGHT_ARM]) * 0.5;
     var _leg = (_severity[PlayerLimb.LEFT_LEG] + _severity[PlayerLimb.RIGHT_LEG]) * 0.5;
+    var _movement_leg = (
+        (health_limbs[PlayerLimb.LEFT_LEG].injury == LimbInjuryState.BLACKED_OUT || health_limbs[PlayerLimb.LEFT_LEG].fractured ? 0 : _severity[PlayerLimb.LEFT_LEG])
+        + (health_limbs[PlayerLimb.RIGHT_LEG].injury == LimbInjuryState.BLACKED_OUT || health_limbs[PlayerLimb.RIGHT_LEG].fractured ? 0 : _severity[PlayerLimb.RIGHT_LEG])
+    ) * 0.5;
     var _core = max(_severity[PlayerLimb.HEAD], _severity[PlayerLimb.CHEST]);
     return {
-        movement: max(health_config.minimum_move_multiplier, 1 - (_leg * health_config.leg_move_penalty)),
+        movement: max(0.1, max(health_config.minimum_move_multiplier, 1 - (_movement_leg * health_config.leg_move_penalty))
+            - (_fractured_leg_count * health_config.fractured_leg_move_penalty)
+            - (_blacked_leg_count * health_config.blacked_leg_move_penalty)),
         dash: max(health_config.minimum_dash_multiplier, 1 - (_leg * health_config.leg_dash_penalty)),
         reload: max(health_config.minimum_reload_multiplier, 1 - (_arm * health_config.arm_reload_penalty)),
         recoil: 1 + (_arm * health_config.arm_recoil_penalty),

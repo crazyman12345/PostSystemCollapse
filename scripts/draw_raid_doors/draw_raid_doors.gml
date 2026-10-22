@@ -20,17 +20,34 @@ function draw_raid_doors()
         //    true
         //);
 
-        draw_text_transformed(
-            d.door_x,
-            d.door_y-90,
-            raid_reward_name(d.reward_type),
-            0.35,
-            0.35,
-            0
-        );
+        if (variable_struct_exists(d, "boss_door") && d.boss_door)
+            draw_raid_boss_door_marker(d.door_x, d.door_y - 90);
+        else
+            draw_text_transformed(
+                d.door_x,
+                d.door_y-90,
+                raid_reward_name(d.reward_type),
+                0.35,
+                0.35,
+                0
+            );
     }
 
     draw_set_halign(fa_left);
+}
+
+
+function draw_raid_boss_door_marker(_x, _y)
+{
+    draw_set_color(make_color_rgb(190, 45, 35));
+    draw_circle(_x, _y, 9, false);
+    draw_rectangle(_x - 6, _y + 5, _x + 6, _y + 11, false);
+    draw_set_color(c_black);
+    draw_circle(_x - 3, _y - 1, 2, false);
+    draw_circle(_x + 3, _y - 1, 2, false);
+    draw_triangle(_x, _y + 2, _x - 2, _y + 5, _x + 2, _y + 5, false);
+    draw_line(_x - 2, _y + 6, _x - 2, _y + 11);
+    draw_line(_x + 2, _y + 6, _x + 2, _y + 11);
 }
 
 

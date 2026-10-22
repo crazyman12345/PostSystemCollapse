@@ -17,7 +17,8 @@ function enums(){
 	    MEDICAL_CRAFTING,
 	    RAIDS,
 	    WORKSHOP,
-		SKILLS
+		SKILLS,
+		MESSAGES
 	}
 	hideout_focus = HideoutFocus.SIDEBAR;
 	hideout_page = HideoutPage.TRADERS;
@@ -25,6 +26,7 @@ function enums(){
 	hideout_menu_items = [
 	
 	    { name: "TRADERS", key: "traders", page: HideoutPage.TRADERS, header: "", skill_key: "", bench_key: "" },
+	    { name: "MESSAGES", key: "messages", page: HideoutPage.MESSAGES, header: "", skill_key: "", bench_key: "" },
 	    { name: "STASH", key: "stash", page: HideoutPage.STASH, header: "", skill_key: "", bench_key: "" },
 		{ name: "SKILLS", key: "skills", page: HideoutPage.SKILLS, header: "", skill_key: "", bench_key: "" },
 
@@ -51,7 +53,8 @@ function enums(){
 	enum TraderMode{
 		BUY,
 		SELECT,
-		SELL
+		SELL,
+		CONVERSATION
 	}
 
 	enum ItemCategory
@@ -146,7 +149,26 @@ function enums(){
 	    NONE,
 	    SKILLS,
 	    LOADOUT,
-	    INVENTORY
+	    INVENTORY,
+	    QUESTS
+	}
+	enum QuestState
+	{
+		LOCKED,
+		AVAILABLE,
+		ACTIVE,
+		READY_TO_TURN_IN,
+		COMPLETED
+	}
+	enum QuestObjectiveType
+	{
+		KILL_ENEMY,
+		COLLECT_ITEM,
+		EXTRACT_WITH_ITEM,
+		EXTRACT_LEVEL,
+		VISIT_LOCATION,
+		DEFEAT_BOSS,
+		REPAIR_BENCH
 	}
 	enum WorkshopFocus
 	{

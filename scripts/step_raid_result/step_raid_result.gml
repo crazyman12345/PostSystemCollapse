@@ -24,6 +24,7 @@ function step_raid_result()
 
     if (_heal_hovered)
     {
+        if (!trader_is_unlocked("sawbones")) return;
         var _quote = raid_result_get_treatment_quote();
         if (_quote.total > 0 && spend_cash(_quote.total))
         {
@@ -121,10 +122,13 @@ function raid_result_continue()
 {
     player_health_recover_blacked_limbs();
     player_health_sync_crew();
-    hideout_menu_index = 1;
+    var _first_quest = quest_get_progress("test_safe_return");
+    var _first_quest_ready = !is_undefined(_first_quest) && _first_quest.state == QuestState.READY_TO_TURN_IN;
+    hideout_menu_index = 2;
     hideout_page = HideoutPage.STASH;
     hideout_focus = HideoutFocus.CONTENT;
     raid_set_state(RaidState.INACTIVE);
     state = GameState.HIDEOUT;
+    if (_first_quest_ready) onboarding_open_mara_node("mara_first_quest_return");
     save_game();
 }

@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"food",
-    "path":"folders/sprites/item icons/food.yy",
+    "path":"folders/sprites/item icons/consumables/food.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

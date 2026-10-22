@@ -10,5 +10,9 @@ function step_overlay()
             step_loadout_overlay();
             break;
 
+		case OverlayMode.QUESTS:
+			step_quests_overlay();
+			break;
+
     }
 }

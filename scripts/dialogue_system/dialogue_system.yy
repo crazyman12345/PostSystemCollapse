@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"dialogue_system",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"dialogue_system",
+  "parent":{
+    "name":"Progression",
+    "path":"folders/Progression.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

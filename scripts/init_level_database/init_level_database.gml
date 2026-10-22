@@ -40,22 +40,22 @@ function init_level_database()
         },
         {
             name: "coming soon",
-            danger_level: 1,
+            danger_level: 3,
             sprite: -1
         },
         {
             name: "coming soon",
-            danger_level: 1,
+            danger_level: 4,
             sprite: -1
         },
         {
             name: "coming soon",
-            danger_level: 1,
+            danger_level: 5,
             sprite: -1
         },
         {
             name: "coming soon",
-            danger_level: 1,
+            danger_level: 6,
             sprite: -1
         }
      
@@ -75,4 +75,41 @@ function raid_level_wall_segments()
         east: 5,
         west: 5
     };
+}
+
+function raid_area_is_available(_area_index)
+{
+    if (!is_real(_area_index) || _area_index != floor(_area_index)
+    || _area_index < 0 || _area_index >= array_length(level_db)) return false;
+
+    var _area = level_db[_area_index];
+    if (!is_struct(_area)
+    || !variable_struct_exists(_area, "name")
+    || !variable_struct_exists(_area, "danger_level")
+    || !variable_struct_exists(_area, "floor_tiles")
+    || !variable_struct_exists(_area, "arena_wall_sprites")
+    || !variable_struct_exists(_area, "arena_door_sprite")
+    || !variable_struct_exists(_area, "light_color")
+    || !variable_struct_exists(_area, "enemy_spawns")
+    || !variable_struct_exists(_area, "beginning_enemy_count")
+    || !variable_struct_exists(_area, "ending_enemy_count")) return false;
+
+    if (!is_array(_area.floor_tiles) || array_length(_area.floor_tiles) <= 0
+    || !is_array(_area.arena_wall_sprites) || array_length(_area.arena_wall_sprites) <= 0
+    || !is_array(_area.enemy_spawns) || array_length(_area.enemy_spawns) <= 0) return false;
+
+    return global.progress.danger_level >= _area.danger_level;
+}
+
+function raid_return_to_area_selection()
+{
+    raid.selected_area_index = -1;
+    raid.selected_area = undefined;
+    combat_area_index = raid_area_is_available(0) ? 0 : -1;
+    loadout_confirm_start = false;
+    loadout_confirm_index = 0;
+    overlay_mode = OverlayMode.NONE;
+    state = GameState.HIDEOUT;
+    hideout_page = HideoutPage.RAIDS;
+    hideout_focus = HideoutFocus.CONTENT;
 }

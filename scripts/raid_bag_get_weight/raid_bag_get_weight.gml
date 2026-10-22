@@ -1,7 +1,7 @@
 function raid_bag_get_weight()
 {
     var total_weight = 0;
-    var containers = [stash.backpack, stash.pockets];
+    var containers = [stash.backpack, stash.pockets, stash.secure_container];
     for (var container_index = 0; container_index < array_length(containers); container_index++)
     {
         var container = containers[container_index];

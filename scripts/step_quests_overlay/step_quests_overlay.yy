@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_quests_overlay",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_quests_overlay",
+  "parent":{"name":"Overlays","path":"folders/UI/Overlays.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

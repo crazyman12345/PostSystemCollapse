@@ -94,7 +94,7 @@ function draw_player_status_panel(_x, _y, _width, _compact = false)
 function draw_player_status_bar(_x, _y, _width, _height, _label, _current, _maximum, _weight = false)
 {
     var _fill = clamp(_current / max(1, _maximum), 0, 1);
-    var _overweight = _weight && _current > _maximum;
+    var _overweight = _weight && _current >= _maximum;
     var _value_text;
 
     if (_weight)

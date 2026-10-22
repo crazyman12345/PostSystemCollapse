@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"progress_complete_bones",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"progress_complete_bones",
+  "parent":{
+    "name":"Progression",
+    "path":"folders/Progression.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -11,6 +11,14 @@ function step_loadout_overlay()
         return;
     }
 
+    if (!variable_struct_exists(raid, "selected_area_index")
+    || !raid_area_is_available(raid.selected_area_index))
+    {
+        raid_return_to_area_selection();
+        return;
+    }
+    raid.selected_area = level_db[raid.selected_area_index];
+
     if (inventory_character_tab_input(20)) return;
 
     // ======================================================
@@ -90,6 +98,7 @@ function step_loadout_overlay()
 
         if (keyboard_check_pressed(vk_enter) || mouse_start)
         {
+            if (!onboarding_can_start_raid()) exit;
             if (mouse_start) audio_play_sound(snd_interact, 0, false);
             loadout_confirm_start = true;
             loadout_confirm_index = 0;

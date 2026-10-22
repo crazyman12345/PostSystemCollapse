@@ -1,5 +1,6 @@
 function raid_extract()
 {
+	quest_extraction_complete(raid.selected_area.name);
     raid.result_title =
         "EXTRACTION SUCCESSFUL";
 

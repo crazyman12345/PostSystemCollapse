@@ -5,6 +5,7 @@ function step_raid_player(_allow_dodge)
     var _mx = keyboard_check(ord("D")) - keyboard_check(ord("A"));
     var _my = keyboard_check(ord("S")) - keyboard_check(ord("W"));
     var _health_penalties = player_health_get_penalties();
+    var _encumbrance_penalties = raid_get_encumbrance_penalties();
     var _treatment_move_multiplier = player_health_treatment_is_active() ? 0.5 : 1;
 
     if (!_allow_dodge && raid_player_dash_active)
@@ -110,8 +111,8 @@ function step_raid_player(_allow_dodge)
         _mx /= _len;
         _my /= _len;
 
-        raid_player_x += _mx * raid_player_speed * _move_speed_multiplier * _health_penalties.movement * _treatment_move_multiplier * frame_scale;
-        raid_player_y += _my * raid_player_speed * _move_speed_multiplier * _health_penalties.movement * _treatment_move_multiplier * frame_scale;
+        raid_player_x += _mx * raid_player_speed * _move_speed_multiplier * _health_penalties.movement * _encumbrance_penalties.movement * _treatment_move_multiplier * frame_scale;
+        raid_player_y += _my * raid_player_speed * _move_speed_multiplier * _health_penalties.movement * _encumbrance_penalties.movement * _treatment_move_multiplier * frame_scale;
     }
 
     for (

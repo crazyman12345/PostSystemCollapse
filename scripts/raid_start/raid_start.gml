@@ -1,15 +1,33 @@
 function raid_start(_area)
 {
+	if (!onboarding_can_start_raid()) return false;
+	var _area_index = -1;
+	for (var _index = 0; _index < array_length(level_db); _index++)
+	{
+		if (level_db[_index] == _area)
+		{
+			_area_index = _index;
+			break;
+		}
+	}
+	if (!raid_area_is_available(_area_index))
+	{
+		raid_return_to_area_selection();
+		return false;
+	}
+	_area = level_db[_area_index];
+	raid.selected_area_index = _area_index;
+
 	if (!is_undefined(stash.held_item))
 	{
-		return;
+		return false;
 	}
 	save_unfinished_raid = true;
 	if (!save_game())
 	{
 		save_unfinished_raid = false;
 		debug_log_add("Raid start blocked: player save failed.");
-		return;
+		return false;
 	}
 	// Carry the existing grids and their item instances directly into the raid.
 	var backpack = item_get(crew[raid.crew_index].bag);
@@ -24,6 +42,7 @@ function raid_start(_area)
 	raid.inventory_rotation = 0;
 	raid.last_loot = [];
 	raid.loot_index = 0;
+	raid.onboarding_scrap_added = false;
 	
 	view_enabled = true;
 	view_visible[0] = true;
@@ -56,6 +75,7 @@ function raid_start(_area)
     raid_player_smoothed_velocity_x = 0;
     raid_player_smoothed_velocity_y = 0;
 	raid_player_dash_xp_pending = false;
+	quest_raid_begin();
 	raid_enemy_bullets = [];
 	raid_ring_hazards = [];
 	raid_temporary_lights = [];
@@ -87,5 +107,7 @@ function raid_start(_area)
     raid_update_active_weapon();
     raid_weapon_slot_display = max(0, active_weapon_slot);
     raid_weapon_slot_display_target = raid_weapon_slot_display;
-    raid_enter_start_room();
+	raid_enter_start_room();
+	quest_event(QuestObjectiveType.VISIT_LOCATION, _area.name, 1);
+	return true;
 }

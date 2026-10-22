@@ -3,7 +3,7 @@ function draw_raid_progress()
     if (raid.room_number < 1)
         return;
 
-    var _room_count = 15;
+    var _room_count = raid.room_count + 1;
     var _current_room = clamp(raid.room_number, 1, _room_count);
     var _gui_w = display_get_gui_width();
     var _line_x1 = _gui_w - 284;
@@ -38,11 +38,11 @@ function draw_raid_progress()
             : (_room == _current_room ? c_lime : _future_color);
         draw_set_color(_marker_color);
 
-        if (_room == 5 || _room == 10)
+        if (_room == 5 || _room == raid.room_count)
         {
             draw_text(_room_x, _line_y, "*");
         }
-        else if (_room == 15)
+        else if (_room == _room_count)
         {
             draw_circle(_room_x, _line_y - 1, 4, false);
             draw_rectangle(_room_x - 3, _line_y + 2, _room_x + 3, _line_y + 5, false);

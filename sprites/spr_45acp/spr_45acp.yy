@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"item icons",
-    "path":"folders/sprites/item icons.yy",
+    "name":"ammo",
+    "path":"folders/sprites/item icons/ammo.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

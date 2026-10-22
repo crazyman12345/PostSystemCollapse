@@ -7,22 +7,26 @@ function step_hideout_raid()
 
         var count = array_length(level_db);
 
-        if (keyboard_check_pressed(ord("A")) && combat_area_index mod 2 == 1)
+        if (keyboard_check_pressed(ord("A")) && combat_area_index mod 2 == 1
+        && raid_area_is_available(combat_area_index - 1))
 		{ 
 			combat_area_index--;
 			scroll_sound();
 		}
-        if (keyboard_check_pressed(ord("D")) && combat_area_index mod 2 == 0 && combat_area_index + 1 < count)
+        if (keyboard_check_pressed(ord("D")) && combat_area_index mod 2 == 0 && combat_area_index + 1 < count
+        && raid_area_is_available(combat_area_index + 1))
         {   
 			combat_area_index++;
 			scroll_sound();
 		}
-        if (keyboard_check_pressed(ord("W")) && combat_area_index - 2 >= 0)
+        if (keyboard_check_pressed(ord("W")) && combat_area_index - 2 >= 0
+        && raid_area_is_available(combat_area_index - 2))
 		{
             combat_area_index -= 2;
 			scroll_sound();
 		}
-        if (keyboard_check_pressed(ord("S")) && combat_area_index + 2 < count)
+        if (keyboard_check_pressed(ord("S")) && combat_area_index + 2 < count
+        && raid_area_is_available(combat_area_index + 2))
 		{
             combat_area_index += 2;
 			scroll_sound();
@@ -34,7 +38,8 @@ function step_hideout_raid()
         var hover_index = hover_row * 2 + hover_column;
         var mouse_hover = _mouse_x >= 320 && _mouse_x < 1920 && _mouse_y >= 80 && _mouse_y < 1080
             && ((_mouse_x - 320) mod 805) < 795 && ((_mouse_y - 80) mod ((950 / 6) + 10)) < (950 / 6)
-            && hover_index >= 0 && hover_index < count;
+            && hover_index >= 0 && hover_index < count
+            && raid_area_is_available(hover_index);
 
         if (mouse_hover && combat_area_index != hover_index)
         {
@@ -44,6 +49,9 @@ function step_hideout_raid()
 
         if (keyboard_check_pressed(vk_enter) || (mouse_hover && mouse_check_button_pressed(mb_left)))
         {
+            if (!onboarding_can_start_raid()) return;
+            if (!raid_area_is_available(combat_area_index)) return;
+
             // STORE SELECTED RAID LOCATION
             raid.selected_area_index = combat_area_index;
             raid.selected_area = level_db[combat_area_index];

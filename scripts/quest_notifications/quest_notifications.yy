@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"quest_notifications",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"quest_notifications",
+  "parent":{"name":"Progression","path":"folders/Progression.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -15,6 +15,11 @@ function workshop_upgrade(_bench_key)
     }
 
     variable_struct_set(workshop_progress, _bench_key, level + 1);
+    if (level == 0)
+    {
+        quest_event(QuestObjectiveType.REPAIR_BENCH, _bench_key, 1);
+        if (_bench_key == "salvage_bench") progress_set_flag("salvage_bench_repaired", true);
+    }
     save_mark_dirty();
     return true;
 }

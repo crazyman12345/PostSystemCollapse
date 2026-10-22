@@ -1,55 +1,81 @@
-function raid_create_next_doors(_activate = true)
+function raid_create_next_doors(_activate = true, _boss_door = false)
 {
     raid_doors = [];
 
     var _reward1 = raid_get_random_reward();
-    var _reward2 = raid_get_random_reward();
-
-    // avoid duplicate choices
-    while (_reward2 == _reward1)
-    {
-        _reward2 = raid_get_random_reward();
-    }
-
     var _door_y = raid_room_y1+16;
-    var _north_segment_count = max(1, floor(raid_environment.wall_segments.north));
-    var _north_segment_width = (raid_room_x2 - raid_room_x1) / _north_segment_count;
-    var _left_door_x = raid_room_x1 + _north_segment_width * 1.5;
-    var _right_door_x = raid_room_x2 - _north_segment_width * 1.5;
 
-    array_push(
-        raid_doors,
-        {
-            door_x: _left_door_x,
-            door_y: _door_y,
-            door_w: 50,
-            door_h: 24,
-            reward_type: _reward1,
-            loot_halo_enabled: loot_halo_enabled,
-            loot_halo_radius: loot_halo_radius,
-            loot_halo_intensity: loot_door_halo_intensity,
-            loot_halo_color: loot_halo_color,
-            loot_halo_offset_x: loot_halo_offset_x,
-            loot_halo_offset_y: loot_door_halo_offset_y
-        }
-    );
+    if (_boss_door)
+    {
+        array_push(
+            raid_doors,
+            {
+                door_x: (raid_room_x1 + raid_room_x2) * 0.5,
+                door_y: _door_y,
+                door_w: 50,
+                door_h: 24,
+                reward_type: _reward1,
+                boss_door: true,
+                loot_halo_enabled: loot_halo_enabled,
+                loot_halo_radius: loot_halo_radius,
+                loot_halo_intensity: loot_door_halo_intensity,
+                loot_halo_color: loot_halo_color,
+                loot_halo_offset_x: loot_halo_offset_x,
+                loot_halo_offset_y: loot_door_halo_offset_y
+            }
+        );
+    }
+    else
+    {
+        var _reward2 = raid_get_random_reward();
 
-    array_push(
-        raid_doors,
+        // avoid duplicate choices
+        while (_reward2 == _reward1)
         {
-            door_x: _right_door_x,
-            door_y: _door_y,
-            door_w: 50,
-            door_h: 24,
-            reward_type: _reward2,
-            loot_halo_enabled: loot_halo_enabled,
-            loot_halo_radius: loot_halo_radius,
-            loot_halo_intensity: loot_door_halo_intensity,
-            loot_halo_color: loot_halo_color,
-            loot_halo_offset_x: loot_halo_offset_x,
-            loot_halo_offset_y: loot_door_halo_offset_y
+            _reward2 = raid_get_random_reward();
         }
-    );
+
+        var _north_segment_count = max(1, floor(raid_environment.wall_segments.north));
+        var _north_segment_width = (raid_room_x2 - raid_room_x1) / _north_segment_count;
+        var _left_door_x = raid_room_x1 + _north_segment_width * 1.5;
+        var _right_door_x = raid_room_x2 - _north_segment_width * 1.5;
+
+        array_push(
+            raid_doors,
+            {
+                door_x: _left_door_x,
+                door_y: _door_y,
+                door_w: 50,
+                door_h: 24,
+                reward_type: _reward1,
+                boss_door: false,
+                loot_halo_enabled: loot_halo_enabled,
+                loot_halo_radius: loot_halo_radius,
+                loot_halo_intensity: loot_door_halo_intensity,
+                loot_halo_color: loot_halo_color,
+                loot_halo_offset_x: loot_halo_offset_x,
+                loot_halo_offset_y: loot_door_halo_offset_y
+            }
+        );
+
+        array_push(
+            raid_doors,
+            {
+                door_x: _right_door_x,
+                door_y: _door_y,
+                door_w: 50,
+                door_h: 24,
+                reward_type: _reward2,
+                boss_door: false,
+                loot_halo_enabled: loot_halo_enabled,
+                loot_halo_radius: loot_halo_radius,
+                loot_halo_intensity: loot_door_halo_intensity,
+                loot_halo_color: loot_halo_color,
+                loot_halo_offset_x: loot_halo_offset_x,
+                loot_halo_offset_y: loot_door_halo_offset_y
+            }
+        );
+    }
 
     if (_activate && raid.current_room_type != RaidRoomType.START)
     {

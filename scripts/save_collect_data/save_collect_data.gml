@@ -106,7 +106,9 @@ function save_collect_data()
             danger_level: global.progress.danger_level,
             flags: flags,
             workshop: workshop
-        }
+        },
+		quests: quest_save_data(),
+		dialogue: dialogue_save_data()
     };
 }
 

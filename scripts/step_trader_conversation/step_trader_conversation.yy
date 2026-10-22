@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"step_trader_conversation",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"step_trader_conversation",
+  "parent":{"name":"traders","path":"folders/hideout/traders.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

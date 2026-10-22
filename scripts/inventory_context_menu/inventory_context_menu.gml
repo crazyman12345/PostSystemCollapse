@@ -30,10 +30,16 @@ function inventory_context_menu_open(_item, _container, _equipment_slot, _allow_
     var _definition = item_get(_item.item_key);
     if (is_undefined(_definition)) return false;
 
-    var _actions = [{ key: "inspect", label: "INSPECT" }];
+    var _actions = _item.item_key == "supply_crate"
+        ? [{ key: "open_supply_crate", label: "OPEN" }]
+        : [{ key: "inspect", label: "INSPECT" }];
     var _crew_index = _raid_context ? raid.crew_index : 0;
     var _equip_slot = -1;
-    if (_trader_key != "")
+    if (_item.item_key == "supply_crate")
+    {
+        // The sealed crate has only one context action.
+    }
+    else if (_trader_key != "")
     {
         if (_container == stash && trader_will_buy_item(_trader_key, _item.item_key))
             array_push(_actions, { key: "sell", label: "SELL" });
@@ -111,6 +117,10 @@ function inventory_context_menu_execute(_action)
 
     switch (_action)
     {
+        case "open_supply_crate":
+            onboarding_open_supply_crate(_item, inventory_context_container);
+            break;
+
         case "inspect":
             inventory_inspect_item = _item;
             inventory_inspect_x = inventory_context_x;

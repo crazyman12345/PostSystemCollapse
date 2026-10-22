@@ -32,6 +32,7 @@ switch (state)
 			draw_raid_ammo_ui();
 			draw_raid_health_ui();
 			draw_raid_progress();
+			draw_quest_tracker();
 		}
 
 		if (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT && raid.state != RaidState.DEATH)
@@ -70,6 +71,8 @@ if (state != GameState.MAIN_MENU)
 draw_overlay(overlay_mode);
 
 if (!(state == GameState.RAID && raid.state == RaidState.DEATH)) skill_notifications_draw();
+if (!(state == GameState.RAID && raid.state == RaidState.DEATH)) quest_notifications_draw();
+if (state == GameState.HIDEOUT) tutorial_callout_draw();
 
 draw_raid_texture_crop_debug();
 draw_debug_console();

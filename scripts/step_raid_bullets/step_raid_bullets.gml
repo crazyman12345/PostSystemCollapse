@@ -8,6 +8,7 @@ function step_raid_bullets()
 
         b.bx += lengthdir_x(b.bspeed * frame_scale, b.bdirection);
         b.by += lengthdir_y(b.bspeed * frame_scale, b.bdirection);
+        b.btravel_distance += point_distance(_previous_x, _previous_y, b.bx, b.by);
         b = projectile_smoke_update(b, _previous_x, _previous_y);
 
         raid_bullets[i] = b;

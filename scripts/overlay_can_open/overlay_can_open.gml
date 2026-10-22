@@ -3,6 +3,7 @@ function overlay_can_open(_mode)
 	if state = GameState.MAIN_MENU{
 		return false;
 	}
+	if (state == GameState.HIDEOUT && onboarding_is_active()) return false;
 	
     switch (_mode)
     {
@@ -17,6 +18,11 @@ function overlay_can_open(_mode)
         {
             return true;
         }
+
+		case OverlayMode.QUESTS:
+		{
+			return true;
+		}
 
     }
 

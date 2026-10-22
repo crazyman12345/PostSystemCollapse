@@ -1,6 +1,5 @@
 function step_trader_select(){
-var trader_keys = ["iron", "mara", "bastion", "sawbones", "ghost"];
-	if (global.admin_trader_enabled) array_push(trader_keys, "admin");
+var trader_keys = trader_get_unlocked_keys();
 		menu_index = terminal_menu_input(
 		    menu_index,
 		    array_length(trader_keys)

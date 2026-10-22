@@ -79,12 +79,31 @@ function step_raid_shooting(_allow_input)
     var _pivot_x = raid_player_x;
     var _pivot_y = raid_player_y - 12;
 
-    raid_aim_dir = point_direction(
+    var _target_aim_dir = point_direction(
         _pivot_x,
         _pivot_y,
         mouse_x,
         mouse_y
     );
+
+    if (is_struct(_weapon) && variable_struct_exists(_weapon, "handling"))
+    {
+        var _handling = clamp(_weapon.handling, 0, 100);
+        var _handling_range = max(1, raid_handling_high_stat - raid_handling_low_stat);
+        var _handling_amount = (_handling - raid_handling_low_stat) / _handling_range;
+        var _max_turn_speed = lerp(
+            raid_handling_low_turn_speed,
+            raid_handling_high_turn_speed,
+            _handling_amount
+        );
+        var _aim_difference = angle_difference(_target_aim_dir, raid_aim_dir);
+        var _max_turn = _max_turn_speed * frame_scale / 60;
+        raid_aim_dir = (raid_aim_dir + clamp(_aim_difference, -_max_turn, _max_turn) + 360) mod 360;
+    }
+    else
+    {
+        raid_aim_dir = _target_aim_dir;
+    }
 
 
     // ======================================================
@@ -472,6 +491,7 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 		var _pellet_spread = variable_struct_exists(_weapon, "pellet_spread")
 			? _weapon.pellet_spread
 			: 0;
+		var _accuracy_spread = (100 - clamp(_weapon.accuracy, 0, 100)) * 0.1;
 		var _lethal_aim = skill_node_find(skill_node_get_nodes("marksmanship"), "lethal_aim");
 		var _gun_damage_multiplier = !is_undefined(_lethal_aim) && skill_node_is_unlocked("marksmanship", _lethal_aim) ? 1.05 : 1;
 		var _default_light_radius = raid_projectile_light_radius;
@@ -486,9 +506,11 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 		for (var i = 0; i < _pellet_count; i++)
 		{
 			var _pellet_angle = _fire_dir + random_range(-_pellet_spread, _pellet_spread);
+			if (_accuracy_spread > 0) _pellet_angle += random_range(-_accuracy_spread, _accuracy_spread);
 			var bullet = {
 				bx: _muzzle_x,
 				by: _muzzle_y,
+				btravel_distance: 0,
 
 				bdirection: _pellet_angle,
 
@@ -497,6 +519,9 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 					_weapon.damage_min,
 					_weapon.damage_max
 				) * _gun_damage_multiplier,
+				damage_falloff_start: variable_struct_exists(_weapon, "damage_falloff_start") ? _weapon.damage_falloff_start : 0,
+				damage_falloff_end: variable_struct_exists(_weapon, "damage_falloff_end") ? _weapon.damage_falloff_end : 0,
+				damage_falloff_minimum: variable_struct_exists(_weapon, "damage_falloff_minimum") ? _weapon.damage_falloff_minimum : 1,
 				light_enabled: _bullet_light_enabled,
 				light_color: _bullet_light_color,
 				light_radius: _bullet_light_radius,

@@ -25,6 +25,30 @@ function debug_execute(_command)
         case "items":
             debug_command_items();
             break;
+
+        case "gun_stats":
+            debug_command_gun_stats();
+            break;
+
+        case "limb_damage":
+            debug_command_limb("damage", args);
+            break;
+
+        case "limb_fracture":
+            debug_command_limb("fracture", args);
+            break;
+
+        case "limb_bleed":
+            debug_command_limb("bleed", args);
+            break;
+
+        case "limb_blackout":
+            debug_command_limb("blackout", args);
+            break;
+
+        case "limb_reset":
+            debug_command_limb("reset", args);
+            break;
 		
 		case "money":
 			stash_add("cash",10000);
@@ -76,4 +100,13 @@ function debug_execute(_command)
             );
             break;
     }
+}
+
+function debug_command_help()
+{
+    debug_log_add("help | clear | items | gun_stats | give <item_key> <quantity>");
+    debug_log_add("money | show_mouse | debug_start_boss | god_trader");
+    debug_log_add("godmode | hit_regions | unlock_tables | gun_tuning_mode");
+    debug_log_add("limb_damage <limb> <amount> | limb_fracture <limb>");
+    debug_log_add("limb_bleed <limb> <light|heavy> | limb_blackout <limb> | limb_reset <limb|all>");
 }

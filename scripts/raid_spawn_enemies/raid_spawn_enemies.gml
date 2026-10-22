@@ -1,6 +1,6 @@
 function raid_spawn_enemies()
 {
-	if (raid.rooms_cleared + 1 >= 15)
+	if (raid.rooms_cleared >= raid.room_count)
 	{
 	    raid.current_room_type = RaidRoomType.BOSS;
 	    raid_spawn_enemy(

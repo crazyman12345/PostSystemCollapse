@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_quest_tracker",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_quest_tracker",
+  "parent":{"name":"Progression","path":"folders/Progression.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

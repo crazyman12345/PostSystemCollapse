@@ -1,7 +1,7 @@
 function draw_trader_select()
 {
-    var trader_keys = ["iron", "mara", "bastion", "sawbones", "ghost"];
-    if (global.admin_trader_enabled) array_push(trader_keys, "admin");
+    var trader_keys = trader_get_unlocked_keys();
+    menu_index = clamp(menu_index, 0, array_length(trader_keys) - 1);
 
     // RIGHT SIDE AREA: X 320 -> 1920
     // CONTENT AREA: Y 80 -> 1080

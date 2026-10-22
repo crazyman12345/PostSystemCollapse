@@ -45,6 +45,9 @@ function draw_item_stats(_item, _x, _y, _bottom)
                 array_push(_lines,
                     "VALUE: $" + string(_item.base_value));
 
+            array_push(_lines,
+                "COMBAT POWER: " + string(weapon_calculate_gear_score(_item)));
+
             if (
                 variable_struct_exists(_item, "damage_min")
                 && variable_struct_exists(_item, "damage_max")
@@ -80,10 +83,15 @@ function draw_item_stats(_item, _x, _y, _bottom)
                     "BULLET SPEED: "
                     + string(_item.bullet_speed));
 
-            if (variable_struct_exists(_item, "accuracy_bonus"))
+            if (variable_struct_exists(_item, "accuracy"))
                 array_push(_lines,
                     "ACCURACY: "
-                    + string(_item.accuracy_bonus));
+                    + string(_item.accuracy));
+
+            if (variable_struct_exists(_item, "handling"))
+                array_push(_lines,
+                    "HANDLING: "
+                    + string(_item.handling));
 
             if (variable_struct_exists(_item, "ammo_key"))
             {

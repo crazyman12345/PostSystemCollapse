@@ -43,7 +43,7 @@ function draw_workshop()
         var cursor = "  ";
         if (i == workshop_station_index) cursor = "> ";
 
-        var status = "[LOCKED]";
+        var status = workshop_bench_is_available(key) ? "[LOCKED]" : "[UNAVAILABLE]";
         if (level > 0) status = "[LV." + string(level) + "]";
 
         if (level <= 0) draw_set_color(c_gray);
@@ -91,7 +91,7 @@ function draw_workshop()
     if (workshop_focus == WorkshopFocus.CONTENT) draw_text(right_x1 + 20, top + 20, "> " + bench.name + " <");
 	else draw_text(right_x1 + 20, top + 20, bench.name);
 
-    var status_text = "LOCKED";
+    var status_text = workshop_bench_is_available(selected_key) ? "LOCKED" : "UNAVAILABLE";
     if (bench_level > 0) status_text = "LEVEL " + string(bench_level);
 
     draw_set_halign(fa_right);

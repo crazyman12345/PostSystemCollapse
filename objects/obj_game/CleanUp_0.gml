@@ -11,6 +11,8 @@ raid_emissive_surface = graphics_settings_release_surface(raid_emissive_surface)
 raid_bloom_blur_surface = graphics_settings_release_surface(raid_bloom_blur_surface);
 raid_bloom_surface = graphics_settings_release_surface(raid_bloom_surface);
 raid_map_surface = graphics_settings_release_surface(raid_map_surface);
+raid_head_blur_surface = graphics_settings_release_surface(raid_head_blur_surface);
+raid_head_blur_temporary_surface = graphics_settings_release_surface(raid_head_blur_temporary_surface);
 raid_player_shadow_surface = graphics_settings_release_surface(raid_player_shadow_surface);
 blood_surface_destroy();
 if (variable_instance_exists(id, "save_dirty") && save_dirty && save_can_write_now()) save_game();

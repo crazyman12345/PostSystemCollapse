@@ -90,6 +90,7 @@ function raid_combat_loss()
         + "Backpack, pockets, and equipment lost. Secure contents kept.";
 
     player_health_prepare_death_result();
+    onboarding_handle_raid_failure();
     raid_set_state(RaidState.RESULT);
     save_unfinished_raid = false;
     save_mark_dirty();

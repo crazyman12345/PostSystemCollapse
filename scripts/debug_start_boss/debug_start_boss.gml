@@ -11,9 +11,9 @@ function debug_start_boss()
     if (raid.state == RaidState.INACTIVE || raid.state == RaidState.RESULT || state != GameState.RAID)
         return;
 
-    raid.rooms_cleared = 14;
-    raid.rooms_in_section = 4;
-    raid.room_number = 15;
+    raid.rooms_cleared = raid.room_count;
+    raid.rooms_in_section = 5;
+    raid.room_number = raid.room_count + 1;
 
     raid_enter_normal_room(RaidRewardType.BACKROOM_STASH);
 

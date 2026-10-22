@@ -4,6 +4,7 @@ function draw_raid_result()
     var _gui_height = display_get_gui_height();
     var _layout = raid_result_get_layout();
     var _quote = raid_result_get_treatment_quote();
+    var _treatment_unlocked = trader_is_unlocked("sawbones");
     var _mouse_x = device_mouse_x_to_gui(0);
     var _mouse_y = device_mouse_y_to_gui(0);
 
@@ -65,21 +66,23 @@ function draw_raid_result()
 
     draw_set_font(fnt_terminal);
     draw_set_color(c_lime);
-    draw_text(_panel_left + 28, _panel_top + 25, "SAWBONES MEDICAL TREATMENT");
+    draw_text(_panel_left + 28, _panel_top + 25, _treatment_unlocked ? "SAWBONES MEDICAL TREATMENT" : "MEDICAL TREATMENT UNAVAILABLE");
     draw_set_font(fnt_terminal_tiny);
     draw_set_color(c_green);
-    draw_text(_panel_left + 28, _panel_top + 69, "POST-RAID INJURY ASSESSMENT AND TREATMENT QUOTE");
+    draw_text(_panel_left + 28, _panel_top + 69, _treatment_unlocked
+        ? "POST-RAID INJURY ASSESSMENT AND TREATMENT QUOTE"
+        : "NO MEDICAL CONTACT HAS BEEN ESTABLISHED");
 
     var _rows = [];
-    if (_quote.missing_health > 0)
+    if (_treatment_unlocked && _quote.missing_health > 0)
         array_push(_rows, { name: "HEALTH RESTORATION", detail: string(round(_quote.missing_health)) + " HP", cost: _quote.health_cost });
-    if (_quote.heavy_bleeds > 0)
+    if (_treatment_unlocked && _quote.heavy_bleeds > 0)
         array_push(_rows, { name: "HEAVY BLEEDS", detail: string(_quote.heavy_bleeds) + " TO TREAT", cost: _quote.heavy_cost });
-    if (_quote.light_bleeds > 0)
+    if (_treatment_unlocked && _quote.light_bleeds > 0)
         array_push(_rows, { name: "LIGHT BLEEDS", detail: string(_quote.light_bleeds) + " TO TREAT", cost: _quote.light_cost });
-    if (_quote.fractures > 0)
+    if (_treatment_unlocked && _quote.fractures > 0)
         array_push(_rows, { name: "FRACTURES", detail: string(_quote.fractures) + " TO TREAT", cost: _quote.fracture_cost });
-    if (_quote.blacked_limbs > 0)
+    if (_treatment_unlocked && _quote.blacked_limbs > 0)
         array_push(_rows, { name: "BLACKED-OUT LIMBS", detail: string(_quote.blacked_limbs) + " TO TREAT", cost: _quote.blacked_cost });
     var _row_top = _panel_top + 115;
     var _row_height = 72;
@@ -103,7 +106,7 @@ function draw_raid_result()
         draw_set_halign(fa_left);
     }
 
-    if (array_length(_rows) == 0)
+    if (_treatment_unlocked && array_length(_rows) == 0)
     {
         draw_set_font(fnt_terminal_small);
         draw_set_color(c_green);
@@ -112,19 +115,19 @@ function draw_raid_result()
 
     draw_set_font(fnt_terminal_small);
     draw_set_color(c_green);
-    draw_text(_panel_left + 28, _panel_bottom - 62, "CASH IN STASH: $" + string(get_cash()));
+    if (_treatment_unlocked) draw_text(_panel_left + 28, _panel_bottom - 62, "CASH IN STASH: $" + string(get_cash()));
     draw_set_halign(fa_right);
     draw_set_color(c_lime);
-    draw_text(_panel_right - 28, _panel_bottom - 62, "TOTAL: $" + string(_quote.total));
+    if (_treatment_unlocked) draw_text(_panel_right - 28, _panel_bottom - 62, "TOTAL: $" + string(_quote.total));
     draw_set_halign(fa_left);
 
-    var _can_heal = _quote.total > 0 && get_cash() >= _quote.total;
+    var _can_heal = _treatment_unlocked && _quote.total > 0 && get_cash() >= _quote.total;
     draw_raid_result_button(
         _layout.heal_left,
         _layout.button_top,
         _layout.heal_right,
         _layout.button_bottom,
-        "HEAL ALL  $" + string(_quote.total),
+        _treatment_unlocked ? "HEAL ALL  $" + string(_quote.total) : "UNAVAILABLE",
         _can_heal,
         point_in_rectangle(_mouse_x, _mouse_y, _layout.heal_left, _layout.button_top, _layout.heal_right, _layout.button_bottom)
     );
@@ -138,7 +141,7 @@ function draw_raid_result()
         point_in_rectangle(_mouse_x, _mouse_y, _layout.continue_left, _layout.button_top, _layout.continue_right, _layout.button_bottom)
     );
 
-    if (_quote.total > get_cash())
+    if (_treatment_unlocked && _quote.total > get_cash())
     {
         draw_set_halign(fa_right);
         draw_set_font(fnt_terminal_tiny);

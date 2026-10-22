@@ -1,0 +1,121 @@
+function draw_trader_conversation()
+{
+    if (is_undefined(dialogue_current_node)) return;
+    var trader = trader_get(current_trader_key);
+    var left = 345;
+    var top = 85;
+    var right = display_get_gui_width() - 35;
+    var bottom = display_get_gui_height() - 25;
+    var divider = 950;
+
+    draw_set_font(fnt_terminal_small);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_color(c_black);
+    draw_rectangle(left, top, right, bottom, false);
+    draw_set_color(c_lime);
+    draw_ascii_rectangle(left, top, right, bottom);
+    draw_text(left + 28, top + 25, "MESSAGES // " + string_upper(trader.name));
+    draw_set_color(c_green);
+    draw_line(left + 22, top + 72, right - 22, top + 72);
+    draw_line(divider, top + 92, divider, bottom - 25);
+
+    draw_set_font(fnt_terminal_tiny);
+    draw_text(left + 28, top + 100, "RECENT MESSAGES");
+    var history_y = top + 145;
+    var history_end = max(0, array_length(dialogue_history) - 1);
+    var first_history = max(0, history_end - 6);
+    for (var i = first_history; i < history_end; i++)
+    {
+        var entry = dialogue_history[i];
+        draw_set_color(entry.speaker == "YOU" ? c_lime : c_green);
+        draw_text(left + 32, history_y, string_upper(entry.speaker) + ":");
+        history_y += 28;
+        draw_text_ext(left + 48, history_y, entry.message, 23, divider - left - 85);
+        history_y += string_height_ext(entry.message, 23, divider - left - 85) + 24;
+        if (history_y > bottom - 65) break;
+    }
+
+    draw_set_font(fnt_terminal_medium);
+    draw_set_color(c_lime);
+    draw_text(divider + 55, top + 105, string_upper(dialogue_current_node.speaker));
+    draw_set_font(fnt_terminal_small);
+    draw_set_color(c_green);
+    draw_text_ext(divider + 55, top + 165, dialogue_current_node.message, 29, right - divider - 105);
+    draw_line(divider + 45, top + 445, right - 45, top + 445);
+
+    var responses = dialogue_get_visible_responses(dialogue_current_node);
+    var row_height = 58;
+    var visible_rows = 7;
+    var response_y = 555;
+    for (var row = 0; row < visible_rows; row++)
+    {
+        var index = dialogue_response_scroll + row;
+        if (index >= array_length(responses)) break;
+        var selected = index == dialogue_response_index;
+        if (selected)
+        {
+            draw_set_color(c_green);
+            draw_rectangle(1010, response_y + row * row_height - 5, right - 48, response_y + row * row_height + 43, false);
+        }
+        draw_set_color(selected ? c_lime : c_green);
+        draw_text(1025, response_y + row * row_height, string(index + 1) + ". " + responses[index].text);
+    }
+}
+
+function draw_messages_all()
+{
+    var trader_keys = onboarding_is_active() ? ["mara"] : trader_get_message_keys();
+    var left = 345;
+    var top = 85;
+    var right = display_get_gui_width() - 35;
+    var bottom = display_get_gui_height() - 25;
+    var divider = 950;
+
+    menu_index = clamp(menu_index, 0, array_length(trader_keys) - 1);
+    var selected_trader = trader_get(trader_keys[menu_index]);
+    var root_id = onboarding_is_active() ? onboarding_mara_node_id()
+        : variable_struct_get(global.dialogue_roots, trader_keys[menu_index]);
+    var preview_node = dialogue_resolve_node(root_id);
+
+    draw_set_font(fnt_terminal_small);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_color(c_black);
+    draw_rectangle(left, top, right, bottom, false);
+    draw_set_color(c_lime);
+    draw_ascii_rectangle(left, top, right, bottom);
+    draw_text(left + 28, top + 25, "MESSAGES // ALL");
+    draw_set_color(c_green);
+    draw_line(left + 22, top + 72, right - 22, top + 72);
+    draw_line(divider, top + 92, divider, bottom - 25);
+
+    draw_set_font(fnt_terminal_tiny);
+    draw_text(left + 28, top + 100, "RECENT MESSAGES: ALL");
+    for (var i = 0; i < array_length(trader_keys); i++)
+    {
+        var trader = trader_get(trader_keys[i]);
+        var row_top = top + 150 + i * 92;
+        var selected = i == menu_index;
+        if (selected)
+        {
+            draw_set_color(c_green);
+            draw_rectangle(left + 25, row_top - 8, divider - 25, row_top + 68, false);
+        }
+        draw_set_color(selected ? c_lime : c_green);
+        draw_text(left + 38, row_top, string_upper(trader.name));
+        draw_set_color(c_green);
+        draw_text(left + 58, row_top + 36, trader.title);
+    }
+
+    draw_set_font(fnt_terminal_medium);
+    draw_set_color(c_lime);
+    draw_text(divider + 55, top + 105, string_upper(selected_trader.name));
+    draw_set_font(fnt_terminal_tiny);
+    draw_set_color(c_green);
+    draw_text(divider + 55, top + 155, string_upper(selected_trader.title));
+    draw_line(divider + 45, top + 205, right - 45, top + 205);
+    draw_text(divider + 55, top + 240, "LATEST MESSAGE");
+    draw_set_font(fnt_terminal_small);
+    draw_text_ext(divider + 55, top + 295, preview_node.message, 29, right - divider - 105);
+}

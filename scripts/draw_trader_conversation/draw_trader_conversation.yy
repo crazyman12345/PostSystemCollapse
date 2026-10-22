@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_trader_conversation",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_trader_conversation",
+  "parent":{"name":"traders","path":"folders/hideout/traders.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
