@@ -78,6 +78,7 @@ function draw_trader_buy()
     draw_set_valign(fa_top);
 
     // Trader stock
+    inventory_hover_begin();
     for (var _grid_y = 0; _grid_y < _stock_visible_rows; _grid_y++)
     for (var _grid_x = 0; _grid_x < 11; _grid_x++)
     {
@@ -99,6 +100,7 @@ function draw_trader_buy()
         var _hovered = _entry.stock_index == trader_hovered_stock_index;
         var _definition = item_get(_entry.item_key);
         draw_inventory_grid_item(_entry, _definition, _left, _top, _entry.width, _entry.height, _stock_cell, _selected);
+        inventory_hover_consider(_entry, _left, _top, _left + _entry.width * _stock_cell, _top + _entry.height * _stock_cell);
         if (_hovered && !_selected)
         {
             draw_set_color(c_white);
@@ -167,7 +169,6 @@ function draw_trader_buy()
         draw_rectangle(_cell_left, _cell_top, _cell_left + _stash_cell, _cell_top + _stash_cell, true);
     }
 
-    inventory_hover_begin();
     for (var _i = 0; _i < array_length(stash.items); _i++)
     {
         var _stored_item = stash.items[_i];

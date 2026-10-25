@@ -168,7 +168,8 @@ function enums(){
 		EXTRACT_LEVEL,
 		VISIT_LOCATION,
 		DEFEAT_BOSS,
-		REPAIR_BENCH
+		REPAIR_BENCH,
+		SALVAGE_ITEM
 	}
 	enum WorkshopFocus
 	{

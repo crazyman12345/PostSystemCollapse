@@ -56,6 +56,8 @@ function save_apply_data(_data)
 
     var player = save_value(_data, "player", {});
     var crew_data = save_value(player, "crew", {});
+    var saved_name = save_value(crew_data, "name", "ROOK");
+    member.name = is_string(saved_name) && string_length(string_trim(saved_name)) > 0 ? string_copy(string_trim(saved_name), 1, 20) : "ROOK";
     member.hp = max(0, save_number(crew_data, "hp", member.hp));
     member.max_hp = max(1, save_number(crew_data, "max_hp", member.max_hp));
     var saved_status = save_number(crew_data, "status", CrewStatus.READY);

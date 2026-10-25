@@ -61,8 +61,6 @@ function step_quests_overlay()
     if (!keyboard_check_pressed(vk_enter) && !(hover_index != -1 && mouse_check_button_pressed(mb_left))) return;
     var selected = quest_overlay_quests[quest_overlay_index];
     var progress = quest_get_progress(selected.key);
-    if (progress.state == QuestState.AVAILABLE) quest_accept(selected.key);
-    else if (progress.state == QuestState.READY_TO_TURN_IN) quest_turn_in(selected.key);
-    else if (progress.state == QuestState.ACTIVE) quest_track(selected.key);
+    if (progress.state == QuestState.ACTIVE || progress.state == QuestState.READY_TO_TURN_IN) quest_track(selected.key);
     quest_overlay_refresh();
 }

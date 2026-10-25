@@ -1,4 +1,37 @@
 function step_main_menu(){
+	if (save_new_game_setup)
+    {
+        var mouse_x_gui = device_mouse_x_to_gui(0);
+        var mouse_y_gui = device_mouse_y_to_gui(0);
+        var clicked = mouse_check_button_pressed(mb_left);
+
+        if (keyboard_check_pressed(vk_escape))
+        {
+            keyboard_string = save_new_game_keyboard_restore;
+            save_new_game_setup = false;
+            return;
+        }
+
+        if (clicked && point_in_rectangle(mouse_x_gui, mouse_y_gui, 760, 530, 1160, 590))
+            keyboard_string = save_new_game_name;
+        if (clicked && point_in_rectangle(mouse_x_gui, mouse_y_gui, 760, 625, 1160, 675))
+            save_new_game_skip_intro = !save_new_game_skip_intro;
+
+        save_new_game_name = string_copy(keyboard_string, 1, 20);
+        var begin_clicked = clicked && point_in_rectangle(mouse_x_gui, mouse_y_gui, 760, 710, 1160, 770);
+        if (keyboard_check_pressed(vk_enter) || begin_clicked)
+        {
+            var player_name = string_trim(save_new_game_name);
+            if (string_length(player_name) > 0 && save_begin_new_game(player_name, save_new_game_skip_intro))
+            {
+                keyboard_string = save_new_game_keyboard_restore;
+                save_new_game_setup = false;
+                audio_play_sound(snd_level_up, 0, false);
+            }
+        }
+        return;
+    }
+
 	if (save_new_game_confirm)
     {
         save_new_game_confirm_index = terminal_menu_input(save_new_game_confirm_index, 2);
@@ -15,7 +48,11 @@ function step_main_menu(){
             if (save_new_game_confirm_index == 0)
             {
                 save_new_game_confirm = false;
-                if (save_begin_new_game()) audio_play_sound(snd_level_up, 0, false);
+                save_new_game_setup = true;
+                save_new_game_name = "";
+                save_new_game_skip_intro = false;
+                save_new_game_keyboard_restore = keyboard_string;
+                keyboard_string = "";
             }
             else
             {
@@ -56,7 +93,14 @@ function step_main_menu(){
                     save_new_game_confirm = true;
                     save_new_game_confirm_index = 1;
                 }
-                else if (save_begin_new_game()) audio_play_sound(snd_level_up, 0, false);
+                else
+                {
+                    save_new_game_setup = true;
+                    save_new_game_name = "";
+                    save_new_game_skip_intro = false;
+                    save_new_game_keyboard_restore = keyboard_string;
+                    keyboard_string = "";
+                }
             }
             else if (selected_exit) {
                 game_end();

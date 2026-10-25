@@ -72,7 +72,7 @@ draw_overlay(overlay_mode);
 
 if (!(state == GameState.RAID && raid.state == RaidState.DEATH)) skill_notifications_draw();
 if (!(state == GameState.RAID && raid.state == RaidState.DEATH)) quest_notifications_draw();
-if (state == GameState.HIDEOUT) tutorial_callout_draw();
+if (state == GameState.HIDEOUT || state == GameState.RAID) tutorial_callout_draw();
 
 draw_raid_texture_crop_debug();
 draw_debug_console();

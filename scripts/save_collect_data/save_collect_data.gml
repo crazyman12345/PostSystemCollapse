@@ -60,6 +60,7 @@ function save_collect_data()
         meta: { unfinished_raid: save_unfinished_raid },
         player: {
             crew: {
+                name: member.name,
                 hp: member.hp,
                 max_hp: member.max_hp,
                 status: member.status,

@@ -41,6 +41,14 @@ function save_migrate_data(_data)
 				version = 5;
 				break;
 
+            case 5:
+                _data.version = 6;
+                if (!variable_struct_exists(_data, "player") || !is_struct(_data.player)) _data.player = {};
+                if (!variable_struct_exists(_data.player, "crew") || !is_struct(_data.player.crew)) _data.player.crew = {};
+                if (!variable_struct_exists(_data.player.crew, "name")) _data.player.crew.name = "ROOK";
+                version = 6;
+                break;
+
             default:
                 return undefined;
         }

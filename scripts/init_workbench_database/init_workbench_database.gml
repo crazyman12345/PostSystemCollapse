@@ -39,11 +39,11 @@ function init_workbench_database()
 
             upgrade_requirements: [
                 [
-                    workshop_req("metal_scrap", 12),
-                    workshop_req("screws", 6),
-                    workshop_req("bolts", 4),
-                    workshop_req("springs", 2),
-                    workshop_req("weapon_parts", 2)
+                    workshop_req("metal_scrap", 5),
+                    workshop_req("screws", 3),
+                    workshop_req("bolts", 2),
+                    workshop_req("springs", 1),
+                    workshop_req("weapon_parts", 1)
                 ],
                 [],
                 []
@@ -64,11 +64,11 @@ function init_workbench_database()
 
             upgrade_requirements: [
                 [
-                    workshop_req("metal_scrap", 6),
-                    workshop_req("wood", 4),
-                    workshop_req("plastic", 4),
-                    workshop_req("screws", 3),
-                    workshop_req("chemicals", 2),
+                    workshop_req("metal_scrap", 3),
+                    workshop_req("wood", 2),
+                    workshop_req("plastic", 2),
+                    workshop_req("screws", 2),
+                    workshop_req("chemicals", 1),
                     workshop_req("alcohol", 1)
                 ],
                 [],
@@ -90,10 +90,10 @@ function init_workbench_database()
 
             upgrade_requirements: [
                 [
-                    workshop_req("metal_scrap", 6),
-                    workshop_req("wood", 4),
-                    workshop_req("screws", 4),
-                    workshop_req("medical_supplies", 2),
+                    workshop_req("metal_scrap", 3),
+                    workshop_req("wood", 2),
+                    workshop_req("screws", 2),
+                    workshop_req("medical_supplies", 1),
                     workshop_req("alcohol", 1)
                 ],
                 [],
@@ -115,11 +115,11 @@ function init_workbench_database()
 
             upgrade_requirements: [
                 [
-                    workshop_req("metal_scrap", 10),
-                    workshop_req("cloth", 8),
-                    workshop_req("leather", 4),
-                    workshop_req("bolts", 4),
-                    workshop_req("adhesive", 2)
+                    workshop_req("metal_scrap", 4),
+                    workshop_req("cloth", 4),
+                    workshop_req("leather", 2),
+                    workshop_req("bolts", 2),
+                    workshop_req("adhesive", 1)
                 ],
                 [],
                 []

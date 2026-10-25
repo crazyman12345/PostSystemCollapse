@@ -22,6 +22,22 @@ function raid_open_lootable(_index)
             _loot = raid_loot_add(_loot, "metal_scrap", 3);
             raid.onboarding_scrap_added = true;
         }
+        if (raid.selected_area.name == "ABANDONED STORE")
+        {
+            for (var _quest_index = 0; _quest_index < array_length(quest_definitions); _quest_index++)
+            {
+                var _definition = quest_definitions[_quest_index];
+                if (!variable_struct_exists(_definition, "guaranteed_item")) continue;
+                var _progress = quest_get_progress(_definition.key);
+                if (_progress.state != QuestState.ACTIVE && _progress.state != QuestState.READY_TO_TURN_IN) continue;
+                var _guaranteed = _definition.guaranteed_item;
+                if (variable_struct_exists(raid.quest_guaranteed_items, _guaranteed.item_key)) continue;
+                if (_progress.state == QuestState.READY_TO_TURN_IN
+                && quest_inventory_item_quantity(_guaranteed.item_key) >= _guaranteed.quantity) continue;
+                _loot = raid_loot_add(_loot, _guaranteed.item_key, _guaranteed.quantity);
+                variable_struct_set(raid.quest_guaranteed_items, _guaranteed.item_key, true);
+            }
+        }
         var _random_loot = raid_generate_reward_loot(l.reward_type);
         for (var _random_index = 0; _random_index < array_length(_random_loot); _random_index++)
             _loot = raid_loot_add(_loot, _random_loot[_random_index].item_key, _random_loot[_random_index].quantity);

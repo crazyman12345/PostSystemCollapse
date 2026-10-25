@@ -2,6 +2,13 @@ function step_hideout()
 {
     player_health_update_post_raid_recovery();
     if (onboarding_step_hideout()) return;
+    onboarding_update_field_supplies_tip();
+
+    if (trader_mode == TraderMode.BUY)
+    {
+        step_trader_buy();
+        return;
+    }
 
     if (hideout_focus == HideoutFocus.SIDEBAR && mouse_check_button_pressed(mb_left))
     {
@@ -157,6 +164,11 @@ function hideout_entry_is_unlocked(_entry)
     if (!first_quest_complete) return false;
 
     if (_entry.key == "traders" || _entry.key == "workshop") return true;
+    if (_entry.key == "skills")
+    {
+        var workbench_quest = quest_get_progress("test_field_supplies");
+        return !is_undefined(workbench_quest) && workbench_quest.state == QuestState.COMPLETED;
+    }
     if (_entry.key == "salvaging") return variable_struct_get(workshop_progress, "salvage_bench") > 0;
     return false;
 }

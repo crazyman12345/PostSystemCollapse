@@ -1,6 +1,5 @@
 function step_workshop()
 {
-    tutorial_callout_hide();
     var selected_key = workshop_keys[workshop_station_index];
     if (workshop_upgrade_button(selected_key, 940, 80, display_get_gui_width(), false))
     {

@@ -2,14 +2,10 @@ function onboarding_phase2_init()
 {
     onboarding_prologue_index = 0;
     onboarding_prologue_cards = [
-        "In the year 2070, nuclear warfare broke out across the world, most of modern society was destroyed. All the worlds nations fell and what remained were small settlements that struggled to get by.",
-        "[PLAYER] was a member of a small hardworking settlement, that did well for themselves. All that changed one day when the raiders rolled in.",
-        "They ransacked the city. Just as [PLAYER] was sitting down to eat with his wife and son, a flashbang was thrown into the living room.",
-		"In a daze, he lay on the ground stunned and barely able to see. When he opened his eyes, he saw 3 men armed with rifles.",
-		"He felt the butt of one of the rifles nearly knock him unconscious. He saw the men gun down his wife and son in cold blood.",
-		"He saw the patches on their vests: 'SUPERCORP'. They turned the rifles on him and put a bullet in his head and the world went black.",
-        "Unknown scavengers found him barely alive in a ditch 100 miles away, and carried him to the nearby 'Junk City'. ",
-		"He awoke in a bed in a ramschackle hut, with a small desk and a terminal."
+        "In the year 2070, nuclear warfare broke out across the world, most of modern society was destroyed. All the worlds nations fell and what remained were small settlements that struggled to get by. [PLAYER] was a member of a small hardworking settlement, that did well for themselves. All that changed one day when the raiders rolled in.",
+        "They ransacked the city. Just as [PLAYER] was sitting down to eat with his wife and son, a flashbang was thrown into the living room. In a daze, he lay on the ground stunned and barely able to see. When he opened his eyes, he saw 3 men armed with rifles.",
+		"He felt the butt of one of the rifles nearly knock him unconscious. He saw the men gun down his wife and son in cold blood. He saw the patches on their vests: 'SUPERCORP'. They turned the rifles on him and put a bullet in his head and the world went black.",
+        "Unknown scavengers found him barely alive in a ditch 100 miles away, and carried him to the nearby 'Junk City'. He awoke in a bed in a ramschackle hut, with a small desk and a terminal."
     ];
 }
 
@@ -228,6 +224,7 @@ function onboarding_draw_hideout()
         draw_set_valign(fa_middle);
         draw_set_color(c_lime);
         var _card = onboarding_prologue_cards[clamp(onboarding_prologue_index, 0, array_length(onboarding_prologue_cards) - 1)];
+        _card = string_replace_all(_card, "[PLAYER]", crew[0].name);
         draw_text_ext(display_get_gui_width() * 0.5, display_get_gui_height() * 0.5, _card, 38, 960);
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
@@ -387,10 +384,14 @@ function onboarding_get_loadout_step()
 
 function onboarding_update_loadout_progress()
 {
-    if (!progress_get_flag("starting_crate_claimed")
-    || progress_get_flag("onboarding_loadout_complete"))
+    if (!progress_get_flag("starting_crate_claimed"))
     {
-        tutorial_callout_hide();
+        onboarding_update_starting_crate_tip();
+        return;
+    }
+    if (progress_get_flag("onboarding_loadout_complete"))
+    {
+        onboarding_update_start_raid_tip();
         return;
     }
     if (onboarding_get_loadout_step() < 4)
@@ -401,6 +402,135 @@ function onboarding_update_loadout_progress()
     tutorial_callout_hide();
     progress_set_flag("onboarding_loadout_complete", true);
     save_game();
+}
+
+function onboarding_update_start_raid_tip()
+{
+    if (hideout_page == HideoutPage.RAIDS)
+    {
+        tutorial_callout_hide();
+        return;
+    }
+    tutorial_callout_show("Click here to start raid.", 25, 552, 350, 650, 620, 140);
+}
+
+function onboarding_update_raid_door_tip()
+{
+    if (!onboarding_first_quest_active() || raid.state != RaidState.COMBAT
+    || raid.current_room_type != RaidRoomType.START || !raid.doors_active
+    || array_length(raid_doors) != 2 || overlay_mode != OverlayMode.NONE)
+    {
+        tutorial_callout_hide();
+        return;
+    }
+
+    var _door_mid_x = (raid_doors[0].door_x + raid_doors[1].door_x) * 0.5;
+    var _door_mid_y = (raid_doors[0].door_y + raid_doors[1].door_y) * 0.5;
+    var _target_x = (_door_mid_x - camera_get_view_x(raid_camera))
+        * display_get_gui_width() / camera_get_view_width(raid_camera);
+    var _target_y = (_door_mid_y - camera_get_view_y(raid_camera))
+        * display_get_gui_height() / camera_get_view_height(raid_camera);
+    if (_target_x < 0 || _target_x > display_get_gui_width()
+    || _target_y < 0 || _target_y > display_get_gui_height())
+    {
+        tutorial_callout_hide();
+        return;
+    }
+
+    tutorial_callout_show("The door you choose is the next room's reward", _target_x, _target_y, 100, 420, 650, 140);
+}
+
+function onboarding_update_field_supplies_tip()
+{
+    var _progress = quest_get_progress("test_field_supplies");
+    if (is_undefined(_progress) || !dialogue_get_flag("field_supplies_tutorial_started")) return;
+    if (_progress.state != QuestState.ACTIVE)
+    {
+        tutorial_callout_hide();
+        return;
+    }
+    if (variable_struct_get(workshop_progress, "salvage_bench") > 0)
+    {
+        if (hideout_page != HideoutPage.SALVAGE)
+        {
+            tutorial_callout_show("Open the salvage menu", 25, 288, 430, 225, 650, 140);
+            return;
+        }
+        if (salvage_active)
+        {
+            tutorial_callout_hide();
+            return;
+        }
+
+        var _salvageable_items = workshop_get_salvageable_items();
+        var _radio_index = -1;
+        for (var _item_index = 0; _item_index < array_length(_salvageable_items); _item_index++)
+        {
+            if (_salvageable_items[_item_index] == "broken_radio")
+            {
+                _radio_index = _item_index;
+                break;
+            }
+        }
+        if (_radio_index < inventory_scroll || _radio_index >= inventory_scroll + inventory_visible_rows)
+        {
+            tutorial_callout_hide();
+            return;
+        }
+        var _radio_row = _radio_index - inventory_scroll;
+        tutorial_callout_show("Click on the item to salvage it", 500, 187 + (_radio_row * 34), 980, 680, 650, 140);
+        return;
+    }
+    if (!workshop_can_upgrade("salvage_bench"))
+    {
+        if (hideout_page == HideoutPage.STASH)
+            tutorial_callout_show("Go to your stash and bank your extracted loot", 1595, 570, 500, 330, 650, 140);
+        else
+            tutorial_callout_show("Go to your stash and bank your extracted loot", 25, 166, 530, 305, 650, 140);
+        return;
+    }
+    if (hideout_page != HideoutPage.WORKSHOP)
+    {
+        tutorial_callout_show("Go to the workshop tab and build the salvage table", 25, 488, 430, 290, 650, 140);
+        return;
+    }
+
+    tutorial_callout_show("Click on the build button to construct the table", 1430, 524, 500, 620, 650, 140);
+}
+
+function onboarding_update_starting_crate_tip()
+{
+    if (!onboarding_first_quest_active() || trader_mode == TraderMode.CONVERSATION)
+    {
+        tutorial_callout_hide();
+        return;
+    }
+    if (hideout_page != HideoutPage.STASH)
+    {
+        tutorial_callout_show("Click to open stash.", 25, 166, 50, 505, 620, 140);
+        return;
+    }
+    if (inventory_context_active)
+    {
+        tutorial_callout_hide();
+        return;
+    }
+
+    var _crates = stash_find_items("supply_crate");
+    if (array_length(_crates) == 0)
+    {
+        tutorial_callout_hide();
+        return;
+    }
+
+    var _crate = _crates[0];
+    var _definition = item_get(_crate.item_key);
+    var _crate_width = _crate.rotation == 90 ? _definition.grid_height : _definition.grid_width;
+    var _crate_height = _crate.rotation == 90 ? _definition.grid_width : _definition.grid_height;
+    var _grid_left = 1920 - 25 - (stash.grid_width * 60);
+    var _target_x = _grid_left + ((_crate.x + _crate_width * 0.5) * 60);
+    var _target_y = 150 + ((_crate.y + _crate_height * 0.5) * 60);
+    tutorial_callout_show("Right click to open crate.", _target_x, _target_y, 500, 330, 650, 140);
 }
 
 function onboarding_update_loadout_tip()
@@ -539,7 +669,7 @@ function onboarding_open_supply_crate(_crate, _container)
 
     var _package = [
         { item_key: "pipe_pistol", quantity: 1 },
-        { item_key: "ammo_9mm", quantity: 60 },
+        { item_key: "ammo_9mm", quantity: 100 },
         { item_key: "sling_bag", quantity: 1 },
         { item_key: "bandage", quantity: 2 },
         { item_key: "tourniquet", quantity: 1 },

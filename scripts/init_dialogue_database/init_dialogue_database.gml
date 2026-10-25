@@ -17,7 +17,7 @@ function init_dialogue_database()
         [
             dialogue_make_response("Heard anything?", "gundlach_rumor", { type: "boss_defeated", key: "prototype_boss_dead", value: false }),
             dialogue_make_response("Heard anything?", "gundlach_rumor_after_bones", { type: "boss_defeated", key: "prototype_boss_dead", value: true }),
-            dialogue_make_response("Have any quests for me?", "available:iron"),
+            dialogue_make_response("Have any work for me?", "available:iron"),
             dialogue_make_response("About my current job...", "active:iron"),
             dialogue_make_response("I finished what you asked.", "claim:iron", { type: "trader_quest_ready", key: "iron" }),
             dialogue_make_response("Tell me about yourself.", "gundlach_background"),
@@ -33,6 +33,22 @@ function init_dialogue_database()
     dialogue_register_node("gundlach_background", "Gundlach",
         "I maintained weapons before the collapse. Now I maintain the people carrying them, mostly by refusing to sell them garbage.",
         [dialogue_make_response("Back.", "gundlach_root")]);
+    dialogue_register_node("gundlach_proof_load_offer", "Gundlach",
+        "That pipe pistol of yours is barely a weapon. If you want something better, you're going to have to work for it.",
+        [dialogue_make_response("What do you need?", "gundlach_proof_load_details")]);
+    dialogue_register_node("gundlach_proof_load_details", "Gundlach",
+        "Bring me some usable weapon parts from the store. And while you're out there, put a few of those bastards down. Three should do.",
+        [
+            dialogue_make_response("I'll do it.", "gundlach_root", undefined, { type: "accept_quest", key: "gundlach_proof_load" }),
+            dialogue_make_response("Maybe later.", "gundlach_root")
+        ]);
+    dialogue_register_node("gundlach_proof_load_complete", "Gundlach",
+        "Well, I'll be damned. You actually brought something useful.",
+        [dialogue_make_response("Good enough?", "gundlach_proof_load_reward")]);
+    dialogue_register_node("gundlach_proof_load_reward", "Gundlach",
+        "Good enough. Here's your payment. Come back when you need something that shoots straight.",
+        [dialogue_make_response("Take payment.", "gundlach_root", undefined,
+            { type: "turn_in_quest", key: "gundlach_proof_load" })]);
 
     dialogue_register_node("mara_root_greeting", "Mara",
         "New channel, new face. I'm Mara. If the hideout needs something ordinary, I can usually find it.",
@@ -40,7 +56,7 @@ function init_dialogue_database()
     dialogue_register_node("mara_onboarding", "Mara", "Good. You're awake. The Doc got you fixed up but you've been in a coma for a month.",
         [dialogue_make_response("...where am I?", "mara_onboarding_supplies")]);
     dialogue_register_node("mara_onboarding_supplies", "Mara",
-        "You can stay here in the shack on the edge of town. There's a supply crate I left you by the bed. You're going to have to earn your keep if you want to stay in Junk City.",
+        "Junk city. You can stay here in this abandoned shack we left you in. There's a supply crate for you by the bed.",
         [dialogue_make_response("What do you mean?", "mara_onboarding_job")]);
     dialogue_register_node("mara_onboarding_job", "Mara",
         "Once you are up and around, there is an old store down the road with reported bandit activity. Investigate it and report back to me after.",
@@ -66,29 +82,37 @@ function init_dialogue_database()
         "Wow, you actually made it back.",
         [dialogue_make_response("You sound surprised.", "mara_first_quest_reward")]);
     dialogue_register_node("mara_first_quest_reward", "Mara",
-        "Here is your reward.\n\nREWARD: $150 + 30x 9MM AMMO\nTRADER ACCESS: MARA",
+        "Here is your reward.\n\nREWARD: $150 + 30x 9MM AMMO",
         [dialogue_make_response("Thanks.", "mara_useful_again_intro", undefined,
             { type: "turn_in_quest", key: "test_safe_return" })]);
     dialogue_register_node("mara_useful_again_intro", "Mara",
-        "Now I need you to get the Salvage Bench working again. I'll provide the wood and hardware. You supply three pieces of Scrap Metal.",
+        "Now I need you to get the Salvage Bench working again. I'll provide the wood and hardware, plus a Broken Radio to test it with. You supply three pieces of Scrap Metal.",
         [dialogue_make_response("I'll get it working.", "mara_useful_again_accepted", undefined,
             { type: "accept_quest", key: "test_field_supplies" })]);
     dialogue_register_node("mara_useful_again_accepted", "Mara",
-        "Good. I've sent over the repair materials. Once the bench is useful again, come find me.",
+        "Good. I've sent over the repair materials and the Broken Radio. Repair the bench, salvage the radio, then come find me.",
         [dialogue_make_response("Understood.", "", undefined,
             [
                 { type: "end" },
+                { type: "set_dialogue_flag", key: "field_supplies_tutorial_started", value: true },
                 {
                     type: "tutorial",
-                    message: "Go to the workshop tab and build the salvage table",
+                    message: "Go to your stash and bank your extracted loot",
                     target_x: 24,
-                    target_y: 480,
-                    box_x: 430,
-                    box_y: 290,
+                    target_y: 166,
+                    box_x: 530,
+                    box_y: 305,
                     box_width: 650,
                     box_height: 140
                 }
             ])]);
+    dialogue_register_node("mara_useful_again_complete", "Mara",
+        "The Salvage Bench is working again. Good. That will make everything we bring back more useful.",
+        [dialogue_make_response("What's next?", "mara_useful_again_reward")]);
+    dialogue_register_node("mara_useful_again_reward", "Mara",
+        "Take your payment. The other traders want to meet you now.",
+        [dialogue_make_response("Take payment.", "mara_root", undefined,
+            { type: "turn_in_quest", key: "test_field_supplies" })]);
     dialogue_register_node("mara_root", "Mara", "What do you need?",
         [
             dialogue_make_response("Heard anything?", "mara_rumor", { type: "boss_defeated", key: "prototype_boss_dead", value: false }),
@@ -117,7 +141,7 @@ function init_dialogue_database()
         [
             dialogue_make_response("Heard anything?", "sawbones_rumor", { type: "quest_completed", key: "test_safe_return", value: false }),
             dialogue_make_response("Heard anything?", "sawbones_rumor_safe", { type: "quest_completed", key: "test_safe_return", value: true }),
-            dialogue_make_response("Have any quests for me?", "available:sawbones"),
+            dialogue_make_response("Have any work for me?", "available:sawbones"),
             dialogue_make_response("About my current job...", "active:sawbones"),
             dialogue_make_response("I finished what you asked.", "claim:sawbones", { type: "trader_quest_ready", key: "sawbones" }),
             dialogue_make_response("Tell me about yourself.", "sawbones_background"),
@@ -133,6 +157,22 @@ function init_dialogue_database()
     dialogue_register_node("sawbones_background", "Sawbones",
         "Field surgeon, once. Now I'm a doctor, undertaker, and persistent critic of reckless scavengers.",
         [dialogue_make_response("Back.", "sawbones_root")]);
+    dialogue_register_node("sawbones_clean_supply_offer", "Sawbones",
+        "Running a little low on supplies. Turns out people keep getting shot, stabbed, and otherwise mangled.",
+        [dialogue_make_response("What do you need?", "sawbones_clean_supply_details")]);
+    dialogue_register_node("sawbones_clean_supply_details", "Sawbones",
+        "The old store had a pharmacy. See if you can find anything useful. Preferably something that hasn't expired.",
+        [
+            dialogue_make_response("I'll look around.", "sawbones_root", undefined, { type: "accept_quest", key: "sawbones_clean_supply" }),
+            dialogue_make_response("Not right now.", "sawbones_root")
+        ]);
+    dialogue_register_node("sawbones_clean_supply_complete", "Sawbones",
+        "Not bad. Half of this is even usable.",
+        [dialogue_make_response("Half?", "sawbones_clean_supply_reward")]);
+    dialogue_register_node("sawbones_clean_supply_reward", "Sawbones",
+        "That's better than I expected. Here's your payment.",
+        [dialogue_make_response("Take payment.", "sawbones_root", undefined,
+            { type: "turn_in_quest", key: "sawbones_clean_supply" })]);
 
     dialogue_register_node("clothman_root_greeting", "Clothman",
         "Clothman. Armor, packs, repairs. Everything between your skin and a bad decision.",
@@ -141,7 +181,7 @@ function init_dialogue_database()
         [
             dialogue_make_response("Heard anything?", "clothman_rumor", { type: "level_unlocked", level: 2, value: false }),
             dialogue_make_response("Heard anything?", "clothman_rumor_sewers", { type: "level_unlocked", level: 2, value: true }),
-            dialogue_make_response("Have any quests for me?", "available:bastion"),
+            dialogue_make_response("Have any work for me?", "available:bastion"),
             dialogue_make_response("About my current job...", "active:bastion"),
             dialogue_make_response("I finished what you asked.", "claim:bastion", { type: "trader_quest_ready", key: "bastion" }),
             dialogue_make_response("Tell me about yourself.", "clothman_background"),
@@ -157,6 +197,22 @@ function init_dialogue_database()
     dialogue_register_node("clothman_background", "Clothman",
         "I learned tailoring from my mother and armor repair from necessity. Clothman was a joke until everyone needed one.",
         [dialogue_make_response("Back.", "clothman_root")]);
+    dialogue_register_node("clothman_worth_carrying_offer", "Clothman",
+        "You know what the problem with scavengers is? They always bring back less than they could.",
+        [dialogue_make_response("What's that supposed to mean?", "clothman_worth_carrying_details")]);
+    dialogue_register_node("clothman_worth_carrying_details", "Clothman",
+        "Means you need better equipment. Bring me some decent textiles from the store. I'll make it worth your time.",
+        [
+            dialogue_make_response("I'll find some.", "clothman_root", undefined, { type: "accept_quest", key: "clothman_worth_carrying" }),
+            dialogue_make_response("Maybe later.", "clothman_root")
+        ]);
+    dialogue_register_node("clothman_worth_carrying_complete", "Clothman",
+        "Now that's something I can work with.",
+        [dialogue_make_response("What do I get?", "clothman_worth_carrying_reward")]);
+    dialogue_register_node("clothman_worth_carrying_reward", "Clothman",
+        "A little something to keep you alive. Try not to ruin it immediately.",
+        [dialogue_make_response("Take payment.", "clothman_root", undefined,
+            { type: "turn_in_quest", key: "clothman_worth_carrying" })]);
 
     dialogue_register_node("ghost_root_greeting", "Ghost",
         "Encrypted enough for today. Call me Ghost. Don't ask where the goods come from unless you want the answer to cost extra.",

@@ -2,6 +2,29 @@ function draw_main_menu()
 {
     var _gui_width = display_get_gui_width();
 
+    if (save_new_game_setup)
+    {
+        terminal_header("TERMINAL // NEW PLAYER");
+        terminal_panel(620, 340, 680, 500, "WHAT IS YOUR NAME?");
+
+        draw_set_font(fnt_terminal_tiny);
+        draw_set_color(c_green);
+        draw_text(760, 500, "PLAYER NAME");
+        draw_set_color(c_lime);
+        draw_rectangle(760, 530, 1160, 590, true);
+        draw_text(780, 547, save_new_game_name + (((current_time div 500) mod 2 == 0) ? "_" : ""));
+
+        draw_rectangle(760, 635, 790, 665, true);
+        if (save_new_game_skip_intro)
+        {
+            draw_line(765, 650, 773, 659);
+            draw_line(773, 659, 786, 640);
+        }
+        draw_text(810, 640, "SKIP INTRO");
+        terminal_menu_item(760, 710, "BEGIN", false);
+        return;
+    }
+
     terminal_header("TERMINAL // NODE 01");
 	draw_post_collapse_network(520,260);
     terminal_panel(520, 400, 880, 420, "POST-COLLAPSE NETWORK");

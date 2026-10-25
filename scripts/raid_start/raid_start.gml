@@ -43,6 +43,7 @@ function raid_start(_area)
 	raid.last_loot = [];
 	raid.loot_index = 0;
 	raid.onboarding_scrap_added = false;
+	raid.quest_guaranteed_items = {};
 	
 	view_enabled = true;
 	view_visible[0] = true;
@@ -62,6 +63,7 @@ function raid_start(_area)
 
     state = GameState.RAID;
     overlay_mode = OverlayMode.NONE;
+    tutorial_callout_hide();
 
     raid.room_number = 0;
     raid.room_cleared = false;

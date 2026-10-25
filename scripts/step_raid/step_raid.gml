@@ -1,5 +1,7 @@
 function step_raid()
 {
+    onboarding_update_raid_door_tip();
+
     // Debug input
     var _raid_transition_blocks_input = raid.state == RaidState.ENTERING
         || raid.state == RaidState.DEATH;

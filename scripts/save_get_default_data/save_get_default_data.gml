@@ -20,6 +20,7 @@ function save_reset_to_defaults()
     init_inventory();
 
     var member = crew[0];
+    member.name = "ROOK";
     member.hp = raid_player_hp;
     member.max_hp = raid_player_max_hp;
     member.status = CrewStatus.READY;

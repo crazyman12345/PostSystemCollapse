@@ -108,9 +108,10 @@ function skill_notifications_draw()
 {
     var gui_w = display_get_gui_width();
     var panel_right = gui_w - 30;
-    if (quest_tracker_is_visible()) panel_right -= 480;
     var panel_width = 300;
     var row_height = 36;
+    var stack_top = quest_tracker_is_visible() ? quest_tracker_get_panel_bottom() + 12 : 88;
+    if (array_length(quest_notification_queue) > 0) stack_top = quest_notifications_get_bottom() + 12;
 
     draw_set_font(fnt_ascii);
     draw_set_halign(fa_left);
@@ -121,7 +122,7 @@ function skill_notifications_draw()
         var notification = skill_xp_notifications[i];
         var alpha = clamp(notification.remaining / 30, 0, 1);
         var rise = 4 * clamp(notification.age / 20, 0, 1);
-        var top = 88 + i * (row_height + 5) + 4 - rise;
+        var top = stack_top + i * (row_height + 5) + 4 - rise;
         var left = panel_right - panel_width;
 
         draw_set_alpha(alpha * 0.88);

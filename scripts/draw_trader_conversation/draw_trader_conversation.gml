@@ -21,8 +21,31 @@ function draw_trader_conversation()
     draw_line(divider, top + 92, divider, bottom - 25);
 
     draw_set_font(fnt_terminal_tiny);
-    draw_text(left + 28, top + 100, "RECENT MESSAGES");
-    var history_y = top + 145;
+    var portrait_left = left + 28;
+    var portrait_top = top + 100;
+    var portrait_width = 280;
+    var portrait_height = 330;
+    draw_set_color(c_lime);
+    terminal_box(portrait_left, portrait_top, portrait_width, portrait_height);
+    if (trader.portrait != -1)
+    {
+        draw_sprite_stretched_ext(trader.portrait, 0, portrait_left + 3, portrait_top + 3,
+            portrait_width - 6, portrait_height - 6, c_green, 1);
+    }
+    else
+    {
+        draw_set_halign(fa_center);
+        draw_set_color(c_green);
+        draw_text(portrait_left + portrait_width / 2, portrait_top + portrait_height / 2, "[ NO IMAGE ]");
+        draw_set_halign(fa_left);
+    }
+
+    draw_set_color(c_green);
+    draw_text_ext(portrait_left + portrait_width + 28, portrait_top + 25, trader.description, 23,
+        divider - portrait_left - portrait_width - 56);
+
+    draw_text(left + 28, top + 455, "RECENT MESSAGES");
+    var history_y = top + 500;
     var history_end = max(0, array_length(dialogue_history) - 1);
     var first_history = max(0, history_end - 6);
     for (var i = first_history; i < history_end; i++)
@@ -55,11 +78,26 @@ function draw_trader_conversation()
         var selected = index == dialogue_response_index;
         if (selected)
         {
-            draw_set_color(c_green);
+            draw_set_color(c_dkgray);
             draw_rectangle(1010, response_y + row * row_height - 5, right - 48, response_y + row * row_height + 43, false);
         }
         draw_set_color(selected ? c_lime : c_green);
         draw_text(1025, response_y + row * row_height, string(index + 1) + ". " + responses[index].text);
+        if (string_pos("claim:", responses[index].target) == 1)
+        {
+            draw_set_halign(fa_right);
+            draw_set_color(c_red);
+            draw_text(right - 65, response_y + row * row_height, "?");
+            draw_set_halign(fa_left);
+        }
+        else if (string_pos("available:", responses[index].target) == 1
+        && dialogue_trader_has_available_quest(current_trader_key))
+        {
+            draw_set_halign(fa_right);
+            draw_set_color(c_red);
+            draw_text(right - 65, response_y + row * row_height, "!");
+            draw_set_halign(fa_left);
+        }
     }
 }
 
@@ -99,11 +137,18 @@ function draw_messages_all()
         var selected = i == menu_index;
         if (selected)
         {
-            draw_set_color(c_green);
+            draw_set_color(c_dkgray);
             draw_rectangle(left + 25, row_top - 8, divider - 25, row_top + 68, false);
         }
         draw_set_color(selected ? c_lime : c_green);
         draw_text(left + 38, row_top, string_upper(trader.name));
+        if (dialogue_trader_has_ready_quest(trader_keys[i]))
+        {
+            draw_set_halign(fa_right);
+            draw_set_color(c_red);
+            draw_text(divider - 48, row_top, "?");
+            draw_set_halign(fa_left);
+        }
         draw_set_color(c_green);
         draw_text(left + 58, row_top + 36, trader.title);
     }

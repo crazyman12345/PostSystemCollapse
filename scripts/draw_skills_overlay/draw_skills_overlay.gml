@@ -42,7 +42,7 @@ function draw_skills_overlay()
 
         if (selected)
         {
-            draw_set_color(c_green);
+            draw_set_color(c_dkgray);
             draw_rectangle(list_x - 8, row_y - 4, list_x + list_w, row_y + row_h - 6, false);
             draw_set_color(c_lime);
             draw_rectangle(list_x - 8, row_y - 4, list_x + list_w, row_y + row_h - 6, true);

@@ -247,6 +247,7 @@ function step_raid_enemies()
 		if (e.enemy_hp <= 0)
 		{
 			quest_event(QuestObjectiveType.KILL_ENEMY, e.enemy_type, 1);
+			quest_event(QuestObjectiveType.KILL_ENEMY, raid.selected_area.name, 1);
 			if (e.enemy_boss) quest_event(QuestObjectiveType.DEFEAT_BOSS, e.enemy_type, 1);
 			if (e.enemy_type == RaidEnemyType.BONES) progress_complete_bones();
 		    player_skill_add_xp("marksmanship", skill_xp_awards.marksmanship_kill);

@@ -66,6 +66,7 @@ function workshop_salvage_item(_item_key)
     }
 
     player_skill_add_xp("scavenging", skill_xp_awards.scavenging_scrap);
+    quest_event(QuestObjectiveType.SALVAGE_ITEM, _item_key, 1);
     return true;
 }
 

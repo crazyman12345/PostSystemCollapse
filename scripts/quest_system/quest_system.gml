@@ -131,6 +131,13 @@ function quest_update_ready_state(_definition, _progress)
         if (_progress.objectives[i] < _definition.objectives[i].amount) return;
     _progress.state = QuestState.READY_TO_TURN_IN;
     quest_notification_add("QUEST COMPLETE", _definition.title, "quest:" + _definition.key);
+    var _trader = trader_get(_definition.trader_key);
+    var _trader_name = is_undefined(_trader) ? string_upper(_definition.trader_key) : _trader.name;
+    quest_notification_add(
+        _definition.title + " is ready to turn in.",
+        "Talk to " + _trader_name + " to complete",
+        "turn_in:" + _definition.key
+    );
     save_mark_dirty();
 }
 
@@ -204,20 +211,130 @@ function quest_carried_item_quantity(_item_key)
     return total;
 }
 
+function quest_inventory_item_quantity(_item_key)
+{
+    var total = stash_get_quantity(_item_key);
+    var containers = [stash.backpack, stash.pockets, stash.secure_container];
+    for (var container_index = 0; container_index < array_length(containers); container_index++)
+    {
+        var items = containers[container_index].items;
+        for (var i = 0; i < array_length(items); i++)
+            if (items[i].item_key == _item_key) total += items[i].quantity;
+    }
+    return total;
+}
+
+function quest_remove_delivery_item(_item_key, _quantity)
+{
+    if (quest_inventory_item_quantity(_item_key) < _quantity) return false;
+    var stash_quantity = min(_quantity, stash_get_quantity(_item_key));
+    if (stash_quantity > 0)
+    {
+        stash_remove(_item_key, stash_quantity);
+        _quantity -= stash_quantity;
+    }
+
+    var containers = [stash.backpack, stash.pockets, stash.secure_container];
+    for (var container_index = 0; container_index < array_length(containers) && _quantity > 0; container_index++)
+    {
+        var container = containers[container_index];
+        for (var i = array_length(container.items) - 1; i >= 0 && _quantity > 0; i--)
+        {
+            var item = container.items[i];
+            if (item.item_key != _item_key) continue;
+            var removed = min(item.quantity, _quantity);
+            item.quantity -= removed;
+            _quantity -= removed;
+            if (item.quantity <= 0) array_delete(container.items, i, 1);
+        }
+    }
+    save_mark_dirty();
+    return true;
+}
+
+function quest_rewards_fit(_definition)
+{
+    var test_items = [];
+    for (var i = 0; i < array_length(stash.items); i++)
+    {
+        var item = stash.items[i];
+        array_push(test_items, { item_key: item.item_key, quantity: item.quantity, x: item.x, y: item.y, rotation: item.rotation });
+    }
+    var test_storage = { grid_width: stash.grid_width, grid_height: stash.grid_height, items: test_items };
+    if (variable_struct_exists(_definition, "delivery_items"))
+    {
+        for (var delivery_index = 0; delivery_index < array_length(_definition.delivery_items); delivery_index++)
+        {
+            var delivery = _definition.delivery_items[delivery_index];
+            var remaining_delivery = delivery.quantity;
+            for (var item_index = array_length(test_storage.items) - 1; item_index >= 0 && remaining_delivery > 0; item_index--)
+            {
+                var stored_delivery = test_storage.items[item_index];
+                if (stored_delivery.item_key != delivery.item_key) continue;
+                var removed = min(stored_delivery.quantity, remaining_delivery);
+                stored_delivery.quantity -= removed;
+                remaining_delivery -= removed;
+                if (stored_delivery.quantity <= 0) array_delete(test_storage.items, item_index, 1);
+            }
+        }
+    }
+    var rewards = array_concat(_definition.rewards.items, []);
+    if (_definition.rewards.cash > 0) array_push(rewards, { item_key: "cash", quantity: _definition.rewards.cash });
+
+    for (var reward_index = 0; reward_index < array_length(rewards); reward_index++)
+    {
+        var reward = rewards[reward_index];
+        var item_definition = item_get(reward.item_key);
+        var remaining = reward.quantity;
+        var max_stack = item_get_max_stack(item_definition);
+        if (item_definition.stackable)
+        {
+            for (var item_index = 0; item_index < array_length(test_storage.items) && remaining > 0; item_index++)
+            {
+                var stored_item = test_storage.items[item_index];
+                if (stored_item.item_key != reward.item_key) continue;
+                var added = min(remaining, max(0, max_stack - stored_item.quantity));
+                stored_item.quantity += added;
+                remaining -= added;
+            }
+        }
+        while (remaining > 0)
+        {
+            var placed = stash_place_item(reward.item_key, -1, -1, 0, test_storage);
+            if (is_undefined(placed)) placed = stash_place_item(reward.item_key, -1, -1, 90, test_storage);
+            if (is_undefined(placed)) return false;
+            placed.quantity = min(remaining, max_stack);
+            remaining -= placed.quantity;
+        }
+    }
+    return true;
+}
+
 function quest_turn_in(_quest_key)
 {
     var definition = quest_get_definition(_quest_key);
     var progress = quest_get_progress(_quest_key);
     if (is_undefined(definition) || is_undefined(progress) || progress.state != QuestState.READY_TO_TURN_IN || progress.reward_claimed) return false;
 
-    for (var i = 0; i < array_length(definition.rewards.items); i++)
+    if (variable_struct_exists(definition, "delivery_items"))
     {
-        var reward_item = definition.rewards.items[i];
-        if (!stash_can_add(reward_item.item_key, reward_item.quantity)) return false;
+        for (var i = 0; i < array_length(definition.delivery_items); i++)
+        {
+            var delivery_item = definition.delivery_items[i];
+            if (quest_inventory_item_quantity(delivery_item.item_key) < delivery_item.quantity) return false;
+        }
     }
-    if (definition.rewards.cash > 0 && !stash_can_add("cash", definition.rewards.cash)) return false;
+    if (!quest_rewards_fit(definition)) return false;
 
     progress.reward_claimed = true;
+    if (variable_struct_exists(definition, "delivery_items"))
+    {
+        for (var i = 0; i < array_length(definition.delivery_items); i++)
+        {
+            var delivery_item = definition.delivery_items[i];
+            quest_remove_delivery_item(delivery_item.item_key, delivery_item.quantity);
+        }
+    }
     for (var i = 0; i < array_length(definition.rewards.items); i++)
     {
         var reward_item = definition.rewards.items[i];
@@ -228,8 +345,19 @@ function quest_turn_in(_quest_key)
 
     progress.state = QuestState.COMPLETED;
     if (tracked_quest_key == _quest_key) tracked_quest_key = "";
-    quest_notification_add("QUEST COMPLETED", definition.title);
+    var reward_message = definition.title + "\nRewards added:";
+    if (definition.rewards.cash > 0) reward_message += "\n    $" + string(definition.rewards.cash);
+    for (var i = 0; i < array_length(definition.rewards.items); i++)
+    {
+        var reward = definition.rewards.items[i];
+        var reward_definition = item_get(reward.item_key);
+        var reward_name = is_undefined(reward_definition) ? reward.item_key : reward_definition.name;
+        reward_message += "\n    " + reward_name + " x" + string(reward.quantity);
+    }
+    quest_notification_add("QUEST COMPLETED", reward_message, "completed:" + definition.key);
     quest_refresh_states();
+    if (_quest_key == "test_field_supplies")
+        quest_notification_add("NEW TRADER WORK", "GUNDLACH, SAWBONES, AND CLOTHMAN HAVE WORK AVAILABLE", "level1_trader_work");
     save_mark_dirty();
     return true;
 }

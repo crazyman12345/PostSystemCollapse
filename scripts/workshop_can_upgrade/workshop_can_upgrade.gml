@@ -16,7 +16,8 @@ function workshop_bench_is_available(_bench_key)
 {
     if (!variable_struct_exists(workshop_progress, _bench_key)) return false;
     if (variable_struct_get(workshop_progress, _bench_key) > 0) return true;
-    if (_bench_key != "salvage_bench") return false;
+    if (_bench_key != "salvage_bench")
+        return variable_struct_get(workshop_progress, "salvage_bench") > 0;
 
     var progress = quest_get_progress("test_field_supplies");
     return !is_undefined(progress)

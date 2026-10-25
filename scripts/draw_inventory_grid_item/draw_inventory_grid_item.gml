@@ -105,13 +105,19 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
     }
     else if (_stored_item.quantity > 1)
     {
+        var previous_font = draw_get_font();
         var previous_halign = draw_get_halign();
+        var previous_valign = draw_get_valign();
         var previous_alpha = draw_get_alpha();
+        draw_set_font(fnt_terminal_tiny);
         draw_set_color(c_black);
         draw_set_alpha(1);
         draw_set_halign(_quantity_top_left ? fa_left : fa_right);
+        draw_set_valign(fa_top);
         draw_text(_quantity_top_left ? _left + 8 : item_right - 8, _top + 8, "x" + format_compact_number(_stored_item.quantity));
+        draw_set_font(previous_font);
         draw_set_halign(previous_halign);
+        draw_set_valign(previous_valign);
         draw_set_alpha(previous_alpha);
     }
 }

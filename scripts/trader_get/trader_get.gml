@@ -25,10 +25,10 @@ function trader_get(_trader_key)
 function trader_is_unlocked(_trader_key)
 {
     if (_trader_key == "admin") return global.admin_trader_enabled;
-    if (_trader_key == "sawbones")
+    if (_trader_key == "sawbones" || _trader_key == "iron" || _trader_key == "bastion")
     {
-        var sawbones_progress = quest_get_progress("test_field_supplies");
-        return !is_undefined(sawbones_progress) && sawbones_progress.state == QuestState.COMPLETED;
+        var field_supplies_progress = quest_get_progress("test_field_supplies");
+        return !is_undefined(field_supplies_progress) && field_supplies_progress.state == QuestState.COMPLETED;
     }
     if (_trader_key != "mara") return false;
 

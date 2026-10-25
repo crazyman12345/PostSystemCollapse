@@ -52,14 +52,18 @@ function tutorial_callout_draw()
     var _line_start_x = _target_x + lengthdir_x(_circle_radius, _line_direction);
     var _line_start_y = _target_y + lengthdir_y(_circle_radius, _line_direction);
     var _previous_alpha = draw_get_alpha();
+    var _previous_color = draw_get_color();
+    var _accent_color = make_color_rgb(180, 145, 30);
 
-    draw_set_alpha(0.28);
-    draw_set_color(c_black);
-    draw_circle(_target_x, _target_y, _circle_radius, false);
+    draw_set_alpha(0.3);
+    draw_set_color(c_gray);
     draw_rectangle(_box_left, _box_top, _box_right, _box_bottom, false);
 
-    draw_set_alpha(0.72);
-    draw_set_color(c_lime);
+    draw_set_color(c_black);
+    draw_circle(_target_x, _target_y, _circle_radius, false);
+
+    draw_set_alpha(0.9);
+    draw_set_color(_accent_color);
     for (var i = -1; i <= 1; i++)
     {
         draw_line(_line_start_x, _line_start_y + i, _elbow_x, _box_mid_y + i);
@@ -70,12 +74,13 @@ function tutorial_callout_draw()
     draw_circle(_target_x, _target_y, _circle_radius - 1, true);
     draw_circle(_target_x, _target_y, _circle_radius, true);
 
-    draw_set_alpha(0.82);
+    draw_set_alpha(0.9);
     draw_set_font(fnt_terminal_small);
     draw_set_halign(fa_left);
     draw_set_valign(fa_middle);
     draw_text_ext(_box_left + 28, _box_mid_y, _callout.message, 28, _callout.box_width - 56);
     draw_set_alpha(_previous_alpha);
+    draw_set_color(_previous_color);
     draw_set_valign(fa_top);
     draw_set_font(fnt_terminal);
 }

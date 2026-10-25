@@ -46,7 +46,7 @@ function draw_quests_overlay()
 
         if (selected)
         {
-            draw_set_color(c_green);
+            draw_set_color(c_dkgray);
             draw_rectangle(left + 22, row_top - 3, divider - 22, row_top + row_height - 5, false);
             draw_set_color(c_lime);
             draw_rectangle(left + 22, row_top - 3, divider - 22, row_top + row_height - 5, true);
@@ -79,27 +79,30 @@ function draw_quests_overlay()
     draw_text_ext(detail_left, top + 245, selected_definition.description, 26, detail_right - detail_left);
 
     var objective_y = top + 355;
-    draw_set_color(c_green);
-    draw_text(detail_left, objective_y, "OBJECTIVES");
-    objective_y += 42;
-    for (var i = 0; i < array_length(selected_definition.objectives); i++)
+    if (selected_progress.state != QuestState.AVAILABLE)
     {
-        var objective = selected_definition.objectives[i];
-        var amount = selected_progress.objectives[i];
-        var complete = amount >= objective.amount;
-        draw_set_color(complete ? c_lime : c_green);
-        draw_text(detail_left + 10, objective_y, (complete ? "[X] " : "[ ] ") + objective.text);
-        draw_set_halign(fa_right);
-        draw_text(detail_right, objective_y, string(amount) + " / " + string(objective.amount));
-        draw_set_halign(fa_left);
-        if (objective.requires_extraction && !complete)
+        draw_set_color(c_green);
+        draw_text(detail_left, objective_y, "OBJECTIVES");
+        objective_y += 42;
+        for (var i = 0; i < array_length(selected_definition.objectives); i++)
         {
-            draw_set_font(fnt_terminal_tiny);
-            draw_text(detail_left + 42, objective_y + 27, "EXTRACT TO COMPLETE");
-            draw_set_font(fnt_terminal_small);
-            objective_y += 24;
+            var objective = selected_definition.objectives[i];
+            var amount = selected_progress.objectives[i];
+            var complete = amount >= objective.amount;
+            draw_set_color(complete ? c_lime : c_green);
+            draw_text(detail_left + 10, objective_y, (complete ? "[X] " : "[ ] ") + objective.text);
+            draw_set_halign(fa_right);
+            draw_text(detail_right, objective_y, string(amount) + " / " + string(objective.amount));
+            draw_set_halign(fa_left);
+            if (objective.requires_extraction && !complete)
+            {
+                draw_set_font(fnt_terminal_tiny);
+                draw_text(detail_left + 42, objective_y + 27, "EXTRACT TO COMPLETE");
+                draw_set_font(fnt_terminal_small);
+                objective_y += 24;
+            }
+            objective_y += 48;
         }
-        objective_y += 48;
     }
 
     var rewards_y = max(objective_y + 20, bottom - 210);

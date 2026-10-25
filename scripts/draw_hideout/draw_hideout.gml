@@ -45,6 +45,14 @@ function draw_hideout()
             draw_set_color(c_lime);
         draw_text(margin, _y, cursor + (entry_unlocked ? entry.name : "???"));
 
+        if (entry_unlocked && entry.key == "messages" && dialogue_has_ready_quest())
+        {
+            draw_set_halign(fa_right);
+            draw_set_color(c_red);
+            draw_text(sidebar_w - 25, _y, "?");
+            draw_set_halign(fa_left);
+        }
+
         // SKILL LEVEL
         if (entry_unlocked && entry.skill_key != "")
         {

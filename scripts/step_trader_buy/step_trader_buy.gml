@@ -200,7 +200,11 @@ function step_trader_buy()
         }
     }
 
-    if (mouse_check_button_pressed(mb_right)
+    if (mouse_check_button_pressed(mb_right) && !is_undefined(_hovered))
+    {
+        if (inventory_context_menu_open(_hovered, undefined, -1, false, false, false, current_trader_key)) return;
+    }
+    else if (mouse_check_button_pressed(mb_right)
     && point_in_rectangle(_mouse_x, _mouse_y, 1290, 260, 1840, 1030))
     {
         var _grid_x = floor((_mouse_x - 1290) / 55);

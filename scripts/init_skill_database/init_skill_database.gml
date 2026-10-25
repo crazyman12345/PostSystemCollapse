@@ -1,9 +1,9 @@
 function init_skill_database(){
 	skill_xp_awards =
 	{
-		marksmanship_shot: 1,
-		marksmanship_reload: 2,
-		marksmanship_kill: 5,
+		marksmanship_shot: 0.2,
+		marksmanship_reload: 0.4,
+		marksmanship_kill: 1,
 		vitality_damage: 5,
 		vitality_heal: 5,
 		athleticism_move: 1,

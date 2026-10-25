@@ -34,11 +34,36 @@ function dialogue_set_flag(_key, _value)
 
 function dialogue_trader_has_ready_quest(_trader_key)
 {
+    var trader = trader_get(_trader_key);
+    if (is_undefined(trader)) return false;
     for (var i = 0; i < array_length(quest_definitions); i++)
     {
         var definition = quest_definitions[i];
         var progress = quest_get_progress(definition.key);
-        if (definition.trader_key == _trader_key && progress.state == QuestState.READY_TO_TURN_IN) return true;
+        if (definition.trader_key == trader.trader_key && progress.state == QuestState.READY_TO_TURN_IN) return true;
+    }
+    return false;
+}
+
+function dialogue_trader_has_available_quest(_trader_key)
+{
+    var trader = trader_get(_trader_key);
+    if (is_undefined(trader)) return false;
+    for (var i = 0; i < array_length(quest_definitions); i++)
+    {
+        var definition = quest_definitions[i];
+        var progress = quest_get_progress(definition.key);
+        if (definition.trader_key == trader.trader_key && progress.state == QuestState.AVAILABLE) return true;
+    }
+    return false;
+}
+
+function dialogue_has_ready_quest()
+{
+    for (var i = 0; i < array_length(quest_definitions); i++)
+    {
+        var progress = quest_get_progress(quest_definitions[i].key);
+        if (!is_undefined(progress) && progress.state == QuestState.READY_TO_TURN_IN) return true;
     }
     return false;
 }
@@ -190,19 +215,26 @@ function dialogue_resolve_node(_node_id)
 function dialogue_build_claim_node(_trader_key)
 {
     var trader = trader_get(_trader_key);
+    if (is_undefined(trader)) return undefined;
     for (var i = 0; i < array_length(quest_definitions); i++)
     {
         var definition = quest_definitions[i];
         var progress = quest_get_progress(definition.key);
-        if (definition.trader_key == _trader_key && progress.state == QuestState.READY_TO_TURN_IN)
+        if (definition.trader_key == trader.trader_key && progress.state == QuestState.READY_TO_TURN_IN)
         {
-            var message = "Thanks. Here is your reward.\n\nREWARD: $" + string(definition.rewards.cash);
+            if (variable_struct_exists(definition, "completion_node"))
+                return dialogue_resolve_node(definition.completion_node);
+            var message = definition.key == "test_field_supplies"
+                ? "Thanks. Now the other traders want to meet you. Speak with the other three."
+                : "Thanks. Here is your reward.";
+            message += "\n\nREWARD: $" + string(definition.rewards.cash);
             for (var reward_index = 0; reward_index < array_length(definition.rewards.items); reward_index++)
             {
                 var reward = definition.rewards.items[reward_index];
                 var item = item_get(reward.item_key);
                 message += " + " + string(reward.quantity) + "x " + string_upper(item.name);
             }
+            if (definition.key == "test_field_supplies") message += "\nTRADER ACCESS";
             return { id: "claim:" + _trader_key, speaker: trader.name, message: message, responses: [
                 dialogue_make_response("Claim reward.", variable_struct_get(global.dialogue_roots, _trader_key), undefined,
                     { type: "turn_in_quest", key: definition.key })
@@ -222,7 +254,10 @@ function dialogue_build_available_node(_trader_key)
         var definition = quest_definitions[i];
         var progress = quest_get_progress(definition.key);
         if (definition.trader_key == trader.trader_key && progress.state == QuestState.AVAILABLE)
-            array_push(responses, dialogue_make_response(definition.title, "offer:" + definition.key));
+        {
+            var offer_target = variable_struct_exists(definition, "offer_node") ? definition.offer_node : "offer:" + definition.key;
+            array_push(responses, dialogue_make_response(definition.title, offer_target));
+        }
     }
     var message = array_length(responses) > 0 ? "I have work available. Which contract do you want to discuss?" : "Nothing new for you right now.";
     array_push(responses, dialogue_make_response("Back.", variable_struct_get(global.dialogue_roots, _trader_key)));
@@ -272,12 +307,17 @@ function dialogue_build_job_node(_quest_key)
     var trader = trader_get(current_trader_key);
     var responses = [];
     if (progress.state == QuestState.READY_TO_TURN_IN)
-        array_push(responses, dialogue_make_response("The job is done.", "active:" + current_trader_key, undefined,
-            { type: "turn_in_quest", key: _quest_key }));
+    {
+        var completion_target = variable_struct_exists(definition, "completion_node")
+            ? definition.completion_node : "claim:" + current_trader_key;
+        array_push(responses, dialogue_make_response("The job is done.", completion_target));
+    }
     array_push(responses, dialogue_make_response("Back to my jobs.", "active:" + current_trader_key));
     array_push(responses, dialogue_make_response("Back.", variable_struct_get(global.dialogue_roots, current_trader_key)));
     return { id: "job:" + _quest_key, speaker: trader.name,
-        message: dialogue_quest_description(definition, progress, true), responses: responses };
+        message: variable_struct_exists(definition, "active_message") ? definition.active_message
+            + "\n\n" + dialogue_quest_description(definition, progress, true)
+            : dialogue_quest_description(definition, progress, true), responses: responses };
 }
 
 function dialogue_quest_description(_definition, _progress, _show_progress)

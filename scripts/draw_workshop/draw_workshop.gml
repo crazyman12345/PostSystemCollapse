@@ -15,6 +15,8 @@ function draw_workshop()
     var selected_key = workshop_keys[workshop_station_index];
     var bench = variable_struct_get(workshop_db, selected_key);
     var bench_level = variable_struct_get(workshop_progress, selected_key);
+    var bench_available = workshop_bench_is_available(selected_key);
+    var bench_name = bench_available ? bench.name : "???";
 
     draw_set_font(fnt_terminal_small);
     draw_set_halign(fa_left);
@@ -43,11 +45,12 @@ function draw_workshop()
         var cursor = "  ";
         if (i == workshop_station_index) cursor = "> ";
 
-        var status = workshop_bench_is_available(key) ? "[LOCKED]" : "[UNAVAILABLE]";
+        var available = workshop_bench_is_available(key);
+        var status = available ? "[LOCKED]" : "";
         if (level > 0) status = "[LV." + string(level) + "]";
 
         if (level <= 0) draw_set_color(c_gray);
-        draw_text(left_x1 + 25, list_y + i * 32, cursor + data.name);
+        draw_text(left_x1 + 25, list_y + i * 32, cursor + (available ? data.name : "???"));
         draw_set_color(c_lime);
         draw_text(left_x2 - 135, list_y + i * 32, status);
     }
@@ -77,7 +80,7 @@ function draw_workshop()
     }
 
     // BENCH DESCRIPTION
-    draw_text(left_x1 + 25, sprite_y2 + 25, bench.name);
+    draw_text(left_x1 + 25, sprite_y2 + 25, bench_name);
 
     draw_text_ext(
         left_x1 + 25,
@@ -88,10 +91,10 @@ function draw_workshop()
     );
 
     // RIGHT HEADER
-    if (workshop_focus == WorkshopFocus.CONTENT) draw_text(right_x1 + 20, top + 20, "> " + bench.name + " <");
-	else draw_text(right_x1 + 20, top + 20, bench.name);
+    if (workshop_focus == WorkshopFocus.CONTENT) draw_text(right_x1 + 20, top + 20, "> " + bench_name + " <");
+    else draw_text(right_x1 + 20, top + 20, bench_name);
 
-    var status_text = workshop_bench_is_available(selected_key) ? "LOCKED" : "UNAVAILABLE";
+    var status_text = bench_available ? "LOCKED" : "";
     if (bench_level > 0) status_text = "LEVEL " + string(bench_level);
 
     draw_set_halign(fa_right);

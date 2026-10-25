@@ -6,8 +6,9 @@ function draw_raid_progress()
     var _room_count = raid.room_count + 1;
     var _current_room = clamp(raid.room_number, 1, _room_count);
     var _gui_w = display_get_gui_width();
-    var _line_x1 = _gui_w - 284;
-    var _line_x2 = _gui_w - 32;
+    var _tracker_offset = quest_tracker_is_visible() ? 480 : 0;
+    var _line_x1 = _gui_w - 284 - _tracker_offset;
+    var _line_x2 = _gui_w - 32 - _tracker_offset;
     var _line_y = 58;
     var _room_spacing = (_line_x2 - _line_x1) / (_room_count - 1);
     var _completed_color = make_color_rgb(36, 112, 62);

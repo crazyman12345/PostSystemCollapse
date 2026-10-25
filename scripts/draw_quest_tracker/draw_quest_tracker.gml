@@ -39,6 +39,11 @@ function quest_tracker_get_objective_index(_definition, _progress)
     return -1;
 }
 
+function quest_tracker_get_panel_bottom()
+{
+    return 10 + (quest_tracker_expanded_remaining > 0 ? 116 : 42);
+}
+
 function draw_quest_tracker()
 {
     if (!quest_tracker_is_visible()) return;
@@ -60,9 +65,9 @@ function draw_quest_tracker()
 
     var panel_right = display_get_gui_width() - 30;
     var panel_left = panel_right - 460;
-    var panel_top = 82;
+    var panel_top = 10;
     var expanded = quest_tracker_expanded_remaining > 0;
-    var panel_bottom = panel_top + (expanded ? 116 : 42);
+    var panel_bottom = quest_tracker_get_panel_bottom();
 
     draw_set_alpha(0.88);
     draw_set_color(c_black);
