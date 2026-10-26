@@ -18,7 +18,7 @@ function step_raid_gun_tuning()
         if (_item.category == ItemCategory.WEAPON) array_push(_weapons, _keys[i]);
     }
 
-    if (keyboard_check_pressed(ord("J")) || keyboard_check_pressed(ord("K")))
+    if (keyboard_check_pressed(ord("G")) || keyboard_check_pressed(ord("H")))
     {
         var _index = 0;
         for (var w = 0; w < array_length(_weapons); w++)
@@ -29,7 +29,7 @@ function step_raid_gun_tuning()
                 break;
             }
         }
-        var _step = keyboard_check_pressed(ord("K")) ? 1 : -1;
+        var _step = keyboard_check_pressed(ord("H")) ? 1 : -1;
         _index = (_index + _step + array_length(_weapons)) mod array_length(_weapons);
         raid_gun_tuning_weapon_key = _weapons[_index];
         _weapon = item_get(raid_gun_tuning_weapon_key);

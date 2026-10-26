@@ -199,7 +199,17 @@ function init_trader_database()
             },
 
             {
+                item_key : "police_soft_armor",
+                price : 140
+            },
+
+            {
                 item_key : "construction_helmet",
+                price : 100
+            },
+
+            {
+                item_key : "riot_helmet",
                 price : 100
             },
 

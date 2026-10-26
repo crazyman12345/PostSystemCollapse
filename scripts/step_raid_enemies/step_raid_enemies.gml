@@ -83,6 +83,12 @@ function step_raid_enemies()
             }
             break;
 
+            case RaidEnemyType.ROB_GNARLEY:
+            {
+                e = rob_gnarley(e);
+            }
+            break;
+
 			case RaidEnemyType.BONES:
 			{
 				e = bones(e);

@@ -144,8 +144,8 @@ function draw_hideout_stash()
 
         if (!is_undefined(backpack_definition))
         {
-            stash.backpack.grid_width = backpack_definition.grid_width;
-            stash.backpack.grid_height = backpack_definition.grid_height;
+            stash.backpack.grid_width = backpack_definition.storage_width;
+            stash.backpack.grid_height = backpack_definition.storage_height;
             pockets_grid_top = backpack_grid_top + max(328, (stash.backpack.grid_height * container_cell_size) + 28);
             secure_grid_top = pockets_grid_top + 122;
             array_push(item_grids, { key: "backpack", storage: stash.backpack, left: backpack_grid_left, top: backpack_grid_top, cell_size: container_cell_size });

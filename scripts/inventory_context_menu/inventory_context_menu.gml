@@ -102,8 +102,8 @@ function inventory_context_menu_set_equipped(_slot, _item, _crew_index)
             if (!is_undefined(_item))
             {
                 var _definition = item_get(_item_key);
-                stash.backpack.grid_width = _definition.grid_width;
-                stash.backpack.grid_height = _definition.grid_height;
+                stash.backpack.grid_width = _definition.storage_width;
+                stash.backpack.grid_height = _definition.storage_height;
             }
             break;
     }

@@ -119,8 +119,8 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
 
         if (!is_undefined(backpack_definition))
         {
-            stash.backpack.grid_width = backpack_definition.grid_width;
-            stash.backpack.grid_height = backpack_definition.grid_height;
+            stash.backpack.grid_width = backpack_definition.storage_width;
+            stash.backpack.grid_height = backpack_definition.storage_height;
 
             for (var backpack_y = 0; backpack_y < stash.backpack.grid_height; backpack_y++)
             {

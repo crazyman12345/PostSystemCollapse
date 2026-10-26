@@ -27,8 +27,8 @@ function step_hideout_stash(){
 
         if (!is_undefined(backpack_definition))
         {
-            stash.backpack.grid_width = backpack_definition.grid_width;
-            stash.backpack.grid_height = backpack_definition.grid_height;
+            stash.backpack.grid_width = backpack_definition.storage_width;
+            stash.backpack.grid_height = backpack_definition.storage_height;
             array_push(grids, { key: "backpack", storage: stash.backpack, left: backpack_grid_left, top: backpack_grid_top, cell_size: container_cell_size });
             pockets_grid_top = backpack_grid_top + max(328, (stash.backpack.grid_height * container_cell_size) + 28);
             secure_grid_top = pockets_grid_top + 122;
@@ -538,8 +538,8 @@ function step_hideout_stash(){
                             case EquipmentSlot.BAG:
                                 member.bag = item.item_key;
                                 stash.equipped_bag_item = item;
-                                stash.backpack.grid_width = definition.grid_width;
-                                stash.backpack.grid_height = definition.grid_height;
+                                stash.backpack.grid_width = definition.storage_width;
+                                stash.backpack.grid_height = definition.storage_height;
                                 break;
                         }
 

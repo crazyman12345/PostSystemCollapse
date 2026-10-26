@@ -34,7 +34,7 @@ function raid_bag_prepare_add(_item_key, _quantity)
     if (definition.stackable)
         max_stack = variable_struct_exists(definition, "max_stack") ? max(1, definition.max_stack) : 999999;
 
-    var storage = { grid_width: backpack.grid_width, grid_height: backpack.grid_height, items: array_concat(stash.backpack.items, []) };
+    var storage = { grid_width: backpack.storage_width, grid_height: backpack.storage_height, items: array_concat(stash.backpack.items, []) };
     var additions = [];
     if (definition.stackable)
     {

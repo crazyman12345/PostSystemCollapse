@@ -257,7 +257,7 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_sprite_idle = spr_bomberidle;
             enemy.enemy_sprite_active = spr_bomberrun;
             enemy.enemy_has_gun = true;
-            enemy.weapon = global.items.m1911;
+            enemy.weapon = global.items.minigun;
             enemy.enemy_gun_offset = 14;
             enemy.enemy_muzzle_x = 14;
             enemy.enemy_muzzle_y = 6;
@@ -267,6 +267,28 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.lead_strength = 0.35;
             enemy.shot_timer = randomize_enemy_timer(75, 0.2);
             enemy.bomb_timer = 600;
+            enemy = raid_enemy_pick_random_position(enemy);
+        }
+        break;
+
+
+        case RaidEnemyType.ROB_GNARLEY:
+        {
+            enemy.enemy_boss = true;
+            enemy.enemy_sprite = spr_robgnarleyidle;
+            enemy.enemy_sprite_idle = spr_robgnarleyidle;
+            enemy.enemy_sprite_active = spr_robgnarleyrun;
+            enemy.size_multiplier = 1.7;
+            enemy.enemy_has_gun = true;
+            enemy.weapon = global.items.m1911;
+            enemy.enemy_gun_offset = 16;
+            enemy.enemy_muzzle_x = 14;
+            enemy.enemy_muzzle_y = 6;
+            enemy.enemy_hp = 400;
+            enemy.enemy_max_hp = 400;
+            enemy.enemy_speed = 1.1;
+            enemy.lead_strength = 0;
+            enemy.shot_timer = randomize_enemy_timer(75, 0.2);
             enemy = raid_enemy_pick_random_position(enemy);
         }
         break;

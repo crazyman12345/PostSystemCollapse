@@ -46,8 +46,8 @@ function save_apply_data(_data)
         var bag_definition = item_get(member.bag);
         if (!is_undefined(bag_definition))
         {
-            stash.backpack.grid_width = bag_definition.grid_width;
-            stash.backpack.grid_height = bag_definition.grid_height;
+            stash.backpack.grid_width = bag_definition.storage_width;
+            stash.backpack.grid_height = bag_definition.storage_height;
             save_apply_items(save_value(backpack_data, "items", []), stash.backpack);
         }
     }

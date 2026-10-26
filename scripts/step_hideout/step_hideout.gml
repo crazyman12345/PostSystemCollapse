@@ -10,7 +10,8 @@ function step_hideout()
         return;
     }
 
-    if (hideout_focus == HideoutFocus.SIDEBAR && mouse_check_button_pressed(mb_left))
+    if (hideout_focus == HideoutFocus.SIDEBAR
+    && (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right)))
     {
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);
@@ -31,7 +32,8 @@ function step_hideout()
         }
     }
 
-    if (hideout_focus == HideoutFocus.CONTENT && mouse_check_button_pressed(mb_left))
+    if (hideout_focus == HideoutFocus.CONTENT
+    && (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right)))
     {
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);
@@ -119,7 +121,8 @@ function step_hideout()
         var selected = hideout_menu_items[hideout_menu_index];
         hideout_page = selected.page;
 
-        if (keyboard_check_pressed(vk_enter) || (hover_index != -1 && mouse_check_button_pressed(mb_left)))
+        if (keyboard_check_pressed(vk_enter)
+        || (hover_index != -1 && (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right))))
         {
             if (!hideout_entry_is_unlocked(selected)) return;
 

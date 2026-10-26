@@ -3,8 +3,11 @@ function raid_spawn_enemies()
 	if (raid.rooms_cleared >= raid.room_count)
 	{
 	    raid.current_room_type = RaidRoomType.BOSS;
+	    var _boss_type = raid.selected_area_index == 1
+	        ? RaidEnemyType.ROB_GNARLEY
+	        : RaidEnemyType.BONES;
 	    raid_spawn_enemy(
-	        RaidEnemyType.BONES,
+	        _boss_type,
 	        (raid_room_x1 + raid_room_x2) * 0.5,
 	        raid_room_y1 + 80
 	    );

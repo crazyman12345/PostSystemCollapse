@@ -27,8 +27,8 @@ function raid_inventory_set_equipped_item(_slot, _item)
             if (!is_undefined(_item))
             {
                 var bag_definition = item_get(item_key);
-                stash.backpack.grid_width = bag_definition.grid_width;
-                stash.backpack.grid_height = bag_definition.grid_height;
+                stash.backpack.grid_width = bag_definition.storage_width;
+                stash.backpack.grid_height = bag_definition.storage_height;
             }
             break;
     }

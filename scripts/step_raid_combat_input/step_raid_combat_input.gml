@@ -2,6 +2,19 @@ function step_raid_combat_input()
 {
     var _allow_combat_input = overlay_mode == OverlayMode.NONE;
 
+    if (raid_gun_tuning_active && raid.state == RaidState.COMBAT && _allow_combat_input)
+    {
+        if (keyboard_check_pressed(vk_escape))
+        {
+            audio_play_sound(snd_interact, 0, false);
+            raid_set_state(RaidState.PAUSED);
+            return false;
+        }
+
+        step_raid_gun_tuning();
+        return false;
+    }
+
     step_handle_shortcuts();
     if (raid.state != RaidState.COMBAT) return false;
 
@@ -20,12 +33,6 @@ function step_raid_combat_input()
     {
         audio_play_sound(snd_interact, 0, false);
         raid_set_state(RaidState.PAUSED);
-        return false;
-    }
-
-    if (raid_gun_tuning_active && _allow_combat_input)
-    {
-        step_raid_gun_tuning();
         return false;
     }
 

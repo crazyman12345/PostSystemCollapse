@@ -45,7 +45,8 @@ enum RaidEnemyType
     GRENADE_THROWER,
     BURST_DODGER,
     SHOTGUN_BURSTER,
-    BOMBER
+    BOMBER,
+    ROB_GNARLEY
 }
 
 enum RaidEnemyState

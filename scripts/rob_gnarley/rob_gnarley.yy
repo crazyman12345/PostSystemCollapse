@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"rob_gnarley",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"rob_gnarley",
+  "parent":{
+    "name":"EnemyTypes",
+    "path":"folders/Raid/EnemyTypes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

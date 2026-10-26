@@ -471,6 +471,9 @@ function init_item_database()
         base_value: 45,
         weight: 4.0,
         stackable: false,
+		icon_sprite: spr_printer,
+		grid_width: 3,
+		grid_height: 2,
         salvage: [
             { item_key: "metal_scrap", quantity: 2 },
             { item_key: "plastic", quantity: 4 },
@@ -553,7 +556,7 @@ function init_item_database()
         base_value: 2,
         weight: 0.02,
         stackable: true,
-		max_stack: 60,
+		max_stack: 100,
 		icon_sprite: spr_9mm
     };
 
@@ -563,7 +566,7 @@ function init_item_database()
         category: ItemCategory.AMMO,
         description: "Heavy pistol ammunition used by weapons such as the M1911.",
         base_value: 3,
-		max_stack: 60,
+		max_stack: 100,
         weight: 0.025,
         stackable: true,
 		icon_sprite: spr_45acp
@@ -575,7 +578,7 @@ function init_item_database()
         category: ItemCategory.AMMO,
         description: "A common shotgun shell.",
         base_value: 4,
-		max_stack: 60,
+		max_stack: 100,
         weight: 0.05,
         stackable: true,
 		icon_sprite: spr_buckshot
@@ -805,6 +808,47 @@ function init_item_database()
         fire_modes: [WeaponFireMode.SEMI, WeaponFireMode.AUTO]
     };
 
+    global.items.minigun = {
+        item_key: "minigun",
+        name: "Minigun",
+        category: ItemCategory.WEAPON,
+        description: "A heavy rotary machine gun capable of sustained automatic fire.",
+        base_value: 1400,
+        weight: 12.0,
+        stackable: false,
+
+        damage_min: 5,
+        damage_max: 7,
+        fire_rate: 15,
+        mag_size: 100,
+        reload_time: 180,
+        bullet_speed: 9,
+        accuracy: 58,
+        handling: 30,
+
+        ammo_key: "ammo_9mm",
+        ammo_per_attack: 1,
+
+        weapon_sprite: spr_minigun,
+        sound_shoot: nine_shot,
+        sound_reload: nine_reload,
+        sound_empty: nine_empty,
+
+        weapon_offset_x: 8,
+        weapon_draw_width: 33.40,
+        hand1_x: 0,
+        hand1_y: 0,
+        hand2_x: 11.84,
+        hand2_y: -2.30,
+        has_second_hand: true,
+        grid_width: 6,
+        grid_height: 3,
+        muzzle_x: 32.15,
+        muzzle_y: -0.15,
+
+        fire_modes: [WeaponFireMode.AUTO]
+    };
+
 
     // ============================================================
     // CHEST ARMOR
@@ -823,6 +867,21 @@ function init_item_database()
         stackable: false,
         body_sprite: paca_torso,
 		icon_sprite: spr_PACA
+    };
+
+    global.items.police_soft_armor = {
+        item_key: "police_soft_armor",
+        name: "Police Soft Armor",
+        category: ItemCategory.BODY_ARMOR,
+        description: "A level 1 police vest that offers minimal protection.",
+        base_value: 100,
+        weight: 2.0,
+        armor: 10,
+		grid_width: 3,
+		grid_height: 3,
+        stackable: false,
+        body_sprite: torso_police_vest,
+		icon_sprite: spr_policevest
     };
 
     global.items.improvised_plate_vest = {
@@ -856,6 +915,21 @@ function init_item_database()
 		grid_height: 2
     };
 
+    global.items.riot_helmet = {
+        item_key: "riot_helmet",
+        name: "Riot Helmet",
+        category: ItemCategory.HEAD_ARMOR,
+        description: "A protective helmet designed for riot control.",
+        base_value: 80,
+        weight: 0.8,
+        armor: 10,
+        stackable: false,
+        head_sprite: riot_helm_head,
+		icon_sprite: spr_riothelmet,
+		grid_width: 2,
+		grid_height: 2
+    };
+
     global.items.improvised_steel_helmet = {
         item_key: "improvised_steel_helmet",
         name: "LSHZ Lightweight Helmet",
@@ -884,8 +958,10 @@ function init_item_database()
         weight: 0.8,
         stackable: false,
         bag_capacity: 8.0,
-        grid_width: 3,
-        grid_height: 3,
+		grid_width: 2,
+		grid_height: 2,
+		storage_width: 3,
+		storage_height: 3,
 		icon_sprite: spr_sling_bag
     };
 
@@ -898,8 +974,11 @@ function init_item_database()
         weight: 1.2,
         stackable: false,
         bag_capacity: 14.0,
-        grid_width: 4,
-        grid_height: 4
+		grid_width: 2,
+		grid_height: 2,
+		storage_width: 3,
+		storage_height: 4,
+		icon_sprite: spr_schoolbag
     };
 
     global.items.small_hiking_pack = {
@@ -911,8 +990,11 @@ function init_item_database()
         weight: 1.8,
         stackable: false,
         bag_capacity: 20.0,
-        grid_width: 5,
-        grid_height: 5
+		grid_width: 2,
+		grid_height: 3,
+		storage_width: 4,
+		storage_height: 5,
+		icon_sprite: spr_hikingbag
     };
 
 
@@ -1374,6 +1456,8 @@ function init_item_database()
 
         if (!variable_struct_exists(item, "grid_width")) item.grid_width = 1;
         if (!variable_struct_exists(item, "grid_height")) item.grid_height = 1;
+		if (item.category == ItemCategory.BAG && !variable_struct_exists(item, "storage_width")) item.storage_width = item.grid_width;
+		if (item.category == ItemCategory.BAG && !variable_struct_exists(item, "storage_height")) item.storage_height = item.grid_height;
         if (item.stackable && !variable_struct_exists(item, "max_stack")) item.max_stack = 100;
     }
 }

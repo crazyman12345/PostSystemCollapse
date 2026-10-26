@@ -12,6 +12,7 @@ function raid_enemy_type_name(_type)
         case RaidEnemyType.BURST_DODGER: return "BURST DODGER";
         case RaidEnemyType.SHOTGUN_BURSTER: return "SHOTGUN BURSTER";
         case RaidEnemyType.BOMBER: return "BOMBER";
+        case RaidEnemyType.ROB_GNARLEY: return "ROB GNARLEY";
     }
 
     return "UNKNOWN";
