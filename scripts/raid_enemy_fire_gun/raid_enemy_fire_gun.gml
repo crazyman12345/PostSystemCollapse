@@ -11,7 +11,7 @@ function raid_enemy_fire_gun(_enemy, _dir, _speed, _damage, _projectile_config =
     // ==============================
 
     var _pivot_x = e.enemy_x;
-    var _pivot_y = e.enemy_y - (18 * _s);
+    var _pivot_y = e.enemy_y - (18 * _s) + (e.enemy_gun_y * _s);
 
 
     // ==============================

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_boss_intro_update",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_boss_intro_update",
+  "parent":{
+    "name":"core",
+    "path":"folders/Raid/core.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

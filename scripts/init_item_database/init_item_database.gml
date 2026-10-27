@@ -554,7 +554,7 @@ function init_item_database()
         category: ItemCategory.AMMO,
         description: "Common 9mm ammunition.",
         base_value: 2,
-        weight: 0.02,
+        weight: 0.015,
         stackable: true,
 		max_stack: 100,
 		icon_sprite: spr_9mm
@@ -567,7 +567,7 @@ function init_item_database()
         description: "Heavy pistol ammunition used by weapons such as the M1911.",
         base_value: 3,
 		max_stack: 100,
-        weight: 0.025,
+        weight: 0.01875,
         stackable: true,
 		icon_sprite: spr_45acp
     };
@@ -579,7 +579,7 @@ function init_item_database()
         description: "A common shotgun shell.",
         base_value: 4,
 		max_stack: 100,
-        weight: 0.05,
+        weight: 0.0375,
         stackable: true,
 		icon_sprite: spr_buckshot
     };

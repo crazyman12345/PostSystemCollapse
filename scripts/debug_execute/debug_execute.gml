@@ -67,7 +67,7 @@ function debug_execute(_command)
 			break;
 			
 		case "debug_start_boss":
-			debug_start_boss();
+			debug_start_boss(args);
 			break;
 			
 		case "god_trader":
@@ -105,7 +105,7 @@ function debug_execute(_command)
 function debug_command_help()
 {
     debug_log_add("help | clear | items | gun_stats | give <item_key> <quantity>");
-    debug_log_add("money | show_mouse | debug_start_boss | god_trader");
+    debug_log_add("money | show_mouse | debug_start_boss <1|2> | god_trader");
     debug_log_add("godmode | hit_regions | unlock_tables | gun_tuning_mode");
     debug_log_add("limb_damage <limb> <amount> | limb_fracture <limb>");
     debug_log_add("limb_bleed <limb> <light|heavy> | limb_blackout <limb> | limb_reset <limb|all>");

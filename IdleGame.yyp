@@ -266,6 +266,7 @@
     {"id":{"name":"raid_bag_get_visible_items","path":"scripts/raid_bag_get_visible_items/raid_bag_get_visible_items.yy",},},
     {"id":{"name":"raid_bag_get_weight","path":"scripts/raid_bag_get_weight/raid_bag_get_weight.yy",},},
     {"id":{"name":"raid_bag_remove","path":"scripts/raid_bag_remove/raid_bag_remove.yy",},},
+    {"id":{"name":"raid_boss_intro_update","path":"scripts/raid_boss_intro_update/raid_boss_intro_update.yy",},},
     {"id":{"name":"raid_combat_loss","path":"scripts/raid_combat_loss/raid_combat_loss.yy",},},
     {"id":{"name":"raid_combat_update_should_stop","path":"scripts/raid_combat_update_should_stop/raid_combat_update_should_stop.yy",},},
     {"id":{"name":"raid_create_enemy_death_effect","path":"scripts/raid_create_enemy_death_effect/raid_create_enemy_death_effect.yy",},},

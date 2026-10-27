@@ -14,7 +14,9 @@ function bones(_enemy)
         e.boss_transition_stage = 0;
         e.boss_transition_timer = 0;
         e.boss_transition_dialogue = "";
+        e.boss_transition_character_count = 0;
         e.boss_transition_transformed = false;
+        e.boss_transition_shake_started = false;
     }
 
     if (e.enemy_state == RaidEnemyState.PHASE_TRANSITION)
@@ -49,22 +51,51 @@ function bones(_enemy)
                 e.boss_transition_timer -= frame_scale;
                 if (e.boss_transition_timer <= 0)
                 {
-                    e.boss_transition_dialogue = "Okay, now you really pissed me off!";
                     e.boss_transition_stage = 2;
-                    e.boss_transition_timer = 105;
+                    e.boss_transition_timer = 55;
                 }
                 break;
 
             case 2:
                 e.boss_transition_timer -= frame_scale;
 
-                if (!e.boss_transition_transformed && e.boss_transition_timer <= 15)
+                if (!e.boss_transition_shake_started && e.boss_transition_timer <= 55)
                 {
-                    e.enemy_tint = make_color_rgb(255, 90, 90);
-                    e.size_multiplier *= 1.1;
-                    e.boss_transition_transformed = true;
+                    raid_camera_shake_duration = 40;
+                    raid_camera_shake_timer = raid_camera_shake_duration;
+                    raid_camera_shake_strength = 6;
+                    e.boss_transition_shake_started = true;
                 }
 
+                if (!e.boss_transition_transformed && e.boss_transition_timer <= 15)
+                {
+                    e.enemy_tint = make_color_rgb(255, 150, 150);
+                    e.size_multiplier *= 1.1;
+                    e.boss_transition_transformed = true;
+                    smoke_create(e.enemy_x - 40, e.enemy_y - 12, e.enemy_x + 40, e.enemy_y + 12, 20);
+                    audio_play_sound(smoke_sound, 0, false);
+                    e.boss_transition_stage = 3;
+                    e.boss_transition_character_count = 0;
+                }
+                break;
+
+            case 3:
+                var _transition_line = "Okay, now you really pissed me off!";
+                e.boss_transition_character_count = min(
+                    string_length(_transition_line),
+                    e.boss_transition_character_count + 0.5 * frame_scale
+                );
+                e.boss_transition_dialogue = string_copy(_transition_line, 1, floor(e.boss_transition_character_count));
+
+                if (e.boss_transition_character_count >= string_length(_transition_line))
+                {
+                    e.boss_transition_stage = 4;
+                    e.boss_transition_timer = 90;
+                }
+                break;
+
+            case 4:
+                e.boss_transition_timer -= frame_scale;
                 if (e.boss_transition_timer <= 0)
                 {
                     e.boss_phase = 2;

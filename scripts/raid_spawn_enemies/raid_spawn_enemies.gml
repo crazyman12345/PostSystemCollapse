@@ -9,7 +9,7 @@ function raid_spawn_enemies()
 	    raid_spawn_enemy(
 	        _boss_type,
 	        (raid_room_x1 + raid_room_x2) * 0.5,
-	        raid_room_y1 + 80
+	        (raid_room_y1 + raid_room_y2) * 0.5
 	    );
 	    return;
 	}

@@ -47,7 +47,10 @@ switch (state)
 				}
 			}
 
-			if (is_struct(_boss))
+			if (
+				is_struct(_boss)
+				&& (!variable_struct_exists(_boss, "boss_intro_active") || !_boss.boss_intro_active)
+			)
 				draw_boss_healthbar(_boss);
 		}
 

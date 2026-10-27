@@ -71,8 +71,9 @@ function raid_spawn_enemy(_type, _x, _y)
 		
 		enemy_gun_sprite: -1,
 		enemy_gun_offset: 16,
+		enemy_weapon_offset_x: undefined,
 		enemy_gun_x: 0,
-		enemy_gun_y: -10,
+		enemy_gun_y: 0,
 
 		enemy_muzzle_x: 10,
 		enemy_muzzle_y: 2,
@@ -278,12 +279,14 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_sprite = spr_robgnarleyidle;
             enemy.enemy_sprite_idle = spr_robgnarleyidle;
             enemy.enemy_sprite_active = spr_robgnarleyrun;
-            enemy.size_multiplier = 1.7;
+            enemy.size_multiplier = 2.2;
             enemy.enemy_has_gun = true;
-            enemy.weapon = global.items.m1911;
-            enemy.enemy_gun_offset = 16;
-            enemy.enemy_muzzle_x = 14;
-            enemy.enemy_muzzle_y = 6;
+            enemy.weapon = global.items.minigun;
+            enemy.enemy_gun_offset = 2;
+            enemy.enemy_weapon_offset_x = 2;
+            enemy.enemy_gun_y = 3;
+            enemy.enemy_muzzle_x = enemy.weapon.muzzle_x;
+            enemy.enemy_muzzle_y = enemy.weapon.muzzle_y;
             enemy.enemy_hp = 400;
             enemy.enemy_max_hp = 400;
             enemy.enemy_speed = 1.1;
@@ -320,7 +323,9 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.boss_transition_stage = 0;
             enemy.boss_transition_timer = 0;
             enemy.boss_transition_dialogue = "";
+            enemy.boss_transition_character_count = 0;
             enemy.boss_transition_transformed = false;
+            enemy.boss_transition_shake_started = false;
             enemy.boss_pacing_phase1 = {
                 dash_speed: 3.5,
                 dash_duration: 26,
@@ -359,6 +364,19 @@ function raid_spawn_enemy(_type, _x, _y)
 
 	if (_type != RaidEnemyType.BONES)
 	    enemy.enemy_animation_reference_speed = max(0.001, enemy.enemy_speed);
+
+	if (enemy.enemy_boss)
+	{
+	    enemy.boss_intro_active = true;
+	    enemy.boss_intro_stage = 0;
+	    enemy.boss_intro_camera_ready = false;
+	    enemy.boss_intro_target_y = _y;
+	    enemy.boss_intro_timer = 0;
+	    enemy.boss_intro_character_count = 0;
+	    enemy.boss_intro_dialogue = "";
+	    enemy.enemy_y = raid_room_y1 - 60;
+	    enemy.enemy_invulnerable = true;
+	}
 
 
     // ======================================================

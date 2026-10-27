@@ -152,6 +152,19 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
             draw_text_transformed(e.enemy_x, _dialogue_y, e.boss_transition_dialogue, 0.45, 0.45, 0);
         }
 
+        if (
+            variable_struct_exists(e, "boss_intro_dialogue")
+            && e.boss_intro_dialogue != ""
+        )
+        {
+            var _intro_dialogue_y = raid_enemy_get_collision_bbox(e).top - 12;
+
+            draw_set_color(c_white);
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_bottom);
+            draw_text_transformed(e.enemy_x, _intro_dialogue_y, e.boss_intro_dialogue, 0.45, 0.45, 0);
+        }
+
 
         // ==============================
         // ENEMY TYPE

@@ -18,7 +18,7 @@ function draw_raid_enemy_gun_and_hands(_enemy, _lighting_mask = false, _mask_alp
     // ==============================
 
     var _pivot_x = _enemy.enemy_x;
-    var _pivot_y = _enemy.enemy_y - (18 * _s);
+    var _pivot_y = _enemy.enemy_y - (18 * _s) + (_enemy.enemy_gun_y * _s);
 
     var _dir = _enemy.enemy_gun_angle;
 
@@ -58,10 +58,13 @@ function draw_raid_enemy_gun_and_hands(_enemy, _lighting_mask = false, _mask_alp
     var _weapon_offset_y = variable_struct_exists(_weapon, "weapon_offset_y")
         ? _weapon.weapon_offset_y * _s * _flip
         : 0;
+    var _weapon_offset_x = !is_undefined(_enemy.enemy_weapon_offset_x)
+        ? _enemy.enemy_weapon_offset_x
+        : _weapon.weapon_offset_x;
 
     var _offset =
         _enemy.enemy_gun_recoil
-        + (_weapon.weapon_offset_x * _s);
+        + (_weapon_offset_x * _s);
 
     var _gun_x =
         _pivot_x

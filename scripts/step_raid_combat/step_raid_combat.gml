@@ -1,5 +1,50 @@
 function step_raid_combat()
 {
+    if (raid_boss_intro_update())
+    {
+        if (keyboard_check_pressed(vk_escape))
+        {
+            audio_play_sound(snd_interact, 0, false);
+            raid_set_state(RaidState.PAUSED);
+        }
+
+        step_raid_camera();
+        return;
+    }
+
+    var _boss_phase_transition_active = false;
+    for (var i = 0; i < array_length(raid_enemies); i++)
+    {
+        if (
+            raid_enemies[i].enemy_boss
+            && (
+                raid_enemies[i].enemy_state == RaidEnemyState.PHASE_TRANSITION
+                || (
+                    raid_enemies[i].enemy_type == RaidEnemyType.BONES
+                    && raid_enemies[i].boss_phase == 1
+                    && raid_enemies[i].enemy_hp <= raid_enemies[i].enemy_max_hp * 0.5
+                )
+            )
+        )
+        {
+            _boss_phase_transition_active = true;
+            break;
+        }
+    }
+
+    if (_boss_phase_transition_active)
+    {
+        raid_player_dash_active = false;
+        raid_player_dash_timer = 0;
+        raid_player_dash_xp_pending = false;
+        raid_player_moving = false;
+        raid_player_was_moving = false;
+        step_raid_enemies();
+        step_raid_enemy_death_effects();
+        step_raid_camera();
+        return;
+    }
+
     player_health_treatment_update();
     var _allow_combat_input = step_raid_combat_input();
     if (raid.state != RaidState.COMBAT) return;
