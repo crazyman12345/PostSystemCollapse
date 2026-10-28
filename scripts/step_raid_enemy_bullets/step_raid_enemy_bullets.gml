@@ -58,12 +58,11 @@ function step_raid_enemy_bullets()
         // ==================================================
 
         var _player_bbox = raid_player_get_collision_bbox();
+        var _nearest_player_x = clamp(b.bx, _player_bbox.left, _player_bbox.right);
+        var _nearest_player_y = clamp(b.by, _player_bbox.top, _player_bbox.bottom);
 
         if (
-            b.bx >= _player_bbox.left
-            && b.bx <= _player_bbox.right
-            && b.by >= _player_bbox.top
-            && b.by <= _player_bbox.bottom
+            point_distance(b.bx, b.by, _nearest_player_x, _nearest_player_y) <= b.collision_radius
         )
         {
             if (raid_hit_region_debug_enabled)

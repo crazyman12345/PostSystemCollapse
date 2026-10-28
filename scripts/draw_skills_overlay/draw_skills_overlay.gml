@@ -53,7 +53,7 @@ function draw_skills_overlay()
         if (skill.icon != -1)
         {
             var icon_scale = min(icon_size / sprite_get_width(skill.icon), icon_size / sprite_get_height(skill.icon));
-            draw_sprite_ext(skill.icon, 0, list_x + icon_size * 0.5, row_y + icon_size * 0.5, icon_scale, icon_scale, 0, selected ? c_lime : c_green, 1);
+            draw_sprite_ext(skill.icon, icon_spin_frame(skill.icon), list_x + icon_size * 0.5, row_y + icon_size * 0.5, icon_scale, icon_scale, 0, selected ? c_lime : c_green, 1);
             text_x = list_x + icon_size + 14;
         }
 

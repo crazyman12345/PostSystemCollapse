@@ -1,15 +1,13 @@
 function spinner(_enemy)
 {
     var e = _enemy;
+    var _player_direction = point_direction(e.enemy_x, e.enemy_y - 18, raid_player_x, raid_player_y);
 
     switch (e.enemy_state)
     {
         case RaidEnemyState.MOVE:
         {
-            if (raid_player_x < e.enemy_x)
-                e.enemy_gun_angle = 180;
-            else
-                e.enemy_gun_angle = 0;
+            e.enemy_gun_angle = raid_smooth_aim_direction(e.enemy_gun_angle, _player_direction, 0.45);
 
             if (e.enemy_sprite != e.enemy_sprite_active)
             {
@@ -92,10 +90,7 @@ function spinner(_enemy)
 
         case RaidEnemyState.PAUSE:
         {
-            if (raid_player_x < e.enemy_x)
-                e.enemy_gun_angle = 180;
-            else
-                e.enemy_gun_angle = 0;
+            e.enemy_gun_angle = raid_smooth_aim_direction(e.enemy_gun_angle, _player_direction, 0.45);
 
             if (e.enemy_sprite != e.enemy_sprite_idle)
             {

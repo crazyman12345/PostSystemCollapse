@@ -1,4 +1,15 @@
 function step_main_menu(){
+	if (main_menu_credits_open)
+    {
+        var _credits_mouse_x = device_mouse_x_to_gui(0);
+        var _credits_mouse_y = device_mouse_y_to_gui(0);
+        var _back_clicked = mouse_check_button_pressed(mb_left)
+            && point_in_rectangle(_credits_mouse_x, _credits_mouse_y, display_get_gui_width() - 180, display_get_gui_height() - 80, display_get_gui_width() - 20, display_get_gui_height() - 20);
+
+        if (keyboard_check_pressed(vk_escape) || _back_clicked) main_menu_credits_open = false;
+        return;
+    }
+
 	if (save_new_game_setup)
     {
         var mouse_x_gui = device_mouse_x_to_gui(0);
@@ -71,6 +82,13 @@ function step_main_menu(){
         var _gui_width = display_get_gui_width();
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);
+        if (mouse_check_button_pressed(mb_left)
+        && point_in_rectangle(_mouse_x, _mouse_y, _gui_width - 280, display_get_gui_height() - 80, _gui_width - 20, display_get_gui_height() - 20))
+        {
+            main_menu_credits_open = true;
+            return;
+        }
+
         if (mouse_check_button_pressed(mb_left)
         && point_in_rectangle(_mouse_x, _mouse_y, _gui_width - 40, 38, _gui_width - 20, 58))
         {

@@ -90,7 +90,7 @@ function draw_equipment_slot(
 
         draw_sprite_ext(
             render_sprite,
-            0,
+            icon_spin_frame(render_sprite),
             sprite_center_x - sprite_offset_x,
             sprite_center_y - sprite_offset_y,
             sprite_scale,

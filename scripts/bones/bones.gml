@@ -2,6 +2,9 @@ function bones(_enemy)
 {
     var e = _enemy;
     var _phase2 = e.boss_phase == 2;
+    var _bullet_speed = 2.5;
+    var _predicted_direction = raid_predict_player_aim(e.enemy_x, e.enemy_y - 10, _bullet_speed * 1.15, e.lead_strength);
+    e.enemy_gun_angle = raid_smooth_aim_direction(e.enemy_gun_angle, _predicted_direction, 0.45);
 
     if (
         e.boss_phase == 1
@@ -112,10 +115,6 @@ function bones(_enemy)
 
         return e;
     }
-
-    var _bullet_speed = 2.5;
-    var _predicted_direction = raid_predict_player_aim(e.enemy_x, e.enemy_y - 10, _bullet_speed * 1.15, e.lead_strength);
-    e.enemy_gun_angle = raid_smooth_aim_direction(e.enemy_gun_angle, _predicted_direction);
 
     var _pacing = _phase2 ? e.boss_pacing_phase2 : e.boss_pacing_phase1;
 

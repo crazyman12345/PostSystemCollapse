@@ -41,7 +41,7 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
         var rotated_offset_x = lengthdir_x(offset_distance * sprite_scale, offset_direction + sprite_rotation);
         var rotated_offset_y = lengthdir_y(offset_distance * sprite_scale, offset_direction + sprite_rotation);
 
-        draw_sprite_ext(grid_sprite, 0, center_x - rotated_offset_x, center_y - rotated_offset_y, sprite_scale, sprite_scale, sprite_rotation, c_white, 1);
+        draw_sprite_ext(grid_sprite, icon_spin_frame(grid_sprite), center_x - rotated_offset_x, center_y - rotated_offset_y, sprite_scale, sprite_scale, sprite_rotation, c_white, 1);
     }
     else
     {

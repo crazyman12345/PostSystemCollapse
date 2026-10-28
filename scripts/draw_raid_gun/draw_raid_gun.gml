@@ -399,7 +399,7 @@ function draw_raid_treatment_hands(_lighting_mask = false, _mask_alpha = 1)
 
         draw_sprite_ext(
             _item_sprite,
-            0,
+            icon_spin_frame(_item_sprite),
             round(_item_x - (_visible_center_x * _item_scale * raid_player_facing)),
             round(_item_y - (_visible_center_y * _item_scale)),
             _item_scale * raid_player_facing,

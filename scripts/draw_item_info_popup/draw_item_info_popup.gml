@@ -266,7 +266,7 @@ function draw_item_info_popup(
 
         draw_sprite_part_ext(
             _sprite,
-            0,
+            icon_spin_frame(_sprite),
 
             _bbox_left,
             _bbox_top,

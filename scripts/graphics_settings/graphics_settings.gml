@@ -18,7 +18,7 @@ function graphics_settings_defaults()
         player_minimum_brightness: 0.90,
         enemy_minimum_brightness: 0.80,
         attack_ring_minimum_brightness: 1.00,
-        blood_minimum_brightness: 0
+        blood_minimum_brightness: 0.20
     };
 }
 
@@ -48,7 +48,7 @@ function graphics_settings_load()
             _settings.player_minimum_brightness = clamp(ini_read_real("Graphics", "player_minimum_brightness", 0.90), 0, 1);
             _settings.enemy_minimum_brightness = clamp(ini_read_real("Graphics", "enemy_minimum_brightness", 0.80), 0, 1);
             _settings.attack_ring_minimum_brightness = clamp(ini_read_real("Graphics", "attack_ring_minimum_brightness", 1.00), 0, 1);
-            _settings.blood_minimum_brightness = clamp(ini_read_real("Graphics", "blood_minimum_brightness", 0), 0, 1);
+            _settings.blood_minimum_brightness = clamp(ini_read_real("Graphics", "blood_minimum_brightness", 0.20), 0, 1);
             ini_close();
         }
         catch (_error)

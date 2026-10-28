@@ -56,10 +56,10 @@ function draw_workshop()
     }
 
     // SPRITE BOX
-    var sprite_x1 = left_x1 + 25;
+    var sprite_x1 = (left_x1 + left_x2 - 256) * 0.5;
     var sprite_y1 = top + 270;
-    var sprite_x2 = left_x2 - 25;
-    var sprite_y2 = sprite_y1 + 210;
+    var sprite_x2 = sprite_x1 + 256;
+    var sprite_y2 = sprite_y1 + 256;
 
     draw_rectangle(sprite_x1, sprite_y1, sprite_x2, sprite_y2, true);
 
@@ -76,7 +76,7 @@ function draw_workshop()
         var draw_x = (sprite_x1 + sprite_x2) * 0.5;
         var draw_y = (sprite_y1 + sprite_y2) * 0.5;
 
-        draw_sprite_ext(bench.sprite, 0, draw_x, draw_y, scale, scale, 0, c_white, 1);
+        draw_sprite_ext(bench.sprite, icon_spin_frame(bench.sprite), draw_x, draw_y, scale, scale, 0, merge_color(c_white, c_green, 0.2), 1);
     }
 
     // BENCH DESCRIPTION

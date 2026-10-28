@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"icon_spin_frame",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"icon_spin_frame",
+  "parent":{
+    "name":"Core",
+    "path":"folders/Core.yy"
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0"
+}

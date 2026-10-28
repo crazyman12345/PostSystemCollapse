@@ -25,7 +25,9 @@ enums();
 // ==============================
 state = GameState.MAIN_MENU;
 menu_index = 0;
+main_menu_credits_open = false;
 frame_scale = 1;
+icon_spin_speed = 12;
 music_volume = 0;
 music_instance = audio_play_sound(theme_song, 0, true);
 audio_sound_gain(music_instance, music_volume / 100, 0);
@@ -254,6 +256,14 @@ sprite_prefetch(icon_vitality);
 sprite_prefetch(spr_blood_splat_small);
 sprite_prefetch(spr_blood_pool);
 sprite_prefetch(spr_blood_streak);
+
+// Avoid first-use stalls when raid lootables appear.
+sprite_prefetch(spr_filing_cabinet);
+sprite_prefetch(spr_crate);
+sprite_prefetch(spr_toolbox);
+sprite_prefetch(spr_cashregister);
+sprite_prefetch(spr_shelves);
+sprite_prefetch(spr_foodshelf);
 
 hideout_skill_tabs = [
     { key: "marksmanship", name: "MARKSMANSHIP", icon: skill_icon_marksmanship, description: "Placeholder description for the Marksmanship skill." },

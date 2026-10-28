@@ -18,6 +18,7 @@ function raid_enemy_fire_bullet(_x, _y, _dir, _speed, _damage, _light_enabled = 
             bdirection: _dir,
             bspeed: _speed * 1.15,
             bdamage: _damage,
+            collision_radius: 1.5,
             light_enabled: _light_enabled,
             light_color: _light_color,
             light_radius: _light_radius,

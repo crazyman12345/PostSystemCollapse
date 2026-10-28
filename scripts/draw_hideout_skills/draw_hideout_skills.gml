@@ -56,7 +56,7 @@ function draw_hideout_skills()
             if (skill.icon != -1)
             {
                 var icon_scale = min(icon_size / sprite_get_width(skill.icon), icon_size / sprite_get_height(skill.icon));
-                draw_sprite_ext(skill.icon, 0, icon_left + icon_size * 0.5, tabs_top + tab_height * 0.5, icon_scale, icon_scale, 0, c_green, 1);
+                draw_sprite_ext(skill.icon, icon_spin_frame(skill.icon), icon_left + icon_size * 0.5, tabs_top + tab_height * 0.5, icon_scale, icon_scale, 0, c_green, 1);
             }
             text_x += 48;
         }
@@ -176,7 +176,7 @@ function draw_hideout_skills()
             else
             {
                 var icon_scale = min(48 / sprite_get_width(node.icon), 48 / sprite_get_height(node.icon));
-                draw_sprite_ext(node.icon, 0, node_x, node_y, icon_scale * skill_tree_zoom, icon_scale * skill_tree_zoom, 0, c_white, 1);
+                draw_sprite_ext(node.icon, icon_spin_frame(node.icon), node_x, node_y, icon_scale * skill_tree_zoom, icon_scale * skill_tree_zoom, 0, c_white, 1);
             }
 
             draw_set_halign(fa_center);

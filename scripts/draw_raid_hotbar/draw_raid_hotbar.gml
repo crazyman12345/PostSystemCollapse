@@ -47,7 +47,7 @@ function draw_raid_hotbar(_inventory = false)
                 var scale_y = size / sprite_get_height(sprite);
                 var sprite_x = slot_x + (slot_w * 0.5) + ((sprite_get_xoffset(sprite) - (sprite_get_width(sprite) * 0.5)) * scale_x);
                 var sprite_y = slot_y + (slot_h * 0.5) + ((sprite_get_yoffset(sprite) - (sprite_get_height(sprite) * 0.5)) * scale_y);
-                draw_sprite_ext(sprite, 0, sprite_x, sprite_y, scale_x, scale_y, 0, c_white, 1);
+                draw_sprite_ext(sprite, icon_spin_frame(sprite), sprite_x, sprite_y, scale_x, scale_y, 0, c_white, 1);
             }
             draw_set_color(c_black);
             if (variable_struct_exists(definition, "max_servings"))

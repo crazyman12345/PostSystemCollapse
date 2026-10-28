@@ -58,7 +58,7 @@ function init_workbench_database()
         drug_station: {
             name: "DRUG STATION",
             description: "Produce and process illicit substances.",
-            sprite: -1, //spr_drug_station,
+            sprite: spr_drugtable,
             function_name: "PRODUCTION",
             max_level: 3,
 
@@ -84,7 +84,7 @@ function init_workbench_database()
         medical_station: {
             name: "MEDICAL STATION",
             description: "Produce medical supplies and field treatments.",
-            sprite: -1, //spr_medical_station,
+            sprite: spr_medical_bench,
             function_name: "CRAFTING",
             max_level: 3,
 
@@ -109,7 +109,7 @@ function init_workbench_database()
         armor_bench: {
             name: "ARMOR BENCH",
             description: "Craft armor, protective equipment and bags.",
-            sprite: -1, //spr_armor_bench,
+            sprite: spr_armor_workbench,
             function_name: "CRAFTING",
             max_level: 3,
 

@@ -138,7 +138,7 @@ function skill_notifications_draw()
         {
             var icon_size = 20;
             var icon_scale = min(icon_size / sprite_get_width(icon), icon_size / sprite_get_height(icon));
-            draw_sprite_ext(icon, 0, left + 20, top + row_height * 0.5, icon_scale, icon_scale, 0, c_green, alpha);
+            draw_sprite_ext(icon, icon_spin_frame(icon), left + 20, top + row_height * 0.5, icon_scale, icon_scale, 0, c_green, alpha);
             text_left = left + 38;
         }
 
@@ -181,7 +181,7 @@ function skill_notifications_draw()
         {
             var icon_size = 38;
             var icon_scale = min(icon_size / sprite_get_width(icon), icon_size / sprite_get_height(icon));
-            draw_sprite_ext(icon, 0, content_left + icon_size * 0.5, top + 90, icon_scale, icon_scale, 0, c_green, alpha);
+            draw_sprite_ext(icon, icon_spin_frame(icon), content_left + icon_size * 0.5, top + 90, icon_scale, icon_scale, 0, c_green, alpha);
             content_left += 52;
         }
 

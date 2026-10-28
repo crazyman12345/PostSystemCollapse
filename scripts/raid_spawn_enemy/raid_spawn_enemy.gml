@@ -332,31 +332,31 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.boss_transition_transformed = false;
             enemy.boss_transition_shake_started = false;
             enemy.boss_pacing_phase1 = {
-                dash_speed: 3.5,
+                dash_speed: 2.8,
                 dash_duration: 26,
                 attack_windup: 45,
                 burst_shot_interval: 12,
                 pre_dash_windup: 30,
                 post_dash_windup: 24,
                 attack_recovery: 60,
-                walkdown_speed: 0.7,
+                walkdown_speed: 0.56,
                 walkdown_windup: 45,
                 walkdown_shot_interval: 40,
-                shockwave_move_speed: 2.5,
+                shockwave_move_speed: 2.0,
                 shockwave_windup: 84
             };
             enemy.boss_pacing_phase2 = {
-                dash_speed: 5.46,
+                dash_speed: 4.368,
                 dash_duration: 17,
                 attack_windup: 29,
                 burst_shot_interval: 8,
                 pre_dash_windup: 19,
                 post_dash_windup: 15,
                 attack_recovery: 38,
-                walkdown_speed: 1.09,
+                walkdown_speed: 0.872,
                 walkdown_windup: 29,
                 walkdown_shot_interval: 26,
-                shockwave_move_speed: 3.9,
+                shockwave_move_speed: 3.12,
                 shockwave_windup: 54
             };
             enemy.boss_dash_speed = enemy.boss_pacing_phase1.dash_speed;
