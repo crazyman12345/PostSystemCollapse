@@ -17,7 +17,8 @@ function graphics_settings_defaults()
         bloom: true,
         player_minimum_brightness: 0.90,
         enemy_minimum_brightness: 0.80,
-        attack_ring_minimum_brightness: 1.00
+        attack_ring_minimum_brightness: 1.00,
+        blood_minimum_brightness: 0
     };
 }
 
@@ -47,6 +48,7 @@ function graphics_settings_load()
             _settings.player_minimum_brightness = clamp(ini_read_real("Graphics", "player_minimum_brightness", 0.90), 0, 1);
             _settings.enemy_minimum_brightness = clamp(ini_read_real("Graphics", "enemy_minimum_brightness", 0.80), 0, 1);
             _settings.attack_ring_minimum_brightness = clamp(ini_read_real("Graphics", "attack_ring_minimum_brightness", 1.00), 0, 1);
+            _settings.blood_minimum_brightness = clamp(ini_read_real("Graphics", "blood_minimum_brightness", 0), 0, 1);
             ini_close();
         }
         catch (_error)
@@ -79,6 +81,7 @@ function graphics_settings_save()
     ini_write_real("Graphics", "player_minimum_brightness", _settings.player_minimum_brightness);
     ini_write_real("Graphics", "enemy_minimum_brightness", _settings.enemy_minimum_brightness);
     ini_write_real("Graphics", "attack_ring_minimum_brightness", _settings.attack_ring_minimum_brightness);
+    ini_write_real("Graphics", "blood_minimum_brightness", _settings.blood_minimum_brightness);
     ini_close();
 }
 
@@ -114,7 +117,11 @@ function graphics_settings_apply()
         smoke_particle_update_accumulator = 0;
         smoke_particle_count = 0;
     }
-    if (!_settings.blood_effects) blood_surface_destroy();
+    if (!_settings.blood_effects)
+    {
+        blood_surface_destroy();
+        raid_blood_spray_particles = [];
+    }
     if (!_settings.death_gibs) raid_enemy_death_effects = [];
 }
 

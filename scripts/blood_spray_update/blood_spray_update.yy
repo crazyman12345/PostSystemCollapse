@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"blood_spray_update",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"blood_spray_update",
+  "parent":{
+    "name":"blood",
+    "path":"folders/graphics/blood.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

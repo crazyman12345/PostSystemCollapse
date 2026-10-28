@@ -55,7 +55,7 @@ function draw_raid_pause_menu()
             "BLOOD EFFECTS", "DEATH GIBS", "PROJECTILE GLOW", "PROJECTILE LIGHTING", "BLOOM",
             "PLAYER MINIMUM BRIGHTNESS", "ENEMY MINIMUM BRIGHTNESS", "ATTACK RING MINIMUM BRIGHTNESS", "BLOOM INTENSITY",
             "BLUR RADIUS", "PROJECTILE BLOOM INTENSITY", "PROJECTILE BLUR RADIUS", "BLUR PASSES", "SATURATION", "CONTRAST", "BRIGHTNESS",
-            "RESTORE DEFAULTS", "CONTINUE"
+            "BLOOD MINIMUM BRIGHTNESS", "RESTORE DEFAULTS", "CONTINUE"
         ];
         var _values = [
             string(_fps_options[raid.pause_fps_index]),
@@ -84,6 +84,7 @@ function draw_raid_pause_menu()
             string_format(raid_color_grade_saturation, 1, 2),
             string_format(raid_color_grade_contrast, 1, 2),
             string_format(raid_color_grade_brightness, 1, 2),
+            string(round(_settings.blood_minimum_brightness * 100)) + "%",
             "", ""
         ];
         var _visible_rows = 12;
@@ -101,16 +102,17 @@ function draw_raid_pause_menu()
             var _prefix = raid.pause_graphics_index == _graphics_index ? "> " : "  ";
             draw_text(_label_x, _row_y, _prefix + _labels[_graphics_index]);
             if ((_graphics_index >= 15 && _graphics_index <= 17)
-            || (_graphics_index >= 23 && _graphics_index <= 25))
+            || (_graphics_index >= 23 && _graphics_index <= 26))
             {
                 var _character_brightness_slider = _graphics_index <= 17;
                 var _slider_value = _character_brightness_slider
                     ? (_graphics_index == 15 ? _settings.player_minimum_brightness
                         : (_graphics_index == 16 ? _settings.enemy_minimum_brightness : _settings.attack_ring_minimum_brightness))
                     : (_graphics_index == 23 ? raid_color_grade_saturation
-                        : (_graphics_index == 24 ? raid_color_grade_contrast : raid_color_grade_brightness));
-                var _slider_min = _character_brightness_slider || _graphics_index == 23 ? 0 : 0.5;
-                var _slider_max = _character_brightness_slider ? 1 : (_graphics_index == 23 ? 2 : 1.5);
+                        : (_graphics_index == 24 ? raid_color_grade_contrast
+                            : (_graphics_index == 25 ? raid_color_grade_brightness : _settings.blood_minimum_brightness)));
+                var _slider_min = _character_brightness_slider || _graphics_index == 23 || _graphics_index == 26 ? 0 : 0.5;
+                var _slider_max = _character_brightness_slider || _graphics_index == 26 ? 1 : (_graphics_index == 23 ? 2 : 1.5);
                 var _slider_progress = clamp((_slider_value - _slider_min) / (_slider_max - _slider_min), 0, 1);
                 var _slider_width = 90;
                 var _slider_y = _row_y + 10;
@@ -119,7 +121,7 @@ function draw_raid_pause_menu()
                 draw_rectangle(_slider_knob_x - 2, _slider_y - 5, _slider_knob_x + 2, _slider_y + 5, false);
                 draw_text(_value_x + _slider_width + 12, _row_y, _values[_graphics_index]);
             }
-            else if (_graphics_index < 26) draw_text(_value_x, _row_y, _values[_graphics_index]);
+            else if (_graphics_index < 27) draw_text(_value_x, _row_y, _values[_graphics_index]);
         }
 
         draw_set_halign(fa_center);

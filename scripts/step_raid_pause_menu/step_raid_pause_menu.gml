@@ -34,7 +34,7 @@ function step_raid_pause_menu()
 
     if (raid.pause_menu_tab == 1)
     {
-        var _option_count = 28;
+        var _option_count = 29;
         var _visible_rows = 12;
         var _hover_index = -1;
         var _first_y = _gui_height * 0.32;
@@ -173,7 +173,28 @@ function step_raid_pause_menu()
             else raid_color_grade_brightness = _slider_value;
             scroll_sound();
         }
-        else if (_confirm && _index == 26)
+        else if (_index == 26 && (_option_change != 0 || _confirm))
+        {
+            var _blood_brightness = global.graphics_settings.blood_minimum_brightness;
+            var _slider_left = _gui_width * 0.5 + 150;
+            var _slider_width = 90;
+
+            if (_mouse_clicked && _hover_index == _index
+            && _mouse_x >= _slider_left - 5 && _mouse_x <= _slider_left + _slider_width + 5)
+            {
+                var _slider_progress = clamp((_mouse_x - _slider_left) / _slider_width, 0, 1);
+                _blood_brightness = round(_slider_progress * 20) / 20;
+            }
+            else
+            {
+                var _slider_change = _option_change != 0 ? _option_change : 1;
+                _blood_brightness = clamp(round((_blood_brightness + _slider_change * 0.05) * 20) / 20, 0, 1);
+            }
+
+            graphics_settings_set("blood_minimum_brightness", _blood_brightness);
+            scroll_sound();
+        }
+        else if (_confirm && _index == 27)
         {
             graphics_settings_restore_defaults();
             raid.pause_fps_index = 1;
@@ -188,7 +209,7 @@ function step_raid_pause_menu()
             raid_color_grade_brightness = 1.0;
             audio_play_sound(snd_interact, 0, false);
         }
-        else if (_confirm && _index == 27)
+        else if (_confirm && _index == 28)
         {
             audio_play_sound(snd_interact, 0, false);
             raid_set_state(RaidState.COMBAT);

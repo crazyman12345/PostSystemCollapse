@@ -14,6 +14,7 @@ function raid_enter_start_room()
 
     raid_enemies = [];
     raid_enemy_death_effects = [];
+    raid_blood_spray_particles = [];
     raid_bullets = [];
     raid_doors = [];
     raid_lootables = [];

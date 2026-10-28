@@ -5,6 +5,8 @@ function step_raid_bullets()
         var b = raid_bullets[i];
         var _previous_x = b.bx;
         var _previous_y = b.by;
+		b.bprevious_x = _previous_x;
+		b.bprevious_y = _previous_y;
 
         b.bx += lengthdir_x(b.bspeed * frame_scale, b.bdirection);
         b.by += lengthdir_y(b.bspeed * frame_scale, b.bdirection);

@@ -12,8 +12,6 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
         // ==============================
 
         var _enemy_color = e.enemy_tint;
-        var _total_flash_duration = 8;
-        var _second_flash_duration = floor(_total_flash_duration / 2);
         var _bbox_height =
             sprite_get_bbox_bottom(e.enemy_sprite)
             - sprite_get_bbox_top(e.enemy_sprite)
@@ -23,24 +21,33 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
             0.75
             * _normalize_scale
             * e.size_multiplier;
+		var _impact_deformation = 0;
+		var _impact_offset_x = 0;
+		var _impact_offset_y = 0;
 
-        if (
-            e.enemy_hit_flash_timer > 0
-            && (
-                e.enemy_hit_flash_timer > _total_flash_duration
-                || e.enemy_hit_flash_timer <= _second_flash_duration
-            )
-        )
-            _enemy_color = c_red;
+		if (e.enemy_impact_wiggle_timer > 0)
+		{
+			var _impact_strength = e.enemy_impact_wiggle_timer / e.enemy_impact_wiggle_duration;
+			var _impact_progress = 1 - _impact_strength;
+			_impact_deformation = cos(_impact_progress * 540) * _impact_strength;
+			_impact_offset_x = lengthdir_x(5 * _impact_deformation, e.enemy_knockback_direction);
+			_impact_offset_y = lengthdir_y(5 * _impact_deformation, e.enemy_knockback_direction);
+		}
+
+		var _impact_scale_x = 1 - (0.15 * _impact_deformation);
+		var _impact_scale_y = 1 + (0.09 * _impact_deformation);
+
+        if (e.enemy_hit_flash_timer > 0)
+            _enemy_color = merge_colour(c_white, c_red, 0.35);
 
         draw_sprite_ext(
             e.enemy_sprite,
             floor(e.enemy_frame),
             e.enemy_x,
             e.enemy_y,
-            e.enemy_facing * _draw_scale,
-            _draw_scale,
-            0,
+            e.enemy_facing * _draw_scale * _impact_scale_x,
+            _draw_scale * _impact_scale_y,
+			0,
             _enemy_color,
             _lighting_mask ? _mask_alpha : 1
         );
@@ -55,13 +62,42 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
                 floor(e.enemy_frame),
                 e.enemy_x,
                 e.enemy_y,
-                e.enemy_facing * _draw_scale,
-                _draw_scale,
-                0,
+                e.enemy_facing * _draw_scale * _impact_scale_x,
+                _draw_scale * _impact_scale_y,
+				0,
                 c_white,
                 _flash_alpha
             );
             gpu_set_blendmode(bm_normal);
+        }
+
+        if (!_lighting_mask)
+        {
+            var _bullet_hole_bbox = raid_enemy_get_collision_bbox(e);
+            var _bullet_hole_width = _bullet_hole_bbox.right - _bullet_hole_bbox.left;
+            var _bullet_hole_height = _bullet_hole_bbox.bottom - _bullet_hole_bbox.top;
+
+            for (var _bullet_hole_index = 0; _bullet_hole_index < array_length(e.enemy_bullet_holes); _bullet_hole_index++)
+            {
+                var _bullet_hole = e.enemy_bullet_holes[_bullet_hole_index];
+                var _bullet_hole_normalized_x = e.enemy_facing < 0 ? 1 - _bullet_hole.x : _bullet_hole.x;
+                var _bullet_hole_base_x = _bullet_hole_bbox.left + _bullet_hole_width * _bullet_hole_normalized_x;
+                var _bullet_hole_base_y = _bullet_hole_bbox.top + _bullet_hole_height * _bullet_hole.y;
+                var _bullet_hole_x = e.enemy_x + (_bullet_hole_base_x - e.enemy_x) * _impact_scale_x;
+                var _bullet_hole_y = e.enemy_y + (_bullet_hole_base_y - e.enemy_y) * _impact_scale_y;
+
+                draw_sprite_ext(
+                    spr_enemy_bullet_hole,
+                    0,
+                    _bullet_hole_x,
+                    _bullet_hole_y,
+                    _bullet_hole.scale * _impact_scale_x,
+                    _bullet_hole.scale * _impact_scale_y,
+                    _bullet_hole.angle,
+                    c_white,
+                    1
+                );
+            }
         }
 
         if (e.enemy_type == RaidEnemyType.GRENADE_THROWER)
@@ -70,8 +106,8 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
             var _grenade_y = e.grenade_y;
             var _grenade_rotation = e.grenade_in_flight ? e.grenade_rotation : 0;
             var _grenade_in_hand = e.grenade_held && !e.grenade_landed;
-            var _hand_x = e.enemy_x + e.enemy_facing * 6;
-            var _hand_y = e.enemy_y - 14;
+            var _hand_x = e.enemy_x + e.enemy_facing * 6 + _impact_offset_x;
+            var _hand_y = e.enemy_y - 14 + _impact_offset_y;
             var _hand_rotation = 0;
 
             if (_grenade_in_hand)
@@ -83,14 +119,14 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
                 if (_throw_progress < 0.45)
                 {
                     var _windup_progress = _throw_progress / 0.45;
-                    _grenade_x = e.enemy_x + e.enemy_facing * lerp(10, -5, _windup_progress);
-                    _grenade_y = e.enemy_y + lerp(-17, -28, _windup_progress);
+                    _grenade_x = e.enemy_x + e.enemy_facing * lerp(10, -5, _windup_progress) + _impact_offset_x;
+                    _grenade_y = e.enemy_y + lerp(-17, -28, _windup_progress) + _impact_offset_y;
                 }
                 else
                 {
                     var _release_progress = (_throw_progress - 0.45) / 0.55;
-                    _grenade_x = e.enemy_x + e.enemy_facing * lerp(-5, 16, _release_progress);
-                    _grenade_y = e.enemy_y + lerp(-28, -20, _release_progress);
+                    _grenade_x = e.enemy_x + e.enemy_facing * lerp(-5, 16, _release_progress) + _impact_offset_x;
+                    _grenade_y = e.enemy_y + lerp(-28, -20, _release_progress) + _impact_offset_y;
                 }
 
                 _grenade_rotation = e.enemy_facing * _throw_progress * 90;

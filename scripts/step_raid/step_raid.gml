@@ -78,6 +78,7 @@ function step_raid()
     // Cleanup
     if (raid.state == RaidState.COMBAT || raid.state == RaidState.EXITING)
     {
+        blood_spray_update();
         smoke_update();
         explosion_update();
     }

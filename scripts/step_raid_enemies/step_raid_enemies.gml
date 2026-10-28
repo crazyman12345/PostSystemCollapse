@@ -107,6 +107,19 @@ function step_raid_enemies()
         if (e.enemy_hit_flash_timer > 0)
             e.enemy_hit_flash_timer -= frame_scale;
 
+		if (e.enemy_impact_wiggle_timer > 0)
+			e.enemy_impact_wiggle_timer = max(0, e.enemy_impact_wiggle_timer - frame_scale);
+
+		if (e.enemy_knockback_speed > 0)
+		{
+			e.enemy_x += lengthdir_x(e.enemy_knockback_speed * frame_scale, e.enemy_knockback_direction);
+			e.enemy_y += lengthdir_y(e.enemy_knockback_speed * frame_scale, e.enemy_knockback_direction);
+			e.enemy_knockback_speed *= power(0.72, frame_scale);
+
+			if (e.enemy_knockback_speed < 0.05)
+				e.enemy_knockback_speed = 0;
+		}
+
         // ==========================================
         // KEEP ENEMY INSIDE ROOM
         // ==========================================
@@ -129,14 +142,9 @@ function step_raid_enemies()
         for (var b = array_length(raid_bullets) - 1; b >= 0; b--)
         {
             var bullet = raid_bullets[b];
+            var _bullet_hit = raid_enemy_get_bullet_hit(e, bullet);
 
-            var _bullet_bbox = raid_enemy_get_collision_bbox(e);
-            if (
-                bullet.bx >= _bullet_bbox.left - 4
-                && bullet.bx <= _bullet_bbox.right + 4
-                && bullet.by >= _bullet_bbox.top - 4
-                && bullet.by <= _bullet_bbox.bottom + 4
-            )
+            if (_bullet_hit.hit)
             {
                 if (!e.enemy_invulnerable)
                 {
@@ -158,14 +166,34 @@ function step_raid_enemies()
                     e.enemy_hp -= _bullet_damage;
                     e.enemy_last_hit_direction = bullet.bdirection;
                     if (e.enemy_hp < _enemy_hp_before)
-                        blood_hit_effect(e.enemy_x, e.enemy_y, bullet.bdirection);
+					{
+						var _dash_knockback_limit = 2.5;
+						var _is_dashing = e.enemy_state == RaidEnemyState.DASH;
+
+						if (_is_dashing)
+							_dash_knockback_limit = e.dash_speed * 0.4;
+						else if (e.enemy_type == RaidEnemyType.BONES && e.boss_attack_state == BossAttackState.DASH)
+						{
+							_is_dashing = true;
+							_dash_knockback_limit = e.boss_dash_speed * 0.4;
+						}
+
+						e.enemy_knockback_speed = _is_dashing
+							? min(2.5, _dash_knockback_limit)
+							: max(e.enemy_knockback_speed, 2.5);
+						e.enemy_knockback_direction = bullet.bdirection;
+						e.enemy_impact_wiggle_timer = e.enemy_impact_wiggle_duration;
+                        e = raid_enemy_add_bullet_hole(e, _bullet_hit.entry_x, _bullet_hit.entry_y, bullet.bdirection);
+                        blood_spray_create(_bullet_hit.exit_x, _bullet_hit.exit_y, bullet.bdirection);
+                        blood_hit_effect(_bullet_hit.entry_x, _bullet_hit.entry_y, bullet.bdirection);
+					}
                     if (_enemy_hp_before > 0 && e.enemy_hp <= 0)
                     {
                         var _death_sound = audio_play_sound(choose(gore1, gore2, gore3, gore4, gore5), 0, false);
                         audio_sound_pitch(_death_sound, random_range(0.92, 1.08));
                     }
                     var _total_flash_duration = 8;
-                    e.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
+                    e.enemy_hit_flash_timer = _total_flash_duration;
                     play_impact_sound(raid_enemy_hit_sound, "bullet");
                 }
 

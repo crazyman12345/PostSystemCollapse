@@ -17,8 +17,20 @@ function draw_raid_enemy_gun_and_hands(_enemy, _lighting_mask = false, _mask_alp
     // PIVOT / DIRECTION
     // ==============================
 
-    var _pivot_x = _enemy.enemy_x;
-    var _pivot_y = _enemy.enemy_y - (18 * _s) + (_enemy.enemy_gun_y * _s);
+    var _impact_offset_x = 0;
+    var _impact_offset_y = 0;
+
+    if (_enemy.enemy_impact_wiggle_timer > 0)
+    {
+        var _impact_strength = _enemy.enemy_impact_wiggle_timer / _enemy.enemy_impact_wiggle_duration;
+        var _impact_progress = 1 - _impact_strength;
+        var _impact_deformation = cos(_impact_progress * 540) * _impact_strength;
+        _impact_offset_x = lengthdir_x(5 * _impact_deformation, _enemy.enemy_knockback_direction);
+        _impact_offset_y = lengthdir_y(5 * _impact_deformation, _enemy.enemy_knockback_direction);
+    }
+
+    var _pivot_x = _enemy.enemy_x + _impact_offset_x;
+    var _pivot_y = _enemy.enemy_y - (18 * _s) + (_enemy.enemy_gun_y * _s) + _impact_offset_y;
 
     var _dir = _enemy.enemy_gun_angle;
 

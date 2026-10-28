@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_enemy_add_bullet_hole",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_enemy_add_bullet_hole",
+  "parent":{
+    "name":"enemies",
+    "path":"folders/Raid/enemies.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

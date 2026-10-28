@@ -13,6 +13,11 @@ function raid_spawn_enemy(_type, _x, _y)
         enemy_last_hit_direction: undefined,
         enemy_invulnerable: false,
         enemy_tint: c_white,
+		enemy_bullet_holes: [],
+		enemy_knockback_speed: 0,
+		enemy_knockback_direction: 0,
+		enemy_impact_wiggle_timer: 0,
+		enemy_impact_wiggle_duration: 20,
 
         enemy_speed: 1.0,
         lead_strength: 0,

@@ -242,7 +242,7 @@ function step_raid_shooting(_allow_input)
                         blood_hit_effect(_target.enemy_x, _target.enemy_y, raid_knife_attack_dir);
                     player_skill_add_xp("strength", skill_xp_awards.strength_knife_hit);
                     var _total_flash_duration = 8;
-                    _target.enemy_hit_flash_timer = _total_flash_duration + ceil(_total_flash_duration / 2);
+                    _target.enemy_hit_flash_timer = _total_flash_duration;
                     play_impact_sound(raid_enemy_hit_sound, "knife");
                 }
                 raid_enemies[_target_index] = _target;
@@ -510,6 +510,8 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 			var bullet = {
 				bx: _muzzle_x,
 				by: _muzzle_y,
+				bprevious_x: _muzzle_x,
+				bprevious_y: _muzzle_y,
 				btravel_distance: 0,
 
 				bdirection: _pellet_angle,
