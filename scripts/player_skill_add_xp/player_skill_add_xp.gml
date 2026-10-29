@@ -125,12 +125,8 @@ function skill_notifications_draw()
         var top = stack_top + i * (row_height + 5) + 4 - rise;
         var left = panel_right - panel_width;
 
-        draw_set_alpha(alpha * 0.88);
-        draw_set_color(c_black);
-        draw_rectangle(left, top, panel_right, top + row_height, false);
         draw_set_alpha(alpha);
-        draw_set_color(c_green);
-        draw_rectangle(left, top, panel_right, top + row_height, true);
+        draw_terminal_rectangle(left, top, panel_right, top + row_height, c_green, 0.88);
 
         var icon = skill_notification_get_icon(notification.skill_key);
         var text_left = left + 12;
@@ -156,12 +152,10 @@ function skill_notifications_draw()
         var top = 58;
         var right = left + level_panel_width;
 
-        draw_set_alpha(alpha * 0.92);
-        draw_set_color(c_black);
-        draw_rectangle(left, top, right, top + panel_height, false);
+        draw_set_alpha(alpha * 0.35);
+        draw_terminal_rectangle(left, top, right, top + panel_height, c_green, 0.55);
         draw_set_alpha(alpha);
         draw_set_color(c_green);
-        draw_rectangle(left, top, right, top + panel_height, true);
         draw_line(left + 20, top + 48, right - 20, top + 48);
 
         draw_set_font(fnt_terminal_medium);

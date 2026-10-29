@@ -99,6 +99,13 @@ function raid_combat_loss()
 
 function raid_player_death_start()
 {
+    if (raid_godmode)
+    {
+        raid_player_hp = max(health_config.hp_chunk, raid_player_hp);
+        player_health_sync_crew();
+        return;
+    }
+
     raid_set_state(RaidState.DEATH);
 }
 

@@ -376,7 +376,7 @@ function raid_spawn_enemy(_type, _x, _y)
 	    enemy.boss_intro_stage = 0;
 	    enemy.boss_intro_camera_ready = false;
 	    enemy.boss_intro_target_y = _y;
-	    enemy.boss_intro_timer = 0;
+	    enemy.boss_intro_timer = 30;
 	    enemy.boss_intro_character_count = 0;
 	    enemy.boss_intro_dialogue = "";
 	    enemy.enemy_y = raid_room_y1 - 60;

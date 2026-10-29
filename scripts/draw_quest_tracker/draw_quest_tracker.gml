@@ -41,7 +41,9 @@ function quest_tracker_get_objective_index(_definition, _progress)
 
 function quest_tracker_get_panel_bottom()
 {
-    return 10 + (quest_tracker_expanded_remaining > 0 ? 116 : 42);
+    var definition = quest_get_definition(tracked_quest_key);
+    var objective_count = is_undefined(definition) ? 1 : max(1, array_length(definition.objectives));
+    return 126 + (max(0, objective_count - 1) * 38);
 }
 
 function draw_quest_tracker()
@@ -52,58 +54,95 @@ function draw_quest_tracker()
     var progress = quest_get_progress(tracked_quest_key);
     if (is_undefined(definition) || is_undefined(progress)) return;
 
-    var objective_index = quest_tracker_get_objective_index(definition, progress);
-    var objective_text = "READY TO TURN IN";
-    var progress_text = "";
-    if (objective_index >= 0)
-    {
-        var objective = definition.objectives[objective_index];
-        var amount = quest_get_objective_display_progress(definition, progress, objective_index);
-        objective_text = objective.text;
-        progress_text = string(amount) + "/" + string(objective.amount);
-    }
-
-    var panel_right = display_get_gui_width() - 30;
-    var panel_left = panel_right - 460;
-    var panel_top = 10;
-    var expanded = quest_tracker_expanded_remaining > 0;
+    var panel_right = display_get_gui_width() - 20;
+    var panel_left = panel_right - 520;
+    var panel_top = 20;
     var panel_bottom = quest_tracker_get_panel_bottom();
+    var header_bottom = panel_top + 36;
+    var quest_row_bottom = header_bottom + 70;
+    var current_objective_index = quest_tracker_get_objective_index(definition, progress);
 
-    draw_set_alpha(0.88);
-    draw_set_color(c_black);
-    draw_rectangle(panel_left, panel_top, panel_right, panel_bottom, false);
-    draw_set_alpha(1);
-    draw_set_color(c_green);
-    draw_rectangle(panel_left, panel_top, panel_right, panel_bottom, true);
+    draw_terminal_rectangle(panel_left, panel_top, panel_right, panel_bottom, c_green, 0.88);
+    draw_terminal_rectangle(panel_left, panel_top, panel_right, header_bottom, c_green, 0.55);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 
-    if (expanded)
+    draw_set_font(fnt_terminal_small);
+    draw_set_color(c_lime);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text((panel_left + panel_right) * 0.5, panel_top + 18, "QUESTS (1)");
+
+    var icon_left = panel_left + 12;
+    var icon_top = header_bottom + 13;
+    var icon_size = 44;
+    draw_terminal_rectangle(icon_left, icon_top, icon_left + icon_size, icon_top + icon_size, c_green, 0.65);
+    draw_set_font(fnt_terminal);
+    draw_set_color(c_lime);
+    draw_text(icon_left + (icon_size * 0.5), icon_top + (icon_size * 0.5), "?");
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_font(fnt_terminal_small);
+    draw_set_color(c_lime);
+    draw_text(icon_left + icon_size + 14, header_bottom + 10, string_upper(definition.title));
+
+    if (array_length(definition.objectives) > 0)
     {
+        var first_objective = definition.objectives[0];
+        var first_amount = quest_get_objective_display_progress(definition, progress, 0);
+        var first_complete = progress.objectives[0] >= first_objective.amount;
+        var first_text = string_lower(first_objective.text);
+        first_text = string_upper(string_copy(first_text, 1, 1)) + string_delete(first_text, 1, 1);
+
         draw_set_font(fnt_terminal_tiny);
-        draw_set_color(c_green);
-        draw_text(panel_left + 12, panel_top + 9, "TRACKED QUEST");
-        draw_set_font(fnt_terminal_small);
-        draw_set_color(c_lime);
-        draw_text(panel_left + 12, panel_top + 34, definition.title);
-        draw_set_font(fnt_terminal_tiny);
-        draw_set_color(c_green);
-        draw_text(panel_left + 12, panel_top + 78, objective_text);
+        draw_set_color(first_complete ? c_gray : c_white);
+        draw_text(icon_left + icon_size + 14, header_bottom + 39, first_text);
         draw_set_halign(fa_right);
-        draw_set_color(c_lime);
-        draw_text(panel_right - 12, panel_top + 78, progress_text);
+        draw_set_color(first_complete ? c_gray : c_lime);
+        draw_text(panel_right - 14, header_bottom + 39, string(first_amount) + " / " + string(first_objective.amount));
     }
     else
     {
         draw_set_font(fnt_terminal_tiny);
         draw_set_color(c_lime);
-        var line = definition.title + " - " + objective_text;
-        var progress_width = progress_text == "" ? 0 : string_width(progress_text) + 14;
-        var available_width = panel_right - panel_left - 24 - progress_width;
-        var line_scale = min(1, available_width / max(1, string_width(line)));
-        draw_text_transformed(panel_left + 12, panel_top + 12, line, line_scale, 1, 0);
+        draw_text(icon_left + icon_size + 14, header_bottom + 39, "Ready to turn in");
+    }
+
+    for (var i = 1; i < array_length(definition.objectives); i++)
+    {
+        var row_top = quest_row_bottom + ((i - 1) * 38);
+        var objective = definition.objectives[i];
+        var amount = quest_get_objective_display_progress(definition, progress, i);
+        var complete = progress.objectives[i] >= objective.amount;
+        var objective_text = string_lower(objective.text);
+        objective_text = string_upper(string_copy(objective_text, 1, 1)) + string_delete(objective_text, 1, 1);
+
+        draw_set_alpha(0.45);
+        draw_set_color(c_green);
+        draw_line(panel_left + 6, row_top, panel_right - 6, row_top);
+        draw_set_alpha(1);
+
+        var box_left = panel_left + 18;
+        var box_top = row_top + 9;
+        draw_terminal_rectangle(box_left, box_top, box_left + 20, box_top + 20, complete ? c_green : c_dkgray, 0.55);
+        if (complete)
+        {
+            draw_set_font(fnt_terminal_tiny);
+            draw_set_color(c_green);
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_middle);
+            draw_text(box_left + 10, box_top + 10, "X");
+        }
+
+        draw_set_font(fnt_terminal_tiny);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        draw_set_color(complete ? c_gray : (i == current_objective_index ? c_white : c_gray));
+        draw_text(panel_left + 50, row_top + 11, objective_text);
         draw_set_halign(fa_right);
-        draw_text(panel_right - 12, panel_top + 12, progress_text);
+        draw_set_color(complete ? c_gray : (i == current_objective_index ? c_lime : c_gray));
+        draw_text(panel_right - 14, row_top + 11, string(amount) + " / " + string(objective.amount));
     }
 
     draw_set_alpha(1);

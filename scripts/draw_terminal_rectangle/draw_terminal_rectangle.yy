@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_terminal_rectangle",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_terminal_rectangle",
+  "parent":{
+    "name":"terminal",
+    "path":"folders/UI/terminal.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

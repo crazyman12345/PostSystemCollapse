@@ -32,8 +32,25 @@ function raid_environment_init()
         door_inner_face_material: _door_inner_face_material,
         perspective_x: 0,
         perspective_y: 0,
+        ladder_x_offset: 44,
+        ladder_y_offset: 62,
+        ladder_width: 24,
+        ladder_height: 4416.78,
+        ladder_projection_x: -0.02,
+        ladder_projection_y: -0.03,
+        ladder_perspective_strength_x: 0.11,
+        ladder_perspective_strength_y: 0,
+        ladder_perspective_x: 0,
+        ladder_perspective_y: 0,
+        ladder_shadow_offset_x: 3,
+        ladder_shadow_offset_y: -11,
+        ladder_contact_shadow_offset_x: -2,
+        ladder_contact_shadow_offset_y: 0,
+        ladder_material: raid_environment_material(spr_extract_ladder),
         geometry: undefined
     };
+    raid_environment.ladder_material.scale_x = 71;
+    raid_environment.ladder_material.scale_y = 74;
     raid_texture_crop_debug_init();
 }
 

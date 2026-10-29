@@ -7,6 +7,7 @@ function raid_shadow_get_active_occluders()
         _active = raid_shadow_get_arena_wall_occluders();
         for (var _static_index = 0; _static_index < array_length(raid_shadow_occluders); _static_index++)
             array_push(_active, raid_shadow_occluders[_static_index]);
+        if (raid.extract_active) array_push(_active, raid_shadow_get_ladder_occluder());
     }
 
     // Character arrays are the dynamic registration source. Their current body
@@ -123,6 +124,66 @@ function raid_shadow_get_active_occluders()
     }
     return _active;
 }
+
+
+function raid_shadow_get_ladder_occluder()
+{
+    var _sprite = spr_extract_ladder;
+    var _material = raid_environment.ladder_material;
+    var _uv_width = _material.uv_right - _material.uv_left;
+    var _uv_height = _material.uv_bottom - _material.uv_top;
+    var _uv_center_u = (_material.uv_left + _material.uv_right) * 0.5;
+    var _uv_center_v = (_material.uv_top + _material.uv_bottom) * 0.5;
+    var _source_uv_left = _uv_center_u - _uv_width * 0.5 / (_material.scale_x / 100);
+    var _source_uv_right = _uv_center_u + _uv_width * 0.5 / (_material.scale_x / 100);
+    var _source_uv_top = _uv_center_v - _uv_height * 0.5 / (_material.scale_y / 100);
+    var _source_uv_bottom = _uv_center_v + _uv_height * 0.5 / (_material.scale_y / 100);
+    var _local_left = lerp(_material.crop_left / 100, 1 - _material.crop_right / 100, -_material.offset_x / 100);
+    var _local_right = lerp(_material.crop_left / 100, 1 - _material.crop_right / 100, 1 - _material.offset_x / 100);
+    var _local_top = lerp(_material.crop_top / 100, 1 - _material.crop_bottom / 100, -_material.offset_y / 100);
+    var _local_bottom = lerp(_material.crop_top / 100, 1 - _material.crop_bottom / 100, 1 - _material.offset_y / 100);
+    var _uv_offset_u = _uv_width * (_material.uv_offset_u / 100);
+    var _uv_offset_v = _uv_height * (_material.uv_offset_v / 100);
+    var _width = raid_environment.ladder_width;
+    var _height = raid_environment.ladder_height;
+    var _shadow_height = max(0.001, abs(_height * (
+        raid_environment.ladder_projection_y * raid_environment.vertical_projection
+        + raid_environment.ladder_perspective_y
+    )));
+    var _ground_x = raid_room_x1 + raid_environment.ladder_x_offset + raid_environment.ladder_shadow_offset_x;
+    var _ground_y = raid_room_y1 + raid_environment.ladder_y_offset + raid_environment.ladder_shadow_offset_y;
+    var _silhouette = {
+        crop_left: 0,
+        crop_top: 0,
+        crop_right: sprite_get_width(_sprite),
+        crop_bottom: sprite_get_height(_sprite),
+        uv_left: lerp(_source_uv_left + _uv_offset_u, _source_uv_right + _uv_offset_u, _local_left),
+        uv_top: lerp(_source_uv_top + _uv_offset_v, _source_uv_bottom + _uv_offset_v, _local_top),
+        uv_right: lerp(_source_uv_left + _uv_offset_u, _source_uv_right + _uv_offset_u, _local_right),
+        uv_bottom: lerp(_source_uv_top + _uv_offset_v, _source_uv_bottom + _uv_offset_v, _local_bottom),
+        texture: _material.texture
+    };
+
+    return {
+        geometry: {type: "sprite", width: _width, silhouette: _silhouette},
+        position: {x: _ground_x, y: _ground_y},
+        height: _shadow_height,
+        rotation: 0,
+        flip_x: false,
+        flip_y: false,
+        enabled: true,
+        draw_sprite: _sprite,
+        draw_subimage: 0,
+        draw_x: _ground_x,
+        draw_y: _ground_y,
+        draw_xscale: _width / sprite_get_width(_sprite),
+        draw_yscale: _shadow_height / sprite_get_height(_sprite),
+        source_position: {x: _ground_x, y: _ground_y - _shadow_height * 0.5},
+        source_size: {width: _width, height: _shadow_height},
+        exclude_source_from_shadow: false
+    };
+}
+
 
 function raid_shadow_get_player_body_occluder()
 {

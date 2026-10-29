@@ -16,6 +16,10 @@ function raid_environment_update()
 
     raid_environment.perspective_x = lerp(raid_environment.perspective_x, _target_x, _smooth_amount);
     raid_environment.perspective_y = lerp(raid_environment.perspective_y, _target_y, _smooth_amount);
+    var _ladder_target_x = _normalized_x * raid_environment.ladder_perspective_strength_x / _wall_height;
+    var _ladder_target_y = _normalized_y * raid_environment.ladder_perspective_strength_y / _wall_height;
+    raid_environment.ladder_perspective_x = lerp(raid_environment.ladder_perspective_x, _ladder_target_x, _smooth_amount);
+    raid_environment.ladder_perspective_y = lerp(raid_environment.ladder_perspective_y, _ladder_target_y, _smooth_amount);
     raid_environment_project_geometry();
 }
 

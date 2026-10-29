@@ -100,6 +100,8 @@ function player_health_get_impact_limb(_impact_x, _impact_y, _record_debug = fal
 
 function player_health_apply_global_damage(_damage)
 {
+    if (raid_godmode) return 0;
+
     var _chunks = max(0, round(_damage / health_config.hp_chunk));
     if (_chunks <= 0) return 0;
     var _applied = min(raid_player_hp, _chunks * health_config.hp_chunk);

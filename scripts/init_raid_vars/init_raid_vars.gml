@@ -193,6 +193,7 @@ raid_player_invincible = false;
 raid_player_invincible_timer = 0;
 raid_player_invincible_time = 90; // about 1 second at 60 FPS
 raid_godmode = false;
+raid_ladder_projection_debug_enabled = false;
 raid_hit_region_debug_enabled = false;
 raid_hit_region_debug_impact_x = undefined;
 raid_hit_region_debug_impact_y = undefined;

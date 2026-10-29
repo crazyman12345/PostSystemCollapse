@@ -4,26 +4,38 @@ function raid_texture_crop_debug_step()
     {
         raid_texture_crop_debug_active = !raid_texture_crop_debug_active;
         raid_texture_crop_debug_drag_row = -1;
+        raid_texture_crop_debug_scroll_row = 0;
     }
     if (!raid_texture_crop_debug_active) return false;
 
     if (keyboard_check_pressed(vk_tab))
     {
-        raid_texture_crop_debug_tab = (raid_texture_crop_debug_tab + 1) mod 5;
+        raid_texture_crop_debug_tab = (raid_texture_crop_debug_tab + 1) mod 6;
+        raid_texture_crop_debug_scroll_row = 0;
         if (raid_texture_crop_debug_selection < 20)
             raid_texture_crop_debug_selection = min(raid_texture_crop_debug_selection,
-                raid_texture_crop_debug_tab == 2 ? 12 : (raid_texture_crop_debug_tab == 3 ? 2 : (raid_texture_crop_debug_tab == 4 ? 3 : 9)));
+                raid_texture_crop_debug_tab == 2 ? 12 : (raid_texture_crop_debug_tab == 3 ? 2 : (raid_texture_crop_debug_tab == 4 ? 3 : (raid_texture_crop_debug_tab == 5 ? 16 : 9))));
     }
-    var _row_count = raid_texture_crop_debug_tab == 2 ? 13 : (raid_texture_crop_debug_tab == 3 ? 3 : (raid_texture_crop_debug_tab == 4 ? 4 : 10));
+    var _row_count = raid_texture_crop_debug_tab == 2 ? 13 : (raid_texture_crop_debug_tab == 3 ? 3 : (raid_texture_crop_debug_tab == 4 ? 4 : (raid_texture_crop_debug_tab == 5 ? 17 : 10)));
+    var _selection_moved = false;
     if (keyboard_check_pressed(vk_up))
     {
         if (raid_texture_crop_debug_selection == 20) raid_texture_crop_debug_selection = _row_count - 1;
         else raid_texture_crop_debug_selection = max(0, raid_texture_crop_debug_selection - 1);
+        _selection_moved = true;
     }
     if (keyboard_check_pressed(vk_down))
     {
         if (raid_texture_crop_debug_selection == _row_count - 1) raid_texture_crop_debug_selection = 20;
         else raid_texture_crop_debug_selection = min(23, raid_texture_crop_debug_selection + 1);
+        _selection_moved = true;
+    }
+    if (_selection_moved && raid_texture_crop_debug_selection < _row_count)
+    {
+        if (raid_texture_crop_debug_selection < raid_texture_crop_debug_scroll_row)
+            raid_texture_crop_debug_scroll_row = raid_texture_crop_debug_selection;
+        else if (raid_texture_crop_debug_selection >= raid_texture_crop_debug_scroll_row + 10)
+            raid_texture_crop_debug_scroll_row = raid_texture_crop_debug_selection - 9;
     }
 
     var _names = ["crop_left", "crop_right", "crop_top", "crop_bottom", "offset_x", "offset_y", "uv_offset_u", "uv_offset_v", "scale_x", "scale_y"];
@@ -32,7 +44,13 @@ function raid_texture_crop_debug_step()
         var _change = keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left);
         if (_change != 0)
         {
-            if (raid_texture_crop_debug_tab == 4)
+            if (raid_texture_crop_debug_tab == 5)
+            {
+                var _ladder_field = raid_texture_crop_debug_selection;
+                raid_texture_crop_debug_ladder_set(_ladder_field,
+                    raid_texture_crop_debug_ladder_value(_ladder_field) + _change * raid_texture_crop_debug_ladder_step(_ladder_field));
+            }
+            else if (raid_texture_crop_debug_tab == 4)
             {
                 var _environment_fields = ["vertical_projection", "perspective_strength_x", "perspective_strength_y", "perspective_smoothing"];
                 var _environment_field = raid_texture_crop_debug_selection;
@@ -79,37 +97,61 @@ function raid_texture_crop_debug_mouse_input()
     if (_pressed && point_in_rectangle(_mouse_x, _mouse_y, 50, 110, 146, 140))
     {
         raid_texture_crop_debug_tab = 0;
+        raid_texture_crop_debug_scroll_row = 0;
         raid_texture_crop_debug_selection = min(raid_texture_crop_debug_selection, 9);
     }
     if (_pressed && point_in_rectangle(_mouse_x, _mouse_y, 149, 110, 245, 140))
     {
         raid_texture_crop_debug_tab = 1;
+        raid_texture_crop_debug_scroll_row = 0;
         raid_texture_crop_debug_selection = min(raid_texture_crop_debug_selection, 9);
     }
     if (_pressed && point_in_rectangle(_mouse_x, _mouse_y, 248, 110, 344, 140))
     {
         raid_texture_crop_debug_tab = 2;
+        raid_texture_crop_debug_scroll_row = 0;
         raid_texture_crop_debug_selection = min(raid_texture_crop_debug_selection, 12);
     }
     if (_pressed && point_in_rectangle(_mouse_x, _mouse_y, 347, 110, 443, 140))
     {
         raid_texture_crop_debug_tab = 3;
+        raid_texture_crop_debug_scroll_row = 0;
         raid_texture_crop_debug_selection = min(raid_texture_crop_debug_selection, 2);
     }
     if (_pressed && point_in_rectangle(_mouse_x, _mouse_y, 446, 110, 542, 140))
     {
         raid_texture_crop_debug_tab = 4;
+        raid_texture_crop_debug_scroll_row = 0;
         raid_texture_crop_debug_selection = min(raid_texture_crop_debug_selection, 3);
+    }
+    if (_pressed && point_in_rectangle(_mouse_x, _mouse_y, 545, 110, 641, 140))
+    {
+        raid_texture_crop_debug_tab = 5;
+        raid_texture_crop_debug_scroll_row = 0;
+        raid_texture_crop_debug_selection = min(raid_texture_crop_debug_selection, 16);
     }
 
     var _material = raid_texture_crop_debug_tab >= 2 ? undefined : raid_texture_crop_debug_material();
     var _names = ["crop_left", "crop_right", "crop_top", "crop_bottom", "offset_x", "offset_y", "uv_offset_u", "uv_offset_v", "scale_x", "scale_y"];
     var _environment_names = ["vertical_projection", "perspective_strength_x", "perspective_strength_y", "perspective_smoothing"];
-    var _row_count = raid_texture_crop_debug_tab == 2 ? 13 : (raid_texture_crop_debug_tab == 3 ? 3 : (raid_texture_crop_debug_tab == 4 ? 4 : 10));
-    for (var _row = 0; _row < _row_count; _row++)
+    var _row_count = raid_texture_crop_debug_tab == 2 ? 13 : (raid_texture_crop_debug_tab == 3 ? 3 : (raid_texture_crop_debug_tab == 4 ? 4 : (raid_texture_crop_debug_tab == 5 ? 17 : 10)));
+    var _max_scroll = max(0, _row_count - 10);
+    if (mouse_wheel_up())
     {
-        var _row_spacing = raid_texture_crop_debug_tab == 2 ? 30 : 40;
-        var _row_y = 165 + _row * _row_spacing;
+        raid_texture_crop_debug_scroll_row = max(0, raid_texture_crop_debug_scroll_row - 1);
+        raid_texture_crop_debug_drag_row = -1;
+    }
+    if (mouse_wheel_down())
+    {
+        raid_texture_crop_debug_scroll_row = min(_max_scroll, raid_texture_crop_debug_scroll_row + 1);
+        raid_texture_crop_debug_drag_row = -1;
+    }
+    raid_texture_crop_debug_scroll_row = clamp(raid_texture_crop_debug_scroll_row, 0, _max_scroll);
+    var _first_row = raid_texture_crop_debug_scroll_row;
+    var _last_row = min(_row_count, _first_row + 10);
+    for (var _row = _first_row; _row < _last_row; _row++)
+    {
+        var _row_y = 165 + (_row - _first_row) * 40;
         if (_pressed && point_in_rectangle(_mouse_x, _mouse_y, 210, _row_y, 390, _row_y + 24))
         {
             raid_texture_crop_debug_selection = _row;
@@ -118,7 +160,10 @@ function raid_texture_crop_debug_mouse_input()
         if (_pressed && point_in_rectangle(_mouse_x, _mouse_y, 410, _row_y, 442, _row_y + 24))
         {
             raid_texture_crop_debug_selection = _row;
-            if (raid_texture_crop_debug_tab == 4)
+            if (raid_texture_crop_debug_tab == 5)
+                raid_texture_crop_debug_ladder_set(_row,
+                    raid_texture_crop_debug_ladder_value(_row) - raid_texture_crop_debug_ladder_step(_row));
+            else if (raid_texture_crop_debug_tab == 4)
             {
                 var _environment_minus_step = _row == 0 || _row == 3 ? 0.05 : 0.25;
                 raid_texture_crop_debug_environment_set(_row,
@@ -140,7 +185,10 @@ function raid_texture_crop_debug_mouse_input()
         if (_pressed && point_in_rectangle(_mouse_x, _mouse_y, 510, _row_y, 542, _row_y + 24))
         {
             raid_texture_crop_debug_selection = _row;
-            if (raid_texture_crop_debug_tab == 4)
+            if (raid_texture_crop_debug_tab == 5)
+                raid_texture_crop_debug_ladder_set(_row,
+                    raid_texture_crop_debug_ladder_value(_row) + raid_texture_crop_debug_ladder_step(_row));
+            else if (raid_texture_crop_debug_tab == 4)
             {
                 var _environment_plus_step = _row == 0 || _row == 3 ? 0.05 : 0.25;
                 raid_texture_crop_debug_environment_set(_row,
@@ -164,7 +212,13 @@ function raid_texture_crop_debug_mouse_input()
     if (raid_texture_crop_debug_drag_row >= 0 && mouse_check_button(mb_left))
     {
         var _drag_value;
-        if (raid_texture_crop_debug_tab == 4)
+        if (raid_texture_crop_debug_tab == 5)
+        {
+            var _ladder_min = raid_texture_crop_debug_ladder_min(raid_texture_crop_debug_drag_row);
+            var _ladder_max = raid_texture_crop_debug_ladder_max(raid_texture_crop_debug_drag_row);
+            _drag_value = _ladder_min + ((_mouse_x - 210) / 180) * (_ladder_max - _ladder_min);
+        }
+        else if (raid_texture_crop_debug_tab == 4)
         {
             var _environment_max = raid_texture_crop_debug_drag_row == 3 ? 1
                 : (raid_texture_crop_debug_drag_row == 0 ? 2 : 20);
@@ -190,7 +244,9 @@ function raid_texture_crop_debug_mouse_input()
             _drag_value = ((_mouse_x - 210) / 180) * 200 - 100;
         else
             _drag_value = 10 + ((_mouse_x - 210) / 180) * 190;
-        if (raid_texture_crop_debug_tab == 4)
+        if (raid_texture_crop_debug_tab == 5)
+            raid_texture_crop_debug_ladder_set(raid_texture_crop_debug_drag_row, _drag_value);
+        else if (raid_texture_crop_debug_tab == 4)
             raid_texture_crop_debug_environment_set(raid_texture_crop_debug_drag_row, _drag_value);
         else if (raid_texture_crop_debug_tab == 3)
             raid_texture_crop_debug_shadow_set(raid_texture_crop_debug_drag_row, _drag_value);
@@ -217,9 +273,10 @@ function raid_texture_crop_debug_action(_action)
     {
         case 0:
             raid_texture_crop_debug_reset(raid_texture_crop_debug_tab);
-            raid_texture_crop_debug_status = raid_texture_crop_debug_tab == 4 ? "ENVIRONMENT RESET"
+            raid_texture_crop_debug_status = raid_texture_crop_debug_tab == 5 ? "LADDER RESET"
+                : (raid_texture_crop_debug_tab == 4 ? "ENVIRONMENT RESET"
                 : (raid_texture_crop_debug_tab == 3 ? "PLAYER SHADOW RESET"
-                : (raid_texture_crop_debug_tab == 2 ? "DOOR VALUES RESET" : "CURRENT MATERIAL RESET"));
+                : (raid_texture_crop_debug_tab == 2 ? "DOOR VALUES RESET" : "CURRENT MATERIAL RESET")));
         break;
         case 1:
             raid_texture_crop_debug_reset(0);
@@ -227,6 +284,7 @@ function raid_texture_crop_debug_action(_action)
             raid_texture_crop_debug_reset(2);
             raid_texture_crop_debug_reset(3);
             raid_texture_crop_debug_reset(4);
+            raid_texture_crop_debug_reset(5);
             raid_texture_crop_debug_status = "ALL VALUES RESET";
         break;
         case 2: raid_texture_crop_debug_save(); break;

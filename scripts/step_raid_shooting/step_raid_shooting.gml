@@ -236,7 +236,7 @@ function step_raid_shooting(_allow_input)
                 if (!_target.enemy_invulnerable)
                 {
                     var _enemy_hp_before = _target.enemy_hp;
-                    _target.enemy_hp -= 5;
+                    _target.enemy_hp = raid_godmode ? 0 : _target.enemy_hp - 5;
                     _target.enemy_last_hit_direction = raid_knife_attack_dir;
                     if (_target.enemy_hp < _enemy_hp_before)
                         blood_hit_effect(_target.enemy_x, _target.enemy_y, raid_knife_attack_dir);

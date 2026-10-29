@@ -3,10 +3,10 @@ function step_raid_extract()
     if (!raid.extract_active)
         return;
 
-   var _ladder_x = raid_room_x1 + 55;
+   var _ladder_x = raid_room_x1 + raid_environment.ladder_x_offset;
 
     var _ladder_y =
-        raid_room_y1 + 55;
+        raid_room_y1 + raid_environment.ladder_y_offset - 15;
 
     var _distance =
         point_distance(

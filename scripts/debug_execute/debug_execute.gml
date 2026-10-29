@@ -22,6 +22,10 @@ function debug_execute(_command)
             debug_command_give(args);
             break;
 
+        case "gotoroom":
+            debug_command_gotoroom(args);
+            break;
+
         case "items":
             debug_command_items();
             break;
@@ -83,6 +87,11 @@ function debug_execute(_command)
 			raid_hit_region_debug_enabled = !raid_hit_region_debug_enabled;
 			debug_log_add("Hit region overlay " + (raid_hit_region_debug_enabled ? "enabled" : "disabled"));
 			break;
+
+		case "ladder_projection":
+			raid_ladder_projection_debug_enabled = !raid_ladder_projection_debug_enabled;
+			debug_log_add("Ladder projection overlay " + (raid_ladder_projection_debug_enabled ? "enabled" : "disabled"));
+			break;
 		
 		case "unlock_tables":
 			debug_command_unlock_tables();
@@ -105,8 +114,9 @@ function debug_execute(_command)
 function debug_command_help()
 {
     debug_log_add("help | clear | items | gun_stats | give <item_key> <quantity>");
+    debug_log_add("gotoroom <room_number>");
     debug_log_add("money | show_mouse | debug_start_boss <1|2> | god_trader");
-    debug_log_add("godmode | hit_regions | unlock_tables | gun_tuning_mode");
+    debug_log_add("godmode | hit_regions | ladder_projection | unlock_tables | gun_tuning_mode");
     debug_log_add("limb_damage <limb> <amount> | limb_fracture <limb>");
     debug_log_add("limb_bleed <limb> <light|heavy> | limb_blackout <limb> | limb_reset <limb|all>");
 }

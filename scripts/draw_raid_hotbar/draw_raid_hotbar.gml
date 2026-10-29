@@ -5,9 +5,11 @@ function draw_raid_hotbar(_inventory = false)
     var gui_h = display_get_gui_height();
     var slot_w = 64;
     var slot_h = slot_w;
-    var left = _inventory ? raid_inventory_get_hotbar_rect().left : gui_w - slot_w - 20;
-    var top = _inventory ? raid_inventory_get_hotbar_rect().top : 270;
     var gap = _inventory ? 8 : 6;
+    var raid_weapon_panel_top = gui_h - 120 - 20;
+    var raid_hotbar_height = (6 * slot_h) + (5 * gap);
+    var left = _inventory ? raid_inventory_get_hotbar_rect().left : gui_w - slot_w - 20;
+    var top = _inventory ? raid_inventory_get_hotbar_rect().top : raid_weapon_panel_top - raid_hotbar_height - 12;
 
     draw_set_font(fnt_terminal_tiny);
     draw_set_halign(fa_left);
@@ -26,11 +28,9 @@ function draw_raid_hotbar(_inventory = false)
         var treatment_flash = player_health_treatment_is_active()
             && raid.treatment.item == raid.hotbar[i]
             && floor(current_time / 150) mod 2 == 0;
-        draw_set_color(treatment_flash ? c_white : (active ? (raid.hotbar_feedback_success ? c_lime : c_red) : c_gray));
-        draw_rectangle(slot_x, slot_y, slot_x + slot_w, slot_y + slot_h, false);
-        draw_set_color(c_black);
-        draw_rectangle(slot_x + 3, slot_y + 3, slot_x + slot_w - 3, slot_y + slot_h - 3, true);
-        draw_set_color(c_black);
+        var border_color = treatment_flash ? c_white : (active ? (raid.hotbar_feedback_success ? c_lime : c_red) : c_green);
+        draw_terminal_rectangle(slot_x, slot_y, slot_x + slot_w, slot_y + slot_h, border_color);
+        draw_set_color(active ? c_lime : c_green);
         draw_set_halign(fa_right);
         draw_text(slot_x + slot_w - 7, slot_y + 6, string(i + 1));
         draw_set_halign(fa_left);
@@ -42,14 +42,14 @@ function draw_raid_hotbar(_inventory = false)
             var sprite = variable_struct_exists(definition, "icon_sprite") ? definition.icon_sprite : -1;
             if (sprite != -1 && sprite_exists(sprite))
             {
-                var size = 42;
+                var size = _inventory ? 42 : 43;
                 var scale_x = size / sprite_get_width(sprite);
                 var scale_y = size / sprite_get_height(sprite);
                 var sprite_x = slot_x + (slot_w * 0.5) + ((sprite_get_xoffset(sprite) - (sprite_get_width(sprite) * 0.5)) * scale_x);
                 var sprite_y = slot_y + (slot_h * 0.5) + ((sprite_get_yoffset(sprite) - (sprite_get_height(sprite) * 0.5)) * scale_y);
                 draw_sprite_ext(sprite, icon_spin_frame(sprite), sprite_x, sprite_y, scale_x, scale_y, 0, c_white, 1);
             }
-            draw_set_color(c_black);
+            draw_set_color(c_white);
             if (variable_struct_exists(definition, "max_servings"))
             {
                 var servings = variable_struct_exists(item, "servings") ? item.servings : definition.max_servings;

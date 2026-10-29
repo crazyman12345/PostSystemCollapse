@@ -28,16 +28,9 @@ function raid_boss_intro_update()
     switch (e.boss_intro_stage)
     {
         case 0:
-            if (!e.boss_intro_camera_ready)
+            if (e.boss_intro_timer > 0)
             {
-                var _camera_center_x = camera_get_view_x(raid_camera) + camera_get_view_width(raid_camera) * 0.5;
-                var _camera_center_y = camera_get_view_y(raid_camera) + camera_get_view_height(raid_camera) * 0.5;
-                var _room_center_x = (raid_room_x1 + raid_room_x2) * 0.5;
-                var _room_center_y = (raid_room_y1 + raid_room_y2) * 0.5;
-
-                if (point_distance(_camera_center_x, _camera_center_y, _room_center_x, _room_center_y) <= 2.5)
-                    e.boss_intro_camera_ready = true;
-
+                e.boss_intro_timer = max(0, e.boss_intro_timer - frame_scale);
                 break;
             }
 

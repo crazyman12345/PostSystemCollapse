@@ -26,15 +26,8 @@ function draw_boss_healthbar(_boss)
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
 
-    // CRT-style panel and border.
-    draw_set_color(make_color_rgb(3, 10, 12));
-    draw_rectangle(_x - 12, _panel_y - 8, _x + _bar_w + 12, _bar_y + _bar_h + 22, false);
-
-    draw_set_color(_terminal_dark);
-    draw_rectangle(_x - 8, _panel_y - 4, _x + _bar_w + 8, _bar_y + _bar_h + 18, false);
-
-    draw_set_color(_terminal_cyan);
-    draw_rectangle(_x - 8, _panel_y - 4, _x + _bar_w + 8, _bar_y + _bar_h + 18, true);
+	// CRT-style panel and border.
+	draw_terminal_rectangle(_x - 12, _panel_y - 8, _x + _bar_w + 12, _bar_y + _bar_h + 22, _terminal_cyan);
 	draw_set_font(fnt_terminal);
     draw_set_color(c_white);
     draw_text(_gui_w * 0.5, _panel_y + 7, raid_enemy_type_name(_boss.enemy_type));

@@ -4,6 +4,7 @@ function raid_texture_crop_debug_init()
     raid_texture_crop_debug_tab = 0;
     raid_texture_crop_debug_selection = 0;
     raid_texture_crop_debug_drag_row = -1;
+    raid_texture_crop_debug_scroll_row = 0;
     raid_texture_crop_debug_status = "F7 TO OPEN";
     raid_texture_crop_debug_filename = "raid_texture_crop_debug.json";
     raid_texture_crop_export_filename = "raid_texture_crop_settings.txt";
@@ -36,6 +37,94 @@ function raid_texture_crop_debug_environment_set(_field, _value)
         case 2: raid_environment.perspective_strength_y = clamp(round(_value * 100) / 100, 0, 20); break;
         case 3: raid_environment.perspective_smoothing = clamp(round(_value * 100) / 100, 0, 1); break;
     }
+}
+
+
+function raid_texture_crop_debug_ladder_value(_field)
+{
+    switch (_field)
+    {
+        case 0: return raid_environment.ladder_x_offset;
+        case 1: return raid_environment.ladder_y_offset;
+        case 2: return raid_environment.ladder_width;
+        case 3: return raid_environment.ladder_height;
+        case 4: return raid_environment.ladder_projection_x;
+        case 5: return raid_environment.ladder_projection_y;
+        case 6: return raid_environment.vertical_projection;
+        case 7: return raid_environment.ladder_perspective_strength_x;
+        case 8: return raid_environment.ladder_perspective_strength_y;
+        case 9: return raid_environment.perspective_smoothing;
+        case 10: return raid_environment.ladder_material.scale_x;
+        case 11: return raid_environment.ladder_material.scale_y;
+        case 12: return raid_environment.ladder_material.crop_left;
+        case 13: return raid_environment.ladder_shadow_offset_x;
+        case 14: return raid_environment.ladder_shadow_offset_y;
+        case 15: return raid_environment.ladder_contact_shadow_offset_x;
+        case 16: return raid_environment.ladder_contact_shadow_offset_y;
+    }
+    return 0;
+}
+
+
+function raid_texture_crop_debug_ladder_set(_field, _value)
+{
+    switch (_field)
+    {
+        case 0: raid_environment.ladder_x_offset = clamp(round(_value), -200, 200); break;
+        case 1: raid_environment.ladder_y_offset = clamp(round(_value), -200, 200); break;
+        case 2: raid_environment.ladder_width = clamp(round(_value * 100) / 100, 1, 200); break;
+        case 3: raid_environment.ladder_height = clamp(round(_value * 100) / 100, 1, 5000); break;
+        case 4: raid_environment.ladder_projection_x = clamp(round(_value * 100) / 100, -1, 1); break;
+        case 5: raid_environment.ladder_projection_y = clamp(round(_value * 100) / 100, -1, 1); break;
+        case 7: raid_environment.ladder_perspective_strength_x = clamp(round(_value * 100) / 100, 0, 20); break;
+        case 8: raid_environment.ladder_perspective_strength_y = clamp(round(_value * 100) / 100, 0, 20); break;
+        case 10: raid_texture_crop_debug_set(raid_environment.ladder_material, "scale_x", _value); break;
+        case 11: raid_texture_crop_debug_set(raid_environment.ladder_material, "scale_y", _value); break;
+        case 12:
+            raid_texture_crop_debug_set(raid_environment.ladder_material, "crop_left", _value);
+            raid_texture_crop_debug_set(raid_environment.ladder_material, "crop_right", _value);
+        break;
+        case 13: raid_environment.ladder_shadow_offset_x = clamp(round(_value), -100, 100); break;
+        case 14: raid_environment.ladder_shadow_offset_y = clamp(round(_value), -100, 100); break;
+        case 15: raid_environment.ladder_contact_shadow_offset_x = clamp(round(_value), -100, 100); break;
+        case 16: raid_environment.ladder_contact_shadow_offset_y = clamp(round(_value), -100, 100); break;
+        default: raid_texture_crop_debug_environment_set(_field - 6, _value); break;
+    }
+}
+
+
+function raid_texture_crop_debug_ladder_min(_field)
+{
+    if (_field < 2) return -200;
+    if (_field < 4) return 1;
+    if (_field < 6) return -1;
+    if (_field == 12) return -45;
+    if (_field >= 13) return -100;
+    if (_field >= 10) return 10;
+    return 0;
+}
+
+
+function raid_texture_crop_debug_ladder_max(_field)
+{
+    if (_field < 2) return 200;
+    if (_field == 2) return 200;
+    if (_field == 3) return 5000;
+    if (_field < 6) return 1;
+    if (_field == 6) return 2;
+    if (_field < 9) return 20;
+    if (_field == 12) return 45;
+    if (_field >= 13) return 100;
+    if (_field >= 10) return 200;
+    return 1;
+}
+
+
+function raid_texture_crop_debug_ladder_step(_field)
+{
+    if (_field < 4 || _field >= 10) return 1;
+    if (_field < 7 || _field == 9) return 0.05;
+    return 0.25;
 }
 
 
@@ -86,6 +175,29 @@ function raid_texture_crop_debug_material_set(_tab, _name, _value)
 
 function raid_texture_crop_debug_reset(_tab)
 {
+    if (_tab == 5)
+    {
+        raid_environment.ladder_x_offset = 44;
+        raid_environment.ladder_y_offset = 62;
+        raid_environment.ladder_width = 24;
+        raid_environment.ladder_height = 4416.78;
+        raid_environment.ladder_projection_x = -0.02;
+        raid_environment.ladder_projection_y = -0.03;
+        raid_environment.ladder_perspective_strength_x = 0.11;
+        raid_environment.ladder_perspective_strength_y = 0;
+        raid_environment.ladder_material.scale_x = 71;
+        raid_environment.ladder_material.scale_y = 74;
+        raid_environment.ladder_material.crop_left = 0;
+        raid_environment.ladder_material.crop_right = 0;
+        raid_environment.ladder_shadow_offset_x = 3;
+        raid_environment.ladder_shadow_offset_y = -11;
+        raid_environment.ladder_contact_shadow_offset_x = -2;
+        raid_environment.ladder_contact_shadow_offset_y = 0;
+        raid_environment.vertical_projection = 0.75;
+        raid_environment.perspective_smoothing = 0.12;
+        return;
+    }
+
     if (_tab == 4)
     {
         raid_environment.vertical_projection = 0.75;
@@ -139,7 +251,7 @@ function raid_texture_crop_debug_data()
     var _inner = raid_environment.inner_face_material;
     var _cap = raid_environment.cap_material;
     return {
-        version: 8,
+        version: 11,
         inner_face: {
             crop_left: _inner.crop_left,
             crop_right: _inner.crop_right,
@@ -189,6 +301,23 @@ function raid_texture_crop_debug_data()
             perspective_strength_x: raid_environment.perspective_strength_x,
             perspective_strength_y: raid_environment.perspective_strength_y,
             perspective_smoothing: raid_environment.perspective_smoothing
+        },
+        ladder: {
+            x_offset: raid_environment.ladder_x_offset,
+            y_offset: raid_environment.ladder_y_offset,
+            width: raid_environment.ladder_width,
+            height: raid_environment.ladder_height,
+            projection_x: raid_environment.ladder_projection_x,
+            projection_y: raid_environment.ladder_projection_y,
+            perspective_strength_x: raid_environment.ladder_perspective_strength_x,
+            perspective_strength_y: raid_environment.ladder_perspective_strength_y,
+            source_scale_x: raid_environment.ladder_material.scale_x,
+            source_scale_y: raid_environment.ladder_material.scale_y,
+            source_crop_x: raid_environment.ladder_material.crop_left,
+            shadow_offset_x: raid_environment.ladder_shadow_offset_x,
+            shadow_offset_y: raid_environment.ladder_shadow_offset_y,
+            contact_shadow_offset_x: raid_environment.ladder_contact_shadow_offset_x,
+            contact_shadow_offset_y: raid_environment.ladder_contact_shadow_offset_y
         }
     };
 }
@@ -233,6 +362,24 @@ function raid_texture_crop_debug_apply_data(_data)
             raid_texture_crop_debug_environment_set(2, _data.environment.perspective_strength_y);
         if (variable_struct_exists(_data.environment, "perspective_smoothing"))
             raid_texture_crop_debug_environment_set(3, _data.environment.perspective_smoothing);
+    }
+    if (variable_struct_exists(_data, "ladder") && is_struct(_data.ladder))
+    {
+        if (variable_struct_exists(_data.ladder, "x_offset")) raid_texture_crop_debug_ladder_set(0, _data.ladder.x_offset);
+        if (variable_struct_exists(_data.ladder, "y_offset")) raid_texture_crop_debug_ladder_set(1, _data.ladder.y_offset);
+        if (variable_struct_exists(_data.ladder, "width")) raid_texture_crop_debug_ladder_set(2, _data.ladder.width);
+        if (variable_struct_exists(_data.ladder, "height")) raid_texture_crop_debug_ladder_set(3, _data.ladder.height);
+        if (variable_struct_exists(_data.ladder, "projection_x")) raid_texture_crop_debug_ladder_set(4, _data.ladder.projection_x);
+        if (variable_struct_exists(_data.ladder, "projection_y")) raid_texture_crop_debug_ladder_set(5, _data.ladder.projection_y);
+        if (variable_struct_exists(_data.ladder, "perspective_strength_x")) raid_texture_crop_debug_ladder_set(7, _data.ladder.perspective_strength_x);
+        if (variable_struct_exists(_data.ladder, "perspective_strength_y")) raid_texture_crop_debug_ladder_set(8, _data.ladder.perspective_strength_y);
+        if (variable_struct_exists(_data.ladder, "source_scale_x")) raid_texture_crop_debug_ladder_set(10, _data.ladder.source_scale_x);
+        if (variable_struct_exists(_data.ladder, "source_scale_y")) raid_texture_crop_debug_ladder_set(11, _data.ladder.source_scale_y);
+        if (variable_struct_exists(_data.ladder, "source_crop_x")) raid_texture_crop_debug_ladder_set(12, _data.ladder.source_crop_x);
+        if (variable_struct_exists(_data.ladder, "shadow_offset_x")) raid_texture_crop_debug_ladder_set(13, _data.ladder.shadow_offset_x);
+        if (variable_struct_exists(_data.ladder, "shadow_offset_y")) raid_texture_crop_debug_ladder_set(14, _data.ladder.shadow_offset_y);
+        if (variable_struct_exists(_data.ladder, "contact_shadow_offset_x")) raid_texture_crop_debug_ladder_set(15, _data.ladder.contact_shadow_offset_x);
+        if (variable_struct_exists(_data.ladder, "contact_shadow_offset_y")) raid_texture_crop_debug_ladder_set(16, _data.ladder.contact_shadow_offset_y);
     }
 }
 
@@ -353,7 +500,23 @@ function raid_texture_crop_debug_copy()
         + "  Vertical Projection: " + string(raid_environment.vertical_projection) + "\n"
         + "  Perspective Strength X: " + string(raid_environment.perspective_strength_x) + "\n"
         + "  Perspective Strength Y: " + string(raid_environment.perspective_strength_y) + "\n"
-        + "  Perspective Smoothing: " + string(raid_environment.perspective_smoothing) + "\n";
+        + "  Perspective Smoothing: " + string(raid_environment.perspective_smoothing) + "\n"
+        + "LADDER\n"
+        + "  X Offset: " + string(raid_environment.ladder_x_offset) + "\n"
+        + "  Y Offset: " + string(raid_environment.ladder_y_offset) + "\n"
+        + "  Width: " + string(raid_environment.ladder_width) + "\n"
+        + "  Height: " + string(raid_environment.ladder_height) + "\n"
+        + "  Projection X: " + string(raid_environment.ladder_projection_x) + "\n"
+        + "  Projection Y: " + string(raid_environment.ladder_projection_y) + "\n"
+        + "  Perspective Strength X: " + string(raid_environment.ladder_perspective_strength_x) + "\n"
+        + "  Perspective Strength Y: " + string(raid_environment.ladder_perspective_strength_y) + "\n"
+        + "  Source Scale X: " + string(raid_environment.ladder_material.scale_x) + "%\n"
+        + "  Source Scale Y: " + string(raid_environment.ladder_material.scale_y) + "%\n"
+        + "  Source Crop X: " + string(raid_environment.ladder_material.crop_left) + "%\n"
+        + "  Shadow Offset X: " + string(raid_environment.ladder_shadow_offset_x) + " px\n"
+        + "  Shadow Offset Y: " + string(raid_environment.ladder_shadow_offset_y) + " px\n"
+        + "  Contact Shadow Offset X: " + string(raid_environment.ladder_contact_shadow_offset_x) + " px\n"
+        + "  Contact Shadow Offset Y: " + string(raid_environment.ladder_contact_shadow_offset_y) + " px\n";
     var _file = file_text_open_write(raid_texture_crop_export_filename);
     if (_file < 0)
     {
