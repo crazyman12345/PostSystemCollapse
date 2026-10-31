@@ -48,7 +48,7 @@ function draw_trader_info_panel(_trader_key)
             portrait_width - 6,
             portrait_height - 6,
             9,
-            global.hideout_secondary_color,
+            merge_color(c_white, global.hideout_secondary_color, 0.5),
             1
         );
     }

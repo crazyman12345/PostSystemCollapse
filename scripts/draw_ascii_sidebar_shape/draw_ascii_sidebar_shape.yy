@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_ascii_sidebar_shape",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_ascii_sidebar_shape",
+  "parent":{
+    "name":"ASCII",
+    "path":"folders/UI/ASCII.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -33,7 +33,7 @@ function draw_trader_buy()
     if (_trader.portrait != -1)
     {
         _portrait_width = round(_portrait_height * sprite_get_width(_trader.portrait) / sprite_get_height(_trader.portrait));
-        draw_chamfered_sprite(_trader.portrait, 0, _portrait_left, _portrait_top, _portrait_width, _portrait_height, 12, global.hideout_secondary_color, 1);
+        draw_chamfered_sprite(_trader.portrait, 0, _portrait_left, _portrait_top, _portrait_width, _portrait_height, 12, merge_color(c_white, global.hideout_secondary_color, 0.5), 1);
     }
     draw_set_color(global.ui_text_color);
     terminal_box(_portrait_left, _portrait_top, _portrait_width, _portrait_height);

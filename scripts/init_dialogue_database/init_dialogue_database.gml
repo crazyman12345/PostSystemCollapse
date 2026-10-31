@@ -59,7 +59,7 @@ function init_dialogue_database()
         "Junk city. You can stay here in this abandoned shack we left you in. There's a supply crate for you by the bed.",
         [dialogue_make_response("What do you mean?", "mara_onboarding_job")]);
     dialogue_register_node("mara_onboarding_job", "Mara",
-        "Once you are up and around, there is an old store down the road with reported bandit activity. Investigate it and report back to me after.",
+        "Once you are up and around, there is an old store down the road with reported bandit activity. Investigate it and bring back three pieces of Scrap Metal.",
         [
             dialogue_make_response("Okay, I can check it out.", "mara_onboarding_accepted", undefined,
                 { type: "accept_quest", key: "test_safe_return" }),
@@ -99,7 +99,7 @@ function init_dialogue_database()
                     type: "tutorial",
                     message: "Go to your stash and bank your extracted loot",
                     target_x: 24,
-                    target_y: 166,
+                    target_y: onboarding_sidebar_callout_y(2),
                     box_x: 530,
                     box_y: 305,
                     box_width: 650,

@@ -200,6 +200,10 @@ function onboarding_draw_hideout()
     if (!onboarding_is_active()) return false;
     draw_set_color(c_black);
     draw_rectangle(0, 0, display_get_gui_width(), display_get_gui_height(), false);
+    draw_set_color(global.hideout_panel_color);
+    draw_set_alpha(0.78);
+    draw_rectangle(320, 1, display_get_gui_width(), display_get_gui_height(), false);
+    draw_set_alpha(1);
     onboarding_draw_staging_sidebar();
     if (trader_mode == TraderMode.CONVERSATION)
     {
@@ -217,8 +221,9 @@ function onboarding_draw_hideout()
             break;
         case HideoutPage.RAIDS: draw_hideout_raid_select(); break;
     }
-    heading_box(320, 1, display_get_gui_width() - 320, display_get_gui_height() - 1,
-        hideout_menu_items[hideout_menu_index].name, 60);
+    if (hideout_page != HideoutPage.MESSAGES)
+        heading_box(320, 1, display_get_gui_width() - 320, display_get_gui_height() - 1,
+            hideout_menu_items[hideout_menu_index].name, 60);
     return true;
 }
 
@@ -230,6 +235,10 @@ function onboarding_draw_staging_sidebar()
     draw_set_font(fnt_terminal_tiny);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
+    draw_set_color(global.hideout_background_color);
+    draw_set_alpha(0.88);
+    draw_rectangle(1, 1, _sidebar_width, display_get_gui_height(), false);
+    draw_set_alpha(1);
     draw_set_color(global.ui_text_color);
     draw_hideout_sidebar_frame(_sidebar_width, display_get_gui_height());
 
@@ -249,6 +258,10 @@ function onboarding_draw_staging_sidebar()
         var _selected = _unlocked && _entry.page == hideout_page;
         draw_hideout_sidebar_item(_entry, hideout_sidebar_item_top(_i), _selected, _unlocked);
     }
+
+    var _last_sidebar_item_top = hideout_sidebar_item_top(array_length(hideout_menu_items) - 1);
+    var _sidebar_shape_top = max(_last_sidebar_item_top + 70, display_get_gui_height() - 350);
+    draw_ascii_sidebar_shape(32, _sidebar_shape_top, hideout_menu_items[hideout_menu_index].key);
 }
 
 function onboarding_get_hovered_menu_entry(_entries)
@@ -359,7 +372,12 @@ function onboarding_update_start_raid_tip()
         tutorial_callout_hide();
         return;
     }
-    tutorial_callout_show("Click here to start raid.", 25, 552, 350, 650, 620, 140);
+    tutorial_callout_show("Click here to start raid.", 25, onboarding_sidebar_callout_y(10), 350, 650, 620, 140);
+}
+
+function onboarding_sidebar_callout_y(_menu_index)
+{
+    return hideout_sidebar_item_top(_menu_index) + 21;
 }
 
 function onboarding_update_raid_door_tip()
@@ -401,7 +419,7 @@ function onboarding_update_field_supplies_tip()
     {
         if (hideout_page != HideoutPage.SALVAGE)
         {
-            tutorial_callout_show("Open the salvage menu", 25, 288, 430, 225, 650, 140);
+            tutorial_callout_show("Open the salvage menu", 25, onboarding_sidebar_callout_y(4), 430, 225, 650, 140);
             return;
         }
         if (salvage_active)
@@ -434,12 +452,12 @@ function onboarding_update_field_supplies_tip()
         if (hideout_page == HideoutPage.STASH)
             tutorial_callout_show("Go to your stash and bank your extracted loot", 1595, 570, 500, 330, 650, 140);
         else
-            tutorial_callout_show("Go to your stash and bank your extracted loot", 25, 166, 530, 305, 650, 140);
+            tutorial_callout_show("Go to your stash and bank your extracted loot", 25, onboarding_sidebar_callout_y(2), 530, 305, 650, 140);
         return;
     }
     if (hideout_page != HideoutPage.WORKSHOP)
     {
-        tutorial_callout_show("Go to the workshop tab and build the salvage table", 25, 488, 430, 290, 650, 140);
+        tutorial_callout_show("Go to the workshop tab and build the salvage table", 25, onboarding_sidebar_callout_y(9), 430, 290, 650, 140);
         return;
     }
 
@@ -455,7 +473,7 @@ function onboarding_update_starting_crate_tip()
     }
     if (hideout_page != HideoutPage.STASH)
     {
-        tutorial_callout_show("Click to open stash.", 25, 166, 50, 505, 620, 140);
+        tutorial_callout_show("Click to open stash.", 25, onboarding_sidebar_callout_y(2), 50, 505, 620, 140);
         return;
     }
     if (inventory_context_active)

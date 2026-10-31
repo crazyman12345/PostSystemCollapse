@@ -44,9 +44,8 @@ function draw_main_menu()
         return;
     }
 
-    terminal_header("TERMINAL // NODE 01");
-	draw_post_collapse_network(520,260);
-    terminal_panel(520, 400, 880, 420, "POST-COLLAPSE NETWORK");
+	draw_post_collapse_network(80, 40);
+	draw_ascii_impossible_triangle(1110, 150);
 
     draw_set_font(fnt_terminal_tiny);
     draw_text(_gui_width - 166, 42, "MUTE MUSIC");
@@ -60,18 +59,20 @@ function draw_main_menu()
 
     if (save_continue_available)
     {
-        terminal_menu_item(760, 570, "CONTINUE", menu_index == 0);
-        terminal_menu_item(760, 630, "NEW GAME", menu_index == 1);
-        terminal_menu_item(760, 690, "EXIT", menu_index == 2);
+        terminal_button(80, 600, 480, 648, "CONTINUE", menu_index == 0);
+        terminal_button(80, 660, 480, 708, "NEW GAME", menu_index == 1);
+        terminal_button(80, 720, 480, 768, "EXIT", menu_index == 2);
     }
     else
     {
-        terminal_menu_item(760, 570, "NEW GAME", menu_index == 0);
-        terminal_menu_item(760, 630, "EXIT", menu_index == 1);
+        terminal_button(80, 600, 480, 648, "NEW GAME", menu_index == 0);
+        terminal_button(80, 660, 480, 708, "EXIT", menu_index == 1);
     }
 
-    var _credits_hovered = point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), _gui_width - 280, _gui_height - 80, _gui_width - 20, _gui_height - 20);
-    terminal_menu_item(_gui_width - 260, _gui_height - 70, "CREDITS", _credits_hovered);
+    var _credits_top = save_continue_available ? 780 : 720;
+    var _credits_index = save_continue_available ? 3 : 2;
+    var _credits_hovered = point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), 80, _credits_top, 480, _credits_top + 48);
+    terminal_button(80, _credits_top, 480, _credits_top + 48, "CREDITS", menu_index == _credits_index || _credits_hovered);
 
     if (save_new_game_confirm)
     {

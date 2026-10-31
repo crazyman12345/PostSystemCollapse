@@ -52,7 +52,7 @@ function draw_trader_select()
 
     if (selected_trader.portrait != -1)
     {
-        draw_chamfered_sprite(selected_trader.portrait, 0, portrait_left + 3, portrait_top + 3, portrait_width - 6, portrait_height - 6, 9, global.hideout_secondary_color, 1);
+        draw_chamfered_sprite(selected_trader.portrait, 0, portrait_left + 3, portrait_top + 3, portrait_width - 6, portrait_height - 6, 9, merge_color(c_white, global.hideout_secondary_color, 0.5), 1);
     }
     else
     {

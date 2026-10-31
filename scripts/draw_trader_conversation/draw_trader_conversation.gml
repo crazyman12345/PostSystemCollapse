@@ -26,7 +26,7 @@ function draw_trader_conversation()
     if (trader.portrait != -1)
     {
         draw_chamfered_sprite(trader.portrait, 0, portrait_left + 3, portrait_top + 3,
-            portrait_width - 6, portrait_height - 6, 9, global.hideout_secondary_color, 1);
+            portrait_width - 6, portrait_height - 6, 9, merge_color(c_white, global.hideout_secondary_color, 0.5), 1);
     }
     else
     {
@@ -99,10 +99,10 @@ function draw_trader_conversation()
 function draw_messages_all()
 {
     var trader_keys = onboarding_is_active() ? ["mara"] : trader_get_message_keys();
-    var left = 345;
-    var top = 85;
-    var right = display_get_gui_width() - 35;
-    var bottom = display_get_gui_height() - 25;
+    var left = 320;
+    var top = 1;
+    var right = display_get_gui_width();
+    var bottom = display_get_gui_height();
     var divider = 950;
 
     menu_index = clamp(menu_index, 0, array_length(trader_keys) - 1);

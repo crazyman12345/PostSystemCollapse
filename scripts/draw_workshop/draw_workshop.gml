@@ -26,10 +26,12 @@ function draw_workshop()
    // draw_text(margin, 30, "WORKSHOP");
 
     // PANELS
+    draw_set_color(global.hideout_border_color);
     draw_border_frame2(left_x1, top, left_x2 - left_x1, bottom - top, true);
     draw_border_frame2(right_x1, top, right_x2 - right_x1, bottom - top, true);
 
     // LEFT PANEL TITLE
+    draw_set_color(global.ui_text_color);
     draw_text(left_x1 + 20, top + 20, "BENCHES");
 
     // BENCH LIST

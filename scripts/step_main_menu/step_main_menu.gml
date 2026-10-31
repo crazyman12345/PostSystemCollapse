@@ -74,20 +74,14 @@ function step_main_menu(){
         return;
     }
 
-	var options = save_continue_available ? 3 : 2;
+	var options = save_continue_available ? 4 : 3;
         menu_index = terminal_menu_input(menu_index, options);
-        var mouse_menu = terminal_menu_mouse_input(menu_index, options, 0, 760, 570, 500, 60);
+        var mouse_menu = terminal_menu_mouse_input(menu_index, options, 0, 80, 600, 400, 60);
         menu_index = mouse_menu.index;
 
         var _gui_width = display_get_gui_width();
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);
-        if (mouse_check_button_pressed(mb_left)
-        && point_in_rectangle(_mouse_x, _mouse_y, _gui_width - 280, display_get_gui_height() - 80, _gui_width - 20, display_get_gui_height() - 20))
-        {
-            main_menu_credits_open = true;
-            return;
-        }
 
         if (mouse_check_button_pressed(mb_left)
         && point_in_rectangle(_mouse_x, _mouse_y, _gui_width - 40, 38, _gui_width - 20, 58))
@@ -100,7 +94,8 @@ function step_main_menu(){
         if (keyboard_check_pressed(vk_enter) || mouse_menu.confirm) {
             var selected_continue = save_continue_available && menu_index == 0;
             var selected_new_game = menu_index == (save_continue_available ? 1 : 0);
-            var selected_exit = menu_index == options - 1;
+            var selected_exit = menu_index == (save_continue_available ? 2 : 1);
+            var selected_credits = menu_index == options - 1;
 
             if (selected_continue) {
                 if (load_game()) audio_play_sound(snd_level_up, 0, false);
@@ -122,6 +117,9 @@ function step_main_menu(){
             }
             else if (selected_exit) {
                 game_end();
+            }
+            else if (selected_credits) {
+                main_menu_credits_open = true;
             }
         }
 }

@@ -20,6 +20,9 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
     {
         case ItemCategory.BODY_ARMOR: background_color = make_color_rgb(58, 83, 112); break;
         case ItemCategory.AMMO: background_color = make_color_rgb(145, 119, 43); break;
+        case ItemCategory.MEDICAL: background_color = make_color_rgb(125, 58, 65); break;
+        case ItemCategory.CONSUMABLE: background_color = make_color_rgb(135, 82, 45); break;
+        case ItemCategory.BAG: background_color = make_color_rgb(92, 65, 120); break;
         case ItemCategory.CURRENCY: background_color = make_color_rgb(42, 105, 62); break;
         case ItemCategory.WEAPON: draw_background = false; break;
     }

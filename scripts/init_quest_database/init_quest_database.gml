@@ -42,10 +42,11 @@ function init_quest_database()
             key: "test_safe_return",
             title: "COME BACK BREATHING",
             trader_key: "mara",
-            description: "Mara wants you to reach a checkpoint in the Abandoned Store and return alive.",
+            description: "Mara wants you to reach a checkpoint in the Abandoned Store, recover three pieces of Scrap Metal, and return alive.",
             prerequisites: [],
             objectives: [
                 { type: QuestObjectiveType.VISIT_LOCATION, target: "CHECKPOINT", amount: 1, text: "REACH A CHECKPOINT", requires_extraction: false },
+                { type: QuestObjectiveType.EXTRACT_WITH_ITEM, target: "metal_scrap", amount: 3, text: "EXTRACT WITH SCRAP METAL", requires_extraction: true },
                 { type: QuestObjectiveType.EXTRACT_LEVEL, target: "ABANDONED STORE", amount: 1, text: "EXTRACT FROM ABANDONED STORE", requires_extraction: true }
             ],
             rewards: { cash: 150, items: [{ item_key: "ammo_9mm", quantity: 30 }], flags: ["quest_safe_return_complete"] }

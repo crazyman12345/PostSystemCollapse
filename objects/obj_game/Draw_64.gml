@@ -7,7 +7,7 @@ terminal_panel_scanlines_begin();
 var _menu_background_visible = state == GameState.MAIN_MENU || state == GameState.HIDEOUT;
 if (_menu_background_visible)
     draw_sprite_stretched_ext(background_overlay, 0, 0, 0, display_get_gui_width(), display_get_gui_height(),
-        state == GameState.HIDEOUT ? make_color_rgb(28, 52, 40) : make_color_rgb(45, 45, 45), 1);
+        state == GameState.HIDEOUT ? make_color_rgb(25, 52, 34) : make_color_rgb(45, 45, 45), 1);
 
 switch (state)
 {

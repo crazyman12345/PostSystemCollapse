@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_ascii_impossible_triangle",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_ascii_impossible_triangle",
+  "parent":{
+    "name":"ASCII",
+    "path":"folders/UI/ASCII.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

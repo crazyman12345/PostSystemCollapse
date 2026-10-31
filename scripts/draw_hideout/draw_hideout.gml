@@ -39,6 +39,10 @@ function draw_hideout()
         draw_hideout_sidebar_item(entry, hideout_sidebar_item_top(i), i == hideout_menu_index, entry_unlocked, entry_value);
     }
 
+    var _last_sidebar_item_top = hideout_sidebar_item_top(array_length(hideout_menu_items) - 1);
+    var _sidebar_shape_top = max(_last_sidebar_item_top + 70, gui_h - 350);
+    draw_ascii_sidebar_shape(32, _sidebar_shape_top, hideout_menu_items[hideout_menu_index].key);
+
     // CONTENT AREA
 	var content_x1 = sidebar_w;
 	var content_y1 = 1;
@@ -103,7 +107,7 @@ function draw_hideout()
     }
 
     var _trader_subscreen_open = (hideout_page == HideoutPage.TRADERS || hideout_page == HideoutPage.MESSAGES)
-        && trader_mode != TraderMode.SELECT;
+        && (trader_mode != TraderMode.SELECT || hideout_page == HideoutPage.MESSAGES);
     if (!_trader_subscreen_open)
         heading_box(content_x1, content_y1, content_x2 - content_x1, content_y2 - content_y1, selected.name, 60);
 
