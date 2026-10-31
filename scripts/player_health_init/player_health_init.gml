@@ -61,6 +61,8 @@ function player_health_init()
     player_hydration = health_config.survival_max;
     energy_zero_damage_remaining = health_config.energy_zero_damage_interval_seconds;
     hydration_zero_damage_remaining = health_config.hydration_zero_damage_interval_seconds;
+    health_global_recovery_accumulator = 0;
+    health_limb_recovery_accumulators = array_create(array_length(health_config.limb_base_hp), 0);
     health_limbs = [];
 
     var _names = ["HEAD", "CHEST", "LEFT ARM", "RIGHT ARM", "LEFT LEG", "RIGHT LEG"];

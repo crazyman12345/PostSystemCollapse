@@ -16,8 +16,7 @@ function step_trader_conversation()
     var count = array_length(responses);
     if (count <= 0) return;
     dialogue_response_index = clamp(dialogue_response_index, 0, count - 1);
-    var move = keyboard_check_pressed(ord("S")) + keyboard_check_pressed(vk_down)
-        - keyboard_check_pressed(ord("W")) - keyboard_check_pressed(vk_up);
+    var move = keyboard_check_pressed(vk_down) - keyboard_check_pressed(vk_up);
     var gui_mouse_x = device_mouse_x_to_gui(0);
     var gui_mouse_y = device_mouse_y_to_gui(0);
     var list_left = 1010;
@@ -64,8 +63,6 @@ function step_trader_conversation()
 function step_messages_all()
 {
     var trader_keys = onboarding_is_active() ? ["mara"] : trader_get_message_keys();
-    menu_index = terminal_menu_input(menu_index, array_length(trader_keys));
-
     var mouse_menu = terminal_menu_mouse_input(menu_index, array_length(trader_keys), 0, 370, 235, 555, 92);
     menu_index = mouse_menu.index;
 

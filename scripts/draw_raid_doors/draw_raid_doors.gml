@@ -10,7 +10,7 @@ function draw_raid_doors()
     {
         var d = raid_doors[i];
 
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
 
         //draw_rectangle(
         //    d.door_x - d.door_w * 0.5,

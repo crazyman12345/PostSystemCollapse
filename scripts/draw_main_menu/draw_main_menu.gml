@@ -9,7 +9,7 @@ function draw_main_menu()
         terminal_panel(240, 220, 1440, 500, "CREDITS");
 
         draw_set_font(fnt_terminal_tiny);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text_ext(320, 320, "\"RECYCLER / SHREDDER - ChaosWeld\" (https://skfb.ly/pxyqq) by ChaosWeld is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).", 34, 1280);
         draw_text_ext(320, 410, "\"Workbench\" (https://sketchfab.com/3d-models/workbench-9903d3f3a9c94c478cca7eee8ba9e6ab) by Heroinfather is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).", 34, 1280);
         draw_text_ext(320, 500, "\"Autopsy Lab - Assets\" (https://sketchfab.com/3d-models/autopsy-lab-assets-5ceaaa4482a84774b9922366cfb228e7) by Evan Petrov is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).", 34, 1280);
@@ -27,9 +27,9 @@ function draw_main_menu()
         terminal_panel(620, 340, 680, 500, "WHAT IS YOUR NAME?");
 
         draw_set_font(fnt_terminal_tiny);
-        draw_set_color(c_green);
+        draw_set_color(global.ui_text_color);
         draw_text(760, 500, "PLAYER NAME");
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_rectangle(760, 530, 1160, 590, true);
         draw_text(780, 547, save_new_game_name + (((current_time div 500) mod 2 == 0) ? "_" : ""));
 
@@ -77,7 +77,7 @@ function draw_main_menu()
     {
         draw_set_color(c_black);
         draw_rectangle(660, 500, 1260, 800, false);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         terminal_panel(520, 450, 880, 370, "OVERWRITE PLAYER SAVE?");
         draw_set_halign(fa_center);
         draw_text(960, 575, "Existing progress will be replaced.");

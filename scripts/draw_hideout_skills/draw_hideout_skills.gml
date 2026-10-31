@@ -17,7 +17,7 @@ function draw_hideout_skills()
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 
-    draw_set_color(c_black);
+    draw_set_color(global.hideout_panel_color);
     draw_rectangle(content_left, panel_top, content_left + content_width, panel_bottom, false);
 
     var tab_x = tabs_left;
@@ -30,21 +30,21 @@ function draw_hideout_skills()
         var tab_width = hideout_skill_tab_width(i);
         var tab_bottom = selected ? panel_top : panel_top - tab_gap;
 
-        draw_set_color(c_black);
+        draw_set_color(global.hideout_background_color);
         draw_rectangle(tab_x, tabs_top, tab_x + tab_width, tab_bottom, false);
 
         if (selected)
         {
             selected_tab_left = tab_x;
             selected_tab_right = tab_x + tab_width;
-            draw_set_color(c_lime);
+            draw_set_color(global.ui_interactive_color);
             draw_line(tab_x, panel_top, tab_x, tabs_top);
             draw_line(tab_x, tabs_top, tab_x + tab_width, tabs_top);
             draw_line(tab_x + tab_width, tabs_top, tab_x + tab_width, panel_top);
         }
         else
         {
-            draw_set_color(c_green);
+            draw_set_color(global.ui_interactive_color);
             draw_rectangle(tab_x, tabs_top, tab_x + tab_width, tab_bottom, true);
         }
 
@@ -56,7 +56,7 @@ function draw_hideout_skills()
             if (skill.icon != -1)
             {
                 var icon_scale = min(icon_size / sprite_get_width(skill.icon), icon_size / sprite_get_height(skill.icon));
-                draw_sprite_ext(skill.icon, icon_spin_frame(skill.icon), icon_left + icon_size * 0.5, tabs_top + tab_height * 0.5, icon_scale, icon_scale, 0, c_green, 1);
+                draw_sprite_ext(skill.icon, icon_spin_frame(skill.icon), icon_left + icon_size * 0.5, tabs_top + tab_height * 0.5, icon_scale, icon_scale, 0, global.hideout_secondary_color, 1);
             }
             text_x += 48;
         }
@@ -65,7 +65,7 @@ function draw_hideout_skills()
         tab_x += tab_width + tab_gap;
     }
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_line(content_left, panel_top, selected_tab_left, panel_top);
     draw_line(selected_tab_right, panel_top, content_left + content_width, panel_top);
     draw_line(content_left, panel_top, content_left, panel_bottom);
@@ -86,16 +86,16 @@ function draw_hideout_skills()
     var progress = (selected_progress.xp - level_xp_start) / (next_level_xp - level_xp_start);
     progress = clamp(progress, 0, 1);
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(info_left, info_top, "LV. " + string(selected_progress.level));
     draw_set_halign(fa_right);
     draw_text(info_right, info_top, "XP: " + string(selected_progress.xp) + " / " + string(next_level_xp));
     draw_set_halign(fa_left);
 
     var progress_top = info_top + 30;
-    draw_set_color(c_green);
+    draw_set_color(global.hideout_border_subtle_color);
     draw_rectangle(info_left, progress_top, info_right, progress_top + 12, true);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_rectangle(info_left, progress_top, info_left + (info_right - info_left) * progress, progress_top + 12, false);
 
     var tree_top = info_top + 65;
@@ -137,7 +137,7 @@ function draw_hideout_skills()
                 if (is_undefined(prerequisite)) continue;
                 var prerequisite_x = hideout_skill_tree_world_to_screen_x(hideout_skill_node_world_x(prerequisite), tree_viewport);
                 var prerequisite_y = hideout_skill_tree_world_to_screen_y(hideout_skill_node_world_y(prerequisite), tree_viewport);
-                draw_set_color(skill_node_is_unlocked(selected_skill.key, prerequisite) ? c_green : c_dkgray);
+                draw_set_color(skill_node_is_unlocked(selected_skill.key, prerequisite) ? global.hideout_border_color : global.hideout_muted_color);
                 draw_line(prerequisite_x, prerequisite_y, node_x, node_y);
             }
         }
@@ -153,9 +153,9 @@ function draw_hideout_skills()
             var informational = node.unlock_type == SkillNodeUnlockType.INFO;
             var half_size = (informational ? 30 : 34) * skill_tree_zoom;
 
-            draw_set_color(informational ? c_black : (unlocked ? c_green : c_black));
+            draw_set_color(informational ? global.hideout_background_color : (unlocked ? global.hideout_raised_color : global.hideout_background_color));
             draw_rectangle(node_x - half_size, node_y - half_size, node_x + half_size, node_y + half_size, false);
-            draw_set_color(informational ? c_green : (unlocked || available ? c_lime : c_dkgray));
+            draw_set_color(informational ? global.ui_interactive_color : (unlocked || available ? global.ui_interactive_color : c_dkgray));
             draw_rectangle(node_x - half_size, node_y - half_size, node_x + half_size, node_y + half_size, true);
             if (selected)
             {
@@ -167,7 +167,7 @@ function draw_hideout_skills()
 
             if (node.icon == -1)
             {
-                draw_set_color(informational ? c_green : (unlocked || available ? c_lime : c_gray));
+                draw_set_color(informational ? global.ui_interactive_color : (unlocked || available ? global.ui_interactive_color : c_gray));
                 if (!informational) draw_rectangle(node_x - 14 * skill_tree_zoom, node_y - 14 * skill_tree_zoom,
                     node_x + 14 * skill_tree_zoom, node_y + 14 * skill_tree_zoom, true);
                 draw_set_halign(fa_center);
@@ -180,7 +180,7 @@ function draw_hideout_skills()
             }
 
             draw_set_halign(fa_center);
-            draw_set_color(unlocked || available ? c_lime : c_gray);
+            draw_set_color(unlocked || available ? global.ui_interactive_color : c_gray);
             draw_set_font(fnt_terminal_tiny);
             draw_text_ext_transformed(node_x, node_y + 43 * skill_tree_zoom, node.name + "\nLV. " + string(node.required_level),
                 18, 175, skill_tree_zoom, skill_tree_zoom, 0);
@@ -195,7 +195,7 @@ function draw_hideout_skills()
         var selected_available = skill_node_can_purchase(selected_skill.key, selected_node);
         terminal_panel(detail_left, tree_top + 40, detail_width, tree_height - 60, "NODE DETAILS");
         draw_set_halign(fa_left);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text(detail_left + 20, tree_top + 85, selected_node.name);
         draw_set_color(c_gray);
         draw_text(detail_left + 20, tree_top + 120, "REQUIRED LEVEL: " + string(selected_node.required_level));
@@ -209,7 +209,7 @@ function draw_hideout_skills()
         else if (selected_available) status = get_cash() >= selected_node.cost ? "AVAILABLE" : "NEED MORE CASH";
         else if (skill_get_level(selected_skill.key) < selected_node.required_level) status = "LEVEL TOO LOW";
         else status = "PREREQUISITE LOCKED";
-        draw_set_color(selected_unlocked || selected_available ? c_lime : c_gray);
+        draw_set_color(selected_unlocked || selected_available ? global.ui_text_color : c_gray);
         draw_text(detail_left + 20, tree_top + 220, "STATUS: " + status);
         draw_set_color(c_gray);
         draw_text_ext(detail_left + 20, tree_top + 270, selected_node.description, 24, detail_width - 40);

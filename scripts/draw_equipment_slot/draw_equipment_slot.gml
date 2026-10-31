@@ -19,18 +19,18 @@ function draw_equipment_slot(
 
     if (_subtle)
     {
-        draw_set_color(_selected ? c_lime : c_dkgray);
+        draw_set_color(_selected ? global.ui_interactive_color : c_dkgray);
     }
     else
     {
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_interactive_color);
     }
 
     draw_rectangle(_x, _y, _x + _width, _y + _height, true);
 
     if (_subtle)
     {
-        draw_set_color(_selected ? c_lime : c_gray);
+        draw_set_color(_selected ? global.ui_interactive_color : c_gray);
     }
 
     draw_text_transformed(
@@ -79,7 +79,7 @@ function draw_equipment_slot(
         var sprite_offset_x = (sprite_visible_left + (sprite_visible_width * 0.5) - sprite_get_xoffset(render_sprite)) * sprite_scale;
         var sprite_offset_y = (sprite_visible_top + (sprite_visible_height * 0.5) - sprite_get_yoffset(render_sprite)) * sprite_scale;
 
-        draw_set_color(_selected ? c_lime : c_gray);
+        draw_set_color(_selected ? global.ui_interactive_color : c_gray);
         draw_rectangle(
             sprite_center_x - ((sprite_visible_width * sprite_scale) * 0.5) - 4,
             sprite_center_y - ((sprite_visible_height * sprite_scale) * 0.5) - 4,
@@ -103,7 +103,7 @@ function draw_equipment_slot(
 
     if (!has_item_sprite && _selected)
     {
-        if (_subtle) draw_set_color(c_lime);
+        if (_subtle) draw_set_color(global.ui_interactive_color);
         draw_text(
             _subtle ? _x + 10 : _x + 40,
             _subtle ? _y + 29 : _y + 35,
@@ -120,5 +120,5 @@ function draw_equipment_slot(
         );
     }
 
-    if (_subtle) draw_set_color(c_lime);
+    if (_subtle) draw_set_color(global.ui_text_color);
 }

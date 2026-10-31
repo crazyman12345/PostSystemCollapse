@@ -12,7 +12,7 @@ function draw_start_raid_confirmation()
     var y2 = y1 + box_h;
 
     // Background
-    draw_set_color(c_black);
+    draw_set_color(global.hideout_panel_color);
     draw_rectangle(
         x1,
         y1,
@@ -22,7 +22,7 @@ function draw_start_raid_confirmation()
     );
 
     // Border
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_rectangle(
         x1,
         y1,
@@ -63,6 +63,7 @@ function draw_start_raid_confirmation()
         no_text = "> NO";
     }
 
+    draw_set_color(global.ui_interactive_color);
     draw_text(
         (x1 + x2) * 0.5,
         y1 + 160,

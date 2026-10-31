@@ -52,7 +52,7 @@ function draw_hideout_stash()
     // MAIN PANEL
     // ==========================================
 
-    draw_set_color(c_black);
+    draw_set_color(global.hideout_panel_color);
 
     draw_rectangle(
         panel_left,
@@ -62,17 +62,8 @@ function draw_hideout_stash()
         false
     );
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_font(fnt_terminal_small);
-
-    terminal_panel(
-        panel_left,
-        panel_top,
-        panel_width,
-        panel_height,
-        "STASH"
-    );
-
 
     draw_stash_equipment_and_carried_storage(member, false);
     draw_player_status_panel(395, 790, 360);
@@ -83,53 +74,7 @@ function draw_hideout_stash()
     // MAIN STASH GRID
     // ==========================================
 
-    for (
-        var grid_y = 0;
-        grid_y < stash.grid_height;
-        grid_y++
-    )
-    {
-        for (
-            var grid_x = 0;
-            grid_x < stash.grid_width;
-            grid_x++
-        )
-        {
-            var cell_left =
-                stash_left
-                + (
-                    grid_x
-                    * stash_cell_size
-                );
-
-            var cell_top =
-                grid_top
-                + (
-                    grid_y
-                    * stash_cell_size
-                );
-
-            draw_set_color(c_dkgray);
-
-            draw_rectangle(
-                cell_left,
-                cell_top,
-                cell_left + stash_cell_size,
-                cell_top + stash_cell_size,
-                false
-            );
-
-            draw_set_color(c_green);
-
-            draw_rectangle(
-                cell_left,
-                cell_top,
-                cell_left + stash_cell_size,
-                cell_top + stash_cell_size,
-                true
-            );
-        }
-    }
+    draw_inventory_grid_background(stash_left, grid_top, stash.grid_width, stash.grid_height, stash_cell_size);
 
 
     // ==========================================
@@ -187,7 +132,7 @@ function draw_hideout_stash()
 
             var item_bottom = item_top + (item_height * item_grid.cell_size);
 
-            draw_inventory_grid_item(stash_item, definition, item_left, item_top, item_width, item_height, item_grid.cell_size, item_grid.key == "stash" && i == stash_index);
+            draw_inventory_grid_item(stash_item, definition, item_left, item_top, item_width, item_height, item_grid.cell_size, false);
             inventory_hover_consider(stash_item, item_left, item_top, item_right, item_bottom);
         }
     }
@@ -240,7 +185,7 @@ function draw_hideout_stash()
                 var preview_valid = inventory_can_place_item(stash.held_item, stash.hover_x, stash.hover_y, item_grid.storage);
 
                 draw_set_alpha(0.45);
-                draw_set_color(preview_valid ? c_lime : c_red);
+                draw_set_color(preview_valid ? global.ui_interactive_color : c_red);
                 draw_rectangle(preview_left + 4, preview_top + 4, preview_left + (preview_width * item_grid.cell_size) - 4, preview_top + (preview_height * item_grid.cell_size) - 4, false);
                 draw_set_alpha(1);
                 break;

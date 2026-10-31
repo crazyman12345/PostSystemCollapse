@@ -21,7 +21,7 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
 
 
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 
@@ -31,8 +31,7 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
         panel_top,
         list_width,
         panel_height,
-        "RECIPES",
-        hideout_focus == HideoutFocus.CONTENT
+        "RECIPES"
     );
 
     terminal_panel(
@@ -132,14 +131,15 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
         if (locked)
             draw_set_color(c_gray);
         else
-            draw_set_color(c_lime);
+            draw_set_color(global.ui_text_color);
 
 
         terminal_menu_item(
             list_left + padding,
             row_y,
             listed_recipe.name,
-            selected
+            selected,
+            !locked
         );
 
 
@@ -168,7 +168,7 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
     }
 
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 
 
     // ==============================

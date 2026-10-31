@@ -198,7 +198,7 @@ function draw_raid_player_hit_region_debug()
     draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _head_bottom, false);
     draw_set_color(c_yellow);
     draw_rectangle(_bbox.left, _head_bottom, _bbox.right, _torso_bottom, false);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_rectangle(_bbox.left, _torso_bottom, _bbox.right, _bbox.bottom, false);
 
     draw_set_alpha(1);

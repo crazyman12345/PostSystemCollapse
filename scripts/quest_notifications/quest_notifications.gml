@@ -116,9 +116,9 @@ function quest_notifications_draw()
             var title_height = string_height_ext(entry.title, line_separation, text_width);
             var message_height = string_height_ext(entry.message, line_separation, text_width);
             var entry_height = max(104, 14 + title_height + 10 + message_height + 14);
-            draw_set_color(c_lime);
+            draw_set_color(global.ui_text_color);
             draw_text_ext(left + 20, entry_top + 14, entry.title, line_separation, text_width);
-            draw_set_color(c_green);
+            draw_set_color(global.ui_text_color);
             draw_text_ext(left + 20, entry_top + 24 + title_height, entry.message, line_separation, text_width);
             entry_top += entry_height;
         }
@@ -126,7 +126,7 @@ function quest_notifications_draw()
     }
 
     draw_set_alpha(1);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_font(fnt_terminal);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);

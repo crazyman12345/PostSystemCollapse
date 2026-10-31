@@ -23,7 +23,7 @@ function draw_raid()
     }
 
     // Arena
-    //draw_set_color(c_lime);
+    //draw_set_color(global.ui_text_color);
     //draw_rectangle(
     //    raid_room_x1,
     //    raid_room_y1,

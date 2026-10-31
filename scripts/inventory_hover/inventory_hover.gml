@@ -87,7 +87,7 @@ function inventory_hover_draw()
         draw_set_alpha(_tooltip_alpha);
         draw_set_color(c_green);
         draw_rectangle(_left, _top, _left + _width, _top + _height, true);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text(_left + _padding, _top + _padding, _definition.name);
         draw_set_alpha(1);
         draw_set_font(fnt_terminal);

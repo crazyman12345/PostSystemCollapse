@@ -7,30 +7,6 @@ function step_hideout_raid()
 
         var count = array_length(level_db);
 
-        if (keyboard_check_pressed(ord("A")) && combat_area_index mod 2 == 1
-        && raid_area_is_available(combat_area_index - 1))
-		{ 
-			combat_area_index--;
-			scroll_sound();
-		}
-        if (keyboard_check_pressed(ord("D")) && combat_area_index mod 2 == 0 && combat_area_index + 1 < count
-        && raid_area_is_available(combat_area_index + 1))
-        {   
-			combat_area_index++;
-			scroll_sound();
-		}
-        if (keyboard_check_pressed(ord("W")) && combat_area_index - 2 >= 0
-        && raid_area_is_available(combat_area_index - 2))
-		{
-            combat_area_index -= 2;
-			scroll_sound();
-		}
-        if (keyboard_check_pressed(ord("S")) && combat_area_index + 2 < count
-        && raid_area_is_available(combat_area_index + 2))
-		{
-            combat_area_index += 2;
-			scroll_sound();
-		}
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);
         var hover_column = floor((_mouse_x - 320) / 805);
@@ -47,7 +23,7 @@ function step_hideout_raid()
             scroll_sound();
         }
 
-        if (keyboard_check_pressed(vk_enter) || (mouse_hover && mouse_check_button_pressed(mb_left)))
+        if (mouse_hover && mouse_check_button_pressed(mb_left))
         {
             if (!onboarding_can_start_raid()) return;
             if (!raid_area_is_available(combat_area_index)) return;

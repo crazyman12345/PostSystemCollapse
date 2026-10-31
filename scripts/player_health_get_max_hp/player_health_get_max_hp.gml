@@ -20,15 +20,17 @@ function player_health_refresh_maximums(_preserve_missing = true)
     var _global_missing = _old_global_max - raid_player_hp;
     raid_player_max_hp = player_health_get_max_hp();
     raid_player_hp = _preserve_missing
-        ? clamp(raid_player_max_hp - _global_missing, 0, raid_player_max_hp)
+        ? clamp(round(raid_player_max_hp - _global_missing), 0, raid_player_max_hp)
         : raid_player_max_hp;
+    health_global_recovery_accumulator = 0;
 
     for (var i = 0; i < array_length(health_limbs); i++)
     {
         var _limb = health_limbs[i];
         var _missing = _limb.max_hp - _limb.hp;
         _limb.max_hp = player_health_get_limb_max_hp(i);
-        _limb.hp = _preserve_missing ? clamp(_limb.max_hp - _missing, 0, _limb.max_hp) : _limb.max_hp;
+        _limb.hp = _preserve_missing ? clamp(round(_limb.max_hp - _missing), 0, _limb.max_hp) : _limb.max_hp;
+        health_limb_recovery_accumulators[i] = 0;
         player_health_update_limb_state(_limb);
     }
 

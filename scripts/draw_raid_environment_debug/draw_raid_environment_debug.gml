@@ -10,7 +10,7 @@ function draw_raid_environment_debug()
     var _outer_bottom = raid_room_y2 + _cap_offset;
 
     draw_set_alpha(1);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_rectangle(raid_room_x1, raid_room_y1, raid_room_x2, raid_room_y2, true);
     draw_set_color(c_yellow);
     draw_rectangle(_outer_left, _outer_top, _outer_right, _outer_bottom, true);

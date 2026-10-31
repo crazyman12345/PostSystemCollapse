@@ -16,7 +16,7 @@ function draw_raid_hotbar(_inventory = false)
     draw_set_valign(fa_top);
     if (_inventory)
     {
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text(left, top - 22, "QUICK ITEMS");
     }
 
@@ -28,9 +28,9 @@ function draw_raid_hotbar(_inventory = false)
         var treatment_flash = player_health_treatment_is_active()
             && raid.treatment.item == raid.hotbar[i]
             && floor(current_time / 150) mod 2 == 0;
-        var border_color = treatment_flash ? c_white : (active ? (raid.hotbar_feedback_success ? c_lime : c_red) : c_green);
+        var border_color = treatment_flash ? c_white : (active ? (raid.hotbar_feedback_success ? global.ui_interactive_color : c_red) : c_green);
         draw_terminal_rectangle(slot_x, slot_y, slot_x + slot_w, slot_y + slot_h, border_color);
-        draw_set_color(active ? c_lime : c_green);
+        draw_set_color(global.ui_interactive_color);
         draw_set_halign(fa_right);
         draw_text(slot_x + slot_w - 7, slot_y + 6, string(i + 1));
         draw_set_halign(fa_left);

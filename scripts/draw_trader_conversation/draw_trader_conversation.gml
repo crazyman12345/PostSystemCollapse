@@ -11,13 +11,10 @@ function draw_trader_conversation()
     draw_set_font(fnt_terminal_small);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
-    draw_set_color(c_black);
+    draw_set_color(global.hideout_panel_color);
     draw_rectangle(left, top, right, bottom, false);
-    draw_set_color(c_lime);
-    draw_ascii_rectangle(left, top, right, bottom);
-    draw_text(left + 28, top + 25, "MESSAGES // " + string_upper(trader.name));
-    draw_set_color(c_green);
-    draw_line(left + 22, top + 72, right - 22, top + 72);
+    heading_box(left, top, right - left, bottom - top, "MESSAGES // " + string_upper(trader.name));
+    draw_set_color(global.hideout_border_subtle_color);
     draw_line(divider, top + 92, divider, bottom - 25);
 
     draw_set_font(fnt_terminal_tiny);
@@ -25,22 +22,23 @@ function draw_trader_conversation()
     var portrait_top = top + 100;
     var portrait_width = 280;
     var portrait_height = 330;
-    draw_set_color(c_lime);
-    terminal_box(portrait_left, portrait_top, portrait_width, portrait_height);
+    draw_set_color(global.ui_text_color);
     if (trader.portrait != -1)
     {
-        draw_sprite_stretched_ext(trader.portrait, 0, portrait_left + 3, portrait_top + 3,
-            portrait_width - 6, portrait_height - 6, c_green, 1);
+        draw_chamfered_sprite(trader.portrait, 0, portrait_left + 3, portrait_top + 3,
+            portrait_width - 6, portrait_height - 6, 9, global.hideout_secondary_color, 1);
     }
     else
     {
         draw_set_halign(fa_center);
-        draw_set_color(c_green);
+        draw_set_color(global.ui_text_color);
         draw_text(portrait_left + portrait_width / 2, portrait_top + portrait_height / 2, "[ NO IMAGE ]");
         draw_set_halign(fa_left);
     }
+    draw_set_color(global.ui_text_color);
+    terminal_box(portrait_left, portrait_top, portrait_width, portrait_height);
 
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     draw_text_ext(portrait_left + portrait_width + 28, portrait_top + 25, trader.description, 23,
         divider - portrait_left - portrait_width - 56);
 
@@ -51,7 +49,7 @@ function draw_trader_conversation()
     for (var i = first_history; i < history_end; i++)
     {
         var entry = dialogue_history[i];
-        draw_set_color(entry.speaker == "YOU" ? c_lime : c_green);
+        draw_set_color(entry.speaker == "YOU" ? global.ui_text_color : global.ui_text_color);
         draw_text(left + 32, history_y, string_upper(entry.speaker) + ":");
         history_y += 28;
         draw_text_ext(left + 48, history_y, entry.message, 23, divider - left - 85);
@@ -60,10 +58,10 @@ function draw_trader_conversation()
     }
 
     draw_set_font(fnt_terminal_medium);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(divider + 55, top + 105, string_upper(dialogue_current_node.speaker));
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     draw_text_ext(divider + 55, top + 165, dialogue_current_node.message, 29, right - divider - 105);
     draw_line(divider + 45, top + 445, right - 45, top + 445);
 
@@ -76,13 +74,10 @@ function draw_trader_conversation()
         var index = dialogue_response_scroll + row;
         if (index >= array_length(responses)) break;
         var selected = index == dialogue_response_index;
-        if (selected)
-        {
-            draw_set_color(c_dkgray);
-            draw_rectangle(1010, response_y + row * row_height - 5, right - 48, response_y + row * row_height + 43, false);
-        }
-        draw_set_color(selected ? c_lime : c_green);
-        draw_text(1025, response_y + row * row_height, string(index + 1) + ". " + responses[index].text);
+        var row_top = response_y + row * row_height - 5;
+        var row_bottom = response_y + row * row_height + 43;
+        terminal_button(1010, row_top, right - 48, row_bottom,
+            string(index + 1) + ". " + responses[index].text, selected);
         if (string_pos("claim:", responses[index].target) == 1)
         {
             draw_set_halign(fa_right);
@@ -119,13 +114,10 @@ function draw_messages_all()
     draw_set_font(fnt_terminal_small);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
-    draw_set_color(c_black);
+    draw_set_color(global.hideout_panel_color);
     draw_rectangle(left, top, right, bottom, false);
-    draw_set_color(c_lime);
-    draw_ascii_rectangle(left, top, right, bottom);
-    draw_text(left + 28, top + 25, "MESSAGES // ALL");
-    draw_set_color(c_green);
-    draw_line(left + 22, top + 72, right - 22, top + 72);
+    heading_box(left, top, right - left, bottom - top, "MESSAGES // ALL");
+    draw_set_color(global.ui_text_color);
     draw_line(divider, top + 92, divider, bottom - 25);
 
     draw_set_font(fnt_terminal_tiny);
@@ -137,10 +129,10 @@ function draw_messages_all()
         var selected = i == menu_index;
         if (selected)
         {
-            draw_set_color(c_dkgray);
+            draw_set_color(global.hideout_raised_color);
             draw_rectangle(left + 25, row_top - 8, divider - 25, row_top + 68, false);
         }
-        draw_set_color(selected ? c_lime : c_green);
+        draw_set_color(global.ui_interactive_color);
         draw_text(left + 38, row_top, string_upper(trader.name));
         if (dialogue_trader_has_ready_quest(trader_keys[i]))
         {
@@ -149,15 +141,15 @@ function draw_messages_all()
             draw_text(divider - 48, row_top, "?");
             draw_set_halign(fa_left);
         }
-        draw_set_color(c_green);
+        draw_set_color(global.ui_text_color);
         draw_text(left + 58, row_top + 36, trader.title);
     }
 
     draw_set_font(fnt_terminal_medium);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(divider + 55, top + 105, string_upper(selected_trader.name));
     draw_set_font(fnt_terminal_tiny);
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     draw_text(divider + 55, top + 155, string_upper(selected_trader.title));
     draw_line(divider + 45, top + 205, right - 45, top + 205);
     draw_text(divider + 55, top + 240, "LATEST MESSAGE");

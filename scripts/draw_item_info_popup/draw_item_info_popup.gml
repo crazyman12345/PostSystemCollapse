@@ -85,7 +85,7 @@ function draw_item_info_popup(
     // OUTER DOUBLE BORDER
     // ============================================================
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 
     draw_rectangle(
         _x1,
@@ -108,7 +108,7 @@ function draw_item_info_popup(
     // TITLE BAR
     // ============================================================
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 
     draw_rectangle(
         _x1 + 5,
@@ -161,7 +161,7 @@ function draw_item_info_popup(
     // MAIN DIVIDERS
     // ============================================================
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 
     // Vertical divider between image and info
     draw_line(
@@ -193,7 +193,7 @@ function draw_item_info_popup(
     // ============================================================
 
     draw_set_font(fnt_terminal_medium);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 
   draw_set_halign(fa_center);
 
@@ -285,7 +285,7 @@ function draw_item_info_popup(
     }
     else
     {
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_set_font(fnt_terminal_small);
 
         draw_text(
@@ -300,7 +300,7 @@ function draw_item_info_popup(
     // SPECIFICATIONS HEADER
     // ============================================================
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_font(fnt_terminal_small);
 
     draw_text(
@@ -326,7 +326,7 @@ function draw_item_info_popup(
     // DESCRIPTION HEADER
     // ============================================================
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_font(fnt_terminal_small);
 
     draw_text(
@@ -360,7 +360,7 @@ function draw_item_info_popup(
 
     if (_fade_alpha < 0.30)
     {
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_set_font(fnt_terminal_small);
 
         draw_text(
@@ -376,7 +376,7 @@ function draw_item_info_popup(
     // ============================================================
 
     draw_set_alpha(_fade_alpha * 0.08);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 
     for (
         var _scan_y = _y1 + _title_h + 5;
@@ -398,5 +398,5 @@ function draw_item_info_popup(
     // ============================================================
 
     draw_set_alpha(1);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 }

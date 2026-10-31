@@ -13,7 +13,7 @@ function draw_raid_texture_crop_debug()
                 ? ["Crop Left", "Crop Right", "Crop Top", "Crop Bottom", "Offset X", "Offset Y", "UV Offset U", "UV Offset V", "Scale X", "Scale Y", "Opening Left Offset", "Opening Right Offset", "Opening Top"]
                 : ["Crop Left", "Crop Right", "Crop Top", "Crop Bottom", "Offset X", "Offset Y", "UV Offset U", "UV Offset V", "Scale X", "Scale Y"])));
     var _fields = ["crop_left", "crop_right", "crop_top", "crop_bottom", "offset_x", "offset_y", "uv_offset_u", "uv_offset_v", "scale_x", "scale_y"];
-    var _green = c_lime;
+    var _green = global.ui_text_color;
     var _selected = make_color_rgb(180, 255, 180);
 
     draw_set_font(fnt_terminal_tiny);
@@ -119,7 +119,7 @@ function draw_raid_texture_crop_debug()
 
 function raid_texture_crop_debug_draw_button(_x, _y, _width, _height, _label, _filled, _selected)
 {
-    var _green = c_lime;
+    var _green = global.ui_text_color;
     var _selected_color = make_color_rgb(180, 255, 180);
     draw_set_color(_selected ? _selected_color : _green);
     if (_filled)

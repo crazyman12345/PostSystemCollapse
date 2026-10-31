@@ -584,7 +584,6 @@ function step_hideout_stash(){
     var item_count = array_length(stash.items);
     if (item_count > 0) {
         stash_index = clamp(stash_index, 0, item_count - 1);
-        stash_index = terminal_menu_input(stash_index, item_count);
     } else {
         stash_index = 0;
     }

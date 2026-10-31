@@ -45,7 +45,12 @@ function load_game()
     overlay_mode = OverlayMode.NONE;
     state = GameState.HIDEOUT;
     hideout_page = HideoutPage.STASH;
+    for (var i = 0; i < array_length(hideout_menu_items); i++)
+    {
+        if (hideout_menu_items[i].page == hideout_page) hideout_menu_index = i;
+    }
     hideout_focus = HideoutFocus.CONTENT;
+    trader_mode = TraderMode.SELECT;
     save_continue_available = true;
     if (loaded_backup) debug_log_add("Recovered player save from backup.");
     return true;

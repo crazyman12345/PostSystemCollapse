@@ -26,12 +26,11 @@ function draw_workshop()
    // draw_text(margin, 30, "WORKSHOP");
 
     // PANELS
-    draw_rectangle(left_x1, top, left_x2, bottom, true);
-    draw_rectangle(right_x1, top, right_x2, bottom, true);
+    draw_border_frame2(left_x1, top, left_x2 - left_x1, bottom - top, true);
+    draw_border_frame2(right_x1, top, right_x2 - right_x1, bottom - top, true);
 
     // LEFT PANEL TITLE
-    if (workshop_focus == WorkshopFocus.STATIONS) draw_text(left_x1 + 20, top + 20, "> BENCHES <");
-	else draw_text(left_x1 + 20, top + 20, "BENCHES");
+    draw_text(left_x1 + 20, top + 20, "BENCHES");
 
     // BENCH LIST
     var list_y = top + 70;
@@ -49,9 +48,9 @@ function draw_workshop()
         var status = available ? "[LOCKED]" : "";
         if (level > 0) status = "[LV." + string(level) + "]";
 
-        if (level <= 0) draw_set_color(c_gray);
+        draw_set_color(available ? global.ui_interactive_color : c_gray);
         draw_text(left_x1 + 25, list_y + i * 32, cursor + (available ? data.name : "???"));
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text(left_x2 - 135, list_y + i * 32, status);
     }
 
@@ -61,7 +60,7 @@ function draw_workshop()
     var sprite_x2 = sprite_x1 + 256;
     var sprite_y2 = sprite_y1 + 256;
 
-    draw_rectangle(sprite_x1, sprite_y1, sprite_x2, sprite_y2, true);
+    terminal_box(sprite_x1, sprite_y1, sprite_x2 - sprite_x1, sprite_y2 - sprite_y1);
 
     if (bench.sprite != -1)
     {
@@ -76,7 +75,7 @@ function draw_workshop()
         var draw_x = (sprite_x1 + sprite_x2) * 0.5;
         var draw_y = (sprite_y1 + sprite_y2) * 0.5;
 
-        draw_sprite_ext(bench.sprite, icon_spin_frame(bench.sprite), draw_x, draw_y, scale, scale, 0, merge_color(c_white, c_green, 0.2), 1);
+        draw_sprite_ext(bench.sprite, icon_spin_frame(bench.sprite), draw_x, draw_y, scale, scale, 0, merge_color(c_white, global.hideout_secondary_color, 0.35), 1);
     }
 
     // BENCH DESCRIPTION
@@ -91,8 +90,7 @@ function draw_workshop()
     );
 
     // RIGHT HEADER
-    if (workshop_focus == WorkshopFocus.CONTENT) draw_text(right_x1 + 20, top + 20, "> " + bench_name + " <");
-    else draw_text(right_x1 + 20, top + 20, bench_name);
+    draw_text(right_x1 + 20, top + 20, bench_name);
 
     var status_text = bench_available ? "LOCKED" : "";
     if (bench_level > 0) status_text = "LEVEL " + string(bench_level);

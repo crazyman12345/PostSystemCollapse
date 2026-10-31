@@ -2,12 +2,35 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
 {
     var item_right = _left + (_grid_width * _cell_size);
     var item_bottom = _top + (_grid_height * _cell_size);
+    var gui_mouse_x = device_mouse_x_to_gui(0);
+    var gui_mouse_y = device_mouse_y_to_gui(0);
+    var is_holding_item = !is_undefined(stash.held_item) || !is_undefined(raid.inventory_item);
+    var is_hovered = !is_holding_item && !inventory_context_active
+        && gui_mouse_x >= _left && gui_mouse_x < item_right
+        && gui_mouse_y >= _top && gui_mouse_y < item_bottom;
 
     var _treatment_flash = player_health_treatment_is_active()
         && raid.treatment.item == _stored_item
         && floor(current_time / 150) mod 2 == 0;
-    draw_set_color(_treatment_flash ? c_white : (_selected ? c_lime : c_gray));
-    draw_rectangle(_left + 4, _top + 4, item_right - 4, item_bottom - 4, false);
+    var background_alpha = draw_get_alpha();
+    var background_color = c_gray;
+    var draw_background = true;
+
+    switch (_definition.category)
+    {
+        case ItemCategory.BODY_ARMOR: background_color = make_color_rgb(58, 83, 112); break;
+        case ItemCategory.AMMO: background_color = make_color_rgb(145, 119, 43); break;
+        case ItemCategory.CURRENCY: background_color = make_color_rgb(42, 105, 62); break;
+        case ItemCategory.WEAPON: draw_background = false; break;
+    }
+
+    if (_treatment_flash || _selected || draw_background)
+    {
+        draw_set_color(_treatment_flash ? c_white : (_selected ? global.ui_interactive_color : background_color));
+        if (!_treatment_flash && !_selected) draw_set_alpha(background_alpha * 0.55);
+        draw_rectangle(_left, _top, item_right, item_bottom, false);
+    }
+    draw_set_alpha(background_alpha);
 
     var grid_sprite = -1;
     if (variable_struct_exists(_definition, "icon_sprite")) grid_sprite = _definition.icon_sprite;
@@ -19,7 +42,7 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
 
     if (has_sprite)
     {
-        var padding = 8;
+        var padding = 4;
         var available_width = max(1, (item_right - _left) - (padding * 2));
         var available_height = max(1, (item_bottom - _top) - (padding * 2));
         var _bbox_left = sprite_get_bbox_left(grid_sprite);
@@ -45,7 +68,8 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
         var sprite_x = center_x - rotated_offset_x;
         var sprite_y = center_y - rotated_offset_y;
         draw_sprite_ext(grid_sprite, sprite_frame, sprite_x + 3, sprite_y + 3, sprite_scale, sprite_scale, sprite_rotation, c_black, 0.28);
-        draw_sprite_ext(grid_sprite, sprite_frame, sprite_x, sprite_y, sprite_scale, sprite_scale, sprite_rotation, c_white, 1);
+        var sprite_color = is_hovered ? merge_color(c_white, global.ui_interactive_color, 0.28) : c_white;
+        draw_sprite_ext(grid_sprite, sprite_frame, sprite_x, sprite_y, sprite_scale, sprite_scale, sprite_rotation, sprite_color, 1);
     }
     else
     {

@@ -7,7 +7,7 @@ function draw_ascii_connection(
     _box_height
 )
 {
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_font(fnt_ascii);
 
     var char_width =

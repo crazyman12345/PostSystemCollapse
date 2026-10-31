@@ -98,30 +98,15 @@ function onboarding_step_sidebar()
 {
     var _entries = onboarding_get_menu_entries();
     var _selected = onboarding_sync_menu_selection(_entries);
-    var _move = keyboard_check_pressed(ord("S")) - keyboard_check_pressed(ord("W"));
-    if (_move != 0)
-    {
-        _selected = (_selected + sign(_move) + array_length(_entries)) mod array_length(_entries);
-        hideout_menu_index = _entries[_selected].menu_index;
-        hideout_page = _entries[_selected].page;
-        scroll_sound();
-    }
-
     var _hovered = onboarding_get_hovered_menu_entry(_entries);
-    if (_hovered != -1 && _hovered != _selected)
+    if (_hovered != -1 && _hovered != _selected && mouse_check_button_pressed(mb_left))
     {
-        _selected = _hovered;
-        hideout_menu_index = _entries[_selected].menu_index;
-        hideout_page = _entries[_selected].page;
-        scroll_sound();
-    }
-
-    if (keyboard_check_pressed(vk_enter) || (_hovered != -1 && mouse_check_button_pressed(mb_left)))
-    {
+        hideout_menu_index = _entries[_hovered].menu_index;
+        hideout_page = _entries[_hovered].page;
         hideout_focus = HideoutFocus.CONTENT;
         trader_mode = TraderMode.SELECT;
         menu_index = 0;
-        audio_play_sound(snd_interact, 0, false);
+        scroll_sound();
         return;
     }
     if (keyboard_check_pressed(vk_escape))
@@ -156,47 +141,28 @@ function onboarding_step_hideout()
         onboarding_open_mara_node("mara_onboarding_replacement");
         save_game();
     }
-    if (hideout_focus == HideoutFocus.SIDEBAR && mouse_check_button_pressed(mb_left))
+    if (mouse_check_button_pressed(mb_left))
     {
-        var _mouse_x = device_mouse_x_to_gui(0);
-        var _mouse_y = device_mouse_y_to_gui(0);
-        if (_mouse_x >= 320 && _mouse_x <= display_get_gui_width()
-        && _mouse_y >= 1 && _mouse_y <= display_get_gui_height())
-        {
-            hideout_focus = HideoutFocus.CONTENT;
-            trader_mode = TraderMode.SELECT;
-            menu_index = 0;
-            audio_play_sound(snd_interact, 0, false);
-            return true;
-        }
-    }
-    if (hideout_focus == HideoutFocus.CONTENT && mouse_check_button_pressed(mb_left))
-    {
-        var _mouse_x = device_mouse_x_to_gui(0);
-        var _mouse_y = device_mouse_y_to_gui(0);
         var _entries = onboarding_get_menu_entries();
-        if (_mouse_x >= 1 && _mouse_x <= 320 && _mouse_y >= 1 && _mouse_y <= display_get_gui_height())
+        var _selected = onboarding_sync_menu_selection(_entries);
+        var _clicked = onboarding_get_hovered_menu_entry(_entries);
+        if (_clicked != -1)
         {
-            hideout_focus = HideoutFocus.SIDEBAR;
-            var _clicked = onboarding_get_hovered_menu_entry(_entries);
-            if (_clicked != -1)
+            if (_clicked != _selected)
             {
+                if (trader_mode == TraderMode.CONVERSATION) dialogue_close();
+                else trader_mode = TraderMode.SELECT;
                 hideout_menu_index = _entries[_clicked].menu_index;
                 hideout_page = _entries[_clicked].page;
+                menu_index = 0;
+                scroll_sound();
             }
-            scroll_sound();
             return true;
         }
     }
     if (trader_mode == TraderMode.CONVERSATION)
     {
         step_trader_conversation();
-        return true;
-    }
-
-    if (hideout_focus == HideoutFocus.SIDEBAR)
-    {
-        onboarding_step_sidebar();
         return true;
     }
 
@@ -222,7 +188,7 @@ function onboarding_draw_hideout()
         draw_set_font(fnt_terminal_medium);
         draw_set_halign(fa_center);
         draw_set_valign(fa_middle);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         var _card = onboarding_prologue_cards[clamp(onboarding_prologue_index, 0, array_length(onboarding_prologue_cards) - 1)];
         _card = string_replace_all(_card, "[PLAYER]", crew[0].name);
         draw_text_ext(display_get_gui_width() * 0.5, display_get_gui_height() * 0.5, _card, 38, 960);
@@ -238,7 +204,8 @@ function onboarding_draw_hideout()
     if (trader_mode == TraderMode.CONVERSATION)
     {
         draw_trader_conversation();
-        draw_hideout_focus_outline(320);
+        heading_box(320, 1, display_get_gui_width() - 320, display_get_gui_height() - 1,
+            hideout_menu_items[hideout_menu_index].name, 60);
         return true;
     }
 
@@ -250,36 +217,25 @@ function onboarding_draw_hideout()
             break;
         case HideoutPage.RAIDS: draw_hideout_raid_select(); break;
     }
-    draw_hideout_focus_outline(320);
+    heading_box(320, 1, display_get_gui_width() - 320, display_get_gui_height() - 1,
+        hideout_menu_items[hideout_menu_index].name, 60);
     return true;
 }
 
 function onboarding_draw_staging_sidebar()
 {
     var _sidebar_width = 320;
-    var _margin = 25;
-    var _y = 85;
     var _entries = onboarding_get_menu_entries();
 
     draw_set_font(fnt_terminal_tiny);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
-    draw_set_color(c_lime);
-    draw_rectangle(1, 1, _sidebar_width, display_get_gui_height(), true);
-    draw_line(_sidebar_width, 0, _sidebar_width, display_get_gui_height());
-    draw_text(_margin, 25, "HIDEOUT");
+    draw_set_color(global.ui_text_color);
+    draw_hideout_sidebar_frame(_sidebar_width, display_get_gui_height());
 
     for (var _i = 0; _i < array_length(hideout_menu_items); _i++)
     {
         var _entry = hideout_menu_items[_i];
-        if (_entry.header != "")
-        {
-            _y += 18;
-            draw_set_color(c_green);
-            draw_text_transformed(_margin, _y, _entry.header, 0.75, 0.75, 0);
-            _y += 32;
-        }
-
         var _unlocked = false;
         for (var _entry_index = 0; _entry_index < array_length(_entries); _entry_index++)
         {
@@ -291,10 +247,7 @@ function onboarding_draw_staging_sidebar()
         }
 
         var _selected = _unlocked && _entry.page == hideout_page;
-        draw_set_color(_selected ? c_lime : c_green);
-        draw_text(_margin, _y, (_selected ? "> " : "  ") + (_unlocked ? _entry.name : "???"));
-        _y += 34;
-        if (_entry.key == "workshop" || _entry.key == "drugmaking") _y += 30;
+        draw_hideout_sidebar_item(_entry, hideout_sidebar_item_top(_i), _selected, _unlocked);
     }
 }
 
@@ -302,23 +255,18 @@ function onboarding_get_hovered_menu_entry(_entries)
 {
     var _mouse_x = device_mouse_x_to_gui(0);
     var _mouse_y = device_mouse_y_to_gui(0);
-    if (_mouse_x < 25 || _mouse_x > 295) return -1;
+    if (_mouse_x < 18 || _mouse_x > 302) return -1;
 
-    var _y = 85;
     for (var _menu_index = 0; _menu_index < array_length(hideout_menu_items); _menu_index++)
     {
-        var _entry = hideout_menu_items[_menu_index];
-        if (_entry.header != "") _y += 50;
+        var _y = hideout_sidebar_item_top(_menu_index);
 
-        if (_mouse_y >= _y && _mouse_y < _y + 34)
+        if (_mouse_y >= _y && _mouse_y < _y + 42)
         {
             for (var _entry_index = 0; _entry_index < array_length(_entries); _entry_index++)
                 if (_entries[_entry_index].menu_index == _menu_index) return _entry_index;
             return -1;
         }
-
-        _y += 34;
-        if (_entry.key == "workshop" || _entry.key == "drugmaking") _y += 30;
     }
     return -1;
 }

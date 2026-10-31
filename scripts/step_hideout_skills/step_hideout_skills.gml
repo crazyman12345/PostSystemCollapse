@@ -1,16 +1,5 @@
 function step_hideout_skills()
 {
-    var previous_tab = hideout_skills_index;
-    hideout_skills_index = terminal_menu_input(hideout_skills_index, array_length(hideout_skill_tabs));
-    if (hideout_skills_index != previous_tab)
-    {
-        hideout_skill_tree_store_view(previous_tab);
-        hideout_skill_node_index = 0;
-        skill_tree_drag_active = false;
-        skill_tree_dragging = false;
-        hideout_skill_tree_load_view(hideout_skills_index);
-    }
-
     var _mouse_x = device_mouse_x_to_gui(0);
     var _mouse_y = device_mouse_y_to_gui(0);
     var tab_x = 340;
@@ -58,19 +47,6 @@ function step_hideout_skills()
     if (array_length(nodes) > 0)
     {
         hideout_skill_node_index = clamp(hideout_skill_node_index, 0, array_length(nodes) - 1);
-        if (keyboard_check_pressed(ord("A")))
-        {
-            hideout_skill_node_index--;
-            if (hideout_skill_node_index < 0) hideout_skill_node_index = array_length(nodes) - 1;
-            scroll_sound();
-        }
-        if (keyboard_check_pressed(ord("D")))
-        {
-            hideout_skill_node_index++;
-            if (hideout_skill_node_index >= array_length(nodes)) hideout_skill_node_index = 0;
-            scroll_sound();
-        }
-
         if (mouse_in_tree && mouse_check_button_pressed(mb_left))
         {
             skill_tree_drag_active = true;

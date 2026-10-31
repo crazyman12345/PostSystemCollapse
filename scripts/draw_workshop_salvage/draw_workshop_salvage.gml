@@ -2,7 +2,7 @@ function draw_workshop_salvage(_x1, _top, _x2, _bottom)
 {
     var _y = _top + 140;
     var items = workshop_get_salvageable_items();
-	draw_set_color(c_lime);
+	draw_set_color(global.ui_text_color);
     draw_text(_x1 + 30, _y, "SALVAGE");
     _y += 50;
 
@@ -23,11 +23,13 @@ function draw_workshop_salvage(_x1, _top, _x2, _bottom)
         var cursor = "  ";
         if (i == workshop_content_index) cursor = "> ";
 
+        draw_set_color(global.ui_interactive_color);
         draw_text(_x1 + 30, _y, cursor + item.name + " x" + string(owned));
         _y += 35;
     }
 
     // SELECTED ITEM BREAKDOWN
+    draw_set_color(global.ui_text_color);
     _y += 30;
 
     var selected_key = items[workshop_content_index];

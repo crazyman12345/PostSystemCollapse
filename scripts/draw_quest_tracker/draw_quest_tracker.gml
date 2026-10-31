@@ -68,7 +68,7 @@ function draw_quest_tracker()
     draw_set_valign(fa_top);
 
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     draw_text((panel_left + panel_right) * 0.5, panel_top + 18, "QUESTS (1)");
@@ -78,13 +78,13 @@ function draw_quest_tracker()
     var icon_size = 44;
     draw_terminal_rectangle(icon_left, icon_top, icon_left + icon_size, icon_top + icon_size, c_green, 0.65);
     draw_set_font(fnt_terminal);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(icon_left + (icon_size * 0.5), icon_top + (icon_size * 0.5), "?");
 
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(icon_left + icon_size + 14, header_bottom + 10, string_upper(definition.title));
 
     if (array_length(definition.objectives) > 0)
@@ -99,13 +99,13 @@ function draw_quest_tracker()
         draw_set_color(first_complete ? c_gray : c_white);
         draw_text(icon_left + icon_size + 14, header_bottom + 39, first_text);
         draw_set_halign(fa_right);
-        draw_set_color(first_complete ? c_gray : c_lime);
+        draw_set_color(first_complete ? c_gray : global.ui_text_color);
         draw_text(panel_right - 14, header_bottom + 39, string(first_amount) + " / " + string(first_objective.amount));
     }
     else
     {
         draw_set_font(fnt_terminal_tiny);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text(icon_left + icon_size + 14, header_bottom + 39, "Ready to turn in");
     }
 
@@ -129,7 +129,7 @@ function draw_quest_tracker()
         if (complete)
         {
             draw_set_font(fnt_terminal_tiny);
-            draw_set_color(c_green);
+            draw_set_color(global.ui_text_color);
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
             draw_text(box_left + 10, box_top + 10, "X");
@@ -141,12 +141,12 @@ function draw_quest_tracker()
         draw_set_color(complete ? c_gray : (i == current_objective_index ? c_white : c_gray));
         draw_text(panel_left + 50, row_top + 11, objective_text);
         draw_set_halign(fa_right);
-        draw_set_color(complete ? c_gray : (i == current_objective_index ? c_lime : c_gray));
+        draw_set_color(complete ? c_gray : (i == current_objective_index ? global.ui_text_color : c_gray));
         draw_text(panel_right - 14, row_top + 11, string(amount) + " / " + string(objective.amount));
     }
 
     draw_set_alpha(1);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_font(fnt_terminal);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);

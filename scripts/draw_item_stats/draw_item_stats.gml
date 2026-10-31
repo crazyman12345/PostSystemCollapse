@@ -9,7 +9,7 @@ function draw_item_stats(_item, _x, _y, _bottom)
     var _lines = [];
 
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 
 
     // ==========================================

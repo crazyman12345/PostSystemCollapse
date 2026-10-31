@@ -13,7 +13,7 @@ function draw_loadout_overlay()
     draw_rectangle(0, 0, 1920, 1080, false);
     draw_set_alpha(1);
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 
     // Reset focused item every frame
     loadout_focused_item_key = "";
@@ -122,7 +122,7 @@ function draw_pre_raid_info(_info_left, _info_width)
 	draw_set_font(fnt_ascii2);
     var info_top = 150;
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_info_left, info_top - 25, "RAID INFO");
     draw_line(_info_left, info_top - 7, _info_left + _info_width, info_top - 7);
 

@@ -4,140 +4,47 @@ function step_hideout()
     if (onboarding_step_hideout()) return;
     onboarding_update_field_supplies_tip();
 
-    if (trader_mode == TraderMode.BUY)
-    {
-        step_trader_buy();
-        return;
-    }
-
-    if (hideout_focus == HideoutFocus.SIDEBAR
-    && (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right)))
+    if (mouse_check_button_pressed(mb_left))
     {
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);
-        if (_mouse_x >= 320 && _mouse_x <= display_get_gui_width()
-        && _mouse_y >= 1 && _mouse_y <= display_get_gui_height())
+        var _clicked_index = -1;
+
+        for (var _i = 0; _i < array_length(hideout_menu_items); _i++)
         {
-            var _selected = hideout_menu_items[hideout_menu_index];
-            if (!hideout_entry_is_unlocked(_selected)) return;
-            hideout_focus = HideoutFocus.CONTENT;
-            if (variable_struct_exists(recipe_db, _selected.key))
+            var _entry = hideout_menu_items[_i];
+            var _item_y = hideout_sidebar_item_top(_i);
+            if (_mouse_x >= 18 && _mouse_x <= 302 && _mouse_y >= _item_y && _mouse_y < _item_y + 42
+            && hideout_entry_is_unlocked(_entry))
             {
-                crafting_recipe_index = 0;
-                crafting_recipe_scroll = 0;
-                crafting_message = "";
+                _clicked_index = _i;
+                break;
             }
-            audio_play_sound(snd_interact, 0, false);
-            return;
         }
-    }
 
-    if (hideout_focus == HideoutFocus.CONTENT
-    && (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right)))
-    {
-        var _mouse_x = device_mouse_x_to_gui(0);
-        var _mouse_y = device_mouse_y_to_gui(0);
-        if (_mouse_x >= 1 && _mouse_x <= 320 && _mouse_y >= 1 && _mouse_y <= display_get_gui_height())
+        if (_clicked_index != -1)
         {
-            hideout_focus = HideoutFocus.SIDEBAR;
-            var _item_y = 85;
-            for (var _i = 0; _i < array_length(hideout_menu_items); _i++)
+            if (_clicked_index != hideout_menu_index)
             {
-                var _entry = hideout_menu_items[_i];
-                if (_entry.header != "") _item_y += 50;
-                if (_mouse_x >= 25 && _mouse_x <= 295 && _mouse_y >= _item_y && _mouse_y < _item_y + 34
-                && hideout_entry_is_unlocked(_entry))
+                if (trader_mode == TraderMode.CONVERSATION) dialogue_close();
+                else trader_mode = TraderMode.SELECT;
+
+                hideout_menu_index = _clicked_index;
+                var _selected = hideout_menu_items[hideout_menu_index];
+                hideout_page = _selected.page;
+                hideout_focus = HideoutFocus.CONTENT;
+
+                if (variable_struct_exists(recipe_db, _selected.key))
                 {
-                    hideout_menu_index = _i;
-                    hideout_page = _entry.page;
-                    break;
+                    crafting_recipe_index = 0;
+                    crafting_recipe_scroll = 0;
+                    crafting_message = "";
                 }
-                _item_y += 34;
-                if (_entry.key == "workshop" || _entry.key == "drugmaking") _item_y += 30;
+
+                scroll_sound();
             }
-            scroll_sound();
             return;
         }
-    }
-
-    if (hideout_focus == HideoutFocus.SIDEBAR)
-    {
-        if (keyboard_check_pressed(vk_escape))
-        {
-            state = GameState.MAIN_MENU;
-            menu_index = 0;
-            audio_play_sound(snd_interact, 0, false);
-            return;
-        }
-
-        if (keyboard_check_pressed(ord("W")))
-        {
-            repeat (array_length(hideout_menu_items))
-            {
-                hideout_menu_index--;
-                if (hideout_menu_index < 0) hideout_menu_index = array_length(hideout_menu_items) - 1;
-
-                var entry = hideout_menu_items[hideout_menu_index];
-                if (hideout_entry_is_unlocked(entry))
-                    break;
-            }
-			scroll_sound();
-        }
-
-        if (keyboard_check_pressed(ord("S")))
-        {
-            repeat (array_length(hideout_menu_items))
-            {
-                hideout_menu_index++;
-                if (hideout_menu_index >= array_length(hideout_menu_items)) hideout_menu_index = 0;
-
-                var entry = hideout_menu_items[hideout_menu_index];
-                if (hideout_entry_is_unlocked(entry))
-                    break;
-            }
-			scroll_sound();
-        }
-
-        var _mouse_x = device_mouse_x_to_gui(0);
-        var _mouse_y = device_mouse_y_to_gui(0);
-        var hover_index = -1;
-        var item_y = 85;
-        for (var i = 0; i < array_length(hideout_menu_items); i++)
-        {
-            var hover_entry = hideout_menu_items[i];
-            if (hover_entry.header != "") item_y += 50;
-            if (_mouse_x >= 25 && _mouse_x <= 295 && _mouse_y >= item_y && _mouse_y < item_y + 34
-                && hideout_entry_is_unlocked(hover_entry)) hover_index = i;
-            item_y += 34;
-            if (hover_entry.key == "workshop" || hover_entry.key == "drugmaking") item_y += 30;
-        }
-
-        if (hover_index != -1 && hideout_menu_index != hover_index)
-        {
-            hideout_menu_index = hover_index;
-            scroll_sound();
-        }
-
-        var selected = hideout_menu_items[hideout_menu_index];
-        hideout_page = selected.page;
-
-        if (keyboard_check_pressed(vk_enter)
-        || (hover_index != -1 && (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right))))
-        {
-            if (!hideout_entry_is_unlocked(selected)) return;
-
-            hideout_focus = HideoutFocus.CONTENT;
-
-            if (variable_struct_exists(recipe_db, selected.key))
-            {
-                crafting_recipe_index = 0;
-                crafting_recipe_scroll = 0;
-                crafting_message = "";
-            }
-			audio_play_sound(snd_interact,0,false);
-        }
-
-        return;
     }
 
     switch (hideout_page)

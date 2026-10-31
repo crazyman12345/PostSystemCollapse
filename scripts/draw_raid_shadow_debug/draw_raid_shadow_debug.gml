@@ -106,7 +106,7 @@ function draw_raid_shadow_debug(_occluders)
         draw_set_color(c_yellow);
         draw_line(_light.x, _light.y, _feet_x, _feet_y);
         draw_text((_light.x + _feet_x) * 0.5 + 5, (_light.y + _feet_y) * 0.5, "light direction");
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_circle(_feet_x, _feet_y, 4, false);
         draw_line(_feet_x, _feet_y, _feet_x + _body_projection_x, _feet_y + _body_projection_y);
         draw_text(_feet_x + 6, _feet_y + 5, "feet / body projection");

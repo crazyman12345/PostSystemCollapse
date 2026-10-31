@@ -15,9 +15,9 @@ function draw_hideout_salvage(){
 	var owned_items = workshop_get_salvageable_items();
 	var item_count = array_length(owned_items);
 
-	draw_set_color(c_lime);
+	draw_set_color(global.ui_text_color);
 	draw_set_font(fnt_terminal_small);
-	terminal_panel(panel_left, panel_top, list_width, panel_height, "SALVAGE", hideout_focus == HideoutFocus.CONTENT);
+	terminal_panel(panel_left, panel_top, list_width, panel_height, "SALVAGE");
 	terminal_panel(details_left, panel_top, details_width, panel_height, "DETAILS");
 
 	if (item_count == 0){

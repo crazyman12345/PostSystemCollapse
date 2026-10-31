@@ -11,7 +11,7 @@ function draw_hideout_raid_select()
     var padding = 40;
 	
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 
@@ -51,7 +51,7 @@ function draw_hideout_raid_select()
         // AREA BOX
         // ======================================
 
-        draw_set_color(available ? c_lime : c_gray);
+        draw_set_color(available ? global.ui_interactive_color : c_gray);
         terminal_box(box_left, box_top, box_width, box_height);
 
         if (!available)
@@ -104,6 +104,6 @@ function draw_hideout_raid_select()
 
 
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_font(fnt_terminal);
 }

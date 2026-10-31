@@ -9,7 +9,7 @@ function draw_start_raid_panel()
     // SOLID BACKGROUND
     // ==============================
 
-    draw_set_color(c_black);
+    draw_set_color(global.hideout_panel_color);
     draw_rectangle(
         x1,
         y1,
@@ -22,7 +22,7 @@ function draw_start_raid_panel()
     // BORDER
     // ==============================
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_interactive_color);
     draw_rectangle(
         x1,
         y1,
@@ -52,7 +52,7 @@ function draw_start_raid_panel()
 
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_interactive_color);
 
     var text = "START RAID";
 

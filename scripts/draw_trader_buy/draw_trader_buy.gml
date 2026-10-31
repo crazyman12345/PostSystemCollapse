@@ -20,11 +20,11 @@ function draw_trader_buy()
         && trader_can_buy_item(current_trader_key, trader_selected_stock_index, _quantity);
 
     draw_set_alpha(1);
-    draw_set_color(c_black);
+    draw_set_color(global.hideout_panel_color);
     draw_rectangle(0, 0, display_get_gui_width(), display_get_gui_height(), false);
 
     // Trader profile
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     terminal_box(15, 37, 658, 195);
     var _portrait_left = 20;
     var _portrait_top = 42;
@@ -33,62 +33,53 @@ function draw_trader_buy()
     if (_trader.portrait != -1)
     {
         _portrait_width = round(_portrait_height * sprite_get_width(_trader.portrait) / sprite_get_height(_trader.portrait));
-        draw_sprite_stretched_ext(_trader.portrait, 0, _portrait_left, _portrait_top, _portrait_width, _portrait_height, c_green, 1);
+        draw_chamfered_sprite(_trader.portrait, 0, _portrait_left, _portrait_top, _portrait_width, _portrait_height, 12, global.hideout_secondary_color, 1);
     }
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     terminal_box(_portrait_left, _portrait_top, _portrait_width, _portrait_height);
     var _trader_text_left = _portrait_left + _portrait_width + 26;
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_trader_text_left, 76, string_upper(_trader.name));
     draw_text(_trader_text_left, 116, string_upper(_trader.title));
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     draw_text(_trader_text_left, 157, "REPUTATION");
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_trader_text_left + 207, 157, "0");
 
     // Player profile
     terminal_box(1228, 37, 672, 166);
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(1258, 71, string_upper(crew[0].name));
     draw_set_font(fnt_terminal);
     draw_set_halign(fa_right);
     draw_text(1800, 148, "$" + string(get_cash()));
     draw_set_halign(fa_left);
     draw_set_font(fnt_terminal_tiny);
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     draw_text(1275, 119, "CURRENT TRADER LEVEL");
     draw_text(1273, 162, "NEXT TRADER LEVEL");
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(1532, 119, "0");
     draw_text(1532, 162, "0");
 
     // Deal button
-    draw_set_color(_valid ? c_lime : c_dkgray);
+    draw_set_color(_valid ? global.ui_interactive_color : c_dkgray);
     draw_rectangle(852, 114, 1002, 184, false);
-    draw_set_color(c_lime);
+    draw_set_color(_valid ? global.ui_interactive_color : c_dkgray);
     draw_rectangle(852, 114, 1002, 184, true);
     draw_set_font(fnt_terminal_small);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
-    draw_set_color(_valid ? c_black : c_lime);
+    draw_set_color(_valid ? global.hideout_background_color : c_gray);
     draw_text(927, 149, "[[DEAL]]");
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 
     // Trader stock
     inventory_hover_begin();
-    for (var _grid_y = 0; _grid_y < _stock_visible_rows; _grid_y++)
-    for (var _grid_x = 0; _grid_x < 11; _grid_x++)
-    {
-        var _cell_left = _stock_left + _grid_x * _stock_cell;
-        var _cell_top = _stock_top + _grid_y * _stock_cell;
-        draw_set_color(c_dkgray);
-        draw_rectangle(_cell_left, _cell_top, _cell_left + _stock_cell, _cell_top + _stock_cell, false);
-        draw_set_color(c_green);
-        draw_rectangle(_cell_left, _cell_top, _cell_left + _stock_cell, _cell_top + _stock_cell, true);
-    }
+    draw_inventory_grid_background(_stock_left, _stock_top, 11, _stock_visible_rows, _stock_cell);
 
     for (var _i = 0; _i < array_length(trader_stock_layout.entries); _i++)
     {
@@ -103,21 +94,21 @@ function draw_trader_buy()
         inventory_hover_consider(_entry, _left, _top, _left + _entry.width * _stock_cell, _top + _entry.height * _stock_cell);
         if (_hovered && !_selected)
         {
-            draw_set_color(c_white);
+            draw_set_color(global.ui_interactive_color);
             draw_rectangle(_left + 2, _top + 2, _left + _entry.width * _stock_cell - 2, _top + _entry.height * _stock_cell - 2, true);
         }
         draw_set_font(fnt_terminal_tiny);
         draw_set_halign(fa_left);
         draw_set_valign(fa_bottom);
-        draw_set_color(c_black);
+        draw_set_color(global.hideout_background_color);
         draw_text(_left + 8, _top + _entry.height * _stock_cell - 7, "$" + string(_entry.price));
     }
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     terminal_box(18, 244, 652, 806);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_interactive_color);
     if (trader_stock_scroll_row > 0) draw_text(640, 252, "^");
     if (trader_stock_scroll_row + _stock_visible_rows < trader_stock_layout.rows) draw_text(640, 1020, "v");
 
@@ -134,40 +125,31 @@ function draw_trader_buy()
         draw_inventory_grid_item(_selected_entry, _definition, _preview_left, 349, _selected_entry.width, _selected_entry.height, _preview_cell, true);
 
         draw_set_font(fnt_terminal_small);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_set_halign(fa_center);
         draw_set_valign(fa_top);
         draw_text(_deal_left + _deal_width * 0.5, 300, string_upper(_definition.name));
         draw_set_halign(fa_left);
 
         draw_set_font(fnt_terminal_small);
-        draw_set_color(c_green);
+        draw_set_color(global.ui_text_color);
         draw_text(718, 572 + _details_offset, "QUANTITY");
-        draw_set_color(trader_quantity_focused ? c_lime : c_green);
+        draw_set_color(trader_quantity_focused ? global.ui_interactive_color : global.hideout_border_subtle_color);
         draw_rectangle(871, 570 + _details_offset, 1016, 621 + _details_offset, true);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_interactive_color);
         draw_text(889, 583 + _details_offset, trader_purchase_quantity_text);
         draw_text(1025, 583 + _details_offset, "X");
 
         var _total = _quantity > 0 && _quantity <= floor(2147483647 / _selected_entry.price)
             ? _selected_entry.price * _quantity : 0;
-        draw_set_color(c_green);
+        draw_set_color(global.ui_text_color);
         draw_text(722, 695 + _details_offset, "TOTAL");
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text(881, 695 + _details_offset, _total > 0 ? "$" + string(_total) : "--");
     }
 
     // Main stash
-    for (var _grid_y = 0; _grid_y < stash.grid_height; _grid_y++)
-    for (var _grid_x = 0; _grid_x < stash.grid_width; _grid_x++)
-    {
-        var _cell_left = _stash_left + _grid_x * _stash_cell;
-        var _cell_top = _stash_top + _grid_y * _stash_cell;
-        draw_set_color(c_dkgray);
-        draw_rectangle(_cell_left, _cell_top, _cell_left + _stash_cell, _cell_top + _stash_cell, false);
-        draw_set_color(c_green);
-        draw_rectangle(_cell_left, _cell_top, _cell_left + _stash_cell, _cell_top + _stash_cell, true);
-    }
+    draw_inventory_grid_background(_stash_left, _stash_top, stash.grid_width, stash.grid_height, _stash_cell);
 
     for (var _i = 0; _i < array_length(stash.items); _i++)
     {
@@ -178,7 +160,7 @@ function draw_trader_buy()
         var _left = _stash_left + _stored_item.x * _stash_cell;
         var _top = _stash_top + _stored_item.y * _stash_cell;
         var _can_sell = trader_will_buy_item(current_trader_key, _stored_item.item_key);
-        draw_inventory_grid_item(_stored_item, _definition, _left, _top, _width, _height, _stash_cell, false, c_black, false, true);
+        draw_inventory_grid_item(_stored_item, _definition, _left, _top, _width, _height, _stash_cell, false, global.hideout_background_color, false, true);
         if (!_can_sell)
         {
             draw_set_alpha(0.7);
@@ -191,7 +173,7 @@ function draw_trader_buy()
             draw_set_font(fnt_terminal_tiny);
             draw_set_halign(fa_left);
             draw_set_valign(fa_bottom);
-            draw_set_color(c_black);
+            draw_set_color(global.hideout_background_color);
             draw_text(_left + 8, _top + _height * _stash_cell - 7, "$" + string(trader_get_sell_price(_stored_item.item_key)));
         }
         inventory_hover_consider(_stored_item, _left, _top, _left + _width * _stash_cell, _top + _height * _stash_cell);
@@ -212,7 +194,7 @@ function draw_trader_buy()
             var _preview_y = floor((_mouse_y - _stash_top) / _stash_cell);
             var _preview_valid = inventory_can_place_item(stash.held_item, _preview_x, _preview_y, stash);
             draw_set_alpha(0.45);
-            draw_set_color(_preview_valid ? c_lime : c_red);
+            draw_set_color(_preview_valid ? global.ui_interactive_color : c_red);
             draw_rectangle(_stash_left + _preview_x * _stash_cell + 4, _stash_top + _preview_y * _stash_cell + 4,
                 _stash_left + (_preview_x + _held_width) * _stash_cell - 4,
                 _stash_top + (_preview_y + _held_height) * _stash_cell - 4, false);
@@ -221,10 +203,10 @@ function draw_trader_buy()
 
         draw_set_alpha(0.5);
         draw_inventory_grid_item(stash.held_item, _held_definition, _mouse_x, _mouse_y,
-            _held_width, _held_height, _stash_cell, false, c_black, false, true);
+            _held_width, _held_height, _stash_cell, false, global.hideout_background_color, false, true);
         draw_set_alpha(1);
     }
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     terminal_box(1228, 244, 672, 806);
     inventory_hover_finish();
     inventory_hover_draw();

@@ -19,7 +19,6 @@ function step_hideout_salvage(){
 	} else if (item_count > 0){
 		inventory_index = clamp(inventory_index, 0, item_count - 1);
 		inventory_scroll = clamp(inventory_scroll, 0, max(0, item_count - inventory_visible_rows));
-		inventory_index = terminal_menu_input(inventory_index, item_count);
 		var mouse_menu = terminal_menu_mouse_input(inventory_index, min(inventory_visible_rows, item_count - inventory_scroll), inventory_scroll, 345, 170, 510, 34);
 		inventory_index = mouse_menu.index;
 

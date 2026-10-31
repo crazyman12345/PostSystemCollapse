@@ -22,7 +22,7 @@ function draw_raid_progress()
     draw_set_font(fnt_terminal_tiny);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_panel_left + 14, _panel_top + 11, "RAID PROGRESS");
 
     for (var i = 1; i < _room_count; i++)
@@ -43,7 +43,7 @@ function draw_raid_progress()
         var _half_size = _room == _room_count ? 9 : _node_size * 0.5;
         var _node_color = _room < _current_room
             ? _completed_color
-            : (_room == _current_room ? c_lime : _future_color);
+            : (_room == _current_room ? global.ui_text_color : _future_color);
 
         if (_room == _room_count)
         {
@@ -65,7 +65,7 @@ function draw_raid_progress()
 
             if (_room == 5 || _room == 10)
             {
-                draw_set_color(c_lime);
+                draw_set_color(global.ui_text_color);
                 draw_text(_room_x, _marker_y, "*");
             }
         }

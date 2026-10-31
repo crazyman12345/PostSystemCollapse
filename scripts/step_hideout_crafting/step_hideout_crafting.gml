@@ -5,11 +5,6 @@ function step_hideout_crafting(_skill_key)
 
     if (recipe_count > 0)
     {
-        crafting_recipe_index = terminal_menu_input(
-            crafting_recipe_index,
-            recipe_count
-        );
-
         var mouse_menu = terminal_menu_mouse_input(crafting_recipe_index, min(crafting_visible_rows, recipe_count - crafting_recipe_scroll), crafting_recipe_scroll, 365, 175, 380, 52);
         crafting_recipe_index = mouse_menu.index;
 

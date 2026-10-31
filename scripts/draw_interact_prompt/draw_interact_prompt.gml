@@ -17,7 +17,7 @@ function draw_interact_prompt(_world_x, _world_y)
         false
     );
 
-    draw_set_color(c_white);
+    draw_set_color(global.ui_interactive_color);
     draw_rectangle(
         _x1,
         _y1,

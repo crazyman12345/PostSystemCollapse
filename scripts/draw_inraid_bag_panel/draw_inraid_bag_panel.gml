@@ -14,18 +14,7 @@ function draw_inraid_bag_panel()
         draw_text(loot_grid.left, loot_grid.top - 25, raid_reward_name(loot.reward_type));
         draw_line(loot_grid.left, loot_grid.top - 7, loot_grid.left + (loot.storage.grid_width * loot_grid.cell_size), loot_grid.top - 7);
 
-        for (var grid_y = 0; grid_y < loot.storage.grid_height; grid_y++)
-        {
-            for (var grid_x = 0; grid_x < loot.storage.grid_width; grid_x++)
-            {
-                var cell_left = loot_grid.left + (grid_x * loot_grid.cell_size);
-                var cell_top = loot_grid.top + (grid_y * loot_grid.cell_size);
-                draw_set_color(c_dkgray);
-                draw_rectangle(cell_left, cell_top, cell_left + loot_grid.cell_size, cell_top + loot_grid.cell_size, false);
-                draw_set_color(c_green);
-                draw_rectangle(cell_left, cell_top, cell_left + loot_grid.cell_size, cell_top + loot_grid.cell_size, true);
-            }
-        }
+        draw_inventory_grid_background(loot_grid.left, loot_grid.top, loot.storage.grid_width, loot.storage.grid_height, loot_grid.cell_size);
 
         for (var item_index = 0; item_index < array_length(loot.storage.items); item_index++)
         {
@@ -72,7 +61,7 @@ function draw_inraid_bag_panel()
                 var preview_width = raid.inventory_rotation == 90 ? preview_definition.grid_height : preview_definition.grid_width;
                 var preview_height = raid.inventory_rotation == 90 ? preview_definition.grid_width : preview_definition.grid_height;
                 draw_set_alpha(0.45);
-                draw_set_color(inventory_can_place_item(raid.inventory_item, preview_x, preview_y, preview_grid.storage) ? c_lime : c_red);
+                draw_set_color(inventory_can_place_item(raid.inventory_item, preview_x, preview_y, preview_grid.storage) ? global.ui_interactive_color : c_red);
                 var preview_left = preview_grid.left + (preview_x * preview_stride);
                 var preview_top = preview_grid.top + (preview_y * preview_stride);
                 draw_rectangle(preview_left + 4, preview_top + 4, preview_left + (preview_width * preview_cell_size) - 4, preview_top + (preview_height * preview_cell_size) - 4, false);

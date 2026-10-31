@@ -3,7 +3,8 @@ function player_health_damage_limb(_limb_index, _damage, _allow_conditions = tru
     if (_limb_index < 0 || _limb_index >= array_length(health_limbs)) return;
 
     var _limb = health_limbs[_limb_index];
-    _limb.hp = max(0, _limb.hp - max(0, _damage));
+    _limb.hp = max(0, round(_limb.hp - max(0, _damage)));
+    health_limb_recovery_accumulators[_limb_index] = 0;
     player_health_update_limb_state(_limb);
 
     if (_allow_conditions && _limb.hp > 0)
@@ -105,7 +106,8 @@ function player_health_apply_global_damage(_damage)
     var _chunks = max(0, round(_damage / health_config.hp_chunk));
     if (_chunks <= 0) return 0;
     var _applied = min(raid_player_hp, _chunks * health_config.hp_chunk);
-    raid_player_hp = max(0, raid_player_hp - _applied);
+    raid_player_hp = max(0, round(raid_player_hp - _applied));
+    health_global_recovery_accumulator = 0;
     if (_applied > 0) player_health_treatment_cancel();
     player_health_sync_crew();
     save_mark_dirty();

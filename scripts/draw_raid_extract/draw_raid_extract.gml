@@ -41,7 +41,7 @@ function draw_raid_extract()
 
     if (raid_ladder_projection_debug_enabled)
     {
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_line(_top_left.draw_x, _top_left.draw_y, _top_right.draw_x, _top_right.draw_y);
         draw_line(_top_right.draw_x, _top_right.draw_y, _bottom_right.draw_x, _bottom_right.draw_y);
         draw_line(_bottom_right.draw_x, _bottom_right.draw_y, _bottom_left.draw_x, _bottom_left.draw_y);

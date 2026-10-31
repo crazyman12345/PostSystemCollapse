@@ -75,7 +75,7 @@ function draw_raid_ground_items()
         else
         {
             // ITEM RECTANGLE
-            draw_set_color(c_lime);
+            draw_set_color(global.ui_interactive_color);
 
             draw_rectangle(
                 g.ground_x - 5,

@@ -1,12 +1,8 @@
 function step_trader_select(){
 var trader_keys = trader_get_unlocked_keys();
-		menu_index = terminal_menu_input(
-		    menu_index,
-		    array_length(trader_keys)
-		);
 		var mouse_menu = terminal_menu_mouse_input(menu_index, array_length(trader_keys), 0, 370, 170, 620, 70);
 		menu_index = mouse_menu.index;
-		if (keyboard_check_pressed(vk_enter) || mouse_menu.confirm)
+		if (mouse_menu.confirm)
 		{
 		    current_trader_key =
 		        trader_keys[menu_index];

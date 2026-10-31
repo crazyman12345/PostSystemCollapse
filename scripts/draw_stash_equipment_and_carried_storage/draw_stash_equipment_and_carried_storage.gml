@@ -86,7 +86,7 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
                     && held_definition.category == preview.category;
 
                 draw_set_alpha(0.45);
-                draw_set_color(preview_valid ? c_lime : c_red);
+                draw_set_color(preview_valid ? global.ui_interactive_color : c_red);
                 draw_rectangle(preview.left + 4, preview.top + 4, preview.right - 4, preview.bottom - 4, false);
                 draw_set_alpha(1);
             }
@@ -122,18 +122,7 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
             stash.backpack.grid_width = backpack_definition.storage_width;
             stash.backpack.grid_height = backpack_definition.storage_height;
 
-            for (var backpack_y = 0; backpack_y < stash.backpack.grid_height; backpack_y++)
-            {
-                for (var backpack_x = 0; backpack_x < stash.backpack.grid_width; backpack_x++)
-                {
-                    var backpack_cell_left = backpack_grid_left + (backpack_x * cell_size);
-                    var backpack_cell_top = backpack_grid_top + (backpack_y * cell_size);
-                    draw_set_color(c_dkgray);
-                    draw_rectangle(backpack_cell_left, backpack_cell_top, backpack_cell_left + cell_size, backpack_cell_top + cell_size, false);
-                    draw_set_color(c_green);
-                    draw_rectangle(backpack_cell_left, backpack_cell_top, backpack_cell_left + cell_size, backpack_cell_top + cell_size, true);
-                }
-            }
+            draw_inventory_grid_background(backpack_grid_left, backpack_grid_top, stash.backpack.grid_width, stash.backpack.grid_height, cell_size);
 
             pockets_grid_top = backpack_grid_top + max(328, (stash.backpack.grid_height * cell_size) + 28);
             secure_grid_top = pockets_grid_top + 122;
@@ -141,33 +130,15 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
     }
 
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(pockets_grid_left, pockets_grid_top - 25, "POCKETS");
-    for (var pocket_x = 0; pocket_x < stash.pockets.grid_width; pocket_x++)
-    {
-        var pocket_cell_left = pockets_grid_left + (pocket_x * pockets_cell_stride);
-        draw_set_color(c_dkgray);
-        draw_rectangle(pocket_cell_left, pockets_grid_top, pocket_cell_left + cell_size, pockets_grid_top + cell_size, false);
-        draw_set_color(c_green);
-        draw_rectangle(pocket_cell_left, pockets_grid_top, pocket_cell_left + cell_size, pockets_grid_top + cell_size, true);
-    }
+    draw_inventory_grid_background(pockets_grid_left, pockets_grid_top, stash.pockets.grid_width, stash.pockets.grid_height, cell_size, pockets_cell_stride);
 
-    draw_equipment_slot(middle_left, secure_grid_top, 150, 150, "SECURE CONTAINER", _member.secure_container, false, true);
+    draw_equipment_slot(middle_left, secure_grid_top, 150, 150, "CONTAINER", _member.secure_container, false, true);
 	if (is_undefined(secure_container_item)) inventory_hover_consider_key(_member.secure_container, middle_left, secure_grid_top, middle_left + 150, secure_grid_top + 150);
 	else inventory_hover_consider(secure_container_item, middle_left, secure_grid_top, middle_left + 150, secure_grid_top + 150);
 
-    for (var secure_y = 0; secure_y < stash.secure_container.grid_height; secure_y++)
-    {
-        for (var secure_x = 0; secure_x < stash.secure_container.grid_width; secure_x++)
-        {
-            var secure_cell_left = secure_grid_left + (secure_x * cell_size);
-            var secure_cell_top = secure_grid_top + 48 + (secure_y * cell_size);
-            draw_set_color(c_dkgray);
-            draw_rectangle(secure_cell_left, secure_cell_top, secure_cell_left + cell_size, secure_cell_top + cell_size, false);
-            draw_set_color(c_green);
-            draw_rectangle(secure_cell_left, secure_cell_top, secure_cell_left + cell_size, secure_cell_top + cell_size, true);
-        }
-    }
+    draw_inventory_grid_background(secure_grid_left, secure_grid_top + 48, stash.secure_container.grid_width, stash.secure_container.grid_height, cell_size);
 
     if (!_draw_items) return;
 

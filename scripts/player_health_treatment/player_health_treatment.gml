@@ -1,7 +1,8 @@
 function player_health_heal_global(_amount)
 {
     var _before = raid_player_hp;
-    raid_player_hp = min(raid_player_max_hp, raid_player_hp + max(0, _amount));
+    raid_player_hp = min(raid_player_max_hp, round(raid_player_hp + max(0, _amount)));
+    health_global_recovery_accumulator = 0;
     player_health_sync_crew();
     if (raid_player_hp > _before) save_mark_dirty();
     return raid_player_hp - _before;
@@ -13,7 +14,8 @@ function player_health_heal_limb(_limb_index, _amount)
     var _limb = health_limbs[_limb_index];
     if (_limb.injury == LimbInjuryState.BLACKED_OUT) return 0;
     var _before = _limb.hp;
-    _limb.hp = min(_limb.max_hp, _limb.hp + max(0, _amount));
+    _limb.hp = min(_limb.max_hp, round(_limb.hp + max(0, _amount)));
+    health_limb_recovery_accumulators[_limb_index] = 0;
     player_health_update_limb_state(_limb);
     if (_limb.hp > _before) save_mark_dirty();
     return _limb.hp - _before;

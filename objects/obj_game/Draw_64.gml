@@ -1,7 +1,13 @@
 draw_set_font(fnt_terminal);
-draw_set_color(c_lime);
+draw_set_color(global.ui_text_color);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
+terminal_panel_scanlines_begin();
+
+var _menu_background_visible = state == GameState.MAIN_MENU || state == GameState.HIDEOUT;
+if (_menu_background_visible)
+    draw_sprite_stretched_ext(background_overlay, 0, 0, 0, display_get_gui_width(), display_get_gui_height(),
+        state == GameState.HIDEOUT ? make_color_rgb(28, 52, 40) : make_color_rgb(45, 45, 45), 1);
 
 switch (state)
 {
@@ -62,6 +68,8 @@ switch (state)
 		draw_raid_player_death_screen();
 	break;
 }
+
+terminal_panel_scanlines_draw();
  //==============================
  //GLOBAL EVENT LOG
  //==============================
@@ -72,6 +80,7 @@ if (state != GameState.MAIN_MENU)
 }
 
 draw_overlay(overlay_mode);
+terminal_panel_scanlines_draw();
 
 if (!(state == GameState.RAID && raid.state == RaidState.DEATH)) skill_notifications_draw();
 if (!(state == GameState.RAID && raid.state == RaidState.DEATH)) quest_notifications_draw();
@@ -79,6 +88,7 @@ if (state == GameState.HIDEOUT || state == GameState.RAID) tutorial_callout_draw
 
 draw_raid_texture_crop_debug();
 draw_debug_console();
+terminal_panel_scanlines_draw();
 // Debug console always on top
 
 if (debug_show_mouse)

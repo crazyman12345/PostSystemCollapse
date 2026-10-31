@@ -333,7 +333,7 @@ if (is_struct(raid_muzzle_flash_light) && raid_muzzle_flash_light.lifetime > 0)
         draw_text(_hand1_x + 7, _hand1_y - 18, "Hand 1");
         if (_weapon.has_second_hand)
         {
-            draw_set_color(c_lime);
+            draw_set_color(global.ui_text_color);
             draw_circle(_hand2_x, _hand2_y, 3, false);
             draw_text(_hand2_x + 7, _hand2_y - 18, "Hand 2");
         }

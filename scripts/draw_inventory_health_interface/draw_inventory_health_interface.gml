@@ -16,7 +16,7 @@ function draw_inventory_character_tabs(_left, _top)
             && _mouse_y >= _top && _mouse_y < _top + _tab_height;
         draw_set_color(_selected ? make_color_rgb(8, 45, 18) : c_black);
         draw_rectangle(_x, _top, _x + _tab_width, _top + _tab_height, false);
-        draw_set_color(_selected || _hovered ? c_lime : c_green);
+        draw_set_color(global.ui_interactive_color);
         draw_rectangle(_x, _top, _x + _tab_width, _top + _tab_height, true);
         draw_set_halign(fa_center);
         draw_text(_x + (_tab_width * 0.5), _top + (_tab_height * 0.5), _labels[i]);
@@ -55,14 +55,14 @@ function draw_inventory_global_health_box(_left, _top, _width, _height)
     var _hovered = _mouse_x >= _left && _mouse_x < _left + _width
         && _mouse_y >= _top && _mouse_y < _top + _height;
     var _percent = raid_player_hp / max(1, raid_player_max_hp);
-    var _color = _percent < 0.5 ? c_red : (_percent < 1 ? c_yellow : c_lime);
+    var _color = _percent < 0.5 ? c_red : (_percent < 1 ? c_yellow : global.ui_text_color);
 
     draw_set_color(c_black);
     draw_rectangle(_left, _top, _left + _width, _top + _height, false);
-    draw_set_color(_hovered ? c_lime : c_green);
+    draw_set_color(global.ui_interactive_color);
     draw_rectangle(_left, _top, _left + _width, _top + _height, true);
     draw_set_font(fnt_terminal_tiny);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_left + 5, _top + 4, "GLOBAL HP");
     draw_set_color(_color);
     draw_text(_left + 5, _top + 25, string(round(raid_player_hp)) + "/" + string(round(raid_player_max_hp)));
@@ -79,7 +79,7 @@ function draw_inventory_global_health_box(_left, _top, _width, _height)
 function draw_inventory_limb_box(_left, _top, _width, _height, _limb_index)
 {
     var _limb = health_limbs[_limb_index];
-    var _color = c_lime;
+    var _color = global.ui_text_color;
     if (_limb.injury == LimbInjuryState.WOUNDED) _color = c_yellow;
     if (_limb.injury == LimbInjuryState.BLACKED_OUT) _color = make_color_rgb(150, 35, 35);
     if (_limb.fractured) _color = make_color_rgb(255, 145, 45);
@@ -92,13 +92,13 @@ function draw_inventory_limb_box(_left, _top, _width, _height, _limb_index)
         && _mouse_y >= _top && _mouse_y < _top + _height;
     draw_set_color(c_black);
     draw_rectangle(_left, _top, _left + _width, _top + _height, false);
-    draw_set_color(_hovered ? c_lime : c_green);
+    draw_set_color(global.ui_interactive_color);
     draw_rectangle(_left, _top, _left + _width, _top + _height, true);
 
     draw_set_font(fnt_terminal_tiny);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_left + 5, _top + 4, _limb.name);
     draw_set_color(_color);
     draw_text(_left + 5, _top + 25, string(round(_limb.hp)) + "/" + string(round(_limb.max_hp)));
@@ -163,6 +163,6 @@ function draw_inventory_injury_tooltip(_text)
     draw_set_font(fnt_terminal_tiny);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_left + _padding, _top + _padding, _text);
 }

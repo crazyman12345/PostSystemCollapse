@@ -14,11 +14,12 @@ function draw_raid_pause_menu()
 
     draw_set_color(c_black);
     draw_rectangle(_panel_left, _panel_top, _panel_right, _panel_bottom, false);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_rectangle(_panel_left, _panel_top, _panel_right, _panel_bottom, true);
     draw_set_halign(fa_center);
     draw_text(_gui_width * 0.5, _gui_height * 0.19, "PAUSED");
 
+    draw_set_color(global.ui_interactive_color);
     var _general_tab = raid.pause_menu_tab == 0 ? "> GENERAL <" : "GENERAL";
     var _graphics_tab = raid.pause_menu_tab == 1 ? "> GRAPHICS <" : "GRAPHICS";
     draw_text(_gui_width * 0.42, _gui_height * 0.25, _general_tab);

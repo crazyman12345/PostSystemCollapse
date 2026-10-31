@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"heading_box",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"heading_box",
+  "parent":{
+    "name":"terminal",
+    "path":"folders/UI/terminal.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

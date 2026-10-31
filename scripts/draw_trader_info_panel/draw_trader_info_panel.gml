@@ -36,17 +36,9 @@ function draw_trader_info_panel(_trader_key)
     // PORTRAIT BOX
     // ==============================
 
-    terminal_box(
-        portrait_left,
-        portrait_top,
-        portrait_width,
-        portrait_height
-    );
-
-
     if (trader.portrait != -1)
     {
-        draw_sprite_stretched_ext(
+        draw_chamfered_sprite(
             trader.portrait,
             0,
 
@@ -55,8 +47,8 @@ function draw_trader_info_panel(_trader_key)
 
             portrait_width - 6,
             portrait_height - 6,
-
-            c_green,
+            9,
+            global.hideout_secondary_color,
             1
         );
     }
@@ -72,6 +64,8 @@ function draw_trader_info_panel(_trader_key)
 
         draw_set_halign(fa_left);
     }
+    draw_set_color(global.ui_text_color);
+    terminal_box(portrait_left, portrait_top, portrait_width, portrait_height);
 
 
     // ==============================

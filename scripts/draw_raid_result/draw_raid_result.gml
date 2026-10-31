@@ -16,15 +16,15 @@ function draw_raid_result()
     draw_set_halign(fa_center);
     draw_set_valign(fa_top);
     draw_set_font(fnt_terminal);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_gui_width * 0.5, 35, "RAID ENDED");
     draw_set_font(fnt_terminal_tiny);
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     draw_text(_gui_width * 0.5, 75, raid.result_title);
 
     draw_set_halign(fa_left);
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_layout.content_left, 125, "CURRENT HEALTH CONDITION");
 
     if (equipment_silhouette_sprite != -1 && sprite_exists(equipment_silhouette_sprite))
@@ -65,10 +65,10 @@ function draw_raid_result()
     draw_rectangle(_panel_left, _panel_top, _panel_right, _panel_bottom, true);
 
     draw_set_font(fnt_terminal);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(_panel_left + 28, _panel_top + 25, _treatment_unlocked ? "SAWBONES MEDICAL TREATMENT" : "MEDICAL TREATMENT UNAVAILABLE");
     draw_set_font(fnt_terminal_tiny);
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     draw_text(_panel_left + 28, _panel_top + 69, _treatment_unlocked
         ? "POST-RAID INJURY ASSESSMENT AND TREATMENT QUOTE"
         : "NO MEDICAL CONTACT HAS BEEN ESTABLISHED");
@@ -93,15 +93,15 @@ function draw_raid_result()
         var _top = _row_top + (i * _row_height);
         draw_set_color(i mod 2 == 0 ? make_color_rgb(8, 32, 14) : make_color_rgb(5, 25, 10));
         draw_rectangle(_panel_left + 18, _top, _panel_right - 18, _top + _row_height - 8, false);
-        draw_set_color(_row.cost > 0 ? c_lime : c_green);
+        draw_set_color(_row.cost > 0 ? global.ui_text_color : global.ui_text_color);
         draw_set_font(fnt_terminal_small);
         draw_text(_panel_left + 35, _top + 10, _row.name);
         draw_set_font(fnt_terminal_tiny);
-        draw_set_color(c_green);
+        draw_set_color(global.ui_text_color);
         draw_text(_panel_left + 35, _top + 37, _row.detail);
         draw_set_halign(fa_right);
         draw_set_font(fnt_terminal_small);
-        draw_set_color(_row.cost > 0 ? c_lime : c_green);
+        draw_set_color(_row.cost > 0 ? global.ui_text_color : global.ui_text_color);
         draw_text(_panel_right - 35, _top + 20, "$" + string(_row.cost));
         draw_set_halign(fa_left);
     }
@@ -109,15 +109,15 @@ function draw_raid_result()
     if (_treatment_unlocked && array_length(_rows) == 0)
     {
         draw_set_font(fnt_terminal_small);
-        draw_set_color(c_green);
+        draw_set_color(global.ui_text_color);
         draw_text(_panel_left + 35, _row_top + 20, "NO TREATMENT REQUIRED");
     }
 
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     if (_treatment_unlocked) draw_text(_panel_left + 28, _panel_bottom - 62, "CASH IN STASH: $" + string(get_cash()));
     draw_set_halign(fa_right);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     if (_treatment_unlocked) draw_text(_panel_right - 28, _panel_bottom - 62, "TOTAL: $" + string(_quote.total));
     draw_set_halign(fa_left);
 
@@ -152,14 +152,14 @@ function draw_raid_result()
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_font(fnt_terminal);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 }
 
 function draw_raid_result_button(_left, _top, _right, _bottom, _label, _enabled, _hovered)
 {
     draw_set_color(_hovered && _enabled ? make_color_rgb(8, 45, 18) : c_black);
     draw_rectangle(_left, _top, _right, _bottom, false);
-    draw_set_color(!_enabled ? make_color_rgb(35, 60, 40) : (_hovered ? c_lime : c_green));
+    draw_set_color(_enabled ? global.ui_interactive_color : make_color_rgb(35, 60, 40));
     draw_rectangle(_left, _top, _right, _bottom, true);
     draw_set_font(fnt_terminal_small);
     draw_set_halign(fa_center);

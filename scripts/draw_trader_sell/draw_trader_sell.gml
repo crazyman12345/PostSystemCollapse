@@ -5,7 +5,7 @@ function draw_trader_sell()
     // ==============================
 
     draw_set_alpha(1);
-    draw_set_color(c_black);
+    draw_set_color(global.hideout_panel_color);
 
     draw_rectangle(
         0,
@@ -15,7 +15,7 @@ function draw_trader_sell()
         false
     );
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_font(fnt_terminal_small);
 
 
@@ -114,7 +114,7 @@ function draw_trader_sell()
         // COLUMN HEADERS
         // ==============================
 
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
 		draw_set_font(fnt_terminal_small);
         draw_text(
             _item_x,
@@ -217,7 +217,7 @@ function draw_trader_sell()
             // QUANTITY
             // ==============================
 
-            draw_set_color(c_lime);
+            draw_set_color(global.ui_text_color);
 
             draw_text(
                 _qty_x,

@@ -31,7 +31,7 @@ function draw_debug_console()
         false
     );
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
 
 
     // ==============================

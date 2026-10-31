@@ -61,7 +61,7 @@ function draw_raid_lootables(_labels_only = false)
 
         if (!_labels_only) continue;
 
-		draw_set_color(c_lime);
+		draw_set_color(global.ui_interactive_color);
         // LABEL
         draw_set_halign(fa_center);
 

@@ -100,9 +100,16 @@ function player_health_update_post_raid_recovery()
 
     if (raid_player_hp < raid_player_max_hp)
     {
-        raid_player_hp = min(raid_player_max_hp, raid_player_hp + ((raid_player_max_hp / _duration) * _seconds));
-        _changed = true;
+        health_global_recovery_accumulator += (raid_player_max_hp / _duration) * _seconds;
+        var _global_recovery = round(health_global_recovery_accumulator);
+        if (_global_recovery > 0)
+        {
+            raid_player_hp = min(raid_player_max_hp, raid_player_hp + _global_recovery);
+            health_global_recovery_accumulator -= _global_recovery;
+            _changed = true;
+        }
     }
+    else health_global_recovery_accumulator = 0;
 
     for (var i = 0; i < array_length(health_limbs); i++)
     {
@@ -110,10 +117,17 @@ function player_health_update_post_raid_recovery()
         if (_limb.hp < _limb.max_hp)
         {
             var _full_recovery = max(1, _limb.max_hp - health_config.blacked_repair_hp);
-            _limb.hp = min(_limb.max_hp, _limb.hp + ((_full_recovery / _duration) * _seconds));
-            player_health_update_limb_state(_limb);
-            _changed = true;
+            health_limb_recovery_accumulators[i] += (_full_recovery / _duration) * _seconds;
+            var _limb_recovery = round(health_limb_recovery_accumulators[i]);
+            if (_limb_recovery > 0)
+            {
+                _limb.hp = min(_limb.max_hp, _limb.hp + _limb_recovery);
+                health_limb_recovery_accumulators[i] -= _limb_recovery;
+                player_health_update_limb_state(_limb);
+                _changed = true;
+            }
         }
+        else health_limb_recovery_accumulators[i] = 0;
 
         if (_limb.hp >= _limb.max_hp)
         {

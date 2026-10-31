@@ -22,7 +22,7 @@ function workshop_upgrade_button(_key, _x1, _top, _x2, _draw)
         var label = level == 0 ? "BUILD" : "UPGRADE";
         if (maxed) label = "MAX LEVEL";
 
-        draw_set_color(enabled ? c_lime : c_gray);
+        draw_set_color(enabled ? global.ui_interactive_color : c_gray);
         draw_rectangle(left, top, right, bottom, true);
         if (enabled && hovered) label = "> " + label + " <";
         draw_set_halign(fa_center);

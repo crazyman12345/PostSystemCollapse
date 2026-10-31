@@ -23,7 +23,7 @@ function draw_raid_ammo_ui()
     if (!is_struct(_weapon))
     {
         draw_set_font(fnt_terminal);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_set_halign(fa_center);
         draw_set_valign(fa_middle);
         draw_text((_icon_left + _icon_right) * 0.5, (_icon_top + _icon_bottom) * 0.5, "?");
@@ -69,7 +69,7 @@ function draw_raid_ammo_ui()
     var _mode_top = _panel_top + 11;
     draw_terminal_rectangle(_mode_left, _mode_top, _panel_right - 11, _mode_top + 26, c_green, 0.65);
     draw_set_font(fnt_terminal_tiny);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_interactive_color);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     draw_text((_mode_left + _panel_right - 11) * 0.5, _mode_top + 13, _mode_text);
@@ -89,13 +89,13 @@ function draw_raid_ammo_ui()
 
     var _reserve = raid_bag_get_quantity(_weapon.ammo_key);
     draw_set_font(fnt_terminal_small);
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     draw_text(_details_left, _panel_top + 83, "RESERVE " + string(_reserve));
 
     if (raid_reload_active)
     {
         draw_set_font(fnt_terminal_tiny);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text(_details_left, _panel_top + 104, "RELOADING...");
     }
 

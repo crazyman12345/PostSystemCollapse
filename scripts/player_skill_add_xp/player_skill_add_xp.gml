@@ -138,7 +138,7 @@ function skill_notifications_draw()
             text_left = left + 38;
         }
 
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text(text_left, top + row_height * 0.5, "+" + string(notification.amount) + " " + skill_notification_get_name(notification.skill_key) + " XP");
     }
 
@@ -160,7 +160,7 @@ function skill_notifications_draw()
 
         draw_set_font(fnt_terminal_medium);
         draw_set_halign(fa_center);
-        draw_set_color(c_lime);
+        draw_set_color(global.ui_text_color);
         draw_text((left + right) * 0.5, top + 25, "SKILL LEVEL UP");
 
         var icon = skill_notification_get_icon(notification.skill_key);
@@ -184,7 +184,7 @@ function skill_notifications_draw()
     }
 
     draw_set_alpha(1);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_set_font(fnt_terminal);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);

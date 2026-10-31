@@ -237,7 +237,7 @@ function inventory_context_menu_draw()
     {
         var _top = inventory_context_y + _i * 22;
         var _hovered = point_in_rectangle(_mouse_x, _mouse_y, inventory_context_x, _top, inventory_context_x + 104, _top + 22);
-        draw_set_color(_hovered ? c_lime : c_green);
+        draw_set_color(global.ui_interactive_color);
         draw_rectangle(inventory_context_x, _top, inventory_context_x + 104, _top + 22, true);
         draw_text(inventory_context_x + 7, _top + 5, inventory_context_actions[_i].label);
     }

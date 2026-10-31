@@ -71,7 +71,7 @@ function save_apply_data(_data)
     player_health_refresh_maximums(false);
 
     var health_data = save_value(_data, "health", {});
-    raid_player_hp = clamp(save_number(health_data, "hp", raid_player_max_hp), 0, raid_player_max_hp);
+    raid_player_hp = clamp(round(save_number(health_data, "hp", raid_player_max_hp)), 0, raid_player_max_hp);
     health_painkiller_remaining = max(0, save_number(health_data, "painkiller_remaining", 0));
     var saved_limbs = save_value(health_data, "limbs", []);
     if (is_array(saved_limbs))
@@ -81,7 +81,7 @@ function save_apply_data(_data)
             var saved_limb = saved_limbs[i];
             if (!is_struct(saved_limb)) continue;
             var limb = health_limbs[i];
-            limb.hp = clamp(save_number(saved_limb, "hp", limb.max_hp), 0, limb.max_hp);
+            limb.hp = clamp(round(save_number(saved_limb, "hp", limb.max_hp)), 0, limb.max_hp);
             limb.fractured = player_health_limb_can_fracture(i)
                 && save_value(saved_limb, "fractured", false) == true;
             limb.bleeds = [];

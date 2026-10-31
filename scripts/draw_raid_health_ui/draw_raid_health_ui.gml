@@ -57,7 +57,7 @@ function draw_raid_health_ui()
 function draw_raid_limb_condition_bar(_left, _top, _limb_index, _scale = 1)
 {
     var _limb = health_limbs[_limb_index];
-    var _color = c_lime;
+    var _color = global.ui_text_color;
     if (_limb.injury == LimbInjuryState.WOUNDED) _color = c_yellow;
     if (_limb.injury == LimbInjuryState.BLACKED_OUT) _color = make_color_rgb(150, 35, 35);
     if (_limb.fractured) _color = make_color_rgb(255, 145, 45);

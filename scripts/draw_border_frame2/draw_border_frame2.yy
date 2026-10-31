@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_border_frame2",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_border_frame2",
+  "parent":{
+    "name":"terminal",
+    "path":"folders/UI/terminal.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -14,7 +14,7 @@ function draw_skills_overlay()
     draw_set_valign(fa_top);
     draw_set_color(c_black);
     draw_rectangle(x1, y1, x2, y2, false);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_ascii_rectangle(x1, y1, x2, y2);
 
     draw_text(x1 + 30, y1 + 25, "PLAYER SKILLS");
@@ -44,7 +44,7 @@ function draw_skills_overlay()
         {
             draw_set_color(c_dkgray);
             draw_rectangle(list_x - 8, row_y - 4, list_x + list_w, row_y + row_h - 6, false);
-            draw_set_color(c_lime);
+            draw_set_color(global.ui_interactive_color);
             draw_rectangle(list_x - 8, row_y - 4, list_x + list_w, row_y + row_h - 6, true);
         }
 
@@ -53,11 +53,11 @@ function draw_skills_overlay()
         if (skill.icon != -1)
         {
             var icon_scale = min(icon_size / sprite_get_width(skill.icon), icon_size / sprite_get_height(skill.icon));
-            draw_sprite_ext(skill.icon, icon_spin_frame(skill.icon), list_x + icon_size * 0.5, row_y + icon_size * 0.5, icon_scale, icon_scale, 0, selected ? c_lime : c_green, 1);
+            draw_sprite_ext(skill.icon, icon_spin_frame(skill.icon), list_x + icon_size * 0.5, row_y + icon_size * 0.5, icon_scale, icon_scale, 0, selected ? global.ui_interactive_color : c_green, 1);
             text_x = list_x + icon_size + 14;
         }
 
-        draw_set_color(selected ? c_lime : c_green);
+        draw_set_color(global.ui_interactive_color);
         draw_set_font(fnt_ascii);
         draw_text(text_x, row_y + 8, skill.name);
         draw_set_font(fnt_terminal_small);
@@ -79,23 +79,23 @@ function draw_skills_overlay()
 
     draw_set_color(c_green);
     draw_line(detail_x - 28, list_y - 15, detail_x - 28, y2 - 80);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(detail_x, list_y, selected_def.name);
     draw_text(detail_x, list_y + 45, "LEVEL " + string(selected_progress.level));
 
     var progress_y = list_y + 95;
     draw_set_color(c_green);
     draw_rectangle(detail_x, progress_y, detail_right, progress_y + 14, true);
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_rectangle(detail_x, progress_y, detail_x + (detail_right - detail_x) * progress_percent, progress_y + 14, false);
     draw_text(detail_x, progress_y + 28, "LEVEL XP: " + string(level_xp) + " / " + string(level_xp_required));
     draw_text(detail_x, progress_y + 63, "TOTAL XP: " + string(selected_progress.xp));
 
-    draw_set_color(c_green);
+    draw_set_color(global.ui_text_color);
     draw_text(detail_x, progress_y + 120, "DESCRIPTION");
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text_ext(detail_x, progress_y + 155, selected_def.description, 28, detail_right - detail_x);
 
-    draw_set_color(c_lime);
+    draw_set_color(global.ui_text_color);
     draw_text(x1 + 30, y2 - 85, "--------------------------------------------------");
 }

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"terminal_button",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"terminal_button",
+  "parent":{
+    "name":"terminal",
+    "path":"folders/UI/terminal.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
