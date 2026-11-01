@@ -234,7 +234,7 @@ function draw_trader_sell()
                 _price_x,
                 _y,
                 "$"
-                + string(sell_price)
+                + format_compact_number(sell_price)
             );
         }
 
@@ -271,9 +271,12 @@ function draw_trader_sell()
 	{
 	    var _selected_item_key =
 	        sellable_items[trader_sell_index];
+	    var _selected_item = _selected_item_key;
+	    var _stored_matches = stash_find_items(_selected_item_key);
+	    if (array_length(_stored_matches) > 0) _selected_item = _stored_matches[0];
 
 	    draw_item_info_popup(
-	        _selected_item_key
+	        _selected_item
 	    );
 	}
 }

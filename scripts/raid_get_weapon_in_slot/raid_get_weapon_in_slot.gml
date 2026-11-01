@@ -15,7 +15,8 @@ function raid_get_weapon_in_slot(_slot)
         return undefined;
     }
 
-    var _weapon = item_get(_item_key);
+    var _weapon_item = raid_inventory_get_equipped_item(_slot);
+    var _weapon = is_undefined(_weapon_item) ? item_get(_item_key) : weapon_get_effective_stats(_weapon_item);
 
     if (
         !is_struct(_weapon)

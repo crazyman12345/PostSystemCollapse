@@ -357,7 +357,7 @@ function quest_turn_in(_quest_key)
     quest_notification_add("QUEST COMPLETED", reward_message, "completed:" + definition.key);
     quest_refresh_states();
     if (_quest_key == "test_field_supplies")
-        quest_notification_add("NEW TRADER WORK", "GUNDLACH, SAWBONES, AND CLOTHMAN HAVE WORK AVAILABLE", "level1_trader_work");
+        quest_notification_add("NEW TRADER WORK", "MARA, GUNDLACH, SAWBONES, AND CLOTHMAN HAVE WORK AVAILABLE", "level1_trader_work");
     save_mark_dirty();
     return true;
 }

@@ -51,6 +51,7 @@ function trader_stock_grid_build(_trader_key, _grid_width)
 
                     array_push(_entries, {
                         item_key: _stock_entry.item_key,
+                        item_instance: variable_struct_exists(_stock_entry, "item_instance") ? _stock_entry.item_instance : undefined,
                         quantity: 1,
                         x: _grid_x,
                         y: _grid_y,

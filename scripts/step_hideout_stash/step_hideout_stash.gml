@@ -210,7 +210,8 @@ function step_hideout_stash(){
         }
 
         if (equipment_slot != -1
-        && (held_source == "stash" || held_source == "pockets" || held_source == "equipment")
+        && (held_source == "stash" || held_source == "backpack" || held_source == "pockets"
+            || held_source == "secure" || held_source == "equipment")
         && equipment_slot_item == ""
         && equipment_slot_valid
         && mouse_check_button_pressed(mb_left))
@@ -249,7 +250,8 @@ function step_hideout_stash(){
         && (member.bag == "" || is_undefined(hovered_grid))
         && mouse_check_button_pressed(mb_left))
         {
-            if (held_source == "stash"
+            if ((held_source == "stash" || held_source == "backpack" || held_source == "pockets"
+                || held_source == "secure" || held_source == "equipment")
             && member.bag == ""
             && !is_undefined(held_definition)
             && held_definition.category == ItemCategory.BAG)

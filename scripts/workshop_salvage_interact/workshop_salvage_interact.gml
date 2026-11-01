@@ -84,6 +84,7 @@ function workshop_salvage_outputs_fit(_item_key, _outputs)
             y: stored_item.y,
             rotation: stored_item.rotation
         });
+        if (variable_struct_exists(stored_item, "tier")) storage.items[array_length(storage.items) - 1].tier = stored_item.tier;
     }
 
     for (var i = array_length(storage.items) - 1; i >= 0; i--)

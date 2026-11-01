@@ -56,8 +56,11 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
 
         if (!is_undefined(held_definition))
         {
-            var held_source_valid = (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT) || stash.held_source == "stash" || stash.held_source == "pockets" || stash.held_source == "equipment";
-            var bag_source_valid = (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT) || stash.held_source == "stash";
+            var held_source_valid = (raid.state != RaidState.INACTIVE && raid.state != RaidState.RESULT)
+                || stash.held_source == "stash" || stash.held_source == "backpack"
+                || stash.held_source == "pockets" || stash.held_source == "secure"
+                || stash.held_source == "equipment";
+            var bag_source_valid = held_source_valid;
             var gui_mouse_x = device_mouse_x_to_gui(0);
             var gui_mouse_y = device_mouse_y_to_gui(0);
             var equipment_previews = [

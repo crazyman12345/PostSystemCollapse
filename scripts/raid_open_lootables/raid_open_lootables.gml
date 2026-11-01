@@ -40,7 +40,8 @@ function raid_open_lootable(_index)
         }
         var _random_loot = raid_generate_reward_loot(l.reward_type);
         for (var _random_index = 0; _random_index < array_length(_random_loot); _random_index++)
-            _loot = raid_loot_add(_loot, _random_loot[_random_index].item_key, _random_loot[_random_index].quantity);
+            _loot = raid_loot_add(_loot, _random_loot[_random_index].item_key, _random_loot[_random_index].quantity,
+                variable_struct_exists(_random_loot[_random_index], "rarity_source") ? _random_loot[_random_index].rarity_source : string(l.reward_type));
 
         for (var i = 0; i < array_length(_loot); i++)
         {
@@ -48,8 +49,9 @@ function raid_open_lootable(_index)
             var max_stack = item_get_max_stack(_loot[i].item_key);
             while (remaining > 0)
             {
-                var _item = stash_place_item(_loot[i].item_key, -1, -1, 0, l.storage);
-                if (is_undefined(_item)) _item = stash_place_item(_loot[i].item_key, -1, -1, 90, l.storage);
+                var _rarity_source = variable_struct_exists(_loot[i], "rarity_source") ? _loot[i].rarity_source : "";
+                var _item = stash_place_item(_loot[i].item_key, -1, -1, 0, l.storage, _rarity_source);
+                if (is_undefined(_item)) _item = stash_place_item(_loot[i].item_key, -1, -1, 90, l.storage, _rarity_source);
                 if (is_undefined(_item)) break;
                 _item.quantity = min(remaining, max_stack);
                 remaining -= _item.quantity;

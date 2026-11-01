@@ -51,7 +51,7 @@ function step_trader_buy()
         {
             var _sold_item = stash.held_item;
             array_push(stash.items, _sold_item);
-            trader_sell_stored_item(current_trader_key, _sold_item, stash);
+            trader_sell_stored_item(current_trader_key, _sold_item, stash, _sold_item.quantity);
             stash.held_item = undefined;
             stash.held_source = "";
             return;
@@ -161,7 +161,7 @@ function step_trader_buy()
         871, 570 + _details_offset, 1016, 621 + _details_offset);
     if (mouse_check_button_pressed(mb_left))
     {
-        if (_quantity_box && !is_undefined(_selected_entry))
+        if (_quantity_box && !is_undefined(_selected_entry) && is_undefined(_selected_entry.item_instance))
         {
             if (!trader_quantity_focused) trader_quantity_keyboard_restore = keyboard_string;
             trader_quantity_focused = true;
@@ -192,7 +192,7 @@ function step_trader_buy()
     if (trader_quantity_focused && keyboard_check_pressed(vk_enter)) _confirm = true;
     if (_confirm && !is_undefined(_selected_entry))
     {
-        var _quantity = trader_quantity_value(trader_purchase_quantity_text);
+        var _quantity = !is_undefined(_selected_entry.item_instance) ? 1 : trader_quantity_value(trader_purchase_quantity_text);
         if (trader_buy_item(current_trader_key, trader_selected_stock_index, _quantity))
         {
             trader_purchase_quantity_text = "1";
@@ -202,7 +202,8 @@ function step_trader_buy()
 
     if (mouse_check_button_pressed(mb_right) && !is_undefined(_hovered))
     {
-        if (inventory_context_menu_open(_hovered, undefined, -1, false, false, false, current_trader_key)) return;
+        var _context_stock_item = is_undefined(_hovered.item_instance) ? _hovered : _hovered.item_instance;
+        if (inventory_context_menu_open(_context_stock_item, undefined, -1, false, false, false, current_trader_key)) return;
     }
     else if (mouse_check_button_pressed(mb_right)
     && point_in_rectangle(_mouse_x, _mouse_y, 1290, 260, 1840, 1030))

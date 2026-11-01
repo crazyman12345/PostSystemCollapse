@@ -86,8 +86,19 @@ function draw_loadout_overlay()
         && !loadout_confirm_start
     )
     {
+        var _focused_item = loadout_focused_item_key;
+        var _equipped_items = [stash.equipped_weapon_item, stash.equipped_weapon_2_item];
+        for (var _focused_index = 0; _focused_index < array_length(_equipped_items); _focused_index++)
+        {
+            if (!is_undefined(_equipped_items[_focused_index])
+            && _equipped_items[_focused_index].item_key == loadout_focused_item_key)
+            {
+                _focused_item = _equipped_items[_focused_index];
+                break;
+            }
+        }
         draw_item_info_popup(
-            loadout_focused_item_key
+            _focused_item
         );
     }
 

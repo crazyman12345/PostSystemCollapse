@@ -53,44 +53,44 @@ function init_dialogue_database()
     dialogue_register_node("mara_root_greeting", "Mara",
         "New channel, new face. I'm Mara. If the hideout needs something ordinary, I can usually find it.",
         [dialogue_make_response("Good to meet you.", "mara_root")]);
-    dialogue_register_node("mara_onboarding", "Mara", "Good. You're awake. The Doc got you fixed up but you've been in a coma for a month.",
-        [dialogue_make_response("...where am I?", "mara_onboarding_supplies")]);
-    dialogue_register_node("mara_onboarding_supplies", "Mara",
-        "Junk city. You can stay here in this abandoned shack we left you in. There's a supply crate for you by the bed.",
-        [dialogue_make_response("What do you mean?", "mara_onboarding_job")]);
-    dialogue_register_node("mara_onboarding_job", "Mara",
-        "Once you are up and around, there is an old store down the road with reported bandit activity. Investigate it and bring back three pieces of Scrap Metal.",
+    dialogue_register_node("ghost_onboarding", "Ghost", "You're awake. Good. The doctor was starting to lose his wager.",
+        [dialogue_make_response("...where am I?", "ghost_onboarding_supplies")]);
+    dialogue_register_node("ghost_onboarding_supplies", "Ghost",
+        "Junk City. The shack is yours until someone more dangerous objects. There's a supply crate by the bed. Start there.",
+        [dialogue_make_response("Why help me?", "ghost_onboarding_job")]);
+    dialogue_register_node("ghost_onboarding_job", "Ghost",
+        "Help is an investment. Reach the old store checkpoint and bring back three pieces of Scrap Metal. Survive, and maybe you become useful.",
         [
-            dialogue_make_response("Okay, I can check it out.", "mara_onboarding_accepted", undefined,
+            dialogue_make_response("I'll check it out.", "ghost_onboarding_accepted", undefined,
                 { type: "accept_quest", key: "test_safe_return" }),
-            dialogue_make_response("Who are you?", "mara_onboarding_identity"),
+            dialogue_make_response("Who are you?", "ghost_onboarding_identity"),
             dialogue_make_response("Not yet.", "", undefined, { type: "end" })
         ]);
-    dialogue_register_node("mara_onboarding_identity", "Mara",
-        "Mara. I keep people supplied here in Junk City. We don't trust outsiders. Maybe you can make yourself useful.",
-        [dialogue_make_response("Back.", "mara_onboarding_job")]);
-    dialogue_register_node("mara_onboarding_accepted", "Mara",
-        "Then open the crate and gear up. I'll keep this channel open.",
+    dialogue_register_node("ghost_onboarding_identity", "Ghost",
+        "Ghost. I connect desperate people with expensive solutions. Names beyond that are liabilities.",
+        [dialogue_make_response("Back.", "ghost_onboarding_job")]);
+    dialogue_register_node("ghost_onboarding_accepted", "Ghost",
+        "Open the crate and gear up. Prove you can make yourself useful before we discuss better equipment.",
         [dialogue_make_response("Understood.", "", undefined, { type: "end" })]);
-    dialogue_register_node("mara_onboarding_reminder", "Mara",
-        "Open the supply crate and gear up. The old store checkpoint is your objective.",
+    dialogue_register_node("ghost_onboarding_reminder", "Ghost",
+        "The crate first. Then the old store checkpoint. Try not to confuse confidence with preparation.",
         [dialogue_make_response("Understood.", "", undefined, { type: "end" })]);
-    dialogue_register_node("mara_onboarding_replacement", "Mara",
-        "I replaced the essentials you lost. Gear up and try again.",
+    dialogue_register_node("ghost_onboarding_replacement", "Ghost",
+        "I replaced the essentials you lost. Charity would be sentimental; consider this debt.",
         [dialogue_make_response("Understood.", "", undefined, { type: "end" })]);
-    dialogue_register_node("mara_first_quest_return", "Mara",
-        "Wow, you actually made it back.",
-        [dialogue_make_response("You sound surprised.", "mara_first_quest_reward")]);
-    dialogue_register_node("mara_first_quest_reward", "Mara",
-        "Here is your reward.\n\nREWARD: $150 + 30x 9MM AMMO",
-        [dialogue_make_response("Thanks.", "mara_useful_again_intro", undefined,
+    dialogue_register_node("ghost_first_quest_return", "Ghost",
+        "You came back breathing. Low standard, but most people still miss it.",
+        [dialogue_make_response("You sound surprised.", "ghost_first_quest_reward")]);
+    dialogue_register_node("ghost_first_quest_reward", "Ghost",
+        "Cynical, not surprised. Here's your payment.\n\nREWARD: $150 + 30x 9MM AMMO",
+        [dialogue_make_response("Thanks.", "ghost_useful_again_intro", undefined,
             { type: "turn_in_quest", key: "test_safe_return" })]);
-    dialogue_register_node("mara_useful_again_intro", "Mara",
-        "Now I need you to get the Salvage Bench working again. I'll provide the wood and hardware, plus a Broken Radio to test it with. You supply three pieces of Scrap Metal.",
-        [dialogue_make_response("I'll get it working.", "mara_useful_again_accepted", undefined,
+    dialogue_register_node("ghost_useful_again_intro", "Ghost",
+        "Now get the Salvage Bench working. I'll send wood, hardware, and a Broken Radio. You supply three pieces of Scrap Metal.",
+        [dialogue_make_response("I'll get it working.", "ghost_useful_again_accepted", undefined,
             { type: "accept_quest", key: "test_field_supplies" })]);
-    dialogue_register_node("mara_useful_again_accepted", "Mara",
-        "Good. I've sent over the repair materials and the Broken Radio. Repair the bench, salvage the radio, then come find me.",
+    dialogue_register_node("ghost_useful_again_accepted", "Ghost",
+        "The materials are waiting. Repair the bench, salvage the radio, then report back. Even junk should earn its keep.",
         [dialogue_make_response("Understood.", "", undefined,
             [
                 { type: "end" },
@@ -106,12 +106,12 @@ function init_dialogue_database()
                     box_height: 140
                 }
             ])]);
-    dialogue_register_node("mara_useful_again_complete", "Mara",
-        "The Salvage Bench is working again. Good. That will make everything we bring back more useful.",
-        [dialogue_make_response("What's next?", "mara_useful_again_reward")]);
-    dialogue_register_node("mara_useful_again_reward", "Mara",
-        "Take your payment. The other traders want to meet you now.",
-        [dialogue_make_response("Take payment.", "mara_root", undefined,
+    dialogue_register_node("ghost_useful_again_complete", "Ghost",
+        "The Salvage Bench works. Good. Waste is just inventory nobody has priced correctly.",
+        [dialogue_make_response("What's next?", "ghost_useful_again_reward")]);
+    dialogue_register_node("ghost_useful_again_reward", "Ghost",
+        "Take your payment. The others have decided you're worth acknowledging.",
+        [dialogue_make_response("Take payment.", "ghost_root", undefined,
             { type: "turn_in_quest", key: "test_field_supplies" })]);
     dialogue_register_node("mara_root", "Mara", "What do you need?",
         [
@@ -225,7 +225,7 @@ function init_dialogue_database()
             dialogue_make_response("About my current job...", "active:ghost"),
             dialogue_make_response("I finished what you asked.", "claim:ghost", { type: "trader_quest_ready", key: "ghost" }),
             dialogue_make_response("Tell me about yourself.", "ghost_background"),
-            dialogue_make_response("Let me see your stock.", "", undefined, { type: "trade" }),
+            dialogue_make_response("Show me what you've got.", "", { type: "quest_completed", key: "test_field_supplies", value: true }, { type: "trade" }),
             dialogue_make_response("Goodbye.", "", undefined, { type: "end" })
         ]);
     dialogue_register_node("ghost_rumor", "Ghost",

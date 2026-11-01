@@ -13,23 +13,23 @@ function draw_inventory_grid_item(_stored_item, _definition, _left, _top, _grid_
         && raid.treatment.item == _stored_item
         && floor(current_time / 150) mod 2 == 0;
     var background_alpha = draw_get_alpha();
-    var background_color = c_gray;
+    var _background_color = c_gray;
     var draw_background = true;
 
     switch (_definition.category)
     {
-        case ItemCategory.BODY_ARMOR: background_color = make_color_rgb(58, 83, 112); break;
-        case ItemCategory.AMMO: background_color = make_color_rgb(145, 119, 43); break;
-        case ItemCategory.MEDICAL: background_color = make_color_rgb(125, 58, 65); break;
-        case ItemCategory.CONSUMABLE: background_color = make_color_rgb(135, 82, 45); break;
-        case ItemCategory.BAG: background_color = make_color_rgb(92, 65, 120); break;
-        case ItemCategory.CURRENCY: background_color = make_color_rgb(42, 105, 62); break;
+        case ItemCategory.BODY_ARMOR: _background_color = make_color_rgb(58, 83, 112); break;
+        case ItemCategory.AMMO: _background_color = make_color_rgb(145, 119, 43); break;
+        case ItemCategory.MEDICAL: _background_color = make_color_rgb(125, 58, 65); break;
+        case ItemCategory.CONSUMABLE: _background_color = make_color_rgb(135, 82, 45); break;
+        case ItemCategory.BAG: _background_color = make_color_rgb(92, 65, 120); break;
+        case ItemCategory.CURRENCY: _background_color = make_color_rgb(42, 105, 62); break;
         case ItemCategory.WEAPON: draw_background = false; break;
     }
 
     if (_treatment_flash || _selected || draw_background)
     {
-        draw_set_color(_treatment_flash ? c_white : (_selected ? global.ui_interactive_color : background_color));
+        draw_set_color(_treatment_flash ? c_white : (_selected ? global.ui_interactive_color : _background_color));
         if (!_treatment_flash && !_selected) draw_set_alpha(background_alpha * 0.55);
         draw_rectangle(_left, _top, item_right, item_bottom, false);
     }

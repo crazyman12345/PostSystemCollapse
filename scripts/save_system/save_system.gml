@@ -1,6 +1,6 @@
 function save_system_init()
 {
-    save_format_version = 6;
+    save_format_version = 7;
     save_filename = "player_save.json";
     save_backup_filename = "player_save.backup.json";
     save_temp_filename = "player_save.tmp.json";
@@ -97,8 +97,8 @@ function save_skip_intro_progress()
     }
     tracked_quest_key = "";
     quest_refresh_states();
-    dialogue_set_flag("met_mara", true);
-    dialogue_set_flag("conversation_mara_complete", true);
+    dialogue_set_flag("met_ghost", true);
+    dialogue_set_flag("conversation_ghost_complete", true);
 
     stash_add("cash", 300);
     stash_add("ammo_9mm", 30);

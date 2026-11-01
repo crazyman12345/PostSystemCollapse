@@ -77,4 +77,9 @@ After completing changes, you may inspect `git diff` to review what you changed,
 - Place scripts in the appropriate Asset Browser folders.
 - Prioritize readability, maintainability, and minimal code duplication over rigid file-count rules.
 
+### Texture Groups
+
+- Place all resources in the `Default` texture group, except sprites that are explicitly assigned to a specific texture group.
+- Preserve those sprite-specific texture group assignments.
+
 Never add control instructions, keybind hints, tutorial prompts, or input tips to any UI or gameplay screen unless explicitly requested. This includes text such as `W/S: SELECT`, `[E] INTERACT`, `ESC: BACK`, `PRESS ENTER`, and similar prompts.

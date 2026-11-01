@@ -15,7 +15,8 @@ function draw_trader_buy()
     var _stash_top = 260;
     var _stash_cell = 55;
     var _selected_entry = trader_stock_grid_find_stock(trader_stock_layout, trader_selected_stock_index);
-    var _quantity = trader_quantity_value(trader_purchase_quantity_text);
+    var _quantity = !is_undefined(_selected_entry) && !is_undefined(_selected_entry.item_instance)
+        ? 1 : trader_quantity_value(trader_purchase_quantity_text);
     var _valid = !is_undefined(_selected_entry)
         && trader_can_buy_item(current_trader_key, trader_selected_stock_index, _quantity);
 
@@ -54,7 +55,7 @@ function draw_trader_buy()
     draw_text(1258, 71, string_upper(crew[0].name));
     draw_set_font(fnt_terminal);
     draw_set_halign(fa_right);
-    draw_text(1800, 148, "$" + string(get_cash()));
+    draw_text(1800, 148, "$" + format_compact_number(get_cash()));
     draw_set_halign(fa_left);
     draw_set_font(fnt_terminal_tiny);
     draw_set_color(global.ui_text_color);
@@ -90,8 +91,15 @@ function draw_trader_buy()
         var _selected = _entry.stock_index == trader_selected_stock_index;
         var _hovered = _entry.stock_index == trader_hovered_stock_index;
         var _definition = item_get(_entry.item_key);
-        draw_inventory_grid_item(_entry, _definition, _left, _top, _entry.width, _entry.height, _stock_cell, _selected);
-        inventory_hover_consider(_entry, _left, _top, _left + _entry.width * _stock_cell, _top + _entry.height * _stock_cell);
+        var _display_item = is_undefined(_entry.item_instance) ? _entry : _entry.item_instance;
+        _display_item.rotation = _entry.rotation;
+        draw_inventory_grid_item(_display_item, _definition, _left, _top, _entry.width, _entry.height, _stock_cell, _selected);
+        if (!is_undefined(_entry.item_instance))
+        {
+            draw_set_color(weapon_rarity_color(_display_item));
+            draw_rectangle(_left + 3, _top + 3, _left + _entry.width * _stock_cell - 3, _top + _entry.height * _stock_cell - 3, true);
+        }
+        inventory_hover_consider(_display_item, _left, _top, _left + _entry.width * _stock_cell, _top + _entry.height * _stock_cell);
         if (_hovered && !_selected)
         {
             draw_set_color(global.ui_interactive_color);
@@ -100,8 +108,8 @@ function draw_trader_buy()
         draw_set_font(fnt_terminal_tiny);
         draw_set_halign(fa_left);
         draw_set_valign(fa_bottom);
-        draw_set_color(global.hideout_background_color);
-        draw_text(_left + 8, _top + _entry.height * _stock_cell - 7, "$" + string(_entry.price));
+        draw_set_color(global.ui_text_color);
+        draw_text(_left + 8, _top + _entry.height * _stock_cell - 7, "$" + format_compact_number(_entry.price));
     }
     draw_set_color(global.ui_text_color);
     terminal_box(18, 244, 652, 806);
@@ -117,35 +125,74 @@ function draw_trader_buy()
     if (!is_undefined(_selected_entry))
     {
         var _definition = item_get(_selected_entry.item_key);
-        var _preview_cell = min(80, floor(280 / max(_selected_entry.width, _selected_entry.height)));
-        var _preview_width = _selected_entry.width * _preview_cell;
-        var _preview_height = _selected_entry.height * _preview_cell;
-        var _preview_left = _deal_left + (_deal_width - _preview_width) * 0.5;
-        var _details_offset = max(0, 349 + _preview_height + 20 - 570);
-        draw_inventory_grid_item(_selected_entry, _definition, _preview_left, 349, _selected_entry.width, _selected_entry.height, _preview_cell, true);
+        var _selected_item = is_undefined(_selected_entry.item_instance) ? {
+            item_key: _selected_entry.item_key,
+            quantity: _selected_entry.quantity,
+            rotation: _definition.grid_width >= _definition.grid_height ? 0 : 90
+        } : _selected_entry.item_instance;
 
         draw_set_font(fnt_terminal_small);
-        draw_set_color(global.ui_text_color);
+        draw_set_color(_definition.category == ItemCategory.WEAPON ? weapon_rarity_color(_selected_item) : global.ui_text_color);
         draw_set_halign(fa_center);
         draw_set_valign(fa_top);
         draw_text(_deal_left + _deal_width * 0.5, 300, string_upper(_definition.name));
         draw_set_halign(fa_left);
 
-        draw_set_font(fnt_terminal_small);
-        draw_set_color(global.ui_text_color);
-        draw_text(718, 572 + _details_offset, "QUANTITY");
-        draw_set_color(trader_quantity_focused ? global.ui_interactive_color : global.hideout_border_subtle_color);
-        draw_rectangle(871, 570 + _details_offset, 1016, 621 + _details_offset, true);
-        draw_set_color(global.ui_interactive_color);
-        draw_text(889, 583 + _details_offset, trader_purchase_quantity_text);
-        draw_text(1025, 583 + _details_offset, "X");
+        if (!is_undefined(_selected_entry.item_instance))
+        {
+            draw_set_font(fnt_terminal_tiny);
+            draw_set_color(weapon_rarity_color(_selected_item));
+            draw_set_halign(fa_center);
+            draw_text(_deal_left + _deal_width * 0.5, 326, "TIER " + string(_selected_item.tier) + ", " + string_upper(weapon_rarity_get(_selected_item.rarity).name));
+            draw_set_halign(fa_left);
 
-        var _total = _quantity > 0 && _quantity <= floor(2147483647 / _selected_entry.price)
-            ? _selected_entry.price * _quantity : 0;
-        draw_set_color(global.ui_text_color);
-        draw_text(722, 695 + _details_offset, "TOTAL");
-        draw_set_color(global.ui_text_color);
-        draw_text(881, 695 + _details_offset, _total > 0 ? "$" + string(_total) : "--");
+            var _weapon_preview = _selected_item;
+            _weapon_preview.rotation = _definition.grid_width >= _definition.grid_height ? 0 : 90;
+            var _weapon_preview_width = max(_definition.grid_width, _definition.grid_height);
+            var _weapon_preview_height = min(_definition.grid_width, _definition.grid_height);
+            var _weapon_preview_cell = min(80, floor(280 / _weapon_preview_width));
+            var _weapon_preview_left = _deal_left + (_deal_width - _weapon_preview_width * _weapon_preview_cell) * 0.5;
+            draw_inventory_grid_item(_weapon_preview, _definition, _weapon_preview_left, 349, _weapon_preview_width, _weapon_preview_height, _weapon_preview_cell, true);
+
+            draw_set_font(fnt_terminal_small);
+            draw_set_color(global.ui_text_color);
+            draw_text(718, 572, "QUANTITY");
+            draw_set_color(global.hideout_border_subtle_color);
+            draw_rectangle(871, 570, 1016, 621, true);
+            draw_set_color(global.ui_interactive_color);
+            draw_text(889, 583, "1");
+            draw_text(1025, 583, "X");
+        }
+
+        if (is_undefined(_selected_entry.item_instance))
+        {
+            var _preview_entry = _selected_item;
+            _preview_entry.rotation = _definition.grid_width >= _definition.grid_height ? 0 : 90;
+            var _preview_grid_width = max(_definition.grid_width, _definition.grid_height);
+            var _preview_grid_height = min(_definition.grid_width, _definition.grid_height);
+            var _preview_cell = min(80, floor(280 / _preview_grid_width));
+            var _preview_width = _preview_grid_width * _preview_cell;
+            var _preview_height = _preview_grid_height * _preview_cell;
+            var _preview_left = _deal_left + (_deal_width - _preview_width) * 0.5;
+            var _details_offset = max(0, 349 + _preview_height + 20 - 570);
+            draw_inventory_grid_item(_preview_entry, _definition, _preview_left, 349, _preview_grid_width, _preview_grid_height, _preview_cell, true);
+
+            draw_set_font(fnt_terminal_small);
+            draw_set_color(global.ui_text_color);
+            draw_text(718, 572 + _details_offset, "QUANTITY");
+            draw_set_color(trader_quantity_focused ? global.ui_interactive_color : global.hideout_border_subtle_color);
+            draw_rectangle(871, 570 + _details_offset, 1016, 621 + _details_offset, true);
+            draw_set_color(global.ui_interactive_color);
+            draw_text(889, 583 + _details_offset, trader_purchase_quantity_text);
+            draw_text(1025, 583 + _details_offset, "X");
+
+            var _total = _quantity > 0 && _quantity <= floor(2147483647 / _selected_entry.price)
+                ? _selected_entry.price * _quantity : 0;
+            draw_set_color(global.ui_text_color);
+            draw_text(722, 695 + _details_offset, "TOTAL");
+            draw_set_color(global.ui_text_color);
+            draw_text(881, 695 + _details_offset, _total > 0 ? "$" + format_compact_number(_total) : "--");
+        }
     }
 
     // Main stash
@@ -173,8 +220,8 @@ function draw_trader_buy()
             draw_set_font(fnt_terminal_tiny);
             draw_set_halign(fa_left);
             draw_set_valign(fa_bottom);
-            draw_set_color(global.hideout_background_color);
-            draw_text(_left + 8, _top + _height * _stash_cell - 7, "$" + string(trader_get_sell_price(_stored_item.item_key)));
+            draw_set_color(global.ui_text_color);
+            draw_text(_left + 8, _top + _height * _stash_cell - 7, "$" + format_compact_number(trader_get_sell_price(_stored_item.item_key)));
         }
         inventory_hover_consider(_stored_item, _left, _top, _left + _width * _stash_cell, _top + _height * _stash_cell);
     }

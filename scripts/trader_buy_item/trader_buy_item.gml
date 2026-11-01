@@ -33,6 +33,9 @@ function trader_buy_item(_trader_key, _stock_index, _quantity = 1)
     var stock_entry =
         trader.stock[_stock_index];
 
+    var _unique_stock = variable_struct_exists(stock_entry, "item_instance");
+    if (_unique_stock && _quantity != 1) return false;
+
     var item =
         item_get(stock_entry.item_key);
 
@@ -60,10 +63,34 @@ function trader_buy_item(_trader_key, _stock_index, _quantity = 1)
         return false;
     }
 
-    if (!stash_add(stock_entry.item_key, _quantity))
+    var _added = false;
+    if (_unique_stock)
+    {
+        var _stock_item = stock_entry.item_instance;
+        _stock_item.rotation = 0;
+        _added = stash_place_existing_item(_stock_item, stash);
+        if (!_added)
+        {
+            _stock_item.rotation = 90;
+            _added = stash_place_existing_item(_stock_item, stash);
+        }
+    }
+    else _added = stash_add(stock_entry.item_key, _quantity);
+
+    if (!_added)
     {
         stash_add("cash", price);
         return false;
+    }
+
+    if (_unique_stock)
+    {
+        array_delete(trader.stock, _stock_index, 1);
+        trader_stock_layout = trader_stock_grid_build(_trader_key, 11);
+        trader_selected_stock_index = -1;
+        trader_hovered_stock_index = -1;
+        save_mark_dirty();
+        save_game();
     }
 
 
@@ -82,6 +109,7 @@ function trader_can_buy_item(_trader_key, _stock_index, _quantity)
     var _trader = trader_get(_trader_key);
     if (is_undefined(_trader) || _stock_index < 0 || _stock_index >= array_length(_trader.stock)) return false;
     var _stock_entry = _trader.stock[_stock_index];
+    if (variable_struct_exists(_stock_entry, "item_instance") && _quantity != 1) return false;
     if (is_undefined(item_get(_stock_entry.item_key))) return false;
     var _unit_price = trader_get_buy_price(_stock_entry.price);
     if (_quantity > floor(2147483647 / _unit_price)) return false;

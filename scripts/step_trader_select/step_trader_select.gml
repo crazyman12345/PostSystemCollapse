@@ -6,6 +6,7 @@ var trader_keys = trader_get_unlocked_keys();
 		{
 		    current_trader_key =
 		        trader_keys[menu_index];
+		    if (!trader_is_shop_unlocked(current_trader_key)) return;
 		    trader_mode = TraderMode.BUY;
 		    trader_menu_index = 0;
 		    trader_stock_layout = trader_stock_grid_build(current_trader_key, 11);

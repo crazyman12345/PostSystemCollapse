@@ -109,7 +109,8 @@ function save_collect_data()
             workshop: workshop
         },
 		quests: quest_save_data(),
-		dialogue: dialogue_save_data()
+		dialogue: dialogue_save_data(),
+        black_market: ghost_black_market_save_data()
     };
 }
 
@@ -124,6 +125,16 @@ function save_item_to_data(_item)
 {
     if (is_undefined(_item)) return {};
     var _state = {};
+    var _definition = item_get(_item.item_key);
+    if (!is_undefined(_definition) && _definition.category == ItemCategory.WEAPON)
+    {
+        var _tier = variable_struct_exists(_item, "tier") ? _item.tier : _definition.tier;
+        _state.tier = is_real(_tier) && _tier == floor(_tier) && _tier >= 1 && _tier <= 10 ? _tier : _definition.tier;
+        weapon_instance_initialize(_item, false);
+        _state.rarity = _item.rarity;
+        _state.modifiers = array_concat(_item.modifiers, []);
+    }
+    if (variable_struct_exists(_item, "instance_id")) _state.instance_id = _item.instance_id;
     if (variable_struct_exists(_item, "durability")) _state.durability = _item.durability;
     if (variable_struct_exists(_item, "servings")) _state.servings = _item.servings;
     return {

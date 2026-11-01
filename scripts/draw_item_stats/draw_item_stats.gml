@@ -8,7 +8,7 @@ function draw_item_stats(_item, _x, _y, _bottom)
     var _line_h = 26;
     var _lines = [];
 
-    draw_set_font(fnt_terminal_small);
+    draw_set_font(fnt_terminal_medium);
     draw_set_color(global.ui_text_color);
 
 
@@ -92,6 +92,16 @@ function draw_item_stats(_item, _x, _y, _bottom)
                 array_push(_lines,
                     "HANDLING: "
                     + string(_item.handling));
+
+            if (variable_struct_exists(_item, "modifiers") && array_length(_item.modifiers) > 0)
+            {
+                array_push(_lines, "MODIFIERS:");
+                for (var i = 0; i < array_length(_item.modifiers); i++)
+                {
+                    var _modifier = variable_struct_get(global.weapon_modifier_registry, _item.modifiers[i]);
+                    array_push(_lines, _modifier.name + ": " + _modifier.description);
+                }
+            }
 
             if (variable_struct_exists(_item, "ammo_key"))
             {

@@ -9,6 +9,8 @@ function raid_bag_get_weight()
         {
             var item = container.items[i];
             var definition = item_get(item.item_key);
+            if (!is_undefined(definition) && definition.category == ItemCategory.WEAPON)
+                definition = weapon_get_effective_stats(item);
             if (!is_undefined(definition)) total_weight += definition.weight * item.quantity;
         }
     }

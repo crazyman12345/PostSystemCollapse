@@ -243,6 +243,7 @@ function raid_generate_reward_loot(_reward_type)
     // ROLL LOOT
     // ============================================================
 
+    _pool = raid_loot_filter_weapon_tier(_pool, 1, 10);
     var _loot = [];
 	var _scavenging_nodes = skill_node_get_nodes("scavenging");
 	var _lucky_looter = skill_node_find(_scavenging_nodes, "lucky_looter");
@@ -272,7 +273,8 @@ function raid_generate_reward_loot(_reward_type)
             raid_loot_add(
                 _loot,
                 _entry.item_key,
-                _quantity
+                _quantity,
+                string(_reward_type)
             );
     }
 

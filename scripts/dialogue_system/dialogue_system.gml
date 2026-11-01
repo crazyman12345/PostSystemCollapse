@@ -179,6 +179,7 @@ function dialogue_run_action(_action)
             );
             return true;
         case "trade":
+            if (!trader_is_shop_unlocked(current_trader_key)) return false;
             trader_mode = TraderMode.BUY;
             trader_stock_layout = trader_stock_grid_build(current_trader_key, 11);
             trader_stock_scroll_row = 0;
@@ -225,7 +226,7 @@ function dialogue_build_claim_node(_trader_key)
             if (variable_struct_exists(definition, "completion_node"))
                 return dialogue_resolve_node(definition.completion_node);
             var message = definition.key == "test_field_supplies"
-                ? "Thanks. Now the other traders want to meet you. Speak with the other three."
+                ? "Useful. The other traders are willing to speak with you now."
                 : "Thanks. Here is your reward.";
             message += "\n\nREWARD: $" + string(definition.rewards.cash);
             for (var reward_index = 0; reward_index < array_length(definition.rewards.items); reward_index++)

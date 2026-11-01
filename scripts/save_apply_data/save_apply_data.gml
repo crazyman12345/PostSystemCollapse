@@ -156,6 +156,7 @@ function save_apply_data(_data)
 
 	quest_load_data(save_value(_data, "quests", {}));
 	dialogue_load_data(save_value(_data, "dialogue", {}));
+    ghost_black_market_load_data(save_value(_data, "black_market", {}));
 
     var meta = save_value(_data, "meta", {});
     save_unfinished_raid = save_value(meta, "unfinished_raid", false) == true;
@@ -185,6 +186,7 @@ function save_item_from_data(_data)
     var max_stack = item_get_max_stack(definition);
     var quantity = floor(clamp(save_number(_data, "quantity", 1), 1, max_stack));
     var rotation = save_number(_data, "rotation", 0) == 90 ? 90 : 0;
+    var state = save_value(_data, "state", {});
     var item = {
         item_key: item_key,
         quantity: quantity,
@@ -192,15 +194,23 @@ function save_item_from_data(_data)
         y: floor(save_number(_data, "y", 0)),
         rotation: rotation
     };
+    if (definition.category == ItemCategory.WEAPON)
+    {
+        var tier = save_number(state, "tier", definition.tier);
+        item.tier = tier == floor(tier) && tier >= 1 && tier <= 10 ? tier : definition.tier;
+        var _saved_rarity = save_value(state, "rarity", "common");
+        var _saved_modifiers = save_value(state, "modifiers", []);
+        weapon_instance_restore_roll(item, _saved_rarity, _saved_modifiers);
+    }
+    var _saved_instance_id = save_value(state, "instance_id", undefined);
+    if (!is_undefined(_saved_instance_id)) item.instance_id = _saved_instance_id;
     if (variable_struct_exists(definition, "medical_capacity"))
     {
-        var state = save_value(_data, "state", {});
         item.durability = clamp(save_number(state, "durability", definition.medical_capacity), 1, definition.medical_capacity);
     }
     if (variable_struct_exists(definition, "max_servings"))
     {
-        var serving_state = save_value(_data, "state", {});
-        item.servings = floor(clamp(save_number(serving_state, "servings", definition.max_servings), 1, definition.max_servings));
+        item.servings = floor(clamp(save_number(state, "servings", definition.max_servings), 1, definition.max_servings));
     }
     return item;
 }

@@ -129,6 +129,6 @@ function raid_result_continue()
     hideout_focus = HideoutFocus.CONTENT;
     raid_set_state(RaidState.INACTIVE);
     state = GameState.HIDEOUT;
-    if (_first_quest_ready) onboarding_open_mara_node("mara_first_quest_return");
+    if (_first_quest_ready) onboarding_open_mara_node("ghost_first_quest_return");
     save_game();
 }

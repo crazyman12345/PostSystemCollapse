@@ -65,7 +65,7 @@ function step_trader_conversation()
 
 function step_messages_all()
 {
-    var trader_keys = onboarding_is_active() ? ["mara"] : trader_get_message_keys();
+    var trader_keys = onboarding_is_active() ? ["ghost"] : trader_get_message_keys();
     var mouse_menu = terminal_menu_mouse_input(menu_index, array_length(trader_keys), 0, 345, 143, 580, 92);
     menu_index = mouse_menu.index;
 

@@ -49,6 +49,12 @@ function save_migrate_data(_data)
                 version = 6;
                 break;
 
+            case 6:
+                _data.version = 7;
+                if (!variable_struct_exists(_data, "black_market")) _data.black_market = {};
+                version = 7;
+                break;
+
             default:
                 return undefined;
         }

@@ -1,4 +1,4 @@
-function stash_place_item(_item_key, _x, _y, _rotation, _container = stash)
+function stash_place_item(_item_key, _x, _y, _rotation, _container = stash, _rarity_source = "")
 {
     var _definition = item_get(_item_key);
     if (is_undefined(_definition)) return undefined;
@@ -33,6 +33,11 @@ function stash_place_item(_item_key, _x, _y, _rotation, _container = stash)
         y: _y,
         rotation: _rotation
     };
+    if (_definition.category == ItemCategory.WEAPON)
+    {
+        item.tier = _definition.tier;
+        weapon_instance_initialize(item, _rarity_source != "", _rarity_source);
+    }
     if (variable_struct_exists(_definition, "medical_capacity")) item.durability = _definition.medical_capacity;
     if (variable_struct_exists(_definition, "max_servings")) item.servings = _definition.max_servings;
 

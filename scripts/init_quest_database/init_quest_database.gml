@@ -22,8 +22,8 @@ function init_quest_database()
         {
             key: "test_field_supplies",
             title: "USEFUL AGAIN",
-            trader_key: "mara",
-            description: "Repair the Salvage Bench, then use it to salvage the Broken Radio Mara provided. She will provide the wood and hardware; you need to supply three pieces of Scrap Metal.",
+            trader_key: "ghost",
+            description: "Repair the Salvage Bench, then use it to salvage the Broken Radio Ghost provided. He will provide the wood and hardware; you need to supply three pieces of Scrap Metal.",
             prerequisites: ["test_safe_return"],
             objectives: [
                 { type: QuestObjectiveType.REPAIR_BENCH, target: "salvage_bench", amount: 1, text: "REPAIR THE SALVAGE BENCH", requires_extraction: false },
@@ -35,14 +35,14 @@ function init_quest_database()
                 { item_key: "bolts", quantity: 2 },
                 { item_key: "broken_radio", quantity: 1 }
             ],
-            completion_node: "mara_useful_again_complete",
+            completion_node: "ghost_useful_again_complete",
             rewards: { cash: 150, items: [{ item_key: "bandage", quantity: 1 }], flags: ["quest_field_supplies_complete"] }
         },
         {
             key: "test_safe_return",
             title: "COME BACK BREATHING",
-            trader_key: "mara",
-            description: "Mara wants you to reach a checkpoint in the Abandoned Store, recover three pieces of Scrap Metal, and return alive.",
+            trader_key: "ghost",
+            description: "Ghost wants you to reach a checkpoint in the Abandoned Store, recover three pieces of Scrap Metal, and return alive.",
             prerequisites: [],
             objectives: [
                 { type: QuestObjectiveType.COLLECT_ITEM, target: "metal_scrap", amount: 3, text: "FIND SCRAP METAL", requires_extraction: false },

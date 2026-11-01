@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raid_loot_filter_weapon_tier",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raid_loot_filter_weapon_tier",
+  "parent":{
+    "name":"loot",
+    "path":"folders/Raid/loot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

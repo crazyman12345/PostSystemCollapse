@@ -98,7 +98,7 @@ function draw_trader_conversation()
 
 function draw_messages_all()
 {
-    var trader_keys = onboarding_is_active() ? ["mara"] : trader_get_message_keys();
+    var trader_keys = onboarding_is_active() ? ["ghost"] : trader_get_message_keys();
     var left = 320;
     var top = 1;
     var right = display_get_gui_width();

@@ -17,6 +17,7 @@ function load_game()
         return false;
     }
 
+    var needs_resave = variable_struct_exists(data, "version") && data.version != save_format_version;
     data = save_migrate_data(data);
     if (is_undefined(data) || !save_validate_data(data))
     {
@@ -40,6 +41,7 @@ function load_game()
             return false;
         }
     }
+    else if (needs_resave) save_game();
 
     raid_set_state(RaidState.INACTIVE);
     overlay_mode = OverlayMode.NONE;

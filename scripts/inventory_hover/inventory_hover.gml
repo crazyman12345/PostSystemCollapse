@@ -77,8 +77,18 @@ function inventory_hover_draw()
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
         var _padding = 6;
-        var _width = string_width(_definition.name) + _padding * 2;
-        var _height = string_height(_definition.name) + _padding * 2;
+        var _name_text = _definition.name;
+        var _detail_text = "";
+        if (_definition.category == ItemCategory.WEAPON)
+        {
+            weapon_instance_initialize(inventory_hover_item, false);
+            _detail_text = "Tier " + string(_definition.tier) + " - "
+                + weapon_rarity_get(inventory_hover_item.rarity).name;
+        }
+        var _line_height = string_height(_name_text);
+        var _width = max(string_width(_name_text), string_width(_detail_text)) + _padding * 2;
+        var _height = _line_height + _padding * 2;
+        if (_detail_text != "") _height += _line_height;
         var _left = clamp(device_mouse_x_to_gui(0) + 14, 0, display_get_gui_width() - _width);
         var _top = clamp(device_mouse_y_to_gui(0) + 14, 0, display_get_gui_height() - _height);
         draw_set_alpha(0.92 * _tooltip_alpha);
@@ -87,15 +97,29 @@ function inventory_hover_draw()
         draw_set_alpha(_tooltip_alpha);
         draw_set_color(c_green);
         draw_rectangle(_left, _top, _left + _width, _top + _height, true);
-        draw_set_color(global.ui_text_color);
-        draw_text(_left + _padding, _top + _padding, _definition.name);
+        draw_set_color(_definition.category == ItemCategory.WEAPON ? weapon_rarity_color(inventory_hover_item) : global.ui_text_color);
+        draw_text(_left + _padding, _top + _padding, _name_text);
+        if (_detail_text != "")
+        {
+            draw_text(_left + _padding, _top + _padding + _line_height, _detail_text);
+        }
         draw_set_alpha(1);
         draw_set_font(fnt_terminal);
         return;
     }
 
-    var popup_width = 600;
-    var popup_height = 600;
+    var popup_width = 520;
+    var popup_height = 430;
+    var _inspect_definition = item_get(inventory_inspect_item.item_key);
+    if (!is_undefined(_inspect_definition) && _inspect_definition.category == ItemCategory.WEAPON)
+    {
+        weapon_instance_initialize(inventory_inspect_item, false);
+        var _modifier_count = array_length(inventory_inspect_item.modifiers);
+        var _pellet_height = variable_struct_exists(_inspect_definition, "pellet_count") ? 24 : 0;
+        popup_height = _modifier_count == 0
+            ? 389 + _pellet_height
+            : 416 + _pellet_height + _modifier_count * 50;
+    }
     var popup_gap = 10;
     var gui_width = display_get_gui_width();
     var gui_height = display_get_gui_height();
@@ -125,7 +149,7 @@ function inventory_hover_draw()
     surface_set_target(inventory_hover_surface);
     draw_clear_alpha(c_black, 0);
     draw_item_info_popup(
-        inventory_inspect_item.item_key,
+        inventory_inspect_item,
         popup_left,
         popup_top,
         popup_width,

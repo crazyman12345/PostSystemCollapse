@@ -91,6 +91,7 @@ function raid_combat_loss()
 
     player_health_prepare_death_result();
     onboarding_handle_raid_failure();
+    ghost_black_market_complete_raid();
     raid_set_state(RaidState.RESULT);
     save_unfinished_raid = false;
     save_mark_dirty();

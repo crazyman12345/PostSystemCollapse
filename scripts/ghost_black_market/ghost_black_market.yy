@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ghost_black_market",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ghost_black_market",
+  "parent":{"name":"traders","path":"folders/hideout/traders.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

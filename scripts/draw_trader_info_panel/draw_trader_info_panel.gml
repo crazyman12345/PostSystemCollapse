@@ -118,7 +118,7 @@ function draw_trader_info_panel(_trader_key)
         panel_left + 40,
         panel_top + 550,
         "CASH",
-        "$" + string(get_cash()),
+        "$" + format_compact_number(get_cash()),
         180
     );
 	draw_set_font(fnt_terminal);

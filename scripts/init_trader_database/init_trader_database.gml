@@ -251,22 +251,12 @@ function init_trader_database()
         title : "Black Market Broker",
         portrait : spr_trader_ghost,
         description :
-            "Deals in rare materials, restricted components, and hard-to-find equipment.",
+            "Moves premium weapons with clean serials, uncertain histories, and prices to match.",
 
-        stock : [
-            {
-                item_key : "electronics",
-                price : 45
-            },
-
-            {
-                item_key : "mechanical_parts",
-                price : 35
-            }
-        ],
+        stock : [],
 
         accepted_categories : [
-            ItemCategory.PRODUCT
+            ItemCategory.WEAPON
         ]
     };
 	
@@ -322,4 +312,6 @@ function init_trader_database()
 		ItemCategory.CONSUMABLE
 		]
 	};
+
+    ghost_black_market_initialize();
 }

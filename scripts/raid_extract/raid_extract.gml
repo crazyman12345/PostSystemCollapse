@@ -1,6 +1,7 @@
 function raid_extract()
 {
 	quest_extraction_complete(raid.selected_area.name);
+    ghost_black_market_complete_raid();
     raid.result_title =
         "EXTRACTION SUCCESSFUL";
 

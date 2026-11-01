@@ -38,18 +38,18 @@ function onboarding_can_start_raid()
 function onboarding_mara_node_id()
 {
     var _progress = onboarding_first_quest_progress();
-    if (is_undefined(_progress) || _progress.state <= QuestState.AVAILABLE) return "mara_onboarding";
-    if (progress_get_flag("onboarding_replacement_pending")) return "mara_onboarding_replacement";
-    if (!progress_get_flag("starting_crate_claimed")) return "mara_onboarding_accepted";
-    return "mara_onboarding_reminder";
+    if (is_undefined(_progress) || _progress.state <= QuestState.AVAILABLE) return "ghost_onboarding";
+    if (progress_get_flag("onboarding_replacement_pending")) return "ghost_onboarding_replacement";
+    if (!progress_get_flag("starting_crate_claimed")) return "ghost_onboarding_accepted";
+    return "ghost_onboarding_reminder";
 }
 
 function onboarding_open_mara_node(_node_id)
 {
-    current_trader_key = "mara";
+    current_trader_key = "ghost";
     trader_mode = TraderMode.CONVERSATION;
     dialogue_history = [];
-    dialogue_set_flag("met_mara", true);
+    dialogue_set_flag("met_ghost", true);
     dialogue_set_node(_node_id);
     hideout_menu_index = 1;
     hideout_page = HideoutPage.MESSAGES;
@@ -58,7 +58,7 @@ function onboarding_open_mara_node(_node_id)
 
 function onboarding_open_initial_mara_message()
 {
-    onboarding_open_mara_node("mara_onboarding");
+    onboarding_open_mara_node("ghost_onboarding");
 }
 
 function onboarding_open_mara_message()
@@ -138,12 +138,17 @@ function onboarding_step_hideout()
     if (progress_get_flag("onboarding_replacement_pending") && onboarding_deliver_replacement_kit())
     {
         progress_set_flag("onboarding_replacement_pending", false);
-        onboarding_open_mara_node("mara_onboarding_replacement");
+        onboarding_open_mara_node("ghost_onboarding_replacement");
         save_game();
     }
     if (trader_mode == TraderMode.CONVERSATION)
     {
         step_trader_conversation();
+        return true;
+    }
+    if (trader_mode == TraderMode.BUY)
+    {
+        step_trader_buy();
         return true;
     }
     var _inventory_popup_open = hideout_page == HideoutPage.STASH
@@ -211,6 +216,11 @@ function onboarding_draw_hideout()
         draw_trader_conversation();
         heading_box(320, 1, display_get_gui_width() - 320, display_get_gui_height() - 1,
             hideout_menu_items[hideout_menu_index].name, 60);
+        return true;
+    }
+    if (trader_mode == TraderMode.BUY)
+    {
+        draw_trader_buy();
         return true;
     }
 
@@ -591,6 +601,10 @@ function onboarding_copy_stored_item(_item)
         y: _item.y,
         rotation: _item.rotation
     };
+    if (variable_struct_exists(_item, "tier")) _copy.tier = _item.tier;
+    if (variable_struct_exists(_item, "rarity")) _copy.rarity = _item.rarity;
+    if (variable_struct_exists(_item, "modifiers")) _copy.modifiers = array_concat(_item.modifiers, []);
+    if (variable_struct_exists(_item, "instance_id")) _copy.instance_id = _item.instance_id;
     if (variable_struct_exists(_item, "durability")) _copy.durability = _item.durability;
     if (variable_struct_exists(_item, "servings")) _copy.servings = _item.servings;
     return _copy;
