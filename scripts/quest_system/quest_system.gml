@@ -397,6 +397,8 @@ function quest_load_data(_data)
         progress.state = clamp(state, QuestState.LOCKED, QuestState.COMPLETED);
         progress.reward_claimed = save_value(saved, "reward_claimed", false) == true;
         var objectives = save_value(saved, "objectives", []);
+        if (definition.key == "test_safe_return" && is_array(objectives) && array_length(objectives) == 3)
+            objectives = [objectives[1], objectives[2]];
         if (is_array(objectives))
             for (var j = 0; j < min(array_length(objectives), array_length(progress.objectives)); j++)
                 if (is_real(objectives[j])) progress.objectives[j] = clamp(floor(objectives[j]), 0, definition.objectives[j].amount);

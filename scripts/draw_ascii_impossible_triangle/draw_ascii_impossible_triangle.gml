@@ -27,9 +27,6 @@ function draw_ascii_impossible_triangle(_x, _y, _columns = 82, _rows = 74)
     var _end_x = [-0.74, 0.74, 0];
     var _end_y = [0.56, 0.56, -0.76];
 
-    draw_set_color(c_black);
-    draw_set_alpha(1);
-    draw_rectangle(_x - 36, _y - 30, _x + (_columns * _character_width) + 36, _y + (_rows * _line_height) + 30, false);
     draw_set_font(fnt_ascii);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);

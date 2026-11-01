@@ -180,7 +180,13 @@ function step_raid_inventory()
                 var stack_target = inventory_find_item_at(grid.storage, grid_x, grid_y);
                 if (!is_undefined(stack_target))
                 {
+                    var collected_quantity = item.quantity;
                     inventory_merge_stacks(item, stack_target);
+                    collected_quantity -= item.quantity;
+                    if (collected_quantity > 0 && !is_undefined(raid.active_loot_container)
+                    && raid.inventory_container == raid.active_loot_container.storage
+                    && grid.storage != raid.active_loot_container.storage)
+                        quest_event(QuestObjectiveType.COLLECT_ITEM, item.item_key, collected_quantity);
                     if (item.quantity <= 0)
                     {
                         raid.inventory_item = undefined;
@@ -189,6 +195,10 @@ function step_raid_inventory()
                 }
                 else
                 {
+                    if (!is_undefined(raid.active_loot_container)
+                    && raid.inventory_container == raid.active_loot_container.storage
+                    && grid.storage != raid.active_loot_container.storage)
+                        quest_event(QuestObjectiveType.COLLECT_ITEM, item.item_key, item.quantity);
                     item.x = grid_x;
                     item.y = grid_y;
                     item.rotation = raid.inventory_rotation;
@@ -216,7 +226,22 @@ function step_raid_inventory()
                     if (crew[raid.crew_index].bag != "") array_push(quick_transfer_destinations, stash.backpack);
                     array_push(quick_transfer_destinations, stash.pockets);
                     array_push(quick_transfer_destinations, stash.secure_container);
-                    inventory_quick_transfer(item, grid.storage, quick_transfer_destinations);
+                    var collected_quantity = item.quantity;
+                    if (inventory_quick_transfer(item, grid.storage, quick_transfer_destinations))
+                    {
+                        var item_remains_in_loot = false;
+                        for (var source_index = 0; source_index < array_length(grid.storage.items); source_index++)
+                        {
+                            if (grid.storage.items[source_index] == item)
+                            {
+                                item_remains_in_loot = true;
+                                break;
+                            }
+                        }
+                        if (item_remains_in_loot) collected_quantity -= item.quantity;
+                        if (collected_quantity > 0)
+                            quest_event(QuestObjectiveType.COLLECT_ITEM, item.item_key, collected_quantity);
+                    }
                     return;
                 }
 
