@@ -584,6 +584,51 @@ function init_item_database()
 		icon_sprite: spr_buckshot
     };
 
+    global.items.ammo_762x54r = {
+        item_key: "ammo_762x54r",
+        name: "7.62x54R Ammo",
+        category: ItemCategory.AMMO,
+        description: "Full-power rifle ammunition used by the Mosin-Nagant.",
+		icon_sprite: spr_76254r,
+        base_value: 6,
+        max_stack: 100,
+        weight: 0.024,
+        stackable: true
+    };
+
+    global.items.ammo_762x39 = {
+        item_key: "ammo_762x39",
+        name: "7.62x39 Ammo",
+        category: ItemCategory.AMMO,
+        description: "Intermediate rifle ammunition used by the AKM.",
+        base_value: 5,
+        max_stack: 100,
+        weight: 0.016,
+        stackable: true
+    };
+
+    global.items.ammo_762x51 = {
+        item_key: "ammo_762x51",
+        name: "7.62x51 Ammo",
+        category: ItemCategory.AMMO,
+        description: "Full-power rifle ammunition used by the G3.",
+        base_value: 7,
+        max_stack: 100,
+        weight: 0.025,
+        stackable: true
+    };
+
+    global.items.ammo_762x25 = {
+        item_key: "ammo_762x25",
+        name: "7.62x25 Ammo",
+        category: ItemCategory.AMMO,
+        description: "High-velocity pistol ammunition used by the PPSh-41.",
+        base_value: 3,
+        max_stack: 100,
+        weight: 0.011,
+        stackable: true
+    };
+
 
     // ============================================================
     //  WEAPON
@@ -669,9 +714,219 @@ function init_item_database()
         fire_modes: [WeaponFireMode.SEMI]
     };
 
+    global.items.glock17 = {
+        item_key: "glock17",
+        name: "Glock 17",
+        category: ItemCategory.WEAPON,
+        description: "A lightweight, reliable 9mm service pistol.",
+        base_value: 325,
+        weight: 0.9,
+        stackable: false,
+
+        damage_min: 8,
+        damage_max: 11,
+        fire_rate: 5,
+        mag_size: 17,
+        reload_time: 55,
+        bullet_speed: 8,
+        accuracy: 90,
+        handling: 92,
+
+        ammo_key: "ammo_9mm",
+        ammo_per_attack: 1,
+
+        weapon_sprite: spr_glock17,
+        sound_shoot: nine_shot,
+        sound_reload: nine_reload,
+        sound_empty: nine_empty,
+
+        grid_width: 2,
+        grid_height: 1,
+
+        weapon_offset_x: 14,
+        weapon_draw_width: 22,
+        hand1_x: 0,
+        hand1_y: 0,
+        hand2_x: 0,
+        hand2_y: 0,
+        has_second_hand: false,
+        muzzle_x: 19,
+        muzzle_y: 0,
+
+        fire_modes: [WeaponFireMode.SEMI]
+    };
+
+    global.items.mosin_nagant = {
+        item_key: "mosin_nagant",
+        name: "Mosin-Nagant",
+        category: ItemCategory.WEAPON,
+        description: "A powerful bolt-action rifle chambered in 7.62x54R.",
+        base_value: 450,
+        weight: 4.0,
+        stackable: false,
+
+        damage_min: 28,
+        damage_max: 36,
+        fire_rate: 1,
+        mag_size: 1,
+        reload_time: 100,
+        bullet_speed: 12,
+        accuracy: 95,
+        handling: 45,
+
+        ammo_key: "ammo_762x54r",
+        ammo_per_attack: 1,
+
+        weapon_sprite: spr_mosin_nagant,
+        sound_shoot: nine_shot,
+        sound_reload: nine_reload,
+        sound_empty: nine_empty,
+
+        grid_width: 6,
+        grid_height: 1,
+
+        weapon_offset_x: 8,
+        weapon_draw_width: 50,
+        hand1_x: 0,
+        hand1_y: 0,
+        hand2_x: 19,
+        hand2_y: 0,
+        has_second_hand: true,
+        muzzle_x: 47,
+        muzzle_y: 0,
+
+        fire_modes: [WeaponFireMode.SEMI]
+    };
+
+    global.items.ppsh_41 = {
+        item_key: "ppsh_41",
+        name: "PPSh-41",
+        category: ItemCategory.WEAPON,
+        description: "A Soviet submachine gun with a high rate of fire.",
+        base_value: 500,
+        weight: 3.6,
+        stackable: false,
+
+        damage_min: 5,
+        damage_max: 7,
+        fire_rate: 15,
+        mag_size: 35,
+        reload_time: 85,
+        bullet_speed: 9,
+        accuracy: 58,
+        handling: 62,
+
+        ammo_key: "ammo_762x25",
+        ammo_per_attack: 1,
+
+        weapon_sprite: spr_ppsh,
+        sound_shoot: nine_shot,
+        sound_reload: nine_reload,
+        sound_empty: nine_empty,
+
+        grid_width: 4,
+        grid_height: 2,
+
+        weapon_offset_x: 8,
+        weapon_draw_width: 42,
+        hand1_x: 0,
+        hand1_y: 0,
+        hand2_x: 15,
+        hand2_y: 0,
+        has_second_hand: true,
+        muzzle_x: 39,
+        muzzle_y: 0,
+
+        fire_modes: [WeaponFireMode.SEMI, WeaponFireMode.AUTO]
+    };
+
+    global.items.akm = {
+        item_key: "akm",
+        name: "AKM",
+        category: ItemCategory.WEAPON,
+        description: "A rugged select-fire rifle chambered in 7.62x39.",
+        base_value: 650,
+        weight: 3.5,
+        stackable: false,
+
+        damage_min: 14,
+        damage_max: 19,
+        fire_rate: 10,
+        mag_size: 30,
+        reload_time: 90,
+        bullet_speed: 10,
+        accuracy: 72,
+        handling: 58,
+
+        ammo_key: "ammo_762x39",
+        ammo_per_attack: 1,
+
+        weapon_sprite: spr_akm,
+        sound_shoot: nine_shot,
+        sound_reload: nine_reload,
+        sound_empty: nine_empty,
+
+        grid_width: 5,
+        grid_height: 2,
+
+        weapon_offset_x: 8,
+        weapon_draw_width: 44,
+        hand1_x: 0,
+        hand1_y: 0,
+        hand2_x: 16,
+        hand2_y: 0,
+        has_second_hand: true,
+        muzzle_x: 41,
+        muzzle_y: 0,
+
+        fire_modes: [WeaponFireMode.SEMI, WeaponFireMode.AUTO]
+    };
+
+    global.items.g3 = {
+        item_key: "g3",
+        name: "G3",
+        category: ItemCategory.WEAPON,
+        description: "A heavy battle rifle chambered in 7.62x51.",
+        base_value: 750,
+        weight: 4.4,
+        stackable: false,
+
+        damage_min: 19,
+        damage_max: 25,
+        fire_rate: 9,
+        mag_size: 20,
+        reload_time: 95,
+        bullet_speed: 11,
+        accuracy: 80,
+        handling: 48,
+
+        ammo_key: "ammo_762x51",
+        ammo_per_attack: 1,
+
+        weapon_sprite: spr_g3,
+        sound_shoot: nine_shot,
+        sound_reload: nine_reload,
+        sound_empty: nine_empty,
+
+        grid_width: 5,
+        grid_height: 2,
+
+        weapon_offset_x: 8,
+        weapon_draw_width: 50,
+        hand1_x: 0,
+        hand1_y: 0,
+        hand2_x: 20,
+        hand2_y: 0,
+        has_second_hand: true,
+        muzzle_x: 47,
+        muzzle_y: 0,
+
+        fire_modes: [WeaponFireMode.SEMI, WeaponFireMode.AUTO]
+    };
+
     global.items.double_barrel_shotgun = {
         item_key: "double_barrel_shotgun",
-        name: "Double-Barrel Shotgun",
+        name: "MP-27",
         category: ItemCategory.WEAPON,
         description: "A simple break-action shotgun capable of devastating close-range damage.",
         base_value: 325,
@@ -718,7 +973,7 @@ function init_item_database()
 
     global.items.pump_shotgun = {
         item_key: "pump_shotgun",
-        name: "Pump Shotgun",
+        name: "Mossberg 500",
         category: ItemCategory.WEAPON,
         description: "A dependable pump-action shotgun with considerably more capacity than a break-action.",
         base_value: 500,

@@ -9,10 +9,4 @@ function step_handle_shortcuts(){
 	{
 		overlay_toggle(OverlayMode.QUESTS);
 	}
-	if (keyboard_check_pressed(ord("L")))
-	{
-	    overlay_toggle(
-	        OverlayMode.LOADOUT
-	    );
-	}
 }

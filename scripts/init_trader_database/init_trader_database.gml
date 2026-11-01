@@ -137,6 +137,10 @@ function init_trader_database()
 				price : 350		
 			},
             {
+                item_key : "mosin_nagant",
+                price : 500
+            },
+            {
                 item_key : "ammo_45",
                 price : 4
             },
@@ -149,6 +153,11 @@ function init_trader_database()
             {
                 item_key : "ammo_12g",
                 price : 5
+            },
+
+            {
+                item_key : "ammo_762x54r",
+                price : 7
             },
 
             {

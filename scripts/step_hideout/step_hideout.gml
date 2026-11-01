@@ -4,7 +4,11 @@ function step_hideout()
     if (onboarding_step_hideout()) return;
     onboarding_update_field_supplies_tip();
 
-    if (mouse_check_button_pressed(mb_left))
+    var _trader_subscreen_open = (hideout_page == HideoutPage.TRADERS || hideout_page == HideoutPage.MESSAGES)
+        && trader_mode != TraderMode.SELECT;
+    var _inventory_popup_open = hideout_page == HideoutPage.STASH
+        && (inventory_context_active || !is_undefined(inventory_inspect_item));
+    if (!_trader_subscreen_open && !_inventory_popup_open && mouse_check_button_pressed(mb_left))
     {
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);

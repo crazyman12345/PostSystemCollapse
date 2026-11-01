@@ -19,8 +19,6 @@ function step_loadout_overlay()
     }
     raid.selected_area = level_db[raid.selected_area_index];
 
-    if (inventory_character_tab_input(20)) return;
-
     // ======================================================
     // START RAID CONFIRMATION
     // ======================================================
@@ -80,6 +78,8 @@ function step_loadout_overlay()
 
         exit;
     }
+
+    if (inventory_character_tab_input(20)) return;
 
     // ======================================================
     // PRE-RAID LOADOUT

@@ -141,7 +141,14 @@ function onboarding_step_hideout()
         onboarding_open_mara_node("mara_onboarding_replacement");
         save_game();
     }
-    if (mouse_check_button_pressed(mb_left))
+    if (trader_mode == TraderMode.CONVERSATION)
+    {
+        step_trader_conversation();
+        return true;
+    }
+    var _inventory_popup_open = hideout_page == HideoutPage.STASH
+        && (inventory_context_active || !is_undefined(inventory_inspect_item));
+    if (!_inventory_popup_open && mouse_check_button_pressed(mb_left))
     {
         var _entries = onboarding_get_menu_entries();
         var _selected = onboarding_sync_menu_selection(_entries);
@@ -160,12 +167,6 @@ function onboarding_step_hideout()
             return true;
         }
     }
-    if (trader_mode == TraderMode.CONVERSATION)
-    {
-        step_trader_conversation();
-        return true;
-    }
-
     switch (hideout_page)
     {
         case HideoutPage.MESSAGES: step_messages_all(); break;
