@@ -20,6 +20,8 @@ function bones(_enemy)
         e.boss_transition_character_count = 0;
         e.boss_transition_transformed = false;
         e.boss_transition_shake_started = false;
+        raid_bullets = [];
+        raid_enemy_bullets = [];
     }
 
     if (e.enemy_state == RaidEnemyState.PHASE_TRANSITION)

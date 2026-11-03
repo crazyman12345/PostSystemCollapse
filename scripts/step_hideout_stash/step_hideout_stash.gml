@@ -169,6 +169,12 @@ function step_hideout_stash(){
             if (!is_undefined(medical_target)
             && player_health_treatment_start_held(stash.held_item, medical_source, medical_target.type, medical_target.limb, true))
             {
+                if (player_health_treatment_source_contains(medical_source, stash.held_item))
+                {
+                    stash_remove_item(stash.held_item, medical_source);
+                    return;
+                }
+
                 stash.held_item = undefined;
                 stash.held_source = "";
                 stash.hover_x = -1;

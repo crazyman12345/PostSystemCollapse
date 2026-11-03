@@ -1,4 +1,4 @@
-function terminal_menu_mouse_input(_current_index, _option_count, _first_index, _x, _y, _width, _row_height)
+function terminal_menu_mouse_input(_current_index, _option_count, _first_index, _x, _y, _width, _row_height, _select_on_hover = true)
 {
     var _mouse_x = device_mouse_x_to_gui(0);
     var _mouse_y = device_mouse_y_to_gui(0);
@@ -8,7 +8,7 @@ function terminal_menu_mouse_input(_current_index, _option_count, _first_index, 
     if (hovered)
     {
         var hover_index = _first_index + row;
-        if (_current_index != hover_index)
+        if (_select_on_hover && _current_index != hover_index)
         {
             _current_index = hover_index;
             scroll_sound();
@@ -16,7 +16,11 @@ function terminal_menu_mouse_input(_current_index, _option_count, _first_index, 
     }
 
     var confirm = hovered && mouse_check_button_pressed(mb_left);
-    if (confirm) audio_play_sound(snd_interact, 0, false);
+    if (confirm)
+    {
+        if (!_select_on_hover) _current_index = _first_index + row;
+        audio_play_sound(snd_interact, 0, false);
+    }
 
     return { index: _current_index, confirm: confirm };
 }

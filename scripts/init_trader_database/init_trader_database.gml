@@ -66,7 +66,7 @@ function init_trader_database()
     global.traders.sawbones = {
         trader_key : "sawbones",
         name : "Sawbones",
-        title : "Field Medic",
+        title : "Medical Supplier",
         portrait : spr_trader_sawbones,
         description :
             "Deals in medical supplies, recovery items, and emergency gear.",
@@ -186,7 +186,7 @@ function init_trader_database()
     global.traders.bastion = {
         trader_key : "clothman",
         name : "Clothman",
-        title : "Equipment Dealer",
+        title : "Equipment Trader",
         portrait : spr_trader_clothman,
         description :
             "Specializes in armor, packs, protective equipment, and basic field gear.",
@@ -248,7 +248,7 @@ function init_trader_database()
     global.traders.ghost = {
         trader_key : "ghost",
         name : "Ghost",
-        title : "Black Market Broker",
+        title : "Black Market",
         portrait : spr_trader_ghost,
         description :
             "Moves premium weapons with clean serials, uncertain histories, and prices to match.",

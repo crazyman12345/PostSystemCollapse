@@ -1,6 +1,6 @@
 function step_workshop()
 {
-    var mouse_menu = terminal_menu_mouse_input(workshop_station_index, array_length(workshop_keys), 0, 320, 150, 560, 32);
+    var mouse_menu = terminal_menu_mouse_input(workshop_station_index, array_length(workshop_keys), 0, 340, 140, 380, 52, false);
     workshop_station_index = mouse_menu.index;
     if (mouse_menu.confirm)
     {

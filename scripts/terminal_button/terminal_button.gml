@@ -1,4 +1,4 @@
-function terminal_button(_left, _top, _right, _bottom, _label, _selected = false)
+function terminal_button(_left, _top, _right, _bottom, _label, _selected = false, _enabled = true)
 {
     var _old_color = draw_get_color();
     var _old_halign = draw_get_halign();
@@ -11,7 +11,7 @@ function terminal_button(_left, _top, _right, _bottom, _label, _selected = false
         : (_selected ? make_color_rgb(5, 35, 20) : c_black);
     draw_set_color(_fill_color);
     draw_roundrect_ext(_left, _top, _right, _bottom, _corner_radius, _corner_radius, false);
-    draw_set_color(_selected ? global.ui_interactive_color : global.ui_text_color);
+    draw_set_color(_enabled ? (_selected ? global.ui_interactive_color : global.ui_text_color) : c_gray);
     draw_roundrect_ext(_left, _top, _right, _bottom, _corner_radius, _corner_radius, true);
 
     draw_set_halign(fa_left);

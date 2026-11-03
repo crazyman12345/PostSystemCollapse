@@ -396,17 +396,24 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
     // EMPTY MAG
     // ======================================================
 
+    if (!mouse_check_button(mb_left) || raid_weapon_mag > 0)
+        raid_empty_sound_triggered = false;
+
     if (
         _fire
         && raid_weapon_mag <= 0
     )
     {
         raid_burst_remaining = 0;
-		   audio_play_sound(
-		        _weapon.sound_empty,
-		        0,
-		        false
-		    );
+        if (!raid_empty_sound_triggered)
+        {
+            audio_play_sound(
+                _weapon.sound_empty,
+                0,
+                false
+            );
+            raid_empty_sound_triggered = true;
+        }
         return;
     }
 

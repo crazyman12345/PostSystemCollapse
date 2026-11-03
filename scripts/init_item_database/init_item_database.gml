@@ -755,7 +755,7 @@ function init_item_database()
         hand2_y: 0,
         has_second_hand: false,
         muzzle_x: 19,
-        muzzle_y: 0,
+        muzzle_y: 5.8,
 
         fire_modes: [WeaponFireMode.SEMI]
     };

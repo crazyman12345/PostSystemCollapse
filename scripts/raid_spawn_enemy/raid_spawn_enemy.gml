@@ -18,6 +18,8 @@ function raid_spawn_enemy(_type, _x, _y)
 		enemy_knockback_direction: 0,
 		enemy_impact_wiggle_timer: 0,
 		enemy_impact_wiggle_duration: 20,
+		enemy_impact_wiggle_cooldown: 0,
+		enemy_impact_wiggle_cooldown_duration: 30,
 
         enemy_speed: 1.0,
         lead_strength: 0,
@@ -177,6 +179,9 @@ function raid_spawn_enemy(_type, _x, _y)
                 RaidEnemyState.PAUSE;
 
             enemy.state_timer = randomize_enemy_timer(90, 0.25);
+            enemy.dash_windup_total = enemy.state_timer;
+            enemy.dash_duration = randomize_enemy_timer(40, 0.25);
+            enemy.dash_dir = point_direction(_x, _y, raid_player_x, raid_player_y);
         }
         break;
 
@@ -195,6 +200,8 @@ function raid_spawn_enemy(_type, _x, _y)
                 RaidEnemyState.PAUSE;
 
             enemy.state_timer = randomize_enemy_timer(90, 0.25);
+            enemy.dash_windup_total = enemy.state_timer;
+            enemy.dash_dir = point_direction(_x, _y, raid_player_x, raid_player_y);
         }
         break;
 
@@ -263,8 +270,8 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_sprite_idle = spr_bomberidle;
             enemy.enemy_sprite_active = spr_bomberrun;
             enemy.enemy_has_gun = true;
-            enemy.weapon = global.items.minigun;
-            enemy.enemy_gun_offset = 14;
+            enemy.weapon = global.items.glock17;
+            enemy.enemy_gun_offset = 16;
             enemy.enemy_muzzle_x = 14;
             enemy.enemy_muzzle_y = 6;
             enemy.enemy_hp = 40;
@@ -292,12 +299,32 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_gun_y = 3;
             enemy.enemy_muzzle_x = enemy.weapon.muzzle_x;
             enemy.enemy_muzzle_y = enemy.weapon.muzzle_y;
-            enemy.enemy_hp = 400;
-            enemy.enemy_max_hp = 400;
+            enemy.enemy_hp = 500;
+            enemy.enemy_max_hp = 500;
             enemy.enemy_speed = 1.1;
             enemy.lead_strength = 0;
-            enemy.shot_timer = randomize_enemy_timer(75, 0.2);
-            enemy = raid_enemy_pick_random_position(enemy);
+            enemy.boss_phase = 1;
+            enemy.boss_transition_stage = 0;
+            enemy.boss_transition_timer = 0;
+            enemy.boss_transition_dialogue = "";
+            enemy.boss_transition_character_count = 0;
+            enemy.boss_transition_transformed = false;
+            enemy.boss_transition_shake_started = false;
+            enemy.rob_attack = -1;
+            enemy.rob_last_attack = -1;
+            enemy.rob_attack_state = 0;
+            enemy.rob_attack_timer = 0;
+            enemy.rob_shots_fired = 0;
+            enemy.rob_dash_count = 0;
+            enemy.rob_dash_direction = 0;
+            enemy.rob_dash_speed = 5.5;
+            enemy.rob_dash_windup_total = 30;
+            enemy.rob_spin_direction = 0;
+            enemy.rob_orbit_angle = 0;
+            enemy.rob_orbit_progress = 0;
+            enemy.rob_orbit_target = 720;
+            enemy.rob_turret_timer = 0;
+            enemy.rob_turrets = [];
         }
         break;
 
@@ -314,10 +341,10 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.enemy_gun_offset = 18;
             enemy.enemy_muzzle_x = 14;
             enemy.enemy_muzzle_y = 6;
-            enemy.enemy_hp = 300;
-            enemy.enemy_max_hp = 300;
+            enemy.enemy_hp = 350;
+            enemy.enemy_max_hp = 350;
             enemy.enemy_speed = 0;
-            enemy.lead_strength = 0.9;
+            enemy.lead_strength = 0.5;
             enemy.boss_phase = 1;
             enemy.boss_attack = BossAttackType.BONES_ATTACK_SHOOT_DASH_SHOOT;
             enemy.boss_last_attack = -1;
@@ -346,18 +373,18 @@ function raid_spawn_enemy(_type, _x, _y)
                 shockwave_windup: 84
             };
             enemy.boss_pacing_phase2 = {
-                dash_speed: 4.368,
-                dash_duration: 17,
-                attack_windup: 29,
-                burst_shot_interval: 8,
-                pre_dash_windup: 19,
-                post_dash_windup: 15,
-                attack_recovery: 38,
-                walkdown_speed: 0.872,
-                walkdown_windup: 29,
-                walkdown_shot_interval: 26,
-                shockwave_move_speed: 3.12,
-                shockwave_windup: 54
+                dash_speed: 2.8 * 1.3,
+                dash_duration: 26 / 1.3,
+                attack_windup: 45 / 1.3,
+                burst_shot_interval: 12 / 1.3,
+                pre_dash_windup: 30 / 1.3,
+                post_dash_windup: 24 / 1.3,
+                attack_recovery: 60 / 1.3,
+                walkdown_speed: 0.56,
+                walkdown_windup: 45 / 1.3,
+                walkdown_shot_interval: 40 / 1.3,
+                shockwave_move_speed: 2.0 * 1.3,
+                shockwave_windup: 84 / 1.3
             };
             enemy.boss_dash_speed = enemy.boss_pacing_phase1.dash_speed;
             enemy.boss_shockwave_timer = 0;

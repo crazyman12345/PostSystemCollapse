@@ -16,15 +16,8 @@ function knife_dasher(_enemy)
 
             if (e.state_timer <= 0)
             {
-                e.dash_dir = point_direction(
-                    e.enemy_x,
-                    e.enemy_y,
-                    raid_player_x,
-                    raid_player_y
-                );
-
                 e.enemy_state = RaidEnemyState.DASH;
-                e.state_timer = randomize_enemy_timer(40, 0.25);
+                e.state_timer = e.dash_duration;
             }
         }
         break;
@@ -55,6 +48,9 @@ function knife_dasher(_enemy)
             {
                 e.enemy_state = RaidEnemyState.PAUSE;
                 e.state_timer = randomize_enemy_timer(75, 0.25);
+                e.dash_windup_total = e.state_timer;
+                e.dash_duration = randomize_enemy_timer(40, 0.25);
+                e.dash_dir = point_direction(e.enemy_x, e.enemy_y, raid_player_x, raid_player_y);
             }
         }
         break;

@@ -7,6 +7,25 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
     {
         var e = raid_enemies[i];
 
+        // Temporary turret art for Rob Gnarley. This can be replaced by a sprite later.
+        if (!_lighting_mask && e.enemy_type == RaidEnemyType.ROB_GNARLEY)
+        {
+            for (var _turret_index = 0; _turret_index < array_length(e.rob_turrets); _turret_index++)
+            {
+                var _turret = e.rob_turrets[_turret_index];
+                var _windup = 1 - clamp(_turret.timer / _turret.windup_total, 0, 1);
+
+                draw_set_alpha(0.2 + 0.6 * _windup);
+                draw_set_color(make_color_rgb(255, 35, 35));
+                draw_line(_turret.x, _turret.y - 5, raid_player_x, raid_player_y);
+                draw_set_alpha(1);
+                draw_set_color(make_color_rgb(45, 45, 45));
+                draw_circle(_turret.x, _turret.y, 6, false);
+                draw_set_color(make_color_rgb(210, 30, 30));
+                draw_circle(_turret.x, _turret.y - 2, 3, false);
+            }
+        }
+
         // ==============================
         // ENEMY BODY
         // ==============================
@@ -308,4 +327,117 @@ function draw_raid_enemies(_lighting_mask = false, _mask_alpha = 1)
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_color(c_white);
+}
+
+function draw_raid_dash_indicator(_x, _y, _direction, _dash_distance, _windup_progress, _lane_half_width = 10)
+{
+    if (_dash_distance < 0)
+    {
+        var _dash_dir_x = lengthdir_x(1, _direction);
+        var _dash_dir_y = lengthdir_y(1, _direction);
+        _dash_distance = 100000;
+
+        if (_dash_dir_x > 0.001)
+            _dash_distance = min(_dash_distance, (raid_room_x2 - _x) / _dash_dir_x);
+        else if (_dash_dir_x < -0.001)
+            _dash_distance = min(_dash_distance, (raid_room_x1 - _x) / _dash_dir_x);
+
+        if (_dash_dir_y > 0.001)
+            _dash_distance = min(_dash_distance, (raid_room_y2 - _y) / _dash_dir_y);
+        else if (_dash_dir_y < -0.001)
+            _dash_distance = min(_dash_distance, (raid_room_y1 - _y) / _dash_dir_y);
+    }
+
+    var _lane_start = 18;
+    var _lane_end = max(_lane_start, _dash_distance - 3);
+    var _lane_offset_x = lengthdir_x(_lane_half_width, _direction + 90);
+    var _lane_offset_y = lengthdir_y(_lane_half_width, _direction + 90);
+    var _lane_start_x = _x + lengthdir_x(_lane_start, _direction);
+    var _lane_start_y = _y + lengthdir_y(_lane_start, _direction);
+    var _lane_end_x = _x + lengthdir_x(_lane_end, _direction);
+    var _lane_end_y = _y + lengthdir_y(_lane_end, _direction);
+
+    draw_set_alpha(0.35 + 0.5 * _windup_progress);
+    draw_raid_dash_indicator_segment(_lane_start_x + _lane_offset_x, _lane_start_y + _lane_offset_y,
+        _lane_end_x + _lane_offset_x, _lane_end_y + _lane_offset_y);
+    draw_raid_dash_indicator_segment(_lane_start_x - _lane_offset_x, _lane_start_y - _lane_offset_y,
+        _lane_end_x - _lane_offset_x, _lane_end_y - _lane_offset_y);
+    draw_raid_dash_indicator_segment(_lane_end_x + _lane_offset_x, _lane_end_y + _lane_offset_y,
+        _lane_end_x - _lane_offset_x, _lane_end_y - _lane_offset_y);
+
+    var _arrow_local_x = [-12, 1, 1, 14, 1, 1, -12];
+    var _arrow_local_y = [-4, -4, -8, 0, 8, 4, 4];
+    var _arrow_count = max(1, floor((_lane_end - _lane_start) / 42));
+    var _arrow_spacing = (_lane_end - _lane_start) / (_arrow_count + 1);
+
+    for (var _arrow_index = 0; _arrow_index < _arrow_count; _arrow_index++)
+    {
+        var _arrow_distance = _lane_start + _arrow_spacing * (_arrow_index + 1);
+        var _arrow_center_x = _x + lengthdir_x(_arrow_distance, _direction);
+        var _arrow_center_y = _y + lengthdir_y(_arrow_distance, _direction);
+
+        for (var _point_index = 0; _point_index < array_length(_arrow_local_x); _point_index++)
+        {
+            var _next_point = (_point_index + 1) mod array_length(_arrow_local_x);
+            var _point_x1 = _arrow_center_x
+                + lengthdir_x(_arrow_local_x[_point_index], _direction)
+                + lengthdir_x(_arrow_local_y[_point_index], _direction + 90);
+            var _point_y1 = _arrow_center_y
+                + lengthdir_y(_arrow_local_x[_point_index], _direction)
+                + lengthdir_y(_arrow_local_y[_point_index], _direction + 90);
+            var _point_x2 = _arrow_center_x
+                + lengthdir_x(_arrow_local_x[_next_point], _direction)
+                + lengthdir_x(_arrow_local_y[_next_point], _direction + 90);
+            var _point_y2 = _arrow_center_y
+                + lengthdir_y(_arrow_local_x[_next_point], _direction)
+                + lengthdir_y(_arrow_local_y[_next_point], _direction + 90);
+            draw_raid_dash_indicator_segment(_point_x1, _point_y1, _point_x2, _point_y2);
+        }
+    }
+
+    draw_set_alpha(1);
+}
+
+function draw_raid_dash_indicator_segment(_x1, _y1, _x2, _y2)
+{
+    var _line_direction = point_direction(_x1, _y1, _x2, _y2);
+    var _thickness_x = lengthdir_x(1, _line_direction + 90);
+    var _thickness_y = lengthdir_y(1, _line_direction + 90);
+
+    draw_set_color(make_color_rgb(125, 12, 20));
+    draw_line(_x1 + _thickness_x, _y1 + _thickness_y, _x2 + _thickness_x, _y2 + _thickness_y);
+    draw_line(_x1 - _thickness_x, _y1 - _thickness_y, _x2 - _thickness_x, _y2 - _thickness_y);
+    draw_set_color(make_color_rgb(255, 45, 45));
+    draw_line(_x1, _y1, _x2, _y2);
+}
+
+function draw_raid_dash_indicators()
+{
+    for (var _enemy_index = 0; _enemy_index < array_length(raid_enemies); _enemy_index++)
+    {
+        var _enemy = raid_enemies[_enemy_index];
+
+        if (_enemy.enemy_type == RaidEnemyType.ROB_GNARLEY && _enemy.rob_attack_state == 10)
+        {
+            var _rob_windup = 1 - clamp(_enemy.rob_attack_timer / _enemy.rob_dash_windup_total, 0, 1);
+            var _rob_bbox = raid_enemy_get_collision_bbox(_enemy);
+            var _rob_lane_half_width = (_rob_bbox.right - _rob_bbox.left) * 0.5;
+            draw_raid_dash_indicator(_enemy.enemy_x, _enemy.enemy_y, _enemy.rob_dash_direction,
+                -1, _rob_windup, _rob_lane_half_width);
+        }
+        else if (_enemy.enemy_type == RaidEnemyType.KNIFE_DASHER && _enemy.enemy_state == RaidEnemyState.PAUSE)
+        {
+            var _knife_windup = 1 - clamp(_enemy.state_timer / _enemy.dash_windup_total, 0, 1);
+            draw_raid_dash_indicator(_enemy.enemy_x, _enemy.enemy_y, _enemy.dash_dir,
+                _enemy.dash_speed * _enemy.dash_duration, _knife_windup);
+        }
+        else if (_enemy.enemy_type == RaidEnemyType.WALL_RUSHER && _enemy.enemy_state == RaidEnemyState.PAUSE)
+        {
+            var _rusher_windup = 1 - clamp(_enemy.state_timer / _enemy.dash_windup_total, 0, 1);
+            draw_raid_dash_indicator(_enemy.enemy_x, _enemy.enemy_y, _enemy.dash_dir, -1, _rusher_windup);
+        }
+    }
+
+    draw_set_color(c_white);
+    draw_set_alpha(1);
 }

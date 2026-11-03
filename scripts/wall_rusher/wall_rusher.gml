@@ -16,13 +16,6 @@ function wall_rusher(_enemy)
 
             if (e.state_timer <= 0)
             {
-                e.dash_dir = point_direction(
-                    e.enemy_x,
-                    e.enemy_y,
-                    raid_player_x,
-                    raid_player_y
-                );
-
                 e.enemy_state =
                     RaidEnemyState.DASH;
             }
@@ -103,10 +96,19 @@ function wall_rusher(_enemy)
 
             if (_hit_wall)
             {
+                smoke_create(e.enemy_x - 14, e.enemy_y - 8, e.enemy_x + 14, e.enemy_y + 5, 6);
+                var _wall_slam_sound = audio_play_sound(smoke_sound, 0, false);
+                audio_sound_pitch(_wall_slam_sound, random_range(0.85, 0.95));
+                raid_camera_shake_duration = 10;
+                raid_camera_shake_timer = raid_camera_shake_duration;
+                raid_camera_shake_strength = 2;
+
                 e.enemy_state =
                     RaidEnemyState.PAUSE;
 
                 e.state_timer = randomize_enemy_timer(90, 0.25);
+                e.dash_windup_total = e.state_timer;
+                e.dash_dir = point_direction(e.enemy_x, e.enemy_y, raid_player_x, raid_player_y);
             }
         }
         break;

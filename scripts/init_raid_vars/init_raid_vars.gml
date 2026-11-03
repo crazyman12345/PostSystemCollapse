@@ -358,6 +358,7 @@ raid_weapon_slot_display_target = 0;
 raid_reload_active = false;
 raid_reload_timer = 0;
 raid_burst_remaining = 0;
+raid_empty_sound_triggered = false;
 raid_fire_mode_index = 0;
 raid_current_fire_mode = WeaponFireMode.SEMI;
 // Developer-only raid gun tuning state. Values live outside the item database.

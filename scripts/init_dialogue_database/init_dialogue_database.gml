@@ -18,9 +18,7 @@ function init_dialogue_database()
             dialogue_make_response("Heard anything?", "gundlach_rumor", { type: "boss_defeated", key: "prototype_boss_dead", value: false }),
             dialogue_make_response("Heard anything?", "gundlach_rumor_after_bones", { type: "boss_defeated", key: "prototype_boss_dead", value: true }),
             dialogue_make_response("Have any work for me?", "available:iron"),
-            dialogue_make_response("About my current job...", "active:iron"),
             dialogue_make_response("I finished what you asked.", "claim:iron", { type: "trader_quest_ready", key: "iron" }),
-            dialogue_make_response("Tell me about yourself.", "gundlach_background"),
             dialogue_make_response("Let me see your stock.", "", undefined, { type: "trade" }),
             dialogue_make_response("Goodbye.", "", undefined, { type: "end" })
         ]);
@@ -118,9 +116,7 @@ function init_dialogue_database()
             dialogue_make_response("Heard anything?", "mara_rumor", { type: "boss_defeated", key: "prototype_boss_dead", value: false }),
             dialogue_make_response("Heard anything?", "mara_rumor_after_bones", { type: "boss_defeated", key: "prototype_boss_dead", value: true }),
             dialogue_make_response("Have any quests for me?", "available:mara"),
-            dialogue_make_response("About my current job...", "active:mara"),
             dialogue_make_response("I finished what you asked.", "claim:mara", { type: "trader_quest_ready", key: "mara" }),
-            dialogue_make_response("Tell me about yourself.", "mara_background"),
             dialogue_make_response("Let me see your stock.", "", undefined, { type: "trade" }),
             dialogue_make_response("Goodbye.", "", undefined, { type: "end" })
         ]);
@@ -142,9 +138,7 @@ function init_dialogue_database()
             dialogue_make_response("Heard anything?", "sawbones_rumor", { type: "quest_completed", key: "test_safe_return", value: false }),
             dialogue_make_response("Heard anything?", "sawbones_rumor_safe", { type: "quest_completed", key: "test_safe_return", value: true }),
             dialogue_make_response("Have any work for me?", "available:sawbones"),
-            dialogue_make_response("About my current job...", "active:sawbones"),
             dialogue_make_response("I finished what you asked.", "claim:sawbones", { type: "trader_quest_ready", key: "sawbones" }),
-            dialogue_make_response("Tell me about yourself.", "sawbones_background"),
             dialogue_make_response("Let me see your stock.", "", undefined, { type: "trade" }),
             dialogue_make_response("Goodbye.", "", undefined, { type: "end" })
         ]);
@@ -182,9 +176,7 @@ function init_dialogue_database()
             dialogue_make_response("Heard anything?", "clothman_rumor", { type: "level_unlocked", level: 2, value: false }),
             dialogue_make_response("Heard anything?", "clothman_rumor_sewers", { type: "level_unlocked", level: 2, value: true }),
             dialogue_make_response("Have any work for me?", "available:bastion"),
-            dialogue_make_response("About my current job...", "active:bastion"),
             dialogue_make_response("I finished what you asked.", "claim:bastion", { type: "trader_quest_ready", key: "bastion" }),
-            dialogue_make_response("Tell me about yourself.", "clothman_background"),
             dialogue_make_response("Let me see your stock.", "", undefined, { type: "trade" }),
             dialogue_make_response("Goodbye.", "", undefined, { type: "end" })
         ]);
@@ -222,9 +214,7 @@ function init_dialogue_database()
             dialogue_make_response("Heard anything?", "ghost_rumor", { type: "boss_defeated", key: "prototype_boss_dead", value: false }),
             dialogue_make_response("Heard anything?", "ghost_rumor_after_bones", { type: "boss_defeated", key: "prototype_boss_dead", value: true }),
             dialogue_make_response("Have any quests for me?", "available:ghost"),
-            dialogue_make_response("About my current job...", "active:ghost"),
             dialogue_make_response("I finished what you asked.", "claim:ghost", { type: "trader_quest_ready", key: "ghost" }),
-            dialogue_make_response("Tell me about yourself.", "ghost_background"),
             dialogue_make_response("Show me what you've got.", "", { type: "quest_completed", key: "test_field_supplies", value: true }, { type: "trade" }),
             dialogue_make_response("Goodbye.", "", undefined, { type: "end" })
         ]);

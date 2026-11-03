@@ -15,6 +15,7 @@ function raid_reset_active_weapon()
     raid_knife_attack_hit = false;
     raid_knife_trail = [];
     raid_burst_remaining = 0;
+    raid_empty_sound_triggered = false;
     raid_fire_mode_index = 0;
     raid_current_fire_mode = WeaponFireMode.SEMI;
 }

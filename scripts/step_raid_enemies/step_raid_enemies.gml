@@ -110,6 +110,9 @@ function step_raid_enemies()
 		if (e.enemy_impact_wiggle_timer > 0)
 			e.enemy_impact_wiggle_timer = max(0, e.enemy_impact_wiggle_timer - frame_scale);
 
+		if (e.enemy_impact_wiggle_cooldown > 0)
+			e.enemy_impact_wiggle_cooldown = max(0, e.enemy_impact_wiggle_cooldown - frame_scale);
+
 		if (e.enemy_knockback_speed > 0)
 		{
 			e.enemy_x += lengthdir_x(e.enemy_knockback_speed * frame_scale, e.enemy_knockback_direction);
@@ -182,7 +185,11 @@ function step_raid_enemies()
 							? min(2.5, _dash_knockback_limit)
 							: max(e.enemy_knockback_speed, 2.5);
 						e.enemy_knockback_direction = bullet.bdirection;
-						e.enemy_impact_wiggle_timer = e.enemy_impact_wiggle_duration;
+						if (e.enemy_impact_wiggle_cooldown <= 0)
+						{
+							e.enemy_impact_wiggle_timer = e.enemy_impact_wiggle_duration;
+							e.enemy_impact_wiggle_cooldown = e.enemy_impact_wiggle_cooldown_duration;
+						}
                         e = raid_enemy_add_bullet_hole(e, _bullet_hit.entry_x, _bullet_hit.entry_y, bullet.bdirection);
                         blood_spray_create(_bullet_hit.exit_x, _bullet_hit.exit_y, bullet.bdirection);
                         blood_hit_effect(_bullet_hit.entry_x, _bullet_hit.entry_y, bullet.bdirection);
