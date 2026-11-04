@@ -176,7 +176,10 @@ function draw_hideout_skills()
             else
             {
                 var icon_scale = min(48 / sprite_get_width(node.icon), 48 / sprite_get_height(node.icon));
-                draw_sprite_ext(node.icon, icon_spin_frame(node.icon), node_x, node_y, icon_scale * skill_tree_zoom, icon_scale * skill_tree_zoom, 0, c_white, 1);
+				var icon_draw_scale = icon_scale * skill_tree_zoom;
+				var icon_x = node_x + (sprite_get_xoffset(node.icon) - sprite_get_width(node.icon) * 0.5) * icon_draw_scale;
+				var icon_y = node_y + (sprite_get_yoffset(node.icon) - sprite_get_height(node.icon) * 0.5) * icon_draw_scale;
+				draw_sprite_ext(node.icon, icon_spin_frame(node.icon), icon_x, icon_y, icon_draw_scale, icon_draw_scale, 0, c_white, 1);
             }
 
             draw_set_halign(fa_center);
@@ -231,7 +234,12 @@ function hideout_skill_node_world_x(_node)
 
 function hideout_skill_node_world_y(_node)
 {
-    return -(_node.required_level - 1) * 32;
+	var level_spacing = 32;
+	var skill_key = hideout_skill_tabs[hideout_skills_index].key;
+	if (skill_key == "gunmaking" || skill_key == "armorcrafting" || skill_key == "medical_crafting" || skill_key == "drugmaking")
+		level_spacing = 120;
+
+	return -(_node.required_level - 1) * level_spacing;
 }
 
 function hideout_skill_tree_viewport()

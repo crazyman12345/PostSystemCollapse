@@ -13,6 +13,8 @@ function draw_item_info_popup(
     if (!is_struct(item)) return;
     if (item.category == ItemCategory.WEAPON)
         item = weapon_get_effective_stats(is_undefined(_stored_item) ? _item_key : _stored_item);
+    else if (armor_category_is_equipment(item.category))
+        item = armor_get_effective_stats(is_undefined(_stored_item) ? _item_key : _stored_item);
 
     static _last_item_key = "";
     static _fade_alpha = 1;
@@ -68,7 +70,7 @@ function draw_item_info_popup(
     // Item name and identity stay at the top left.
     var _rarity_color = item.category == ItemCategory.WEAPON
         ? weapon_rarity_color(item)
-        : global.ui_text_color;
+        : (armor_category_is_equipment(item.category) ? armor_rarity_color(item) : global.ui_text_color);
 
     draw_set_color(_rarity_color);
     draw_set_font(fnt_terminal_medium);
@@ -85,6 +87,16 @@ function draw_item_info_popup(
         draw_set_color(global.ui_text_color);
         draw_text(_content_left, _y1 + 108,
             "COMBAT RATING  " + string(weapon_calculate_gear_score(item)));
+    }
+    else if (armor_category_is_equipment(item.category))
+    {
+        draw_set_font(fnt_terminal_medium);
+        draw_set_color(global.ui_text_color);
+        draw_text(_content_left, _y1 + 84, "TIER " + string(item.tier) + "  //  ");
+        var _armor_tier_width = string_width("TIER " + string(item.tier) + "  //  ");
+        draw_set_color(_rarity_color);
+        draw_text(_content_left + _armor_tier_width, _y1 + 84,
+            string_upper(armor_rarity_get(item.rarity).name));
     }
 
     // Item icon in the top-right corner.
@@ -170,7 +182,7 @@ function draw_item_info_popup(
         draw_set_color(global.ui_text_color);
         draw_set_font(fnt_terminal_medium);
         if (variable_struct_exists(item, "description"))
-            draw_text_ext(_content_left, _y1 + 110, item.description, 24, _width - 210);
+            draw_text_ext(_content_left, _y1 + 122, item.description, 24, _width - 210);
         draw_line(_content_left, _y1 + 196, _content_right, _y1 + 196);
         draw_text(_content_left, _y1 + 210, "// SPECIFICATIONS");
         draw_item_stats(item, _content_left + 12, _y1 + 242, _footer_top - 10);

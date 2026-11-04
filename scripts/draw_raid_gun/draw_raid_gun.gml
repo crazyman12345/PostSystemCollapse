@@ -1,3 +1,59 @@
+function draw_raid_aim_cone()
+{
+    if (!global.graphics_settings.aim_cone || raid.state != RaidState.COMBAT
+    || overlay_mode != OverlayMode.NONE || player_health_treatment_is_active() || raid_gun_tuning_active) return;
+
+    var _weapon = raid_update_active_weapon();
+    if (!is_struct(_weapon)) return;
+
+    var _tuning = raid_gun_tuning_get(raid_gun_tuning_weapon_key, _weapon);
+    var _direction = raid_aim_dir + _tuning.weapon_angle_offset;
+    var _flip = (_direction > 90 && _direction < 270) ? -1 : 1;
+    var _weapon_offset_x = variable_struct_exists(_weapon, "weapon_offset_x") ? _weapon.weapon_offset_x : _tuning.weapon_offset_x;
+    var _draw_offset = _weapon_offset_x - raid_gun_recoil;
+    var _gun_x = raid_player_x
+        + lengthdir_x(_draw_offset, _direction)
+        + lengthdir_x(_tuning.weapon_offset_y, _direction + 90);
+    var _gun_y = raid_player_y - 10
+        + lengthdir_y(_draw_offset, _direction)
+        + lengthdir_y(_tuning.weapon_offset_y, _direction + 90);
+    var _muzzle_x = _gun_x
+        + lengthdir_x(_tuning.muzzle_offset_x, _direction)
+        + lengthdir_x(_tuning.muzzle_offset_y * _flip, _direction + 90);
+    var _muzzle_y = _gun_y
+        + lengthdir_y(_tuning.muzzle_offset_x, _direction)
+        + lengthdir_y(_tuning.muzzle_offset_y * _flip, _direction + 90);
+    var _accuracy_spread = (100 - clamp(_weapon.accuracy, 0, 100)) * 0.1;
+    var _pellet_spread = variable_struct_exists(_weapon, "pellet_spread") ? max(0, _weapon.pellet_spread) : 0;
+    var _spread = _accuracy_spread + _pellet_spread;
+    var _maximum_aim_length = 450;
+    var _mouse_distance = min(_maximum_aim_length, point_distance(_muzzle_x, _muzzle_y, mouse_x, mouse_y));
+    var _mouse_direction = point_direction(_muzzle_x, _muzzle_y, mouse_x, mouse_y);
+    var _target_x = _muzzle_x + lengthdir_x(_mouse_distance, _mouse_direction);
+    var _target_y = _muzzle_y + lengthdir_y(_mouse_distance, _mouse_direction);
+    var _cone_length = _mouse_distance;
+    var _left_x = _muzzle_x + lengthdir_x(_cone_length, _direction - _spread);
+    var _left_y = _muzzle_y + lengthdir_y(_cone_length, _direction - _spread);
+    var _right_x = _muzzle_x + lengthdir_x(_cone_length, _direction + _spread);
+    var _right_y = _muzzle_y + lengthdir_y(_cone_length, _direction + _spread);
+
+    draw_set_color(make_color_rgb(125, 85, 15));
+    draw_set_alpha(0.25);
+    draw_triangle(_muzzle_x, _muzzle_y, _left_x, _left_y, _right_x, _right_y, false);
+    draw_set_color(make_color_rgb(255, 215, 70));
+    draw_set_alpha(0.9);
+    draw_line(_muzzle_x, _muzzle_y, _left_x, _left_y);
+    draw_line(_muzzle_x, _muzzle_y, _right_x, _right_y);
+    draw_line(_left_x, _left_y, _right_x, _right_y);
+    draw_set_color(make_color_rgb(225, 45, 35));
+    draw_set_alpha(0.85);
+    draw_line(_muzzle_x, _muzzle_y, _target_x, _target_y);
+    draw_set_alpha(1);
+    draw_circle(_target_x, _target_y, 4, false);
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+}
+
 function draw_raid_gun(_lighting_mask = false, _mask_alpha = 1)
 {
     if (player_health_treatment_is_active())

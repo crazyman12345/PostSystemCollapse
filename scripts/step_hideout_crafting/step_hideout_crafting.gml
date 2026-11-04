@@ -1,5 +1,11 @@
 function step_hideout_crafting(_skill_key)
 {
+    if (crafting_minigame_state.active)
+    {
+        step_weapon_crafting_minigame();
+        return;
+    }
+
     var recipes = recipe_get_for_skill(_skill_key);
     var recipe_count = array_length(recipes);
 
@@ -18,7 +24,12 @@ function step_hideout_crafting(_skill_key)
         {
             var recipe = recipes[crafting_recipe_index];
 
-            if (recipe_craft(_skill_key, recipe))
+            if (variable_struct_exists(recipe, "crafting_minigame"))
+            {
+                if (!weapon_crafting_minigame_start(_skill_key, recipe))
+                    crafting_message = "CRAFT FAILED: REQUIREMENTS OR STASH SPACE";
+            }
+            else if (recipe_craft(_skill_key, recipe))
                 crafting_message = "CRAFTED: " + recipe.name;
             else
                 crafting_message = "CRAFT FAILED: REQUIREMENTS NOT MET";

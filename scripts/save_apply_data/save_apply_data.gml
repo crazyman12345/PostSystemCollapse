@@ -202,6 +202,13 @@ function save_item_from_data(_data)
         var _saved_modifiers = save_value(state, "modifiers", []);
         weapon_instance_restore_roll(item, _saved_rarity, _saved_modifiers);
     }
+    else if (armor_category_is_equipment(definition.category))
+    {
+        item.tier = variable_struct_exists(definition, "tier") ? definition.tier : 1;
+        var _saved_armor_rarity = save_value(state, "rarity", "common");
+        var _saved_armor_modifiers = save_value(state, "modifiers", []);
+        armor_instance_restore_roll(item, _saved_armor_rarity, _saved_armor_modifiers);
+    }
     var _saved_instance_id = save_value(state, "instance_id", undefined);
     if (!is_undefined(_saved_instance_id)) item.instance_id = _saved_instance_id;
     if (variable_struct_exists(definition, "medical_capacity"))

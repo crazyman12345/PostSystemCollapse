@@ -56,7 +56,7 @@ function draw_raid_pause_menu()
             "BLOOD EFFECTS", "DEATH GIBS", "PROJECTILE GLOW", "PROJECTILE LIGHTING", "BLOOM",
             "PLAYER MINIMUM BRIGHTNESS", "ENEMY MINIMUM BRIGHTNESS", "ATTACK RING MINIMUM BRIGHTNESS", "BLOOM INTENSITY",
             "BLUR RADIUS", "PROJECTILE BLOOM INTENSITY", "PROJECTILE BLUR RADIUS", "BLUR PASSES", "SATURATION", "CONTRAST", "BRIGHTNESS",
-            "BLOOD MINIMUM BRIGHTNESS", "RESTORE DEFAULTS", "CONTINUE"
+            "BLOOD MINIMUM BRIGHTNESS", "AIM CONE", "RESTORE DEFAULTS", "CONTINUE"
         ];
         var _values = [
             string(_fps_options[raid.pause_fps_index]),
@@ -85,7 +85,7 @@ function draw_raid_pause_menu()
             string_format(raid_color_grade_saturation, 1, 2),
             string_format(raid_color_grade_contrast, 1, 2),
             string_format(raid_color_grade_brightness, 1, 2),
-            string(round(_settings.blood_minimum_brightness * 100)) + "%",
+            string(round(_settings.blood_minimum_brightness * 100)) + "%", _settings.aim_cone ? "ON" : "OFF",
             "", ""
         ];
         var _visible_rows = 12;
@@ -122,7 +122,7 @@ function draw_raid_pause_menu()
                 draw_rectangle(_slider_knob_x - 2, _slider_y - 5, _slider_knob_x + 2, _slider_y + 5, false);
                 draw_text(_value_x + _slider_width + 12, _row_y, _values[_graphics_index]);
             }
-            else if (_graphics_index < 27) draw_text(_value_x, _row_y, _values[_graphics_index]);
+            else if (_graphics_index < 28) draw_text(_value_x, _row_y, _values[_graphics_index]);
         }
 
         draw_set_halign(fa_center);

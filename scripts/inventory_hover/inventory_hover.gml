@@ -85,6 +85,12 @@ function inventory_hover_draw()
             _detail_text = "Tier " + string(_definition.tier) + " - "
                 + weapon_rarity_get(inventory_hover_item.rarity).name;
         }
+        else if (armor_category_is_equipment(_definition.category))
+        {
+            armor_instance_initialize(inventory_hover_item, false);
+            _detail_text = "Tier " + string(_definition.tier) + " - "
+                + armor_rarity_get(inventory_hover_item.rarity).name;
+        }
         var _line_height = string_height(_name_text);
         var _width = max(string_width(_name_text), string_width(_detail_text)) + _padding * 2;
         var _height = _line_height + _padding * 2;
@@ -97,7 +103,11 @@ function inventory_hover_draw()
         draw_set_alpha(_tooltip_alpha);
         draw_set_color(c_green);
         draw_rectangle(_left, _top, _left + _width, _top + _height, true);
-        draw_set_color(_definition.category == ItemCategory.WEAPON ? weapon_rarity_color(inventory_hover_item) : global.ui_text_color);
+        draw_set_color(_definition.category == ItemCategory.WEAPON
+            ? weapon_rarity_color(inventory_hover_item)
+            : (armor_category_is_equipment(_definition.category)
+                ? armor_rarity_color(inventory_hover_item)
+                : global.ui_text_color));
         draw_text(_left + _padding, _top + _padding, _name_text);
         if (_detail_text != "")
         {
@@ -119,6 +129,11 @@ function inventory_hover_draw()
         popup_height = _modifier_count == 0
             ? 389 + _pellet_height
             : 416 + _pellet_height + _modifier_count * 50;
+    }
+    else if (!is_undefined(_inspect_definition) && armor_category_is_equipment(_inspect_definition.category))
+    {
+        armor_instance_initialize(inventory_inspect_item, false);
+        popup_height = 430 + array_length(inventory_inspect_item.modifiers) * 26;
     }
     var popup_gap = 10;
     var gui_width = display_get_gui_width();

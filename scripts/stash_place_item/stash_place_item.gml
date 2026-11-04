@@ -38,6 +38,11 @@ function stash_place_item(_item_key, _x, _y, _rotation, _container = stash, _rar
         item.tier = _definition.tier;
         weapon_instance_initialize(item, _rarity_source != "", _rarity_source);
     }
+    else if (armor_category_is_equipment(_definition.category))
+    {
+        item.tier = variable_struct_exists(_definition, "tier") ? _definition.tier : 1;
+        armor_instance_initialize(item, _rarity_source != "", _rarity_source);
+    }
     if (variable_struct_exists(_definition, "medical_capacity")) item.durability = _definition.medical_capacity;
     if (variable_struct_exists(_definition, "max_servings")) item.servings = _definition.max_servings;
 

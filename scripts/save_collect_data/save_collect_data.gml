@@ -134,6 +134,12 @@ function save_item_to_data(_item)
         _state.rarity = _item.rarity;
         _state.modifiers = array_concat(_item.modifiers, []);
     }
+    else if (!is_undefined(_definition) && armor_category_is_equipment(_definition.category))
+    {
+        armor_instance_initialize(_item, false);
+        _state.rarity = _item.rarity;
+        _state.modifiers = array_concat(_item.modifiers, []);
+    }
     if (variable_struct_exists(_item, "instance_id")) _state.instance_id = _item.instance_id;
     if (variable_struct_exists(_item, "durability")) _state.durability = _item.durability;
     if (variable_struct_exists(_item, "servings")) _state.servings = _item.servings;

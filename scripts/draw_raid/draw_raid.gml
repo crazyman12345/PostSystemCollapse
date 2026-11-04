@@ -34,9 +34,10 @@ function draw_raid()
 	draw_raid_lootables();
 	draw_raid_ground_items();
 	draw_raid_extract();
-	draw_raid_character_shadows();
+    draw_raid_character_shadows();
 	draw_raid_enemy_death_effects();
     blood_spray_draw();
+    draw_raid_aim_cone();
     draw_raid_player();
 	draw_player_health_treatment_progress();
 	draw_raid_gun();

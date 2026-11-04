@@ -15,7 +15,8 @@ if (state != GameState.RAID)
     step_debug_terminal();
     if (debug_console_open) exit;
 
-    if (state == GameState.HIDEOUT && progress_get_flag("starting_crate_claimed")) step_handle_shortcuts();
+    if (state == GameState.HIDEOUT && progress_get_flag("starting_crate_claimed")
+    && !crafting_minigame_state.active) step_handle_shortcuts();
 
     if (overlay_mode != OverlayMode.NONE)
     {

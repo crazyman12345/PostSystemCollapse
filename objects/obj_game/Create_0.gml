@@ -310,6 +310,7 @@ crafting_recipe_index = 0;
 crafting_recipe_scroll = 0;
 crafting_visible_rows = 20;
 crafting_message = "";
+weapon_crafting_minigame_init();
 // ==============================
 // WORKSHOP
 // ==============================

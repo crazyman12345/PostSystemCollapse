@@ -4,6 +4,12 @@ function step_hideout()
     if (onboarding_step_hideout()) return;
     onboarding_update_field_supplies_tip();
 
+    if (crafting_minigame_state.active)
+    {
+        step_hideout_crafting("gunmaking");
+        return;
+    }
+
     var _trader_subscreen_open = (hideout_page == HideoutPage.TRADERS || hideout_page == HideoutPage.MESSAGES)
         && trader_mode != TraderMode.SELECT;
     var _inventory_popup_open = hideout_page == HideoutPage.STASH
@@ -83,6 +89,6 @@ function hideout_entry_is_unlocked(_entry)
         var workbench_quest = quest_get_progress("test_field_supplies");
         return !is_undefined(workbench_quest) && workbench_quest.state == QuestState.COMPLETED;
     }
-    if (_entry.key == "salvaging") return variable_struct_get(workshop_progress, "salvage_bench") > 0;
+    if (_entry.bench_key != "") return variable_struct_get(workshop_progress, _entry.bench_key) > 0;
     return false;
 }

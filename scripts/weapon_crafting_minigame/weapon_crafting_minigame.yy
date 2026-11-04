@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"weapon_crafting_minigame",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"weapon_crafting_minigame",
+  "parent":{"name":"crafting","path":"folders/hideout/crafting.yy"},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0"
+}

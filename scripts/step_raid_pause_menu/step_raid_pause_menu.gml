@@ -34,7 +34,7 @@ function step_raid_pause_menu()
 
     if (raid.pause_menu_tab == 1)
     {
-        var _option_count = 29;
+        var _option_count = 30;
         var _visible_rows = 12;
         var _hover_index = -1;
         var _first_y = _gui_height * 0.32;
@@ -194,7 +194,12 @@ function step_raid_pause_menu()
             graphics_settings_set("blood_minimum_brightness", _blood_brightness);
             scroll_sound();
         }
-        else if (_confirm && _index == 27)
+        else if (_index == 27 && (_option_change != 0 || _confirm))
+        {
+            graphics_settings_toggle("aim_cone");
+            scroll_sound();
+        }
+        else if (_confirm && _index == 28)
         {
             graphics_settings_restore_defaults();
             raid.pause_fps_index = 1;
@@ -209,7 +214,7 @@ function step_raid_pause_menu()
             raid_color_grade_brightness = 1.0;
             audio_play_sound(snd_interact, 0, false);
         }
-        else if (_confirm && _index == 28)
+        else if (_confirm && _index == 29)
         {
             audio_play_sound(snd_interact, 0, false);
             raid_set_state(RaidState.COMBAT);

@@ -88,7 +88,15 @@ function step_raid_shooting(_allow_input)
 
     if (is_struct(_weapon) && variable_struct_exists(_weapon, "handling"))
     {
-        var _handling = clamp(_weapon.handling, 0, 100);
+		var _handling_tiers = 0;
+		var _marksmanship_nodes = skill_node_get_nodes("marksmanship");
+		for (var _handling_tier = 1; _handling_tier <= 3; _handling_tier++)
+		{
+			var _gun_handling = skill_node_find(_marksmanship_nodes, "gun_handling_" + string(_handling_tier));
+			if (!is_undefined(_gun_handling) && skill_node_is_unlocked("marksmanship", _gun_handling)) _handling_tiers++;
+		}
+		var _handling_multiplier = 1 + 0.05 * _handling_tiers;
+		var _handling = clamp(_weapon.handling * _handling_multiplier, 0, 100);
         var _handling_range = max(1, raid_handling_high_stat - raid_handling_low_stat);
         var _handling_amount = (_handling - raid_handling_low_stat) / _handling_range;
         var _max_turn_speed = lerp(
@@ -313,8 +321,14 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
     if (raid_weapon_mag < _weapon.mag_size)
     {
         raid_reload_active = true;
-		var _quick_hands = skill_node_find(skill_node_get_nodes("marksmanship"), "quick_hands_1");
-		var _reload_time_multiplier = !is_undefined(_quick_hands) && skill_node_is_unlocked("marksmanship", _quick_hands) ? 0.95 : 1;
+		var _quick_hands_tiers = 0;
+		var _marksmanship_nodes = skill_node_get_nodes("marksmanship");
+		for (var _quick_hands_tier = 1; _quick_hands_tier <= 3; _quick_hands_tier++)
+		{
+			var _quick_hands = skill_node_find(_marksmanship_nodes, "quick_hands_" + string(_quick_hands_tier));
+			if (!is_undefined(_quick_hands) && skill_node_is_unlocked("marksmanship", _quick_hands)) _quick_hands_tiers++;
+		}
+		var _reload_time_multiplier = 1 - 0.05 * _quick_hands_tiers;
 		var _health_penalties = player_health_get_penalties();
 
         raid_reload_timer =
@@ -499,6 +513,14 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 			? _weapon.pellet_spread
 			: 0;
 		var _accuracy_spread = (100 - clamp(_weapon.accuracy, 0, 100)) * 0.1;
+		var _steady_aim_tiers = 0;
+		var _marksmanship_nodes = skill_node_get_nodes("marksmanship");
+		for (var _steady_aim_tier = 1; _steady_aim_tier <= 3; _steady_aim_tier++)
+		{
+			var _steady_aim = skill_node_find(_marksmanship_nodes, "steady_aim_" + string(_steady_aim_tier));
+			if (!is_undefined(_steady_aim) && skill_node_is_unlocked("marksmanship", _steady_aim)) _steady_aim_tiers++;
+		}
+		_accuracy_spread *= 1 - 0.05 * _steady_aim_tiers;
 		var _lethal_aim = skill_node_find(skill_node_get_nodes("marksmanship"), "lethal_aim");
 		var _gun_damage_multiplier = !is_undefined(_lethal_aim) && skill_node_is_unlocked("marksmanship", _lethal_aim) ? 1.05 : 1;
 		var _default_light_radius = raid_projectile_light_radius;
@@ -582,7 +604,14 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
         // REMOVE ROUND FROM MAG
         // ----------------------------------------------
 
-        raid_weapon_mag--;
+		var _ammo_discipline_tiers = 0;
+		for (var _ammo_discipline_tier = 1; _ammo_discipline_tier <= 3; _ammo_discipline_tier++)
+		{
+			var _ammo_discipline = skill_node_find(_marksmanship_nodes, "ammo_discipline_" + string(_ammo_discipline_tier));
+			if (!is_undefined(_ammo_discipline) && skill_node_is_unlocked("marksmanship", _ammo_discipline)) _ammo_discipline_tiers++;
+		}
+		var _conserve_ammo = random(1) < 0.05 * _ammo_discipline_tiers;
+		if (!_conserve_ammo) raid_weapon_mag--;
 		player_skill_add_xp("marksmanship", skill_xp_awards.marksmanship_shot);
 		raid_gun_recoil = 5 * player_health_get_penalties().recoil;
 
@@ -590,12 +619,19 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
         // FIRE RATE
         // ----------------------------------------------
 
-        raid_shot_cooldown =
+		var _trigger_control_tiers = 0;
+		for (var _trigger_control_tier = 1; _trigger_control_tier <= 3; _trigger_control_tier++)
+		{
+			var _trigger_control = skill_node_find(_marksmanship_nodes, "trigger_control_" + string(_trigger_control_tier));
+			if (!is_undefined(_trigger_control) && skill_node_is_unlocked("marksmanship", _trigger_control)) _trigger_control_tiers++;
+		}
+		var _fire_rate_multiplier = 1 + 0.025 * _trigger_control_tiers;
+		raid_shot_cooldown =
             max(
                 1,
                 round(
                     60
-                    / _weapon.fire_rate
+					/ (_weapon.fire_rate * _fire_rate_multiplier)
                 )
             );
 

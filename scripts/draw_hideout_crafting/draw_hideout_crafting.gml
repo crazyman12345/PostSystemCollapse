@@ -1,5 +1,11 @@
 function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
 {
+    if (crafting_minigame_state.active)
+    {
+        draw_weapon_crafting_minigame();
+        return;
+    }
+
     var gap = 15;
     var panel_top = _y1 + 80;
     var panel_height = _y2 - panel_top - 20;
@@ -111,9 +117,7 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
         var listed_recipe =
             recipes[i];
 
-        var locked =
-            skill_level
-            < listed_recipe.skill_level;
+        var locked = !recipe_is_unlocked(_skill_key, listed_recipe);
 
         var selected =
             selected_index == i;
@@ -148,7 +152,10 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
         // ==============================
 
         var status_text =
-            "LVL "
+            (variable_struct_exists(listed_recipe, "crafting_tier")
+                ? "TIER " + string(listed_recipe.crafting_tier) + "  "
+                : "")
+            + "LVL "
             + string(
                 listed_recipe.skill_level
             );
@@ -218,8 +225,7 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
     var details_y =
         panel_top + 50;
 
-    var level_ok =
-        skill_level >= recipe.skill_level;
+    var level_ok = recipe_is_unlocked(_skill_key, recipe);
 
 
     draw_text(
@@ -227,6 +233,14 @@ function draw_hideout_crafting(_skill_key, _x1, _y1, _x2, _y2)
         details_y,
         recipe.name
     );
+
+    if (variable_struct_exists(recipe, "crafting_tier"))
+    {
+        draw_set_halign(fa_right);
+        draw_text(details_left + details_width - padding, details_y,
+            "TIER " + string(recipe.crafting_tier));
+        draw_set_halign(fa_left);
+    }
 
 
     details_y += 45;

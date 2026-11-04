@@ -135,6 +135,8 @@ function draw_item_stats(_item, _x, _y, _bottom)
                 array_push(_lines,
                     "ARMOR: " + string(_item.armor));
 
+            draw_item_stats_add_armor_modifiers(_lines, _item);
+
         break;
 
 
@@ -155,6 +157,8 @@ function draw_item_stats(_item, _x, _y, _bottom)
             if (variable_struct_exists(_item, "armor"))
                 array_push(_lines,
                     "ARMOR: " + string(_item.armor));
+
+            draw_item_stats_add_armor_modifiers(_lines, _item);
 
         break;
 
@@ -177,6 +181,8 @@ function draw_item_stats(_item, _x, _y, _bottom)
                 array_push(_lines,
                     "CAPACITY: "
                     + string(_item.bag_capacity));
+
+            draw_item_stats_add_armor_modifiers(_lines, _item);
 
         break;
 
@@ -369,5 +375,16 @@ function draw_item_stats(_item, _x, _y, _bottom)
                 _lines[i]
             );
         }
+    }
+}
+
+function draw_item_stats_add_armor_modifiers(_lines, _item)
+{
+    if (!variable_struct_exists(_item, "modifiers") || array_length(_item.modifiers) <= 0) return;
+    array_push(_lines, "MODIFIERS:");
+    for (var _i = 0; _i < array_length(_item.modifiers); _i++)
+    {
+        var _modifier = variable_struct_get(global.armor_modifier_registry, _item.modifiers[_i]);
+        array_push(_lines, _modifier.name + ": " + _modifier.description);
     }
 }

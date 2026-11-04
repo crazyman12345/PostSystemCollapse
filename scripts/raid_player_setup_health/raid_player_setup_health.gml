@@ -14,10 +14,11 @@ function raid_player_setup_health()
 
     if (member.armor_chest != "")
     {
-        var _armor =
-            item_get(
-                member.armor_chest
-            );
+        var _armor = armor_get_effective_stats(
+            is_undefined(stash.equipped_armor_chest_item)
+                ? member.armor_chest
+                : stash.equipped_armor_chest_item
+        );
 
         if (
             is_struct(_armor)
