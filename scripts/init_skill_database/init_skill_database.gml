@@ -4,15 +4,15 @@ function init_skill_database(){
 		marksmanship_shot: 0.2,
 		marksmanship_reload: 0.4,
 		marksmanship_kill: 1,
-		vitality_damage: 5,
-		vitality_heal: 5,
+		vitality_damage: 6.5,
+		vitality_heal: 6.5,
 		athleticism_move: 1,
 		athleticism_move_distance: 300,
 		athleticism_dash: 3,
 		strength_knife_hit: 1,
 		strength_carry_distance: 300,
 		scavenging_container: 5,
-		scavenging_trade: 2,
+		scavenging_trade: 0.01,
 		scavenging_scrap: 5
 	};
 
@@ -550,7 +550,7 @@ function init_skill_database(){
 				unlock_type: SkillNodeUnlockType.LEVEL, prerequisites: ["gun_mp27"]
 			},
 			{
-				key: "gun_ppsh41", name: "PPSH-41", description: "Unlocks the PPSh-41 submachine gun recipe.",
+				key: "gun_ppsh41", name: "PPSH-41", description: "Unlocks the Tier 1 PPSh-41 submachine gun recipe.",
 				icon: spr_ppsh, required_level: 5, lane: 1,
 				unlock_type: SkillNodeUnlockType.LEVEL, prerequisites: ["gunmaking_info"]
 			},
@@ -573,6 +573,31 @@ function init_skill_database(){
 				key: "gun_g3", name: "G3", description: "Unlocks the Tier 2 G3 recipe.",
 				icon: spr_g3, required_level: 17, lane: 3,
 				unlock_type: SkillNodeUnlockType.LEVEL, prerequisites: ["gun_akm"]
+			},
+			{
+				key: "ammo_9mm", name: "9MM", description: "Unlocks the 9mm ammunition recipe with the Pipe Pistol.",
+				icon: spr_9mm, required_level: 1, lane: 5,
+				unlock_type: SkillNodeUnlockType.LEVEL, prerequisites: ["gunmaking_info"]
+			},
+			{
+				key: "ammo_12g", name: "12 GAUGE", description: "Unlocks the 12 Gauge ammunition recipe with the MP-27.",
+				icon: spr_buckshot, required_level: 2, lane: 5,
+				unlock_type: SkillNodeUnlockType.LEVEL, prerequisites: ["ammo_9mm"]
+			},
+			{
+				key: "ammo_762x54r", name: "7.62X54R", description: "Unlocks the 7.62x54R ammunition recipe with the Mosin-Nagant.",
+				icon: spr_76254r, required_level: 3, lane: 5,
+				unlock_type: SkillNodeUnlockType.LEVEL, prerequisites: ["ammo_12g"]
+			},
+			{
+				key: "ammo_45", name: ".45 ACP", description: "Unlocks the .45 ACP ammunition recipe with the M1911.",
+				icon: spr_45acp, required_level: 4, lane: 5,
+				unlock_type: SkillNodeUnlockType.LEVEL, prerequisites: ["ammo_762x54r"]
+			},
+			{
+				key: "ammo_762x25", name: "7.62X25", description: "Unlocks the 7.62x25 ammunition recipe with the PPSh-41.",
+				icon: spr_762x25, required_level: 5, lane: 5,
+				unlock_type: SkillNodeUnlockType.LEVEL, prerequisites: ["ammo_45"]
 			}
 		],
 		armorcrafting:
@@ -811,6 +836,7 @@ function skill_node_purchase(_skill_key, _node)
 		variable_struct_set(skill_node_unlocks, _skill_key, {});
 	var unlocks = variable_struct_get(skill_node_unlocks, _skill_key);
 	variable_struct_set(unlocks, _node.key, true);
+	audio_play_sound(snd_level_up, 0, false);
 	save_mark_dirty();
 	return true;
 }

@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"quest_contract_popup",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"quest_contract_popup",
+  "parent":{"name":"traders","path":"folders/hideout/traders.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

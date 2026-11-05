@@ -98,7 +98,7 @@ function trader_buy_item(_trader_key, _stock_index, _quantity = 1)
     // LOG
     // ==============================
 
-    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade * _quantity);
+    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade * price, false);
 
     return true;
 }
@@ -109,6 +109,7 @@ function trader_can_buy_item(_trader_key, _stock_index, _quantity)
     var _trader = trader_get(_trader_key);
     if (is_undefined(_trader) || _stock_index < 0 || _stock_index >= array_length(_trader.stock)) return false;
     var _stock_entry = _trader.stock[_stock_index];
+    if (!trader_stock_entry_is_unlocked(_trader_key, _stock_entry)) return false;
     if (variable_struct_exists(_stock_entry, "item_instance") && _quantity != 1) return false;
     if (is_undefined(item_get(_stock_entry.item_key))) return false;
     var _unit_price = trader_get_buy_price(_stock_entry.price);

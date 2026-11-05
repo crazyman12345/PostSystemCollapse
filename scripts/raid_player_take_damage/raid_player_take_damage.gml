@@ -34,6 +34,16 @@ function raid_player_take_damage(_damage, _hit_direction = undefined, _impact_x 
     {
         player_health_treatment_cancel();
         player_skill_add_xp("vitality", skill_xp_awards.vitality_damage);
+        if (!is_undefined(_hit_direction))
+        {
+            var _chest = armor_get_equipped_chest_stats();
+            var _knockback_multiplier = is_undefined(_chest) ? 1 : _chest.knockback_distance_multiplier;
+            raid_player_x += lengthdir_x(raid_player_knockback_distance * _knockback_multiplier, _hit_direction);
+            raid_player_y += lengthdir_y(raid_player_knockback_distance * _knockback_multiplier, _hit_direction);
+            var _bbox = raid_player_get_collision_bbox();
+            raid_player_x = clamp(raid_player_x, raid_room_x1 + raid_player_x - _bbox.left, raid_room_x2 - (_bbox.right - raid_player_x));
+            raid_player_y = clamp(raid_player_y, raid_room_y1 + raid_player_y - _bbox.top, raid_room_y2 - (_bbox.bottom - raid_player_y));
+        }
     }
 
     if (raid_player_hp < _hp_before)

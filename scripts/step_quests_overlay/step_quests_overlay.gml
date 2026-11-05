@@ -2,7 +2,7 @@ function quest_overlay_refresh()
 {
     quest_refresh_states();
     quest_overlay_quests = [];
-    var ordered_states = [QuestState.ACTIVE, QuestState.READY_TO_TURN_IN, QuestState.AVAILABLE, QuestState.COMPLETED];
+    var ordered_states = [QuestState.ACTIVE, QuestState.READY_TO_TURN_IN, QuestState.COMPLETED];
     for (var state_index = 0; state_index < array_length(ordered_states); state_index++)
         for (var quest_index = 0; quest_index < array_length(quest_definitions); quest_index++)
         {
@@ -51,8 +51,8 @@ function step_quests_overlay()
     if (hover_index != -1 && hover_index != quest_overlay_index)
     {
         quest_overlay_index = hover_index;
-        scroll_sound();
     }
+    ui_hover_sound("quest_overlay_list", hover_index == -1 ? "" : string(hover_index));
 
     if (quest_overlay_index < quest_overlay_scroll) quest_overlay_scroll = quest_overlay_index;
     else if (quest_overlay_index >= quest_overlay_scroll + visible_rows) quest_overlay_scroll = quest_overlay_index - visible_rows + 1;
@@ -61,6 +61,9 @@ function step_quests_overlay()
     if (!keyboard_check_pressed(vk_enter) && !(hover_index != -1 && mouse_check_button_pressed(mb_left))) return;
     var selected = quest_overlay_quests[quest_overlay_index];
     var progress = quest_get_progress(selected.key);
-    if (progress.state == QuestState.ACTIVE || progress.state == QuestState.READY_TO_TURN_IN) quest_track(selected.key);
+    if (progress.state == QuestState.ACTIVE || progress.state == QuestState.READY_TO_TURN_IN)
+    {
+        if (quest_track(selected.key)) audio_play_sound(snd_interact, 0, false);
+    }
     quest_overlay_refresh();
 }

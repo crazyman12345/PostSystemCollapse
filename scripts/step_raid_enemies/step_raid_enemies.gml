@@ -168,6 +168,7 @@ function step_raid_enemies()
 
                     e.enemy_hp -= _bullet_damage;
                     e.enemy_last_hit_direction = bullet.bdirection;
+                    e.enemy_last_hit_was_knife = false;
                     if (e.enemy_hp < _enemy_hp_before)
 					{
 						var _dash_knockback_limit = 2.5;
@@ -289,9 +290,21 @@ function step_raid_enemies()
 		{
 			quest_event(QuestObjectiveType.KILL_ENEMY, e.enemy_type, 1);
 			quest_event(QuestObjectiveType.KILL_ENEMY, raid.selected_area.name, 1);
-			if (e.enemy_boss) quest_event(QuestObjectiveType.DEFEAT_BOSS, e.enemy_type, 1);
+			if (e.enemy_boss)
+			{
+				quest_event(QuestObjectiveType.DEFEAT_BOSS, e.enemy_type, 1);
+				if (boss_music_active)
+				{
+					audio_stop_sound(music_instance);
+					music_instance = audio_play_sound(theme_song, 0, true);
+					audio_sound_gain(music_instance, music_volume / 100, 0);
+					boss_music_active = false;
+				}
+			}
 			if (e.enemy_type == RaidEnemyType.BONES) progress_complete_bones();
-		    player_skill_add_xp("marksmanship", skill_xp_awards.marksmanship_kill);
+		    var _killed_with_knife = variable_struct_exists(e, "enemy_last_hit_was_knife")
+		        && e.enemy_last_hit_was_knife;
+		    player_skill_add_xp("marksmanship", skill_xp_awards.marksmanship_kill, !_killed_with_knife);
 
 		    if (
 		        variable_struct_exists(e, "enemy_sprite")
@@ -356,7 +369,8 @@ function step_raid_enemies()
             return;
         }
 
-        if (raid.rooms_in_section >= 5)
+        var _rooms_to_checkpoint = onboarding_first_quest_active() ? 2 : 5;
+        if (raid.rooms_in_section >= _rooms_to_checkpoint)
         {
             raid_activate_checkpoint();
             return;

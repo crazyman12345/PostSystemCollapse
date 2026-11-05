@@ -3,6 +3,13 @@ function raid_spawn_enemies()
 	if (raid.rooms_cleared >= raid.room_count)
 	{
 	    raid.current_room_type = RaidRoomType.BOSS;
+	    if (!boss_music_active)
+	    {
+	        audio_stop_sound(music_instance);
+	        music_instance = audio_play_sound(boss_music1, 0, true);
+	        audio_sound_gain(music_instance, music_volume / 100, 0);
+	        boss_music_active = true;
+	    }
 	    var _boss_type = raid.selected_area_index == 1
 	        ? RaidEnemyType.ROB_GNARLEY
 	        : RaidEnemyType.BONES;

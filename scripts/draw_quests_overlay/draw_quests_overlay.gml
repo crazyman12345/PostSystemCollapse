@@ -25,7 +25,7 @@ function draw_quests_overlay()
     if (count <= 0)
     {
         draw_set_color(global.ui_text_color);
-        draw_text(left + 35, top + 115, "NO QUESTS AVAILABLE");
+        draw_text(left + 35, top + 115, "NO ACTIVE OR COMPLETED QUESTS");
         return;
     }
 

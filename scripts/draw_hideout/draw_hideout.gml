@@ -5,6 +5,20 @@ function draw_hideout()
     global.ui_text_color = global.hideout_text_color;
     global.ui_interactive_color = global.hideout_interactive_color;
 
+    if (crafting_minigame_state.active)
+    {
+        draw_set_alpha(1);
+        draw_set_color(global.hideout_background_color);
+        draw_rectangle(0, 0, display_get_gui_width(), display_get_gui_height(), false);
+        draw_weapon_crafting_minigame();
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        draw_set_color(c_white);
+        global.ui_text_color = _old_ui_text_color;
+        global.ui_interactive_color = _old_ui_interactive_color;
+        return;
+    }
+
     if (onboarding_draw_hideout())
     {
         global.ui_text_color = _old_ui_text_color;

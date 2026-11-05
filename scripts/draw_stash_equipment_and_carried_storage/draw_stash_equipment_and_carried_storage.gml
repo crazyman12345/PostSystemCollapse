@@ -122,10 +122,9 @@ function draw_stash_equipment_and_carried_storage(_member, _draw_items = true, _
 
         if (!is_undefined(backpack_definition))
         {
-            stash.backpack.grid_width = backpack_definition.storage_width;
-            stash.backpack.grid_height = backpack_definition.storage_height;
+            armor_sync_backpack_storage(stash.equipped_bag_item);
 
-            draw_inventory_grid_background(backpack_grid_left, backpack_grid_top, stash.backpack.grid_width, stash.backpack.grid_height, cell_size);
+            draw_inventory_grid_background(backpack_grid_left, backpack_grid_top, stash.backpack.grid_width, stash.backpack.grid_height, cell_size, -1, stash.backpack.cell_limit);
 
             pockets_grid_top = backpack_grid_top + max(328, (stash.backpack.grid_height * cell_size) + 28);
             secure_grid_top = pockets_grid_top + 122;

@@ -82,9 +82,14 @@ if (state != GameState.MAIN_MENU)
 draw_overlay(overlay_mode);
 terminal_panel_scanlines_draw();
 
-if (!(state == GameState.RAID && raid.state == RaidState.DEATH)) skill_notifications_draw();
-if (!(state == GameState.RAID && raid.state == RaidState.DEATH)) quest_notifications_draw();
-if (state == GameState.HIDEOUT || state == GameState.RAID) tutorial_callout_draw();
+var _crafting_overlay_active = state == GameState.HIDEOUT && crafting_minigame_state.active;
+if (!_crafting_overlay_active && !(state == GameState.RAID && raid.state == RaidState.DEATH)) skill_notifications_draw();
+if (!_crafting_overlay_active && !(state == GameState.RAID && raid.state == RaidState.DEATH)) quest_notifications_draw();
+if (!_crafting_overlay_active && (state == GameState.HIDEOUT || state == GameState.RAID)) tutorial_callout_draw();
+if (!_crafting_overlay_active && variable_instance_exists(id, "quest_contract_popup_state"))
+{
+    if (quest_contract_popup_state.active) draw_quest_contract_popup();
+}
 
 draw_raid_texture_crop_debug();
 draw_debug_console();

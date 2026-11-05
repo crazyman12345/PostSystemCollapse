@@ -7,6 +7,11 @@ function step_raid_player(_allow_dodge)
     var _health_penalties = player_health_get_penalties();
     var _encumbrance_penalties = raid_get_encumbrance_penalties();
     var _treatment_move_multiplier = player_health_treatment_is_active() ? 0.5 : 1;
+    var _chest = armor_get_equipped_chest_stats();
+    var _movement_speed_multiplier = is_undefined(_chest) ? 1 : _chest.movement_speed_multiplier;
+    var _stamina_consumption_multiplier = is_undefined(_chest) ? 1 : _chest.stamina_consumption_multiplier;
+    var _stamina_regen_delay_multiplier = is_undefined(_chest) ? 1 : _chest.stamina_regen_delay_multiplier;
+    var _dash_stamina_cost = raid_player_dash_stamina_cost * _stamina_consumption_multiplier;
 
     if (!_allow_dodge && raid_player_dash_active)
     {
@@ -19,16 +24,20 @@ function step_raid_player(_allow_dodge)
     // DASH
     // ==========================================
 
-    raid_player_stamina = min(
-        raid_player_max_stamina,
-        raid_player_stamina + raid_player_stamina_regen * _health_penalties.stamina * frame_scale
-    );
+    raid_player_stamina_regen_delay = max(0, raid_player_stamina_regen_delay - frame_scale);
+    if (raid_player_stamina_regen_delay <= 0)
+    {
+        raid_player_stamina = min(
+            raid_player_max_stamina,
+            raid_player_stamina + raid_player_stamina_regen * _health_penalties.stamina * frame_scale
+        );
+    }
 
     if (
         !raid_player_dash_active
         && _allow_dodge
         && !player_health_treatment_is_active()
-        && raid_player_stamina >= raid_player_dash_stamina_cost
+        && raid_player_stamina >= _dash_stamina_cost
         && keyboard_check_pressed(vk_space)
     )
     {
@@ -55,7 +64,8 @@ function step_raid_player(_allow_dodge)
             raid_player_dash_active = true;
             raid_player_dash_timer = raid_player_dash_time;
             raid_player_dash_trail_accumulator = max(0, 1 - frame_scale);
-            raid_player_stamina -= raid_player_dash_stamina_cost;
+            raid_player_stamina -= _dash_stamina_cost;
+            raid_player_stamina_regen_delay = raid_player_stamina_regen_delay_time * _stamina_regen_delay_multiplier;
             raid_player_dash_xp_pending = true;
         }
     }
@@ -111,8 +121,8 @@ function step_raid_player(_allow_dodge)
         _mx /= _len;
         _my /= _len;
 
-        raid_player_x += _mx * raid_player_speed * _move_speed_multiplier * _health_penalties.movement * _encumbrance_penalties.movement * _treatment_move_multiplier * frame_scale;
-        raid_player_y += _my * raid_player_speed * _move_speed_multiplier * _health_penalties.movement * _encumbrance_penalties.movement * _treatment_move_multiplier * frame_scale;
+        raid_player_x += _mx * raid_player_speed * _move_speed_multiplier * _movement_speed_multiplier * _health_penalties.movement * _encumbrance_penalties.movement * _treatment_move_multiplier * frame_scale;
+        raid_player_y += _my * raid_player_speed * _move_speed_multiplier * _movement_speed_multiplier * _health_penalties.movement * _encumbrance_penalties.movement * _treatment_move_multiplier * frame_scale;
     }
 
     for (
@@ -155,7 +165,7 @@ function step_raid_player(_allow_dodge)
     );
 
     var _distance_moved = point_distance(_start_x, _start_y, raid_player_x, raid_player_y);
-    var _carry_xp_rate = strength_xp_for_weight(raid_bag_get_weight());
+    var _carry_xp_rate = strength_xp_for_weight(raid_bag_get_weight()) * 1.3;
 
     if (_carry_xp_rate != raid_strength_carry_xp_rate)
     {

@@ -8,6 +8,8 @@ function step_raid_shooting(_allow_input)
     }
 
     var _weapon = raid_update_active_weapon();
+    var _chest = armor_get_equipped_chest_stats();
+    var _head = armor_get_equipped_head_stats();
 
     if (active_weapon_slot == EquipmentSlot.WEAPON_2)
     {
@@ -96,6 +98,8 @@ function step_raid_shooting(_allow_input)
 			if (!is_undefined(_gun_handling) && skill_node_is_unlocked("marksmanship", _gun_handling)) _handling_tiers++;
 		}
 		var _handling_multiplier = 1 + 0.05 * _handling_tiers;
+		if (!is_undefined(_chest)) _handling_multiplier *= _chest.weapon_handling_multiplier;
+		if (!is_undefined(_head)) _handling_multiplier *= _head.weapon_handling_multiplier;
 		var _handling = clamp(_weapon.handling * _handling_multiplier, 0, 100);
         var _handling_range = max(1, raid_handling_high_stat - raid_handling_low_stat);
         var _handling_amount = (_handling - raid_handling_low_stat) / _handling_range;
@@ -246,9 +250,10 @@ function step_raid_shooting(_allow_input)
                     var _enemy_hp_before = _target.enemy_hp;
                     _target.enemy_hp = raid_godmode ? 0 : _target.enemy_hp - 5;
                     _target.enemy_last_hit_direction = raid_knife_attack_dir;
+                    _target.enemy_last_hit_was_knife = true;
                     if (_target.enemy_hp < _enemy_hp_before)
                         blood_hit_effect(_target.enemy_x, _target.enemy_y, raid_knife_attack_dir);
-                    player_skill_add_xp("strength", skill_xp_awards.strength_knife_hit);
+                    player_skill_add_xp("strength", skill_xp_awards.strength_knife_hit, false);
                     var _total_flash_duration = 8;
                     _target.enemy_hit_flash_timer = _total_flash_duration;
                     play_impact_sound(raid_enemy_hit_sound, "knife");
@@ -512,7 +517,10 @@ if (_allow_input && keyboard_check_pressed(ord("R")))
 		var _pellet_spread = variable_struct_exists(_weapon, "pellet_spread")
 			? _weapon.pellet_spread
 			: 0;
-		var _accuracy_spread = (100 - clamp(_weapon.accuracy, 0, 100)) * 0.1;
+		var _gear_accuracy = _weapon.accuracy;
+		if (!is_undefined(_chest)) _gear_accuracy *= _chest.weapon_accuracy_multiplier;
+		if (!is_undefined(_head)) _gear_accuracy += _head.weapon_accuracy_bonus;
+		var _accuracy_spread = (100 - clamp(_gear_accuracy, 0, 100)) * 0.1;
 		var _steady_aim_tiers = 0;
 		var _marksmanship_nodes = skill_node_get_nodes("marksmanship");
 		for (var _steady_aim_tier = 1; _steady_aim_tier <= 3; _steady_aim_tier++)

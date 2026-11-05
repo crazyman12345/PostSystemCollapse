@@ -99,6 +99,7 @@ function onboarding_step_sidebar()
     var _entries = onboarding_get_menu_entries();
     var _selected = onboarding_sync_menu_selection(_entries);
     var _hovered = onboarding_get_hovered_menu_entry(_entries);
+    ui_hover_sound("onboarding_sidebar", _hovered == -1 ? "" : string(_hovered));
     if (_hovered != -1 && _hovered != _selected && mouse_check_button_pressed(mb_left))
     {
         hideout_menu_index = _entries[_hovered].menu_index;
@@ -106,7 +107,7 @@ function onboarding_step_sidebar()
         hideout_focus = HideoutFocus.CONTENT;
         trader_mode = TraderMode.SELECT;
         menu_index = 0;
-        scroll_sound();
+        audio_play_sound(snd_interact, 0, false);
         return;
     }
     if (keyboard_check_pressed(vk_escape))
@@ -123,6 +124,7 @@ function onboarding_step_hideout()
     {
         if (keyboard_check_pressed(vk_enter) || mouse_check_button_pressed(mb_left))
         {
+            if (mouse_check_button_pressed(mb_left)) audio_play_sound(snd_interact, 0, false);
             onboarding_prologue_index++;
             if (onboarding_prologue_index >= array_length(onboarding_prologue_cards))
             {
@@ -141,11 +143,6 @@ function onboarding_step_hideout()
         onboarding_open_mara_node("ghost_onboarding_replacement");
         save_game();
     }
-    if (trader_mode == TraderMode.CONVERSATION)
-    {
-        step_trader_conversation();
-        return true;
-    }
     if (trader_mode == TraderMode.BUY)
     {
         step_trader_buy();
@@ -153,24 +150,46 @@ function onboarding_step_hideout()
     }
     var _inventory_popup_open = hideout_page == HideoutPage.STASH
         && (inventory_context_active || !is_undefined(inventory_inspect_item));
+    var _onboarding_entries = onboarding_get_menu_entries();
+    var _onboarding_hover = _inventory_popup_open ? -1 : onboarding_get_hovered_menu_entry(_onboarding_entries);
+    ui_hover_sound("onboarding_hideout_sidebar", _onboarding_hover == -1 ? "" : string(_onboarding_hover));
     if (!_inventory_popup_open && mouse_check_button_pressed(mb_left))
     {
-        var _entries = onboarding_get_menu_entries();
+        var _entries = _onboarding_entries;
         var _selected = onboarding_sync_menu_selection(_entries);
         var _clicked = onboarding_get_hovered_menu_entry(_entries);
         if (_clicked != -1)
         {
-            if (_clicked != _selected)
+            var _conversation_open = trader_mode == TraderMode.CONVERSATION;
+            if (_conversation_open && _entries[_clicked].key == "messages")
             {
-                if (trader_mode == TraderMode.CONVERSATION) dialogue_close();
-                else trader_mode = TraderMode.SELECT;
+                dialogue_close();
                 hideout_menu_index = _entries[_clicked].menu_index;
-                hideout_page = _entries[_clicked].page;
+                hideout_page = HideoutPage.MESSAGES;
+                hideout_focus = HideoutFocus.CONTENT;
                 menu_index = 0;
-                scroll_sound();
+                audio_play_sound(snd_interact, 0, false);
+                return true;
+            }
+            if (_clicked != _selected || _conversation_open)
+            {
+                if (_conversation_open) dialogue_close();
+                else trader_mode = TraderMode.SELECT;
+                if (_clicked != _selected)
+                {
+                    hideout_menu_index = _entries[_clicked].menu_index;
+                    hideout_page = _entries[_clicked].page;
+                }
+                menu_index = 0;
+                audio_play_sound(snd_interact, 0, false);
             }
             return true;
         }
+    }
+    if (trader_mode == TraderMode.CONVERSATION)
+    {
+        step_trader_conversation();
+        return true;
     }
     switch (hideout_page)
     {
@@ -604,6 +623,7 @@ function onboarding_copy_stored_item(_item)
     if (variable_struct_exists(_item, "tier")) _copy.tier = _item.tier;
     if (variable_struct_exists(_item, "rarity")) _copy.rarity = _item.rarity;
     if (variable_struct_exists(_item, "modifiers")) _copy.modifiers = array_concat(_item.modifiers, []);
+    if (variable_struct_exists(_item, "modifier_values")) _copy.modifier_values = armor_modifier_values_copy(_item.modifier_values);
     if (variable_struct_exists(_item, "instance_id")) _copy.instance_id = _item.instance_id;
     if (variable_struct_exists(_item, "durability")) _copy.durability = _item.durability;
     if (variable_struct_exists(_item, "servings")) _copy.servings = _item.servings;

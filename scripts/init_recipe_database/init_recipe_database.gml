@@ -3,15 +3,72 @@ function init_recipe_database()
     recipe_db = {
         gunmaking: [
             {
-                name: "HANDLOADED 9MM",
+                name: "9MM",
                 skill_level: 1,
                 crafting_tier: 1,
                 crafting_branch: "ammunition",
+                unlock_node: "ammo_9mm",
                 ingredients: [
                     { item_key: "metal_scrap", quantity: 2 },
                     { item_key: "gunpowder", quantity: 1 }
                 ],
-                output: { item_key: "ammo_9mm", quantity: 10 },
+                output: { item_key: "ammo_9mm", quantity: 100 },
+                craft_time: 5,
+                xp: 10
+            },
+            {
+                name: "12 GAUGE",
+                skill_level: 2,
+                crafting_tier: 1,
+                crafting_branch: "ammunition",
+                unlock_node: "ammo_12g",
+                ingredients: [
+                    { item_key: "metal_scrap", quantity: 2 },
+                    { item_key: "gunpowder", quantity: 2 }
+                ],
+                output: { item_key: "ammo_12g", quantity: 100 },
+                craft_time: 6,
+                xp: 12
+            },
+            {
+                name: "7.62X54R",
+                skill_level: 3,
+                crafting_tier: 1,
+                crafting_branch: "ammunition",
+                unlock_node: "ammo_762x54r",
+                ingredients: [
+                    { item_key: "metal_scrap", quantity: 3 },
+                    { item_key: "gunpowder", quantity: 2 }
+                ],
+                output: { item_key: "ammo_762x54r", quantity: 100 },
+                craft_time: 7,
+                xp: 15
+            },
+            {
+                name: ".45 ACP",
+                skill_level: 4,
+                crafting_tier: 1,
+                crafting_branch: "ammunition",
+                unlock_node: "ammo_45",
+                ingredients: [
+                    { item_key: "metal_scrap", quantity: 2 },
+                    { item_key: "gunpowder", quantity: 2 }
+                ],
+                output: { item_key: "ammo_45", quantity: 100 },
+                craft_time: 6,
+                xp: 12
+            },
+            {
+                name: "7.62X25",
+                skill_level: 5,
+                crafting_tier: 1,
+                crafting_branch: "ammunition",
+                unlock_node: "ammo_762x25",
+                ingredients: [
+                    { item_key: "metal_scrap", quantity: 2 },
+                    { item_key: "gunpowder", quantity: 1 }
+                ],
+                output: { item_key: "ammo_762x25", quantity: 100 },
                 craft_time: 5,
                 xp: 10
             },
@@ -92,15 +149,15 @@ function init_recipe_database()
                 unlock_node: "gun_ppsh41",
                 crafting_minigame: "ppsh_41",
                 ingredients: [
-                    { item_key: "weapon_parts", quantity: 6 },
-                    { item_key: "metal_scrap", quantity: 6 },
+                    { item_key: "weapon_parts", quantity: 4 },
+                    { item_key: "metal_scrap", quantity: 4 },
                     { item_key: "springs", quantity: 2 },
-                    { item_key: "mechanical_parts", quantity: 2 },
-                    { item_key: "screws", quantity: 3 }
+                    { item_key: "mechanical_parts", quantity: 1 },
+                    { item_key: "screws", quantity: 2 }
                 ],
                 output: { item_key: "ppsh_41", quantity: 1 },
-                craft_time: 40,
-                xp: 50
+                craft_time: 30,
+                xp: 40
             },
             {
                 name: "MOSSBERG 500",
@@ -146,15 +203,16 @@ function init_recipe_database()
                 unlock_node: "gun_uzi",
                 crafting_minigame: "uzi",
                 ingredients: [
-                    { item_key: "weapon_parts", quantity: 5 },
-                    { item_key: "metal_scrap", quantity: 4 },
-                    { item_key: "springs", quantity: 2 },
-                    { item_key: "mechanical_parts", quantity: 2 },
-                    { item_key: "screws", quantity: 2 }
+                    { item_key: "weapon_parts", quantity: 7 },
+                    { item_key: "metal_scrap", quantity: 5 },
+                    { item_key: "springs", quantity: 3 },
+                    { item_key: "mechanical_parts", quantity: 4 },
+                    { item_key: "precision_parts", quantity: 1 },
+                    { item_key: "screws", quantity: 3 }
                 ],
                 output: { item_key: "uzi", quantity: 1 },
                 craft_time: 50,
-                xp: 85
+                xp: 90
             },
             {
                 name: "AKM",
@@ -435,6 +493,8 @@ function recipe_can_craft(_skill_key, _recipe)
     if (!recipe_is_unlocked(_skill_key, _recipe))
         return false;
 
+    if (debug_free_craft) return true;
+
     for (var i = 0; i < array_length(_recipe.ingredients); i++)
     {
         var ingredient = _recipe.ingredients[i];
@@ -463,7 +523,7 @@ function recipe_craft(_skill_key, _recipe)
     if (!stash_add(_recipe.output.item_key, _recipe.output.quantity))
         return false;
 
-    for (var i = 0; i < array_length(_recipe.ingredients); i++)
+    if (!debug_free_craft) for (var i = 0; i < array_length(_recipe.ingredients); i++)
     {
         var ingredient = _recipe.ingredients[i];
         stash_remove(ingredient.item_key, ingredient.quantity);
@@ -472,5 +532,6 @@ function recipe_craft(_skill_key, _recipe)
     if (variable_struct_exists(_recipe, "xp") && _recipe.xp > 0)
         player_skill_add_xp(_skill_key, _recipe.xp);
 
+    audio_play_sound(snd_level_up, 0, false);
     return true;
 }

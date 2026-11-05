@@ -1,11 +1,11 @@
 function weapon_modifier_registry_init()
 {
     global.weapon_rarities = {
-        common:    { key: "common", name: "Common", modifier_count: 0, color: make_color_rgb(150, 150, 150) },
-        rare:      { key: "rare", name: "Rare", modifier_count: 1, color: make_color_rgb(70, 130, 255) },
-        very_rare: { key: "very_rare", name: "Very Rare", modifier_count: 2, color: make_color_rgb(45, 205, 190) },
-        epic:      { key: "epic", name: "Epic", modifier_count: 3, color: make_color_rgb(180, 80, 235) },
-        legendary: { key: "legendary", name: "Legendary", modifier_count: 4, color: make_color_rgb(245, 180, 45) }
+        common:    { key: "common", name: "Common", modifier_count: 0, value_multiplier: 1.00, color: make_color_rgb(150, 150, 150) },
+        rare:      { key: "rare", name: "Rare", modifier_count: 1, value_multiplier: 1.25, color: make_color_rgb(70, 130, 255) },
+        very_rare: { key: "very_rare", name: "Very Rare", modifier_count: 2, value_multiplier: 1.50, color: make_color_rgb(45, 205, 190) },
+        epic:      { key: "epic", name: "Epic", modifier_count: 3, value_multiplier: 2.00, color: make_color_rgb(180, 80, 235) },
+        legendary: { key: "legendary", name: "Legendary", modifier_count: 4, value_multiplier: 3.00, color: make_color_rgb(245, 180, 45) }
     };
 
     global.weapon_modifier_registry = {
@@ -158,6 +158,7 @@ function weapon_get_effective_stats(_item)
     _effective.rarity = is_string(_item) ? "common" : _item.rarity;
     _effective.modifiers = is_string(_item) ? [] : array_concat(_item.modifiers, []);
     _effective.durability_wear_multiplier = 1;
+    _effective.base_value = round(_effective.base_value * weapon_rarity_get(_effective.rarity).value_multiplier);
 
     for (var i = 0; i < array_length(_effective.modifiers); i++)
     {

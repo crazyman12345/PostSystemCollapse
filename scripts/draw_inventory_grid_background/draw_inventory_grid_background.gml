@@ -1,4 +1,4 @@
-function draw_inventory_grid_background(_left, _top, _columns, _rows, _cell_size, _cell_stride = -1)
+function draw_inventory_grid_background(_left, _top, _columns, _rows, _cell_size, _cell_stride = -1, _cell_limit = -1)
 {
     if (_cell_stride <= 0) _cell_stride = _cell_size;
 
@@ -6,6 +6,7 @@ function draw_inventory_grid_background(_left, _top, _columns, _rows, _cell_size
     {
         for (var grid_x = 0; grid_x < _columns; grid_x++)
         {
+            if (_cell_limit >= 0 && (grid_y * _columns) + grid_x >= _cell_limit) continue;
             draw_sprite_stretched(
                 spr_inventory_grid_cell,
                 0,

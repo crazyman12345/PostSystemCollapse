@@ -20,15 +20,20 @@ function step_raid_pause_menu()
     }
 
     var _tab_change = keyboard_check_pressed(ord("E")) - keyboard_check_pressed(ord("Q"));
-    if (_mouse_clicked && point_in_rectangle(_mouse_x, _mouse_y, _gui_width * 0.34, _gui_height * 0.22, _gui_width * 0.49, _gui_height * 0.29))
+    var _left_tab_hovered = point_in_rectangle(_mouse_x, _mouse_y, _gui_width * 0.34, _gui_height * 0.22, _gui_width * 0.49, _gui_height * 0.29);
+    var _right_tab_hovered = point_in_rectangle(_mouse_x, _mouse_y, _gui_width * 0.51, _gui_height * 0.22, _gui_width * 0.66, _gui_height * 0.29);
+    ui_hover_sound("pause_tabs", _left_tab_hovered ? "pause" : (_right_tab_hovered ? "graphics" : ""));
+    var _tab_mouse_clicked = _mouse_clicked && (_left_tab_hovered || _right_tab_hovered);
+    if (_mouse_clicked && _left_tab_hovered)
         _tab_change = raid.pause_menu_tab == 0 ? 0 : -1;
-    else if (_mouse_clicked && point_in_rectangle(_mouse_x, _mouse_y, _gui_width * 0.51, _gui_height * 0.22, _gui_width * 0.66, _gui_height * 0.29))
+    else if (_mouse_clicked && _right_tab_hovered)
         _tab_change = raid.pause_menu_tab == 1 ? 0 : 1;
 
     if (_tab_change != 0)
     {
         raid.pause_menu_tab = 1 - raid.pause_menu_tab;
-        scroll_sound();
+        if (_tab_mouse_clicked) audio_play_sound(snd_interact, 0, false);
+        else scroll_sound();
         return;
     }
 
@@ -53,8 +58,8 @@ function step_raid_pause_menu()
         if (_hover_index != -1 && raid.pause_graphics_index != _hover_index)
         {
             raid.pause_graphics_index = _hover_index;
-            scroll_sound();
         }
+        ui_hover_sound("pause_graphics_options", _hover_index == -1 ? "" : string(_hover_index));
 
         var _menu_move = keyboard_check_pressed(ord("S")) - keyboard_check_pressed(ord("W"));
         if (_mouse_x >= _gui_width * 0.25 && _mouse_x <= _gui_width * 0.75)
@@ -233,8 +238,8 @@ function step_raid_pause_menu()
     if (_hover_index != -1 && raid.pause_menu_index != _hover_index)
     {
         raid.pause_menu_index = _hover_index;
-        scroll_sound();
     }
+    ui_hover_sound("pause_main_options", _hover_index == -1 ? "" : string(_hover_index));
 
     var _menu_move = keyboard_check_pressed(ord("S")) - keyboard_check_pressed(ord("W"));
     if (_menu_move != 0)

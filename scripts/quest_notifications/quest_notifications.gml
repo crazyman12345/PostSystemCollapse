@@ -58,16 +58,16 @@ function quest_notification_line_count(_text)
 
 function quest_notification_get_height(_notification)
 {
-    draw_set_font(fnt_quest_notification);
-    var _text_width = 800;
-    var _line_separation = 32;
+    draw_set_font(fnt_terminal_tiny);
+    var _text_width = 400;
+    var _line_separation = 16;
     var _height = 0;
     for (var _entry_index = 0; _entry_index < array_length(_notification.entries); _entry_index++)
     {
         var _entry = _notification.entries[_entry_index];
         var _title_height = string_height_ext(_entry.title, _line_separation, _text_width);
         var _message_height = string_height_ext(_entry.message, _line_separation, _text_width);
-        _height += max(104, 14 + _title_height + 10 + _message_height + 14);
+        _height += max(52, 7 + _title_height + 5 + _message_height + 7);
     }
     return _height;
 }
@@ -81,18 +81,18 @@ function quest_notifications_get_bottom()
 {
     var _bottom = quest_notifications_get_top();
     for (var _i = 0; _i < array_length(quest_notification_queue); _i++)
-        _bottom += quest_notification_get_height(quest_notification_queue[_i]) + 12;
-    return _bottom - 12;
+        _bottom += quest_notification_get_height(quest_notification_queue[_i]) + 6;
+    return _bottom - 6;
 }
 
 function quest_notifications_draw()
 {
     var panel_right = display_get_gui_width() - 30;
-    var panel_width = 840;
-    var text_width = panel_width - 40;
-    var line_separation = 32;
+    var panel_width = 420;
+    var text_width = panel_width - 20;
+    var line_separation = 16;
     var top = quest_notifications_get_top();
-    draw_set_font(fnt_quest_notification);
+    draw_set_font(fnt_terminal_tiny);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 
@@ -115,14 +115,14 @@ function quest_notifications_draw()
             var entry = notification.entries[entry_index];
             var title_height = string_height_ext(entry.title, line_separation, text_width);
             var message_height = string_height_ext(entry.message, line_separation, text_width);
-            var entry_height = max(104, 14 + title_height + 10 + message_height + 14);
+            var entry_height = max(52, 7 + title_height + 5 + message_height + 7);
             draw_set_color(global.ui_text_color);
-            draw_text_ext(left + 20, entry_top + 14, entry.title, line_separation, text_width);
+            draw_text_ext(left + 10, entry_top + 7, entry.title, line_separation, text_width);
             draw_set_color(global.ui_text_color);
-            draw_text_ext(left + 20, entry_top + 24 + title_height, entry.message, line_separation, text_width);
+            draw_text_ext(left + 10, entry_top + 12 + title_height, entry.message, line_separation, text_width);
             entry_top += entry_height;
         }
-        top += row_height + 12;
+        top += row_height + 6;
     }
 
     draw_set_alpha(1);

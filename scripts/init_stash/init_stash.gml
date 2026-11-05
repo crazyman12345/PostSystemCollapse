@@ -18,6 +18,7 @@
         backpack: {
             grid_width: 0,
             grid_height: 0,
+            cell_limit: 0,
             items: []
         },
         pockets: {

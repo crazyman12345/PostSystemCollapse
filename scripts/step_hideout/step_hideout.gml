@@ -1,20 +1,39 @@
 function step_hideout()
 {
     player_health_update_post_raid_recovery();
-    if (onboarding_step_hideout()) return;
-    onboarding_update_field_supplies_tip();
-
     if (crafting_minigame_state.active)
     {
-        step_hideout_crafting("gunmaking");
+        step_weapon_crafting_minigame();
         return;
     }
 
-    var _trader_subscreen_open = (hideout_page == HideoutPage.TRADERS || hideout_page == HideoutPage.MESSAGES)
-        && trader_mode != TraderMode.SELECT;
+    if (onboarding_step_hideout()) return;
+    onboarding_update_field_supplies_tip();
+
+    var _trading_overlay_open = (hideout_page == HideoutPage.TRADERS || hideout_page == HideoutPage.MESSAGES)
+        && trader_mode == TraderMode.BUY;
     var _inventory_popup_open = hideout_page == HideoutPage.STASH
         && (inventory_context_active || !is_undefined(inventory_inspect_item));
-    if (!_trader_subscreen_open && !_inventory_popup_open && mouse_check_button_pressed(mb_left))
+    var _sidebar_hover = -1;
+    var _sidebar_mouse_x = device_mouse_x_to_gui(0);
+    var _sidebar_mouse_y = device_mouse_y_to_gui(0);
+    if (!_trading_overlay_open && !_inventory_popup_open)
+    {
+        for (var _hover_i = 0; _hover_i < array_length(hideout_menu_items); _hover_i++)
+        {
+            var _hover_entry = hideout_menu_items[_hover_i];
+            var _hover_y = hideout_sidebar_item_top(_hover_i);
+            if (_sidebar_mouse_x >= 18 && _sidebar_mouse_x <= 302
+            && _sidebar_mouse_y >= _hover_y && _sidebar_mouse_y < _hover_y + 42
+            && hideout_entry_is_unlocked(_hover_entry))
+            {
+                _sidebar_hover = _hover_i;
+                break;
+            }
+        }
+    }
+    ui_hover_sound("hideout_sidebar", _sidebar_hover == -1 ? "" : string(_sidebar_hover));
+    if (!_trading_overlay_open && !_inventory_popup_open && mouse_check_button_pressed(mb_left))
     {
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);
@@ -34,24 +53,39 @@ function step_hideout()
 
         if (_clicked_index != -1)
         {
-            if (_clicked_index != hideout_menu_index)
+            var _conversation_open = trader_mode == TraderMode.CONVERSATION;
+            var _clicked_entry = hideout_menu_items[_clicked_index];
+            if (_conversation_open && _clicked_entry.key == "messages")
             {
-                if (trader_mode == TraderMode.CONVERSATION) dialogue_close();
+                dialogue_close();
+                hideout_menu_index = _clicked_index;
+                hideout_page = HideoutPage.MESSAGES;
+                hideout_focus = HideoutFocus.CONTENT;
+                menu_index = 0;
+                audio_play_sound(snd_interact, 0, false);
+                return;
+            }
+            if (_clicked_index != hideout_menu_index || _conversation_open)
+            {
+                if (_conversation_open) dialogue_close();
                 else trader_mode = TraderMode.SELECT;
 
-                hideout_menu_index = _clicked_index;
-                var _selected = hideout_menu_items[hideout_menu_index];
-                hideout_page = _selected.page;
-                hideout_focus = HideoutFocus.CONTENT;
-
-                if (variable_struct_exists(recipe_db, _selected.key))
+                if (_clicked_index != hideout_menu_index)
                 {
-                    crafting_recipe_index = 0;
-                    crafting_recipe_scroll = 0;
-                    crafting_message = "";
+                    hideout_menu_index = _clicked_index;
+                    var _selected = hideout_menu_items[hideout_menu_index];
+                    hideout_page = _selected.page;
+                    hideout_focus = HideoutFocus.CONTENT;
+
+                    if (variable_struct_exists(recipe_db, _selected.key))
+                    {
+                        crafting_recipe_index = 0;
+                        crafting_recipe_scroll = 0;
+                        crafting_message = "";
+                    }
                 }
 
-                scroll_sound();
+                audio_play_sound(snd_interact, 0, false);
             }
             return;
         }

@@ -6,6 +6,25 @@ function step_weapon_crafting_minigame()
     var _mouse_y = device_mouse_y_to_gui(0);
     var _scale = frame_scale;
 
+    var _back = weapon_crafting_back_button_rect();
+    var _back_hovered = point_in_rectangle(_mouse_x, _mouse_y,
+        _back.left, _back.top, _back.right, _back.bottom);
+    ui_hover_sound("crafting_back", _back_hovered ? "back" : "");
+    if (_back_hovered && mouse_check_button_pressed(mb_left))
+    {
+        audio_stop_sound(snd_scissors);
+        audio_stop_sound(snd_blowtorch);
+        audio_play_sound(snd_interact, 0, false);
+        if (_game.phase == 3)
+        {
+            crafting_message = "CRAFTED: " + _game.recipe.name
+                + "  SCORE " + string(_game.final_score);
+            weapon_crafting_minigame_init();
+        }
+        else weapon_crafting_minigame_cancel();
+        return;
+    }
+
     _game.impact_timer = max(0, _game.impact_timer - _scale);
     _game.shake *= power(0.82, _scale);
     for (var _i = array_length(_game.sparks) - 1; _i >= 0; _i--)
@@ -28,6 +47,54 @@ function step_weapon_crafting_minigame()
         if (_chunk.life <= 0) array_delete(_game.plate_chunks, _chunk_index, 1);
     }
 
+    if (_game.phase == 1 && _game.outline.process == "fabric"
+    && mouse_check_button(mb_left))
+    {
+        _game.scissors_animation_frame += (11 / 60) * _scale;
+        _game.scissors_animation_frame %= sprite_get_number(spr_scissors_animation);
+    }
+    else _game.scissors_animation_frame = 0;
+
+    if (_game.spool_animation_active)
+    {
+        _game.spool_animation_frame += (5 / 6) * _scale;
+        if (_game.spool_animation_frame >= sprite_get_number(spr_spool_animation) * 2)
+        {
+            _game.spool_animation_active = false;
+            _game.spool_animation_frame = 0;
+        }
+    }
+
+    if (_game.hammer_animation_active)
+    {
+        var _previous_hammer_frame = _game.hammer_animation_frame;
+        _game.hammer_animation_frame += (5 / 24) * _scale;
+        if (_game.hammer_marker_index >= 0
+        && _previous_hammer_frame < 6 && _game.hammer_animation_frame >= 6)
+        {
+            var _hammer_marker_index = _game.hammer_marker_index;
+            _game.hammer_hits[_hammer_marker_index] = true;
+            _game.hammer_hit_count += 1;
+            _game.hammer_marker_index = -1;
+            _game.shake = _game.outline.process == "fabric" ? 3 : 8;
+            if (_game.outline.process == "metal")
+            {
+                _game.impact_timer = 10;
+                repeat (12)
+                    array_push(_game.sparks, { x: _game.hammer_impact_x, y: _game.hammer_impact_y,
+                        dx: random_range(-4.5, 4.5), dy: random_range(-5, -1), life: random_range(12, 28) });
+            }
+            audio_play_sound(snd_hammer, 0, false);
+        }
+        if (_game.hammer_animation_frame >= sprite_get_number(spr_sledgehammer_animation))
+        {
+            _game.hammer_animation_active = false;
+            _game.hammer_animation_frame = 0;
+            if (_game.hammer_hit_count >= array_length(_game.hammer_hits))
+                weapon_crafting_minigame_finish();
+        }
+    }
+
     if (_game.phase == 3)
     {
         if (mouse_check_button_pressed(mb_left) || keyboard_check_pressed(vk_escape))
@@ -41,8 +108,21 @@ function step_weapon_crafting_minigame()
 
     if (keyboard_check_pressed(vk_escape))
     {
+        audio_stop_sound(snd_scissors);
+        audio_stop_sound(snd_blowtorch);
         weapon_crafting_minigame_cancel();
         return;
+    }
+
+    if (_game.phase == 1 && mouse_check_button(mb_left))
+    {
+        var _tool_sound = _game.outline.process == "fabric" ? snd_scissors : snd_blowtorch;
+        if (!audio_is_playing(_tool_sound)) audio_play_sound(_tool_sound, 0, true);
+    }
+    else
+    {
+        audio_stop_sound(snd_scissors);
+        audio_stop_sound(snd_blowtorch);
     }
 
     if (_game.phase == 1 && !mouse_check_button(mb_left)) _game.cut_active = false;
@@ -51,7 +131,7 @@ function step_weapon_crafting_minigame()
     {
         var _new_cut_stroke = !_game.cut_active;
         var _count = array_length(_game.outline.checkpoints);
-        if (_game.checkpoint_completed < _count)
+        if (!_game.cut_returned)
         {
             var _distance = weapon_crafting_distance_to_outline(
                 _mouse_x - _layout.center_x, _mouse_y - _layout.center_y,
@@ -62,6 +142,12 @@ function step_weapon_crafting_minigame()
             if (_in_plate)
             {
                 _game.cut_active = true;
+                if (!_game.cut_start_set && _distance <= _game.outline.tolerance)
+                {
+                    _game.cut_start_set = true;
+                    _game.cut_start_x = _mouse_x;
+                    _game.cut_start_y = _mouse_y;
+                }
                 var _trail_count = array_length(_game.cut_trail);
                 var _stroke_from_x = _mouse_x;
                 var _stroke_from_y = _mouse_y;
@@ -122,7 +208,8 @@ function step_weapon_crafting_minigame()
                 }
             }
 
-            if (_in_plate && _distance <= _game.outline.tolerance)
+            if (_game.outline.process == "metal"
+            && _in_plate && _distance <= _game.outline.tolerance)
             {
                 _game.spark_emit_timer += _scale;
                 if (_game.spark_emit_timer >= 2)
@@ -134,8 +221,12 @@ function step_weapon_crafting_minigame()
                 }
             }
 
-            if (_game.checkpoint_completed >= _count)
+            if (_game.cut_start_set
+            && _game.checkpoint_completed >= _count
+            && point_distance(_mouse_x, _mouse_y, _game.cut_start_x, _game.cut_start_y)
+                <= _game.outline.tolerance)
             {
+                _game.cut_returned = true;
                 _game.phase = 2;
                 _game.transition_timer = 36;
                 _game.shake = 5;
@@ -146,8 +237,14 @@ function step_weapon_crafting_minigame()
     else if (_game.phase == 2)
     {
         _game.transition_timer = max(0, _game.transition_timer - _scale);
-        if (_game.transition_timer <= 0 && mouse_check_button_pressed(mb_left))
+        if (_game.transition_timer <= 0 && !_game.hammer_animation_active
+        && mouse_check_button_pressed(mb_left))
         {
+            if (_game.outline.process == "fabric")
+            {
+                _game.spool_animation_active = true;
+                _game.spool_animation_frame = 0;
+            }
             for (var _marker_index = 0; _marker_index < array_length(_game.outline.hammer_markers); _marker_index++)
             {
                 if (_game.hammer_hits[_marker_index]) continue;
@@ -157,16 +254,22 @@ function step_weapon_crafting_minigame()
                 var _hit_distance = point_distance(_mouse_x, _mouse_y, _hit_x, _hit_y);
                 if (_hit_distance <= 34)
                 {
-                    _game.hammer_hits[_marker_index] = true;
-                    _game.hammer_hit_count += 1;
-                    _game.impact_timer = 10;
-                    _game.shake = _game.outline.process == "fabric" ? 3 : 8;
-                    repeat (_game.outline.process == "fabric" ? 5 : 12)
-                        array_push(_game.sparks, { x: _hit_x, y: _hit_y,
-                            dx: random_range(-4.5, 4.5), dy: random_range(-5, -1), life: random_range(12, 28) });
-                    audio_play_sound(snd_interact, 0, false);
-                    if (_game.hammer_hit_count >= array_length(_game.hammer_hits))
-                        weapon_crafting_minigame_finish();
+                    if (_game.outline.process == "fabric")
+                    {
+                        _game.hammer_hits[_marker_index] = true;
+                        _game.hammer_hit_count += 1;
+                        audio_play_sound(snd_sewing, 0, false);
+                        if (_game.hammer_hit_count >= array_length(_game.hammer_hits))
+                            weapon_crafting_minigame_finish();
+                    }
+                    else
+                    {
+                        _game.hammer_animation_active = true;
+                        _game.hammer_animation_frame = 0;
+                        _game.hammer_marker_index = _marker_index;
+                        _game.hammer_impact_x = _mouse_x;
+                        _game.hammer_impact_y = _mouse_y;
+                    }
                     return;
                 }
             }

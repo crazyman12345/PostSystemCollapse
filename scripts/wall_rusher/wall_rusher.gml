@@ -98,6 +98,7 @@ function wall_rusher(_enemy)
             {
                 smoke_create(e.enemy_x - 14, e.enemy_y - 8, e.enemy_x + 14, e.enemy_y + 5, 6);
                 var _wall_slam_sound = audio_play_sound(smoke_sound, 0, false);
+                audio_sound_gain(_wall_slam_sound, 0.6, 0);
                 audio_sound_pitch(_wall_slam_sound, random_range(0.85, 0.95));
                 raid_camera_shake_duration = 10;
                 raid_camera_shake_timer = raid_camera_shake_duration;

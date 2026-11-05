@@ -83,6 +83,7 @@ function inventory_context_menu_open(_item, _container, _equipment_slot, _allow_
     inventory_hover_item = undefined;
     inventory_hover_time = 0;
     inventory_inspect_item = undefined;
+    audio_play_sound(snd_interact, 0, false);
     return true;
 }
 
@@ -101,9 +102,7 @@ function inventory_context_menu_set_equipped(_slot, _item, _crew_index)
             stash.equipped_bag_item = _item;
             if (!is_undefined(_item))
             {
-                var _definition = item_get(_item_key);
-                stash.backpack.grid_width = _definition.storage_width;
-                stash.backpack.grid_height = _definition.storage_height;
+                armor_sync_backpack_storage(_item);
             }
             break;
     }
@@ -197,6 +196,12 @@ function inventory_context_menu_step()
         return true;
     }
     if (!inventory_context_active) return false;
+    var _hover_x = device_mouse_x_to_gui(0);
+    var _hover_y = device_mouse_y_to_gui(0);
+    var _hover_row = floor((_hover_y - inventory_context_y) / 22);
+    var _hovered = _hover_x >= inventory_context_x && _hover_x < inventory_context_x + 104
+        && _hover_row >= 0 && _hover_row < array_length(inventory_context_actions);
+    ui_hover_sound("inventory_context", _hovered ? string(_hover_row) : "");
     if (mouse_check_button_pressed(mb_right))
     {
         inventory_context_menu_close();
@@ -214,7 +219,10 @@ function inventory_context_menu_step()
         var _row = floor((_mouse_y - inventory_context_y) / 22);
         if (_mouse_x >= inventory_context_x && _mouse_x < inventory_context_x + 104
         && _row >= 0 && _row < array_length(inventory_context_actions))
+        {
             inventory_context_menu_execute(inventory_context_actions[_row].key);
+            audio_play_sound(snd_interact, 0, false);
+        }
         inventory_context_menu_close();
     }
     return true;

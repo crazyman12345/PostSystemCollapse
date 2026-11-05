@@ -38,29 +38,7 @@ function trader_sell_item(_trader_key, _item_key)
     // GET PRICE
     // ==============================
 
-    var price =
-        trader_get_sell_price(
-            _item_key
-        );
-
-
-    // ==============================
-    // COMPLETE SALE
-    // ==============================
-
-    if (!stash_remove(_item_key, 1))
-    {
-        return false;
-    }
-
-    if (!stash_add("cash", price))
-    {
-        stash_add(_item_key, 1);
-        return false;
-    }
-
-
-    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade);
-
-    return true;
+    var _stored_items = stash_find_items(_item_key);
+    if (array_length(_stored_items) == 0) return false;
+    return trader_sell_stored_item(_trader_key, _stored_items[0]);
 }

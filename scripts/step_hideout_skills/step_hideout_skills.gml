@@ -3,11 +3,13 @@ function step_hideout_skills()
     var _mouse_x = device_mouse_x_to_gui(0);
     var _mouse_y = device_mouse_y_to_gui(0);
     var tab_x = 340;
+    var _hovered_tab = -1;
     for (var i = 0; i < array_length(hideout_skill_tabs); i++)
     {
         var tab_width = hideout_skill_tab_width(i);
-        if (_mouse_x >= tab_x && _mouse_x <= tab_x + tab_width && _mouse_y >= 80 && _mouse_y <= 138
-            && mouse_check_button_pressed(mb_left) && hideout_skills_index != i)
+        var _tab_hovered = _mouse_x >= tab_x && _mouse_x <= tab_x + tab_width && _mouse_y >= 80 && _mouse_y <= 138;
+        if (_tab_hovered) _hovered_tab = i;
+        if (_tab_hovered && mouse_check_button_pressed(mb_left) && hideout_skills_index != i)
         {
             hideout_skill_tree_store_view(hideout_skills_index);
             hideout_skills_index = i;
@@ -15,11 +17,12 @@ function step_hideout_skills()
             skill_tree_drag_active = false;
             skill_tree_dragging = false;
             hideout_skill_tree_load_view(hideout_skills_index);
-            scroll_sound();
+            audio_play_sound(snd_interact, 0, false);
             break;
         }
         tab_x += tab_width + 8;
     }
+    ui_hover_sound("hideout_skill_tabs", _hovered_tab == -1 ? "" : string(_hovered_tab));
 
     var selected_skill = hideout_skill_tabs[hideout_skills_index];
     var nodes = skill_node_get_nodes(selected_skill.key);
@@ -47,6 +50,24 @@ function step_hideout_skills()
     if (array_length(nodes) > 0)
     {
         hideout_skill_node_index = clamp(hideout_skill_node_index, 0, array_length(nodes) - 1);
+        var _hovered_node = -1;
+        if (mouse_in_tree)
+        {
+            for (var _hover_node_index = 0; _hover_node_index < array_length(nodes); _hover_node_index++)
+            {
+                var _hover_node = nodes[_hover_node_index];
+                var _hover_node_x = hideout_skill_tree_world_to_screen_x(hideout_skill_node_world_x(_hover_node), tree_viewport);
+                var _hover_node_y = hideout_skill_tree_world_to_screen_y(hideout_skill_node_world_y(_hover_node), tree_viewport);
+                var _hover_half_size = (_hover_node.unlock_type == SkillNodeUnlockType.INFO ? 30 : 34) * skill_tree_zoom;
+                if (point_in_rectangle(_mouse_x, _mouse_y, _hover_node_x - _hover_half_size, _hover_node_y - _hover_half_size,
+                    _hover_node_x + _hover_half_size, _hover_node_y + _hover_half_size))
+                {
+                    _hovered_node = _hover_node_index;
+                    break;
+                }
+            }
+        }
+        ui_hover_sound("hideout_skill_nodes", _hovered_node == -1 ? "" : string(_hovered_node));
         if (mouse_in_tree && mouse_check_button_pressed(mb_left))
         {
             skill_tree_drag_active = true;
@@ -56,19 +77,7 @@ function step_hideout_skills()
             skill_tree_drag_last_x = _mouse_x;
             skill_tree_drag_last_y = _mouse_y;
             skill_tree_pressed_node = -1;
-            for (var node_index = 0; node_index < array_length(nodes); node_index++)
-            {
-                var node = nodes[node_index];
-                var node_x = hideout_skill_tree_world_to_screen_x(hideout_skill_node_world_x(node), tree_viewport);
-                var node_y = hideout_skill_tree_world_to_screen_y(hideout_skill_node_world_y(node), tree_viewport);
-                var node_half_size = (node.unlock_type == SkillNodeUnlockType.INFO ? 30 : 34) * skill_tree_zoom;
-                if (point_in_rectangle(_mouse_x, _mouse_y, node_x - node_half_size, node_y - node_half_size,
-                    node_x + node_half_size, node_y + node_half_size))
-                {
-                    skill_tree_pressed_node = node_index;
-                    break;
-                }
-            }
+            skill_tree_pressed_node = _hovered_node;
         }
 
         if (skill_tree_drag_active && mouse_check_button(mb_left))
@@ -105,7 +114,7 @@ function step_hideout_skills()
                 if (point_in_rectangle(_mouse_x, _mouse_y, pressed_x - pressed_half_size, pressed_y - pressed_half_size,
                     pressed_x + pressed_half_size, pressed_y + pressed_half_size))
                 {
-                    if (hideout_skill_node_index != skill_tree_pressed_node) scroll_sound();
+                    if (hideout_skill_node_index != skill_tree_pressed_node) audio_play_sound(snd_interact, 0, false);
                     hideout_skill_node_index = skill_tree_pressed_node;
                 }
             }

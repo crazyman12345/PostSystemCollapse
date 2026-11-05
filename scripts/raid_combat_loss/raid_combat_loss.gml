@@ -37,6 +37,7 @@ function raid_combat_loss()
     stash.backpack.items = [];
     stash.backpack.grid_width = 0;
     stash.backpack.grid_height = 0;
+    stash.backpack.cell_limit = 0;
     stash.pockets.items = [];
     stash.equipped_bag_item = undefined;
     stash.equipped_weapon_item = undefined;

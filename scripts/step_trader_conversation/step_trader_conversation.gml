@@ -5,6 +5,14 @@ function step_trader_conversation()
         dialogue_close();
         return;
     }
+    if (variable_instance_exists(id, "quest_contract_popup_state"))
+    {
+        if (quest_contract_popup_state.active)
+        {
+            quest_contract_popup_step();
+            return;
+        }
+    }
     if (keyboard_check_pressed(vk_escape))
     {
         audio_play_sound(snd_interact, 0, false);
@@ -44,8 +52,8 @@ function step_trader_conversation()
     if (hover_index != -1 && hover_index != dialogue_response_index)
     {
         dialogue_response_index = hover_index;
-        scroll_sound();
     }
+    ui_hover_sound("dialogue_responses", hover_index == -1 ? "" : string(hover_index));
     if (dialogue_response_index < dialogue_response_scroll) dialogue_response_scroll = dialogue_response_index;
     else if (dialogue_response_index >= dialogue_response_scroll + visible_rows)
         dialogue_response_scroll = dialogue_response_index - visible_rows + 1;

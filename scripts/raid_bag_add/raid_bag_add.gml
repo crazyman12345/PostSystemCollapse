@@ -27,14 +27,20 @@ function raid_bag_add(_item_key, _quantity)
 function raid_bag_prepare_add(_item_key, _quantity)
 {
     var definition = item_get(_item_key);
-    var backpack = item_get(crew[raid.crew_index].bag);
+    if (is_undefined(stash.equipped_bag_item)) return undefined;
+    var backpack = armor_get_backpack_storage(stash.equipped_bag_item);
     if (_quantity <= 0 || is_undefined(definition) || is_undefined(backpack)) return undefined;
 
     var max_stack = 1;
     if (definition.stackable)
         max_stack = variable_struct_exists(definition, "max_stack") ? max(1, definition.max_stack) : 999999;
 
-    var storage = { grid_width: backpack.storage_width, grid_height: backpack.storage_height, items: array_concat(stash.backpack.items, []) };
+    var storage = {
+        grid_width: backpack.grid_width,
+        grid_height: backpack.grid_height,
+        cell_limit: backpack.cell_limit,
+        items: array_concat(stash.backpack.items, [])
+    };
     var additions = [];
     if (definition.stackable)
     {

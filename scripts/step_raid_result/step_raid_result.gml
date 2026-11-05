@@ -1,7 +1,5 @@
 function step_raid_result()
 {
-    if (!mouse_check_button_pressed(mb_left)) return;
-
     var _layout = raid_result_get_layout();
     var _mouse_x = device_mouse_x_to_gui(0);
     var _mouse_y = device_mouse_y_to_gui(0);
@@ -21,10 +19,14 @@ function step_raid_result()
         _layout.continue_right,
         _layout.button_bottom
     );
+    var _heal_enabled = trader_is_unlocked("sawbones");
+    var _hover_key = _heal_hovered && _heal_enabled ? "heal" : (_continue_hovered ? "continue" : "");
+    ui_hover_sound("raid_result_buttons", _hover_key);
+    if (!mouse_check_button_pressed(mb_left)) return;
 
     if (_heal_hovered)
     {
-        if (!trader_is_unlocked("sawbones")) return;
+        if (!_heal_enabled) return;
         var _quote = raid_result_get_treatment_quote();
         if (_quote.total > 0 && spend_cash(_quote.total))
         {
@@ -34,7 +36,11 @@ function step_raid_result()
         return;
     }
 
-    if (_continue_hovered) raid_result_continue();
+    if (_continue_hovered)
+    {
+        audio_play_sound(snd_interact, 0, false);
+        raid_result_continue();
+    }
 }
 
 function raid_result_get_layout()
@@ -80,11 +86,12 @@ function raid_result_get_treatment_quote()
         if (_limb.injury == LimbInjuryState.BLACKED_OUT) _blacked_limbs++;
     }
 
-    var _health_cost = ceil(_missing_health * 1.2);
-    var _heavy_cost = _heavy_bleeds * 90;
-    var _light_cost = _light_bleeds * 45;
-    var _fracture_cost = _fractures * 150;
-    var _blacked_cost = _blacked_limbs * 240;
+    var _cost_multiplier = 0.15;
+    var _health_cost = ceil(_missing_health * 1.2 * _cost_multiplier);
+    var _heavy_cost = ceil(_heavy_bleeds * 90 * _cost_multiplier);
+    var _light_cost = ceil(_light_bleeds * 45 * _cost_multiplier);
+    var _fracture_cost = ceil(_fractures * 150 * _cost_multiplier);
+    var _blacked_cost = ceil(_blacked_limbs * 240 * _cost_multiplier);
 
     return {
         missing_health: _missing_health,

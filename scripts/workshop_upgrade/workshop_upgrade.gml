@@ -20,6 +20,7 @@ function workshop_upgrade(_bench_key)
         quest_event(QuestObjectiveType.REPAIR_BENCH, _bench_key, 1);
         if (_bench_key == "salvage_bench") progress_set_flag("salvage_bench_repaired", true);
     }
+    audio_play_sound(snd_level_up, 0, false);
     save_mark_dirty();
     return true;
 }

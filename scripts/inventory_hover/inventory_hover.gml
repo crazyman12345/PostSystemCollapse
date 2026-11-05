@@ -37,12 +37,15 @@ function inventory_hover_finish()
 
     if (is_holding || is_undefined(inventory_hover_candidate))
     {
+        ui_hover_sound("inventory_items", "");
         inventory_hover_item = undefined;
         inventory_hover_time = 0;
         return;
     }
 
     var candidate_key = inventory_hover_candidate.item_key;
+    var _hover_key = candidate_key + ":" + string(inventory_hover_candidate_left) + ":" + string(inventory_hover_candidate_top);
+    ui_hover_sound("inventory_items", _hover_key);
     var current_key = is_undefined(inventory_hover_item) ? "" : inventory_hover_item.item_key;
     var same_item = !is_undefined(inventory_hover_item)
         && current_key == candidate_key

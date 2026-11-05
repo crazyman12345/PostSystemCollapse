@@ -15,7 +15,7 @@ function trader_sell_stored_item(_trader_key, _stored_item, _storage = stash, _q
     if (!_found || !is_real(_quantity) || _quantity != floor(_quantity)
     || _quantity <= 0 || _quantity > _stored_item.quantity) return false;
 
-    var _unit_price = trader_get_sell_price(_stored_item.item_key);
+    var _unit_price = trader_get_sell_price(_stored_item);
     if (_unit_price <= 0 || _quantity > floor(2147483647 / _unit_price)) return false;
     var _price = _unit_price * _quantity;
 
@@ -35,6 +35,6 @@ function trader_sell_stored_item(_trader_key, _stored_item, _storage = stash, _q
     }
 
     save_mark_dirty();
-    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade * _quantity);
+    player_skill_add_xp("scavenging", skill_xp_awards.scavenging_trade * _price, false);
     return true;
 }

@@ -1,12 +1,19 @@
 function inventory_character_tab_input(_panel_left)
 {
-    if (!mouse_check_button_pressed(mb_left)) return false;
     var _mouse_x = device_mouse_x_to_gui(0);
     var _mouse_y = device_mouse_y_to_gui(0);
     var _left = _panel_left + 20;
     var _top = 98;
     var _tab_width = 68;
     var _tab_height = 26;
+    var _hovered_tab = -1;
+    if (_mouse_y >= _top && _mouse_y < _top + _tab_height)
+    {
+        if (_mouse_x >= _left && _mouse_x < _left + _tab_width) _hovered_tab = 0;
+        else if (_mouse_x >= _left + _tab_width + 6 && _mouse_x < _left + (_tab_width * 2) + 6) _hovered_tab = 1;
+    }
+    ui_hover_sound("inventory_character_tabs", _hovered_tab == -1 ? "" : string(_hovered_tab));
+    if (!mouse_check_button_pressed(mb_left)) return false;
 
     if (_mouse_y < _top || _mouse_y >= _top + _tab_height) return false;
     if (_mouse_x >= _left && _mouse_x < _left + _tab_width)
@@ -16,6 +23,6 @@ function inventory_character_tab_input(_panel_left)
     else
         return false;
 
-    audio_play_sound(snd_menu, 0, false);
+    audio_play_sound(snd_interact, 0, false);
     return true;
 }

@@ -7,6 +7,7 @@ function trader_stock_grid_build(_trader_key, _grid_width)
     var _max_rows = 1;
     for (var _i = 0; _i < array_length(_trader.stock); _i++)
     {
+        if (!trader_stock_entry_is_unlocked(_trader_key, _trader.stock[_i])) continue;
         var _definition = item_get(_trader.stock[_i].item_key);
         if (!is_undefined(_definition)) _max_rows += max(_definition.grid_width, _definition.grid_height);
     }
@@ -17,6 +18,7 @@ function trader_stock_grid_build(_trader_key, _grid_width)
     for (var _stock_index = 0; _stock_index < array_length(_trader.stock); _stock_index++)
     {
         var _stock_entry = _trader.stock[_stock_index];
+        if (!trader_stock_entry_is_unlocked(_trader_key, _stock_entry)) continue;
         var _definition = item_get(_stock_entry.item_key);
         if (is_undefined(_definition)) continue;
 

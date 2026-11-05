@@ -12,6 +12,7 @@ function save_apply_data(_data)
     stash.backpack.items = [];
     stash.backpack.grid_width = max(0, save_number(backpack_data, "grid_width", 0));
     stash.backpack.grid_height = max(0, save_number(backpack_data, "grid_height", 0));
+    stash.backpack.cell_limit = stash.backpack.grid_width * stash.backpack.grid_height;
 
     var pockets_data = save_value(inventory, "pockets", {});
     stash.pockets.items = [];
@@ -46,8 +47,7 @@ function save_apply_data(_data)
         var bag_definition = item_get(member.bag);
         if (!is_undefined(bag_definition))
         {
-            stash.backpack.grid_width = bag_definition.storage_width;
-            stash.backpack.grid_height = bag_definition.storage_height;
+            armor_sync_backpack_storage(stash.equipped_bag_item);
             save_apply_items(save_value(backpack_data, "items", []), stash.backpack);
         }
     }
@@ -207,7 +207,8 @@ function save_item_from_data(_data)
         item.tier = variable_struct_exists(definition, "tier") ? definition.tier : 1;
         var _saved_armor_rarity = save_value(state, "rarity", "common");
         var _saved_armor_modifiers = save_value(state, "modifiers", []);
-        armor_instance_restore_roll(item, _saved_armor_rarity, _saved_armor_modifiers);
+        var _saved_armor_modifier_values = save_value(state, "modifier_values", {});
+        armor_instance_restore_roll(item, _saved_armor_rarity, _saved_armor_modifiers, _saved_armor_modifier_values);
     }
     var _saved_instance_id = save_value(state, "instance_id", undefined);
     if (!is_undefined(_saved_instance_id)) item.instance_id = _saved_instance_id;
@@ -284,6 +285,7 @@ function save_resolve_unfinished_raid()
     stash.backpack.items = [];
     stash.backpack.grid_width = 0;
     stash.backpack.grid_height = 0;
+    stash.backpack.cell_limit = 0;
     stash.pockets.items = [];
     stash.equipped_bag_item = undefined;
     stash.equipped_weapon_item = undefined;

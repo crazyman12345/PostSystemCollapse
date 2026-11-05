@@ -139,6 +139,7 @@ function save_item_to_data(_item)
         armor_instance_initialize(_item, false);
         _state.rarity = _item.rarity;
         _state.modifiers = array_concat(_item.modifiers, []);
+        _state.modifier_values = armor_modifier_values_copy(_item.modifier_values);
     }
     if (variable_struct_exists(_item, "instance_id")) _state.instance_id = _item.instance_id;
     if (variable_struct_exists(_item, "durability")) _state.durability = _item.durability;

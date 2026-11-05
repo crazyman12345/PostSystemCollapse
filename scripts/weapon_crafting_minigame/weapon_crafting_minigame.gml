@@ -1,5 +1,9 @@
 function weapon_crafting_minigame_init()
 {
+    if (variable_instance_exists(id, "crafting_minigame_state")
+    && is_struct(crafting_minigame_state))
+        weapon_crafting_surfaces_free(crafting_minigame_state);
+
     crafting_minigame_state = {
         active: false,
         phase: 0,
@@ -8,6 +12,10 @@ function weapon_crafting_minigame_init()
         outline: undefined,
         checkpoint_hits: [],
         checkpoint_completed: 0,
+        cut_start_set: false,
+        cut_start_x: 0,
+        cut_start_y: 0,
+        cut_returned: false,
         cut_trail: [],
         cut_active: false,
         plate_chunks: [],
@@ -22,9 +30,37 @@ function weapon_crafting_minigame_init()
         shake: 0,
         sparks: [],
         spark_emit_timer: 0,
+        scissors_animation_frame: 0,
+        spool_animation_active: false,
+        spool_animation_frame: 0,
+        hammer_animation_active: false,
+        hammer_animation_frame: 0,
+        hammer_marker_index: -1,
+        hammer_impact_x: 0,
+        hammer_impact_y: 0,
         final_score: 0,
-        crafted_item: undefined
+        crafted_item: undefined,
+        ingredients_paid: false,
+        plate_surface: -1,
+        lighting_surface: -1,
+        emissive_surface: -1,
+        bloom_blur_surface: -1,
+        bloom_surface: -1
     };
+}
+
+function weapon_crafting_surfaces_free(_game)
+{
+    if (variable_struct_exists(_game, "plate_surface"))
+        _game.plate_surface = graphics_settings_release_surface(_game.plate_surface);
+    if (variable_struct_exists(_game, "lighting_surface"))
+        _game.lighting_surface = graphics_settings_release_surface(_game.lighting_surface);
+    if (variable_struct_exists(_game, "emissive_surface"))
+        _game.emissive_surface = graphics_settings_release_surface(_game.emissive_surface);
+    if (variable_struct_exists(_game, "bloom_blur_surface"))
+        _game.bloom_blur_surface = graphics_settings_release_surface(_game.bloom_blur_surface);
+    if (variable_struct_exists(_game, "bloom_surface"))
+        _game.bloom_surface = graphics_settings_release_surface(_game.bloom_surface);
 }
 
 function weapon_crafting_outline_get(_outline_key)
@@ -58,6 +94,45 @@ function weapon_crafting_outline_get(_outline_key)
     var _vertices = _process == "metal"
         ? weapon_crafting_gun_vertices(_outline_key)
         : weapon_crafting_shape_vertices(_shape);
+    var _display_scale = 1;
+    if (_process == "metal")
+    {
+        var _definition = item_get(_outline_key);
+        if (is_struct(_definition) && variable_struct_exists(_definition, "weapon_draw_width"))
+        {
+            var _vertex_left = 100000;
+            var _vertex_right = -100000;
+            for (var _vertex_index = 0; _vertex_index < array_length(_vertices); _vertex_index++)
+            {
+                _vertex_left = min(_vertex_left, _vertices[_vertex_index].x);
+                _vertex_right = max(_vertex_right, _vertices[_vertex_index].x);
+            }
+            var _base_width = max(1, _vertex_right - _vertex_left);
+            var _target_width = clamp(_definition.weapon_draw_width * 12, 240, 650);
+            _display_scale = _target_width / _base_width;
+            for (var _vertex_index = 0; _vertex_index < array_length(_vertices); _vertex_index++)
+            {
+                _vertices[_vertex_index].x *= _display_scale;
+                _vertices[_vertex_index].y *= _display_scale;
+            }
+        }
+    }
+    else
+    {
+        var _vertex_top = 100000;
+        var _vertex_bottom = -100000;
+        for (var _vertex_index = 0; _vertex_index < array_length(_vertices); _vertex_index++)
+        {
+            _vertex_top = min(_vertex_top, _vertices[_vertex_index].y);
+            _vertex_bottom = max(_vertex_bottom, _vertices[_vertex_index].y);
+        }
+        _display_scale = min(1, 330 / max(1, _vertex_bottom - _vertex_top));
+        for (var _vertex_index = 0; _vertex_index < array_length(_vertices); _vertex_index++)
+        {
+            _vertices[_vertex_index].x *= _display_scale;
+            _vertices[_vertex_index].y *= _display_scale;
+        }
+    }
     var _checkpoints = [];
     for (var _i = 0; _i < array_length(_vertices) - 1; _i++)
     {
@@ -70,17 +145,28 @@ function weapon_crafting_outline_get(_outline_key)
             array_push(_checkpoints, { x: lerp(_from.x, _to.x, _amount), y: lerp(_from.y, _to.y, _amount) });
         }
     }
+    var _hammer_markers = _process == "metal"
+        ? weapon_crafting_gun_markers(_shape, _vertices)
+        : weapon_crafting_shape_markers(_shape);
+    if (_process != "metal")
+    {
+        for (var _marker_index = 0; _marker_index < array_length(_hammer_markers); _marker_index++)
+        {
+            _hammer_markers[_marker_index].x *= _display_scale;
+            _hammer_markers[_marker_index].y *= _display_scale;
+        }
+    }
     return {
         key: _outline_key,
         result_sprite: _sprite,
         shape: _shape,
         process: _process,
+        display_scale: _display_scale,
+        refine_radius: _process == "metal" ? max(60, 115 * _display_scale) : 115 * _display_scale,
         vertices: _vertices,
         checkpoints: _checkpoints,
-        hammer_markers: _process == "metal"
-            ? weapon_crafting_gun_markers(_shape, _vertices)
-            : weapon_crafting_shape_markers(_shape),
-        tolerance: _process == "fabric" ? 52 : 46
+        hammer_markers: _hammer_markers,
+        tolerance: _process == "fabric" ? 52 : max(24, 46 * _display_scale)
     };
 }
 
@@ -357,6 +443,9 @@ function weapon_crafting_plate_chunks_create(_layout, _outline)
     var _chunks = [];
     var _columns = 10;
     var _rows = 7;
+    var _textured = true;
+    var _texture_sprite = _outline.process == "metal" ? spr_metal_plate : spr_cloth_sheet;
+    var _texture_uvs = texture_get_uvs(sprite_get_texture(_texture_sprite, 0));
     var _chunk_width = (_layout.plate_right - _layout.plate_left) / _columns;
     var _chunk_height = (_layout.plate_bottom - _layout.plate_top) / _rows;
     for (var _row = 0; _row < _rows; _row++)
@@ -383,7 +472,13 @@ function weapon_crafting_plate_chunks_create(_layout, _outline)
                 rotation: 0,
                 rotation_speed: random_range(-7, 7),
                 life: random_range(48, 78),
-                max_life: 78
+                max_life: 78,
+                textured: _textured,
+                texture_sprite: _texture_sprite,
+                u1: _textured ? lerp(_texture_uvs[0], _texture_uvs[2], _column / _columns) : 0,
+                v1: _textured ? lerp(_texture_uvs[1], _texture_uvs[3], _row / _rows) : 0,
+                u2: _textured ? lerp(_texture_uvs[0], _texture_uvs[2], (_column + 1) / _columns) : 0,
+                v2: _textured ? lerp(_texture_uvs[1], _texture_uvs[3], (_row + 1) / _rows) : 0
             });
         }
     }
@@ -392,22 +487,50 @@ function weapon_crafting_plate_chunks_create(_layout, _outline)
 
 function weapon_crafting_layout()
 {
-    var _left = 340;
-    var _right = display_get_gui_width() - 20;
-    var _top = 82;
-    var _bottom = display_get_gui_height() - 20;
+    var _left = 0;
+    var _right = display_get_gui_width();
+    var _top = 0;
+    var _bottom = display_get_gui_height();
+    var _visible_left = 244;
+    var _visible_top = 484;
+    var _visible_right = 1012;
+    var _visible_bottom = 984;
+    var _bench_scale = min(
+        (_right - _left - 40) / (_visible_right - _visible_left),
+        (_bottom - _top - 40) / (_visible_bottom - _visible_top));
+    var _bench_left = ((_left + _right) * 0.5)
+        - ((_visible_left + _visible_right) * 0.5) * _bench_scale;
+    var _bench_top = ((_top + _bottom) * 0.5)
+        - ((_visible_top + _visible_bottom) * 0.5) * _bench_scale
+        + (_bottom - _top) * 0.12;
+    var _plate_left = _bench_left + 344 * _bench_scale;
+    var _plate_right = _bench_left + 912 * _bench_scale;
+    var _plate_top = _bench_top + 512 * _bench_scale;
+    var _plate_bottom = _bench_top + 716 * _bench_scale;
     return {
         left: _left,
         right: _right,
         top: _top,
         bottom: _bottom,
-        center_x: (_left + _right) * 0.5,
-        center_y: (_top + _bottom) * 0.5 + 20,
-        plate_left: _left + 90,
-        plate_right: _right - 90,
-        plate_top: _top + 105,
-        plate_bottom: _bottom - 105
+        center_x: (_plate_left + _plate_right) * 0.5,
+        center_y: (_plate_top + _plate_bottom) * 0.5,
+        plate_left: _plate_left,
+        plate_right: _plate_right,
+        plate_top: _plate_top,
+        plate_bottom: _plate_bottom,
+        bench_left: _bench_left,
+        bench_top: _bench_top,
+        bench_scale: _bench_scale
     };
+}
+
+function weapon_crafting_back_button_rect()
+{
+    var _size = 52;
+    var _margin = 20;
+    var _right = display_get_gui_width() - _margin;
+    var _top = _margin;
+    return { left: _right - _size, top: _top, right: _right, bottom: _top + _size };
 }
 
 function weapon_crafting_output_fits(_item_key)
@@ -430,7 +553,8 @@ function weapon_crafting_minigame_start(_skill_key, _recipe)
     if (is_undefined(_outline) || !recipe_can_craft(_skill_key, _recipe)) return false;
     if (!weapon_crafting_output_fits(_recipe.output.item_key)) return false;
 
-    for (var _i = 0; _i < array_length(_recipe.ingredients); _i++)
+    var _ingredients_paid = !debug_free_craft;
+    if (_ingredients_paid) for (var _i = 0; _i < array_length(_recipe.ingredients); _i++)
     {
         var _ingredient = _recipe.ingredients[_i];
         stash_remove(_ingredient.item_key, _ingredient.quantity);
@@ -442,6 +566,7 @@ function weapon_crafting_minigame_start(_skill_key, _recipe)
     crafting_minigame_state.skill_key = _skill_key;
     crafting_minigame_state.recipe = _recipe;
     crafting_minigame_state.outline = _outline;
+    crafting_minigame_state.ingredients_paid = _ingredients_paid;
     for (var _marker = 0; _marker < array_length(_outline.hammer_markers); _marker++)
         array_push(crafting_minigame_state.hammer_hits, false);
     for (var _checkpoint = 0; _checkpoint < array_length(_outline.checkpoints); _checkpoint++)
@@ -455,7 +580,7 @@ function weapon_crafting_minigame_start(_skill_key, _recipe)
 function weapon_crafting_minigame_cancel()
 {
     var _recipe = crafting_minigame_state.recipe;
-    if (is_struct(_recipe))
+    if (is_struct(_recipe) && crafting_minigame_state.ingredients_paid)
     {
         for (var _i = 0; _i < array_length(_recipe.ingredients); _i++)
         {
@@ -506,5 +631,6 @@ function weapon_crafting_minigame_finish()
     _game.phase = 3;
     if (variable_struct_exists(_game.recipe, "xp") && _game.recipe.xp > 0)
         player_skill_add_xp(_game.skill_key, _game.recipe.xp);
+    audio_play_sound(snd_level_up, 0, false);
     save_mark_dirty();
 }

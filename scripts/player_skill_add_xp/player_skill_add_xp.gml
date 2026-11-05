@@ -1,7 +1,13 @@
-function player_skill_add_xp(_skill_key, _amount)
+function player_skill_add_xp(_skill_key, _amount, _apply_leveling_rate = true)
 {
     if (!variable_struct_exists(player_skills, _skill_key))
         return false;
+    if (_apply_leveling_rate) _amount *= 1.3;
+    if (_skill_key == "scavenging")
+    {
+        var _bag = armor_get_equipped_bag_stats();
+        if (!is_undefined(_bag)) _amount *= _bag.scavenging_xp_multiplier;
+    }
     var skill =
         variable_struct_get(
             player_skills,

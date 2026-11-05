@@ -78,20 +78,18 @@ function draw_trader_conversation()
         var row_bottom = response_y + row * row_height + 43;
         terminal_button(1010, row_top, right - 48, row_bottom,
             string(index + 1) + ". " + responses[index].text, selected);
-        if (string_pos("claim:", responses[index].target) == 1)
-        {
-            draw_set_halign(fa_right);
-            draw_set_color(c_red);
-            draw_text(right - 65, response_y + row * row_height, "?");
-            draw_set_halign(fa_left);
-        }
+        var quest_marker = "";
+        if (string_pos("claim:", responses[index].target) == 1) quest_marker = "?";
         else if (string_pos("available:", responses[index].target) == 1
-        && dialogue_trader_has_available_quest(current_trader_key))
+        && dialogue_trader_has_available_quest(current_trader_key)) quest_marker = "!";
+        if (quest_marker != "")
         {
-            draw_set_halign(fa_right);
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_middle);
             draw_set_color(c_red);
-            draw_text(right - 65, response_y + row * row_height, "!");
+            draw_text_transformed(right - 77, (row_top + row_bottom) * 0.5, quest_marker, 1.75, 1.75, 0);
             draw_set_halign(fa_left);
+            draw_set_valign(fa_top);
         }
     }
 }
@@ -134,12 +132,17 @@ function draw_messages_all()
         }
         draw_set_color(global.ui_interactive_color);
         draw_text(left + 38, row_top, string_upper(trader.name));
-        if (dialogue_trader_has_ready_quest(trader_keys[i]))
+        var quest_marker = "";
+        if (dialogue_trader_has_ready_quest(trader_keys[i])) quest_marker = "?";
+        else if (dialogue_trader_has_available_quest(trader_keys[i])) quest_marker = "!";
+        if (quest_marker != "")
         {
-            draw_set_halign(fa_right);
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_middle);
             draw_set_color(c_red);
-            draw_text(divider - 48, row_top, "?");
+            draw_text_transformed(divider - 61, row_top + 30, quest_marker, 1.75, 1.75, 0);
             draw_set_halign(fa_left);
+            draw_set_valign(fa_top);
         }
         draw_set_color(global.ui_text_color);
         draw_text(left + 58, row_top + 36, trader.title);

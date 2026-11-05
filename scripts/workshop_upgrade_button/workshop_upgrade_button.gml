@@ -15,6 +15,7 @@ function workshop_upgrade_button(_key, _x1, _top, _x2, _draw, _materials_bounds 
     var bottom = top + 48;
     var enabled = !maxed && workshop_can_upgrade(_key);
     var hovered = point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), left, top, right, bottom);
+    ui_hover_sound("workshop_upgrade:" + _key, enabled && hovered ? "button" : "");
 
     if (_draw)
     {

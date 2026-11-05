@@ -3,10 +3,16 @@ function step_main_menu(){
     {
         var _credits_mouse_x = device_mouse_x_to_gui(0);
         var _credits_mouse_y = device_mouse_y_to_gui(0);
+        var _back_hovered = point_in_rectangle(_credits_mouse_x, _credits_mouse_y, display_get_gui_width() - 180, display_get_gui_height() - 80, display_get_gui_width() - 20, display_get_gui_height() - 20);
+        ui_hover_sound("credits_back", _back_hovered ? "back" : "");
         var _back_clicked = mouse_check_button_pressed(mb_left)
-            && point_in_rectangle(_credits_mouse_x, _credits_mouse_y, display_get_gui_width() - 180, display_get_gui_height() - 80, display_get_gui_width() - 20, display_get_gui_height() - 20);
+            && _back_hovered;
 
-        if (keyboard_check_pressed(vk_escape) || _back_clicked) main_menu_credits_open = false;
+        if (keyboard_check_pressed(vk_escape) || _back_clicked)
+        {
+            if (_back_clicked) audio_play_sound(snd_interact, 0, false);
+            main_menu_credits_open = false;
+        }
         return;
     }
 
@@ -15,6 +21,11 @@ function step_main_menu(){
         var mouse_x_gui = device_mouse_x_to_gui(0);
         var mouse_y_gui = device_mouse_y_to_gui(0);
         var clicked = mouse_check_button_pressed(mb_left);
+        var _setup_hover = "";
+        if (point_in_rectangle(mouse_x_gui, mouse_y_gui, 760, 530, 1160, 590)) _setup_hover = "name";
+        else if (point_in_rectangle(mouse_x_gui, mouse_y_gui, 760, 625, 1160, 675)) _setup_hover = "intro";
+        else if (point_in_rectangle(mouse_x_gui, mouse_y_gui, 760, 710, 1160, 770)) _setup_hover = "begin";
+        ui_hover_sound("new_game_setup", _setup_hover);
 
         if (keyboard_check_pressed(vk_escape))
         {
@@ -24,9 +35,15 @@ function step_main_menu(){
         }
 
         if (clicked && point_in_rectangle(mouse_x_gui, mouse_y_gui, 760, 530, 1160, 590))
+        {
             keyboard_string = save_new_game_name;
+            audio_play_sound(snd_interact, 0, false);
+        }
         if (clicked && point_in_rectangle(mouse_x_gui, mouse_y_gui, 760, 625, 1160, 675))
+        {
             save_new_game_skip_intro = !save_new_game_skip_intro;
+            audio_play_sound(snd_interact, 0, false);
+        }
 
         save_new_game_name = string_copy(keyboard_string, 1, 20);
         var begin_clicked = clicked && point_in_rectangle(mouse_x_gui, mouse_y_gui, 760, 710, 1160, 770);
@@ -82,12 +99,15 @@ function step_main_menu(){
         var _gui_width = display_get_gui_width();
         var _mouse_x = device_mouse_x_to_gui(0);
         var _mouse_y = device_mouse_y_to_gui(0);
+        var _mute_hovered = point_in_rectangle(_mouse_x, _mouse_y, _gui_width - 40, 38, _gui_width - 20, 58);
+        ui_hover_sound("main_menu_mute", _mute_hovered ? "mute" : "");
 
         if (mouse_check_button_pressed(mb_left)
-        && point_in_rectangle(_mouse_x, _mouse_y, _gui_width - 40, 38, _gui_width - 20, 58))
+        && _mute_hovered)
         {
             music_volume = 0;
             audio_sound_gain(music_instance, 0, 0);
+            audio_play_sound(snd_interact, 0, false);
         }
 
         // Enter = Select

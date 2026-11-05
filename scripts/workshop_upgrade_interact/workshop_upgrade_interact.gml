@@ -5,13 +5,13 @@ function workshop_upgrade_interact(_key)
 
     if (level >= bench.max_level)
     {
-        return;
+        return false;
     }
 
     if (!workshop_can_upgrade(_key))
     {
-        return;
+        return false;
     }
 
-    workshop_upgrade(_key);
+    return workshop_upgrade(_key);
 }

@@ -10,6 +10,29 @@ function step_trader_buy()
 
     var _mouse_x = device_mouse_x_to_gui(0);
     var _mouse_y = device_mouse_y_to_gui(0);
+    var _back_hovered = point_in_rectangle(_mouse_x, _mouse_y, 1735, 55, 1870, 101);
+    ui_hover_sound("trader_shop_back", _back_hovered ? "back" : "");
+    if (mouse_check_button_pressed(mb_left) && _back_hovered)
+    {
+        if (!is_undefined(stash.held_item))
+        {
+            array_push(stash.items, stash.held_item);
+            stash.held_item = undefined;
+            stash.held_source = "";
+        }
+        if (trader_quantity_focused) keyboard_string = trader_quantity_keyboard_restore;
+        trader_quantity_focused = false;
+        inventory_context_menu_close();
+        trader_mode = TraderMode.SELECT;
+        menu_index = 0;
+        trader_stock_layout = undefined;
+        trader_stock_scroll_row = 0;
+        trader_selected_stock_index = -1;
+        trader_hovered_stock_index = -1;
+        trader_purchase_quantity_text = "1";
+        audio_play_sound(snd_interact, 0, false);
+        return;
+    }
     var _stock_left = 35;
     var _stock_top = 260;
     var _stock_cell = 55;
@@ -35,10 +58,22 @@ function step_trader_buy()
             stash.held_item = undefined;
             stash.held_source = "";
             save_mark_dirty();
+            audio_play_sound(snd_interact, 0, false);
             return;
         }
 
         var _held_definition = item_get(stash.held_item.item_key);
+        var _held_hover_target = "";
+        if (_mouse_over_stock && trader_will_buy_item(current_trader_key, stash.held_item.item_key))
+            _held_hover_target = "sell";
+        else if (_mouse_over_stash)
+        {
+            var _hover_stash_x = floor((_mouse_x - _stash_left) / _stash_cell);
+            var _hover_stash_y = floor((_mouse_y - _stash_top) / _stash_cell);
+            if (inventory_can_place_item(stash.held_item, _hover_stash_x, _hover_stash_y, stash))
+                _held_hover_target = "stash:" + string(_hover_stash_x) + ":" + string(_hover_stash_y);
+        }
+        ui_hover_sound("trader_held_targets", _held_hover_target);
         if (keyboard_check_pressed(ord("R")) && !is_undefined(_held_definition))
         {
             if (_held_definition.grid_width == _held_definition.grid_height)
@@ -51,7 +86,8 @@ function step_trader_buy()
         {
             var _sold_item = stash.held_item;
             array_push(stash.items, _sold_item);
-            trader_sell_stored_item(current_trader_key, _sold_item, stash, _sold_item.quantity);
+            if (trader_sell_stored_item(current_trader_key, _sold_item, stash, _sold_item.quantity))
+                audio_play_sound(snd_interact, 0, false);
             stash.held_item = undefined;
             stash.held_source = "";
             return;
@@ -82,6 +118,7 @@ function step_trader_buy()
                     stash.held_source = "";
                 }
                 save_mark_dirty();
+                audio_play_sound(snd_interact, 0, false);
                 return;
             }
         }
@@ -104,6 +141,7 @@ function step_trader_buy()
             stash.held_item = _picked_item;
             stash.held_source = "stash";
             save_mark_dirty();
+            audio_play_sound(snd_interact, 0, false);
         }
         return;
     }
@@ -116,9 +154,11 @@ function step_trader_buy()
     }
 
     var _selection_changed = false;
+    var _mouse_selection_changed = false;
     if (mouse_check_button_pressed(mb_left) && !is_undefined(_hovered))
     {
         _selection_changed = trader_selected_stock_index != _hovered.stock_index;
+        _mouse_selection_changed = _selection_changed;
         trader_selected_stock_index = _hovered.stock_index;
     }
     else if (array_length(_trader.stock) > 0)
@@ -137,6 +177,8 @@ function step_trader_buy()
 
     if (_selection_changed)
     {
+        if (_mouse_selection_changed) audio_play_sound(snd_interact, 0, false);
+        else scroll_sound();
         trader_purchase_quantity_text = "1";
         if (trader_quantity_focused) keyboard_string = trader_purchase_quantity_text;
     }
@@ -159,6 +201,7 @@ function step_trader_buy()
     }
     var _quantity_box = point_in_rectangle(_mouse_x, _mouse_y,
         871, 570 + _details_offset, 1016, 621 + _details_offset);
+    var _quantity_enabled = !is_undefined(_selected_entry) && is_undefined(_selected_entry.item_instance);
     if (mouse_check_button_pressed(mb_left))
     {
         if (_quantity_box && !is_undefined(_selected_entry) && is_undefined(_selected_entry.item_instance))
@@ -166,6 +209,7 @@ function step_trader_buy()
             if (!trader_quantity_focused) trader_quantity_keyboard_restore = keyboard_string;
             trader_quantity_focused = true;
             keyboard_string = trader_purchase_quantity_text;
+            audio_play_sound(snd_interact, 0, false);
         }
         else if (trader_quantity_focused)
         {
@@ -188,6 +232,9 @@ function step_trader_buy()
     }
 
     var _deal_button = point_in_rectangle(_mouse_x, _mouse_y, 852, 114, 1002, 184);
+    var _trader_control_hover = _deal_button && !is_undefined(_selected_entry)
+        ? "deal" : (_quantity_box && _quantity_enabled ? "quantity" : "");
+    ui_hover_sound("trader_buy_controls", _trader_control_hover);
     var _confirm = mouse_check_button_pressed(mb_left) && _deal_button;
     if (trader_quantity_focused && keyboard_check_pressed(vk_enter)) _confirm = true;
     if (_confirm && !is_undefined(_selected_entry))

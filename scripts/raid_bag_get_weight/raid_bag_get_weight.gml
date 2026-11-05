@@ -1,6 +1,11 @@
 function raid_bag_get_weight()
 {
-    var total_weight = 0;
+    var _bag = armor_get_equipped_bag_stats();
+    var total_weight = is_undefined(_bag) ? 0 : _bag.weight;
+    var _chest = armor_get_equipped_chest_stats();
+    var _head = armor_get_equipped_head_stats();
+    if (!is_undefined(_chest)) total_weight += _chest.weight;
+    if (!is_undefined(_head)) total_weight += _head.weight;
     var containers = [stash.backpack, stash.pockets, stash.secure_container];
     for (var container_index = 0; container_index < array_length(containers); container_index++)
     {
@@ -13,7 +18,12 @@ function raid_bag_get_weight()
                 definition = weapon_get_effective_stats(item);
             else if (!is_undefined(definition) && armor_category_is_equipment(definition.category))
                 definition = armor_get_effective_stats(item);
-            if (!is_undefined(definition)) total_weight += definition.weight * item.quantity;
+            if (!is_undefined(definition))
+            {
+                var _weight = definition.weight * item.quantity;
+                if (container_index == 0 && !is_undefined(_bag)) _weight *= _bag.stored_weight_multiplier;
+                total_weight += _weight;
+            }
         }
     }
     return total_weight;

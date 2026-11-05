@@ -120,6 +120,7 @@ function ghost_black_market_get_price(_item)
                 _baseline = max(_baseline, _trader.stock[_stock_index].price);
         }
     }
+    _baseline *= weapon_rarity_get(_item.rarity).value_multiplier;
 
     var _rarity_keys = ["common", "rare", "very_rare", "epic", "legendary"];
     var _rarity_index = 0;

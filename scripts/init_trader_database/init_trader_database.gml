@@ -123,13 +123,23 @@ function init_trader_database()
 
         stock : [
             {
+                item_key : "pipe_pistol",
+                price : 50
+            },
+
+            {
                 item_key : "m1911",
                 price : 300
             },
 						
 			{
+				item_key : "ppsh_41",
+				price : 400
+			},
+
+			{
 				item_key : "uzi",
-				price : 400		
+				price : 650
 			},
 			
 			{
@@ -148,6 +158,11 @@ function init_trader_database()
             {
                 item_key : "ammo_9mm",
                 price : 3
+            },
+
+            {
+                item_key : "ammo_762x25",
+                price : 4
             },
 
             {

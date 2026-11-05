@@ -54,6 +54,11 @@ function quest_accept(_quest_key)
     progress.state = QuestState.ACTIVE;
     if (tracked_quest_key == "") tracked_quest_key = _quest_key;
     quest_notification_add("QUEST ACCEPTED", definition.title);
+    if (_quest_key == "ghost_bones_bounty" && progress_get_flag("prototype_boss_dead"))
+    {
+        quest_add_objective_progress(definition, progress, 0, definition.objectives[0].amount);
+        quest_update_ready_state(definition, progress);
+    }
     save_mark_dirty();
     return true;
 }
@@ -89,7 +94,9 @@ function quest_event(_objective_type, _target, _amount = 1)
             if (_objective_type == QuestObjectiveType.COLLECT_ITEM
             && objective.type == QuestObjectiveType.EXTRACT_WITH_ITEM
             && objective.target == _target
-            && progress.objectives[objective_index] < objective.amount)
+            && progress.objectives[objective_index] < objective.amount
+            && raid_collected < objective.amount
+            && raid_collected + _amount >= objective.amount)
             {
                 quest_notification_add("ITEM ACQUIRED", "EXTRACT TO COMPLETE",
                     "extract:" + definition.key + ":" + string(objective_index));
@@ -117,9 +124,11 @@ function quest_add_objective_progress(_definition, _progress, _objective_index, 
     if (current <= previous) return false;
     _progress.objectives[_objective_index] = current;
     var complete = current >= objective.amount;
-    var title = complete ? "OBJECTIVE COMPLETE" : "OBJECTIVE UPDATED";
-    var message = objective.text + " " + string(current) + "/" + string(objective.amount);
-    quest_notification_add(title, message, "objective:" + _definition.key + ":" + string(_objective_index));
+    if (complete)
+    {
+        var message = objective.text + " " + string(current) + "/" + string(objective.amount);
+        quest_notification_add("OBJECTIVE COMPLETE", message, "objective:" + _definition.key + ":" + string(_objective_index));
+    }
     save_mark_dirty();
     return true;
 }
@@ -354,10 +363,13 @@ function quest_turn_in(_quest_key)
         var reward_name = is_undefined(reward_definition) ? reward.item_key : reward_definition.name;
         reward_message += "\n    " + reward_name + " x" + string(reward.quantity);
     }
+    var reputation_reward = variable_struct_exists(definition, "reputation") ? definition.reputation : 5;
+    if (reputation_reward > 0) reward_message += "\n    " + string(reputation_reward) + " " + string_upper(trader_get(definition.trader_key).name) + " REPUTATION";
     quest_notification_add("QUEST COMPLETED", reward_message, "completed:" + definition.key);
     quest_refresh_states();
     if (_quest_key == "test_field_supplies")
-        quest_notification_add("NEW TRADER WORK", "MARA, GUNDLACH, SAWBONES, AND CLOTHMAN HAVE WORK AVAILABLE", "level1_trader_work");
+        quest_notification_add("NEW TRADER WORK", "GHOST, MARA, GUNDLACH, SAWBONES, AND CLOTHMAN HAVE WORK AVAILABLE", "level1_trader_work");
+    audio_play_sound(snd_level_up, 0, false);
     save_mark_dirty();
     return true;
 }

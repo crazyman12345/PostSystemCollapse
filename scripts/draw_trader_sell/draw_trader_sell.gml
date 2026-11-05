@@ -190,7 +190,7 @@ function draw_trader_sell()
 
             var sell_price =
                 trader_get_sell_price(
-                    item_key
+                    stash_find_items(item_key)[0]
                 );
 
 

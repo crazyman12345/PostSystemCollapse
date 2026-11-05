@@ -1,4 +1,5 @@
 frame_scale = (delta_time / 1000000) * 60;
+ui_hover_frame++;
 save_update();
 
 skill_notifications_update();

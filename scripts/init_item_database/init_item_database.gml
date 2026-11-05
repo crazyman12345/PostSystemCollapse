@@ -556,7 +556,7 @@ function init_item_database()
         category: ItemCategory.AMMO,
         description: "Common 9mm ammunition.",
         base_value: 2,
-        weight: 0.015,
+        weight: 0.0015,
         stackable: true,
 		max_stack: 100,
 		icon_sprite: spr_9mm
@@ -569,7 +569,7 @@ function init_item_database()
         description: "Heavy pistol ammunition used by weapons such as the M1911.",
         base_value: 3,
 		max_stack: 100,
-        weight: 0.01875,
+        weight: 0.001875,
         stackable: true,
 		icon_sprite: spr_45acp
     };
@@ -581,7 +581,7 @@ function init_item_database()
         description: "A common shotgun shell.",
         base_value: 4,
 		max_stack: 100,
-        weight: 0.0375,
+        weight: 0.00375,
         stackable: true,
 		icon_sprite: spr_buckshot
     };
@@ -594,7 +594,7 @@ function init_item_database()
 		icon_sprite: spr_76254r,
         base_value: 6,
         max_stack: 100,
-        weight: 0.024,
+        weight: 0.0024,
         stackable: true
     };
 
@@ -605,7 +605,7 @@ function init_item_database()
         description: "Intermediate rifle ammunition used by the AKM.",
         base_value: 5,
         max_stack: 100,
-        weight: 0.016,
+        weight: 0.0016,
         stackable: true
     };
 
@@ -616,7 +616,7 @@ function init_item_database()
         description: "Full-power rifle ammunition used by the G3.",
         base_value: 7,
         max_stack: 100,
-        weight: 0.025,
+        weight: 0.0025,
         stackable: true
     };
 
@@ -625,9 +625,10 @@ function init_item_database()
         name: "7.62x25 Ammo",
         category: ItemCategory.AMMO,
         description: "High-velocity pistol ammunition used by the PPSh-41.",
+        icon_sprite: spr_762x25,
         base_value: 3,
         max_stack: 100,
-        weight: 0.011,
+        weight: 0.0011,
         stackable: true
     };
 
@@ -695,7 +696,7 @@ function init_item_database()
         accuracy: 44,
         handling: 44,
 	
-        ammo_key: "ammo_9mm",
+        ammo_key: "ammo_45",
         ammo_per_attack: 1,
 
         weapon_sprite: spr_1911,
@@ -810,18 +811,18 @@ function init_item_database()
         category: ItemCategory.WEAPON,
         tier: 1,
         description: "A Soviet submachine gun with a high rate of fire.",
-        base_value: 500,
+        base_value: 350,
         weight: 3.6,
         stackable: false,
 
-        damage_min: 5,
-        damage_max: 7,
-        fire_rate: 15,
-        mag_size: 35,
-        reload_time: 85,
-        bullet_speed: 9,
-        accuracy: 29,
-        handling: 31,
+        damage_min: 4,
+        damage_max: 6,
+        fire_rate: 10,
+        mag_size: 20,
+        reload_time: 95,
+        bullet_speed: 8,
+        accuracy: 27,
+        handling: 28,
 
         ammo_key: "ammo_762x25",
         ammo_per_attack: 1,
@@ -953,9 +954,9 @@ function init_item_database()
         handling: 29,
 		pellet_count: 8,
 		pellet_spread: 6,
-		damage_falloff_start: 80,
+		damage_falloff_start: 60,
 		damage_falloff_end: 120,
-		damage_falloff_minimum: 0.3,
+		damage_falloff_minimum: 0.2,
 		weapon_draw_width: 64,
         ammo_key: "ammo_12g",
         ammo_per_attack: 1,
@@ -1001,9 +1002,9 @@ function init_item_database()
         handling: 25,
 		pellet_count: 8,
 		pellet_spread: 8,
-		damage_falloff_start: 80,
+		damage_falloff_start: 60,
 		damage_falloff_end: 120,
-		damage_falloff_minimum: 0.3,
+		damage_falloff_minimum: 0.2,
 
         ammo_key: "ammo_12g",
         ammo_per_attack: 1,
@@ -1035,18 +1036,18 @@ function init_item_database()
         category: ItemCategory.WEAPON,
         tier: 2,
         description: "A compact automatic submachine gun with a high rate of fire.",
-        base_value: 550,
+        base_value: 600,
         weight: 3.2,
         stackable: false,
 
-        damage_min: 4,
-        damage_max: 6,
-        fire_rate: 9,
-        mag_size: 20,
-        reload_time: 80,
-        bullet_speed: 8,
-        accuracy: 32.5,
-        handling: 36,
+        damage_min: 6,
+        damage_max: 8,
+        fire_rate: 13,
+        mag_size: 25,
+        reload_time: 65,
+        bullet_speed: 9,
+        accuracy: 36,
+        handling: 42,
         light_enabled: true,
         light_color: make_color_rgb(255, 190, 80),
         light_radius: 20,

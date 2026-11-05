@@ -12,7 +12,6 @@ function step_workshop()
     var selected_key = workshop_keys[workshop_station_index];
     if (workshop_upgrade_button(selected_key, 940, 80, display_get_gui_width(), false))
     {
-        audio_play_sound(snd_interact, 0, false);
         workshop_upgrade_interact(selected_key);
         return;
     }

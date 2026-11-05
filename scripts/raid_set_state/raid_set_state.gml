@@ -29,6 +29,13 @@ function raid_set_state(_state)
         break;
 
         case RaidState.DEATH:
+            if (boss_music_active)
+            {
+                audio_stop_sound(music_instance);
+                music_instance = audio_play_sound(theme_song, 0, true);
+                audio_sound_gain(music_instance, music_volume / 100, 0);
+                boss_music_active = false;
+            }
             part_particles_clear(smoke_particle_system);
             smoke_particle_update_accumulator = 0;
             part_particles_clear(explosion_particle_system);
@@ -58,6 +65,13 @@ function raid_set_state(_state)
         break;
 
         case RaidState.RESULT:
+            if (boss_music_active)
+            {
+                audio_stop_sound(music_instance);
+                music_instance = audio_play_sound(theme_song, 0, true);
+                audio_sound_gain(music_instance, music_volume / 100, 0);
+                boss_music_active = false;
+            }
             part_particles_clear(smoke_particle_system);
             smoke_particle_update_accumulator = 0;
             part_particles_clear(explosion_particle_system);

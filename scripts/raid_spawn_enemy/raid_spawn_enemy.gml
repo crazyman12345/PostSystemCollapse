@@ -361,30 +361,30 @@ function raid_spawn_enemy(_type, _x, _y)
             enemy.boss_pacing_phase1 = {
                 dash_speed: 2.8,
                 dash_duration: 26,
-                attack_windup: 45,
-                burst_shot_interval: 12,
-                pre_dash_windup: 30,
-                post_dash_windup: 24,
-                attack_recovery: 60,
+                attack_windup: 45 / 0.75,
+                burst_shot_interval: 12 / 0.75,
+                pre_dash_windup: 30 / 0.75,
+                post_dash_windup: 24 / 0.75,
+                attack_recovery: 60 / 0.75,
                 walkdown_speed: 0.56,
-                walkdown_windup: 45,
-                walkdown_shot_interval: 40,
+                walkdown_windup: 45 / 0.75,
+                walkdown_shot_interval: 40 / 0.75,
                 shockwave_move_speed: 2.0,
-                shockwave_windup: 84
+                shockwave_windup: 84 / 0.75
             };
             enemy.boss_pacing_phase2 = {
                 dash_speed: 2.8 * 1.3,
                 dash_duration: 26 / 1.3,
-                attack_windup: 45 / 1.3,
-                burst_shot_interval: 12 / 1.3,
-                pre_dash_windup: 30 / 1.3,
-                post_dash_windup: 24 / 1.3,
-                attack_recovery: 60 / 1.3,
+                attack_windup: 45 / 1.3 / 0.75,
+                burst_shot_interval: 12 / 1.3 / 0.75,
+                pre_dash_windup: 30 / 1.3 / 0.75,
+                post_dash_windup: 24 / 1.3 / 0.75,
+                attack_recovery: 60 / 1.3 / 0.75,
                 walkdown_speed: 0.56,
-                walkdown_windup: 45 / 1.3,
-                walkdown_shot_interval: 40 / 1.3,
+                walkdown_windup: 45 / 1.3 / 0.75,
+                walkdown_shot_interval: 40 / 1.3 / 0.75,
                 shockwave_move_speed: 2.0 * 1.3,
-                shockwave_windup: 84 / 1.3
+                shockwave_windup: 84 / 1.3 / 0.75
             };
             enemy.boss_dash_speed = enemy.boss_pacing_phase1.dash_speed;
             enemy.boss_shockwave_timer = 0;

@@ -15,6 +15,51 @@ function step_raid_inventory()
     && raid.inventory_equipment_slot == -1)
         raid_inventory_clear_held();
 
+    var _hover_mouse_x = device_mouse_x_to_gui(0);
+    var _hover_mouse_y = device_mouse_y_to_gui(0);
+    var _raid_target_hover = "";
+    var _hover_equipment_slot = inventory_character_tab == InventoryCharacterTab.EQUIPMENT
+        ? raid_inventory_get_equipment_slot(_hover_mouse_x, _hover_mouse_y) : -1;
+    if (_hover_equipment_slot != -1)
+    {
+        if ((!is_undefined(raid.inventory_item) && raid_inventory_item_fits_equipment(raid.inventory_item, _hover_equipment_slot))
+        || (is_undefined(raid.inventory_item) && equipment_get_slot_item(raid.crew_index, _hover_equipment_slot) != ""))
+            _raid_target_hover = "equipment:" + string(_hover_equipment_slot);
+    }
+    var _hover_hotbar_rect = raid_inventory_get_hotbar_rect();
+    if (_raid_target_hover == "" && point_in_rectangle(_hover_mouse_x, _hover_mouse_y,
+        _hover_hotbar_rect.left, _hover_hotbar_rect.top,
+        _hover_hotbar_rect.left + _hover_hotbar_rect.width, _hover_hotbar_rect.top + _hover_hotbar_rect.height))
+    {
+        var _hover_hotbar_slot = floor((_hover_mouse_x - _hover_hotbar_rect.left) / 72);
+        if (_hover_hotbar_slot >= 0 && _hover_hotbar_slot < 6
+        && ((!is_undefined(raid.inventory_item) && raid_hotbar_is_usable(item_get(raid.inventory_item.item_key)))
+            || (is_undefined(raid.inventory_item) && !is_undefined(raid.hotbar[_hover_hotbar_slot]))))
+            _raid_target_hover = "hotbar:" + string(_hover_hotbar_slot);
+    }
+    if (_raid_target_hover == "" && !is_undefined(raid.inventory_item))
+    {
+        var _hover_grids = raid_inventory_get_grids();
+        for (var _hover_grid_index = 0; _hover_grid_index < array_length(_hover_grids); _hover_grid_index++)
+        {
+            var _hover_grid = _hover_grids[_hover_grid_index];
+            var _hover_cell_size = variable_struct_exists(_hover_grid, "cell_size") ? _hover_grid.cell_size : 60;
+            var _hover_stride = variable_struct_exists(_hover_grid, "cell_stride") ? _hover_grid.cell_stride : _hover_cell_size;
+            var _hover_local_x = _hover_mouse_x - _hover_grid.left;
+            var _hover_local_y = _hover_mouse_y - _hover_grid.top;
+            var _hover_grid_x = floor(_hover_local_x / _hover_stride);
+            var _hover_grid_y = floor(_hover_local_y / _hover_stride);
+            if (_hover_grid_x < 0 || _hover_grid_y < 0
+            || _hover_grid_x >= _hover_grid.storage.grid_width || _hover_grid_y >= _hover_grid.storage.grid_height
+            || (_hover_local_x mod _hover_stride) >= _hover_cell_size || (_hover_local_y mod _hover_stride) >= _hover_cell_size)
+                continue;
+            if (inventory_can_place_item(raid.inventory_item, _hover_grid_x, _hover_grid_y, _hover_grid.storage))
+                _raid_target_hover = "grid:" + string(_hover_grid_index) + ":" + string(_hover_grid_x) + ":" + string(_hover_grid_y);
+            break;
+        }
+    }
+    ui_hover_sound("raid_inventory_targets", _raid_target_hover);
+
     if (mouse_check_button_pressed(mb_right))
     {
         if (!is_undefined(raid.inventory_item))
@@ -53,7 +98,7 @@ function step_raid_inventory()
             if (_grid_x < 0 || _grid_y < 0 || _grid_x >= _grid.storage.grid_width || _grid_y >= _grid.storage.grid_height
             || (_local_x mod _stride) >= _cell_size || (_local_y mod _stride) >= _cell_size) continue;
             var _context_item = inventory_find_item_at(_grid.storage, _grid_x, _grid_y);
-            if (inventory_context_menu_open(_context_item, _grid.storage, -1, false, true, true)) return;
+            if (inventory_context_menu_open(_context_item, _grid.storage, -1, true, true, true)) return;
             break;
         }
         raid.medical_selected_item = undefined;
@@ -74,17 +119,20 @@ function step_raid_inventory()
         }
     }
 
+    if (inventory_character_tab_input(20)) return;
     if (!mouse_check_button_pressed(mb_left)) return;
     var gui_mouse_x = device_mouse_x_to_gui(0);
     var gui_mouse_y = device_mouse_y_to_gui(0);
-    if (inventory_character_tab_input(20)) return;
     if (inventory_character_tab == InventoryCharacterTab.HEALTH && !is_undefined(raid.medical_selected_item))
     {
         var _medical_target = player_health_treatment_get_manual_target(gui_mouse_x, gui_mouse_y);
         if (!is_undefined(_medical_target))
         {
             if (player_health_treatment_start(raid.medical_selected_item, _medical_target.type, _medical_target.limb))
+            {
                 raid.medical_selected_item = undefined;
+                audio_play_sound(snd_interact, 0, false);
+            }
             return;
         }
     }
@@ -97,6 +145,7 @@ function step_raid_inventory()
             raid.inventory_item = undefined;
             raid.inventory_container = undefined;
             raid.inventory_equipment_slot = -1;
+            audio_play_sound(snd_interact, 0, false);
             return;
         }
     }
@@ -113,6 +162,7 @@ function step_raid_inventory()
                 raid.inventory_item = undefined;
                 raid.inventory_container = undefined;
                 raid.inventory_equipment_slot = -1;
+                audio_play_sound(snd_interact, 0, false);
             }
         }
         else
@@ -130,6 +180,7 @@ function step_raid_inventory()
                 raid.inventory_equipment_slot = equipment_slot;
                 raid.inventory_rotation = equipped_item.rotation;
                 raid_inventory_set_equipped_item(equipment_slot, undefined);
+                audio_play_sound(snd_interact, 0, false);
             }
         }
         return;
@@ -150,11 +201,16 @@ function step_raid_inventory()
                 {
                     raid.hotbar[hotbar_slot] = raid.inventory_item;
                     raid_inventory_clear_held();
+                    audio_play_sound(snd_interact, 0, false);
                 }
             }
             else
             {
-                raid.hotbar[hotbar_slot] = undefined;
+                if (!is_undefined(raid.hotbar[hotbar_slot]))
+                {
+                    raid.hotbar[hotbar_slot] = undefined;
+                    audio_play_sound(snd_interact, 0, false);
+                }
             }
         }
         return;
@@ -206,6 +262,7 @@ function step_raid_inventory()
                     raid.inventory_item = undefined;
                     raid.inventory_container = undefined;
                 }
+                audio_play_sound(snd_interact, 0, false);
             }
             return;
         }
@@ -241,6 +298,7 @@ function step_raid_inventory()
                         if (item_remains_in_loot) collected_quantity -= item.quantity;
                         if (collected_quantity > 0)
                             quest_event(QuestObjectiveType.COLLECT_ITEM, item.item_key, collected_quantity);
+                        audio_play_sound(snd_interact, 0, false);
                     }
                     return;
                 }
@@ -251,6 +309,7 @@ function step_raid_inventory()
                 stash_remove_item(item, grid.storage);
                 if (definition.grid_width == definition.grid_height) item.rotation = 0;
                 raid.inventory_rotation = item.rotation;
+                audio_play_sound(snd_interact, 0, false);
                 return;
             }
         }

@@ -3,6 +3,14 @@ function draw_raid_aim_cone()
     if (!global.graphics_settings.aim_cone || raid.state != RaidState.COMBAT
     || overlay_mode != OverlayMode.NONE || player_health_treatment_is_active() || raid_gun_tuning_active) return;
 
+    for (var i = 0; i < array_length(raid_enemies); i++)
+    {
+        var _enemy = raid_enemies[i];
+        if (!_enemy.enemy_boss) continue;
+        if ((variable_struct_exists(_enemy, "boss_intro_active") && _enemy.boss_intro_active)
+        || _enemy.enemy_state == RaidEnemyState.PHASE_TRANSITION) return;
+    }
+
     var _weapon = raid_update_active_weapon();
     if (!is_struct(_weapon)) return;
 

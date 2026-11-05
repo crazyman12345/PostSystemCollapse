@@ -27,7 +27,10 @@ state = GameState.MAIN_MENU;
 menu_index = 0;
 main_menu_credits_open = false;
 frame_scale = 1;
+ui_hover_frame = 0;
+ui_hover_areas = {};
 icon_spin_speed = 10.8;
+quest_contract_popup_state = { active: false, quest_key: "", claim: false, selection: 0, next_node: "" };
 global.ui_text_color = make_color_rgb(131, 185, 154);
 global.ui_interactive_color = c_lime;
 global.hideout_background_color = make_color_rgb(2, 11, 6);
@@ -43,6 +46,7 @@ global.hideout_amber_color = make_color_rgb(200, 138, 41);
 music_volume = 0;
 music_instance = audio_play_sound(theme_song, 0, true);
 audio_sound_gain(music_instance, music_volume / 100, 0);
+boss_music_active = false;
 
 init_item_database();
 init_trader_database();
@@ -115,6 +119,7 @@ debug_input = "";
 debug_show_mouse = 0;
 debug_log = [];
 debug_log_max = 6;
+debug_free_craft = false;
 overlay_mode = OverlayMode.NONE;
 global.admin_trader_enabled = false;
 // ==============================

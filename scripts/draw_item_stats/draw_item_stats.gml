@@ -385,6 +385,6 @@ function draw_item_stats_add_armor_modifiers(_lines, _item)
     for (var _i = 0; _i < array_length(_item.modifiers); _i++)
     {
         var _modifier = variable_struct_get(global.armor_modifier_registry, _item.modifiers[_i]);
-        array_push(_lines, _modifier.name + ": " + _modifier.description);
+        array_push(_lines, _modifier.name + ": " + armor_modifier_get_description(_item, _item.modifiers[_i]));
     }
 }

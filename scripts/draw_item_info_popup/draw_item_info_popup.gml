@@ -193,7 +193,7 @@ function draw_item_info_popup(
     draw_line(_content_left, _footer_top, _content_right, _footer_top);
     draw_set_font(fnt_terminal_medium);
     draw_set_halign(fa_left);
-    draw_text(_content_left, _footer_top + 18, "SELL VALUE  $" + string(trader_get_sell_price(_item_key)));
+    draw_text(_content_left, _footer_top + 18, "SELL VALUE  $" + string(trader_get_sell_price(is_undefined(_stored_item) ? _item_key : _stored_item)));
     draw_set_halign(fa_right);
     draw_text(_content_right, _footer_top + 18,
         "WEIGHT  " + string_format(item.weight, 0, 2) + " KG");

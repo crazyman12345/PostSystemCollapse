@@ -101,6 +101,7 @@ function dialogue_condition_met(_condition)
         case "trader_quest_ready": result = dialogue_trader_has_ready_quest(_condition.key); break;
         case "level_unlocked": result = global.progress.danger_level >= _condition.level; break;
         case "danger_at_least": result = global.progress.danger_level >= _condition.level; break;
+        case "treatment_needed": result = raid_result_get_treatment_quote().total > 0; break;
     }
     return result == expected;
 }
@@ -110,7 +111,13 @@ function dialogue_get_visible_responses(_node)
     var result = [];
     if (is_undefined(_node)) return result;
     for (var i = 0; i < array_length(_node.responses); i++)
-        if (dialogue_condition_met(_node.responses[i].condition)) array_push(result, _node.responses[i]);
+    {
+        var _response = _node.responses[i];
+        if (!dialogue_condition_met(_response.condition)) continue;
+        if (is_struct(_response.action) && _response.action.type == "heal_wounds")
+            _response.text = "Heal my wounds. COST: $" + string(raid_result_get_treatment_quote().total);
+        array_push(result, _response);
+    }
     return result;
 }
 
@@ -146,6 +153,7 @@ function dialogue_open(_trader_key)
 
 function dialogue_close()
 {
+    quest_contract_popup_close();
     dialogue_set_flag("conversation_" + current_trader_key + "_complete", true);
     dialogue_current_node = undefined;
     dialogue_history = [];
@@ -166,6 +174,8 @@ function dialogue_run_action(_action)
     {
         case "accept_quest": return quest_accept(_action.key);
         case "turn_in_quest": return quest_turn_in(_action.key);
+        case "show_quest_offer": return quest_contract_popup_open(_action.key, false, _action.next_node);
+        case "show_quest_claim": return quest_contract_popup_open(_action.key, true, _action.next_node);
         case "set_dialogue_flag": return dialogue_set_flag(_action.key, _action.value);
         case "tutorial":
             tutorial_callout_show(
@@ -186,6 +196,12 @@ function dialogue_run_action(_action)
             trader_selected_stock_index = -1;
             trader_hovered_stock_index = -1;
             trader_purchase_quantity_text = "1";
+            return true;
+        case "heal_wounds":
+            var _quote = raid_result_get_treatment_quote();
+            if (_quote.total <= 0 || !spend_cash(_quote.total)) return false;
+            raid_result_heal_all();
+            save_game();
             return true;
         case "end": dialogue_close(); return true;
     }
@@ -226,19 +242,12 @@ function dialogue_build_claim_node(_trader_key)
             if (variable_struct_exists(definition, "completion_node"))
                 return dialogue_resolve_node(definition.completion_node);
             var message = definition.key == "test_field_supplies"
-                ? "Useful. The other traders are willing to speak with you now."
-                : "Thanks. Here is your reward.";
-            message += "\n\nREWARD: $" + string(definition.rewards.cash);
-            for (var reward_index = 0; reward_index < array_length(definition.rewards.items); reward_index++)
-            {
-                var reward = definition.rewards.items[reward_index];
-                var item = item_get(reward.item_key);
-                message += " + " + string(reward.quantity) + "x " + string_upper(item.name);
-            }
-            if (definition.key == "test_field_supplies") message += "\nTRADER ACCESS";
+                ? "The bench is working. The other traders will speak with you now."
+                : "Thanks. I have your payment ready.";
             return { id: "claim:" + _trader_key, speaker: trader.name, message: message, responses: [
-                dialogue_make_response("Claim reward.", variable_struct_get(global.dialogue_roots, _trader_key), undefined,
-                    { type: "turn_in_quest", key: definition.key })
+                dialogue_make_response("View rewards.", "", undefined,
+                    { type: "show_quest_claim", key: definition.key,
+                        next_node: variable_struct_get(global.dialogue_roots, _trader_key) })
             ] };
         }
     }
@@ -249,7 +258,6 @@ function dialogue_build_available_node(_trader_key)
 {
     quest_refresh_states();
     var trader = trader_get(_trader_key);
-    var responses = [];
     for (var i = 0; i < array_length(quest_definitions); i++)
     {
         var definition = quest_definitions[i];
@@ -257,10 +265,11 @@ function dialogue_build_available_node(_trader_key)
         if (definition.trader_key == trader.trader_key && progress.state == QuestState.AVAILABLE)
         {
             var offer_target = variable_struct_exists(definition, "offer_node") ? definition.offer_node : "offer:" + definition.key;
-            array_push(responses, dialogue_make_response(definition.title, offer_target));
+            return dialogue_resolve_node(offer_target);
         }
     }
-    var message = array_length(responses) > 0 ? "I have work available. Which contract do you want to discuss?" : "Nothing new for you right now.";
+    var responses = [];
+    var message = "I don't have any work right now.";
     array_push(responses, dialogue_make_response("Back.", variable_struct_get(global.dialogue_roots, _trader_key)));
     return { id: "available:" + _trader_key, speaker: trader.name, message: message, responses: responses };
 }
@@ -270,15 +279,15 @@ function dialogue_build_offer_node(_quest_key, _details)
     var definition = quest_get_definition(_quest_key);
     if (is_undefined(definition)) return undefined;
     var trader = trader_get(current_trader_key);
-    var message = _details ? dialogue_quest_description(definition, quest_get_progress(_quest_key), false)
-        : definition.title + ". Interested?";
+    var message = _details ? definition.description
+        : "I have a job for you.";
     var responses = [];
     if (!_details)
         array_push(responses, dialogue_make_response("Tell me the details.", "details:" + _quest_key));
     else if (quest_get_progress(_quest_key).state == QuestState.AVAILABLE)
-        array_push(responses, dialogue_make_response("I'll take the job.", variable_struct_get(global.dialogue_roots, current_trader_key), undefined,
-            { type: "accept_quest", key: _quest_key }));
-    array_push(responses, dialogue_make_response("Not now.", "available:" + current_trader_key));
+        array_push(responses, dialogue_make_response("Show me the contract.", "", undefined,
+            { type: "show_quest_offer", key: _quest_key,
+                next_node: variable_struct_get(global.dialogue_roots, current_trader_key) }));
     array_push(responses, dialogue_make_response("Back.", variable_struct_get(global.dialogue_roots, current_trader_key)));
     return { id: (_details ? "details:" : "offer:") + _quest_key, speaker: trader.name, message: message, responses: responses };
 }
@@ -295,7 +304,7 @@ function dialogue_build_active_node(_trader_key)
         && (progress.state == QuestState.ACTIVE || progress.state == QuestState.READY_TO_TURN_IN))
             array_push(responses, dialogue_make_response(definition.title, "job:" + definition.key));
     }
-    var message = array_length(responses) > 0 ? "Let's talk about your current work." : "You don't have an active job from me.";
+    var message = array_length(responses) > 0 ? "Which job?" : "You don't have a job from me right now.";
     array_push(responses, dialogue_make_response("Back.", variable_struct_get(global.dialogue_roots, _trader_key)));
     return { id: "active:" + _trader_key, speaker: trader.name, message: message, responses: responses };
 }
@@ -337,6 +346,8 @@ function dialogue_quest_description(_definition, _progress, _show_progress)
         var item = item_get(reward.item_key);
         text += " + " + string(reward.quantity) + "x " + string_upper(item.name);
     }
+    var reputation_reward = variable_struct_exists(_definition, "reputation") ? _definition.reputation : 5;
+    if (reputation_reward > 0) text += " + " + string(reputation_reward) + " REPUTATION";
     return text;
 }
 

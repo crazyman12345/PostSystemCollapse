@@ -46,7 +46,9 @@ function draw_trader_buy()
     draw_set_color(global.ui_text_color);
     draw_text(_trader_text_left, 157, "REPUTATION");
     draw_set_color(global.ui_text_color);
-    draw_text(_trader_text_left + 207, 157, "0");
+    var _trader_reputation = trader_get_reputation(current_trader_key);
+    draw_text(_trader_text_left + 207, 157,
+        string(_trader_reputation) + " // " + trader_get_reputation_marker(_trader_reputation));
 
     // Player profile
     terminal_box(1228, 37, 672, 166);
@@ -60,10 +62,12 @@ function draw_trader_buy()
     draw_set_font(fnt_terminal_tiny);
     draw_set_color(global.ui_text_color);
     draw_text(1275, 119, "CURRENT TRADER LEVEL");
-    draw_text(1273, 162, "NEXT TRADER LEVEL");
     draw_set_color(global.ui_text_color);
-    draw_text(1532, 119, "0");
-    draw_text(1532, 162, "0");
+    var _trader_level = trader_get_level(current_trader_key);
+    draw_text(1532, 119, string(_trader_level));
+
+    var _back_hovered = point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), 1735, 55, 1870, 101);
+    terminal_button(1735, 55, 1870, 101, "BACK", _back_hovered);
 
     // Deal button
     draw_set_color(_valid ? global.ui_interactive_color : c_dkgray);
@@ -221,7 +225,7 @@ function draw_trader_buy()
             draw_set_halign(fa_left);
             draw_set_valign(fa_bottom);
             draw_set_color(global.ui_text_color);
-            draw_text(_left + 8, _top + _height * _stash_cell - 7, "$" + format_compact_number(trader_get_sell_price(_stored_item.item_key)));
+            draw_text(_left + 8, _top + _height * _stash_cell - 7, "$" + format_compact_number(trader_get_sell_price(_stored_item)));
         }
         inventory_hover_consider(_stored_item, _left, _top, _left + _width * _stash_cell, _top + _height * _stash_cell);
     }

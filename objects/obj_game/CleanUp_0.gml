@@ -16,4 +16,7 @@ raid_head_blur_temporary_surface = graphics_settings_release_surface(raid_head_b
 raid_player_shadow_surface = graphics_settings_release_surface(raid_player_shadow_surface);
 raid_enemy_hit_mask_surface = graphics_settings_release_surface(raid_enemy_hit_mask_surface);
 blood_surface_destroy();
+if (variable_instance_exists(id, "crafting_minigame_state")
+&& is_struct(crafting_minigame_state))
+    weapon_crafting_surfaces_free(crafting_minigame_state);
 if (variable_instance_exists(id, "save_dirty") && save_dirty && save_can_write_now()) save_game();

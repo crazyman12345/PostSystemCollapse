@@ -27,8 +27,7 @@ function step_hideout_stash(){
 
         if (!is_undefined(backpack_definition))
         {
-            stash.backpack.grid_width = backpack_definition.storage_width;
-            stash.backpack.grid_height = backpack_definition.storage_height;
+            armor_sync_backpack_storage(stash.equipped_bag_item);
             array_push(grids, { key: "backpack", storage: stash.backpack, left: backpack_grid_left, top: backpack_grid_top, cell_size: container_cell_size });
             pockets_grid_top = backpack_grid_top + max(328, (stash.backpack.grid_height * container_cell_size) + 28);
             secure_grid_top = pockets_grid_top + 122;
@@ -60,6 +59,7 @@ function step_hideout_stash(){
             stash.hover_x = -1;
             stash.hover_y = -1;
             stash.hover_container = "";
+            audio_play_sound(snd_interact, 0, false);
             return;
         }
     }
@@ -169,6 +169,7 @@ function step_hideout_stash(){
             if (!is_undefined(medical_target)
             && player_health_treatment_start_held(stash.held_item, medical_source, medical_target.type, medical_target.limb, true))
             {
+                audio_play_sound(snd_interact, 0, false);
                 if (player_health_treatment_source_contains(medical_source, stash.held_item))
                 {
                     stash_remove_item(stash.held_item, medical_source);
@@ -215,6 +216,17 @@ function step_hideout_stash(){
                 break;
         }
 
+        var _stash_target_hover = "";
+        if (equipment_slot != -1 && equipment_slot_item == "" && equipment_slot_valid)
+            _stash_target_hover = "equipment:" + string(equipment_slot);
+        else if (backpack_slot_hovered && member.bag == "" && !is_undefined(held_definition)
+        && held_definition.category == ItemCategory.BAG)
+            _stash_target_hover = "bag";
+        else if (!is_undefined(hovered_grid)
+        && inventory_can_place_item(stash.held_item, mouse_grid_x, mouse_grid_y, hovered_grid.storage))
+            _stash_target_hover = hovered_grid.key + ":" + string(mouse_grid_x) + ":" + string(mouse_grid_y);
+        ui_hover_sound("stash_drop_targets", _stash_target_hover);
+
         if (equipment_slot != -1
         && (held_source == "stash" || held_source == "backpack" || held_source == "pockets"
             || held_source == "secure" || held_source == "equipment")
@@ -251,6 +263,7 @@ function step_hideout_stash(){
             stash.hover_x = -1;
             stash.hover_y = -1;
             stash.hover_container = "";
+            audio_play_sound(snd_interact, 0, false);
         }
         else if (backpack_slot_hovered
         && (member.bag == "" || is_undefined(hovered_grid))
@@ -270,6 +283,7 @@ function step_hideout_stash(){
                 stash.hover_x = -1;
                 stash.hover_y = -1;
                 stash.hover_container = "";
+                audio_play_sound(snd_interact, 0, false);
             }
         }
         else if (!is_undefined(hovered_grid) && mouse_check_button_pressed(mb_left)
@@ -301,6 +315,7 @@ function step_hideout_stash(){
             }
 
             if (hovered_grid.key == "stash") stash_index = array_length(stash.items) - 1;
+            audio_play_sound(snd_interact, 0, false);
         }
     }
     else if (equipment_slot != -1 && mouse_check_button_pressed(mb_left))
@@ -367,6 +382,7 @@ function step_hideout_stash(){
 
                     crew[0] = member;
                     stash_index = array_length(stash.items) - 1;
+                    audio_play_sound(snd_interact, 0, false);
                 }
                 return;
             }
@@ -417,6 +433,7 @@ function step_hideout_stash(){
                 stash.hover_x = -1;
                 stash.hover_y = -1;
                 stash.hover_container = "";
+                audio_play_sound(snd_interact, 0, false);
             }
         }
     }
@@ -443,6 +460,7 @@ function step_hideout_stash(){
                     member.bag = "";
                     crew[0] = member;
                     stash_index = array_length(stash.items) - 1;
+                    audio_play_sound(snd_interact, 0, false);
                 }
                 return;
             }
@@ -471,6 +489,7 @@ function step_hideout_stash(){
                 stash.hover_x = -1;
                 stash.hover_y = -1;
                 stash.hover_container = "";
+                audio_play_sound(snd_interact, 0, false);
             }
         }
     }
@@ -546,13 +565,13 @@ function step_hideout_stash(){
                             case EquipmentSlot.BAG:
                                 member.bag = item.item_key;
                                 stash.equipped_bag_item = item;
-                                stash.backpack.grid_width = definition.storage_width;
-                                stash.backpack.grid_height = definition.storage_height;
+                                armor_sync_backpack_storage(stash.equipped_bag_item);
                                 break;
                         }
 
                         crew[0] = member;
                         stash_index = clamp(stash_index, 0, max(0, array_length(stash.items) - 1));
+                        audio_play_sound(snd_interact, 0, false);
                     }
                     return;
                 }
@@ -571,7 +590,8 @@ function step_hideout_stash(){
                         array_push(quick_transfer_destinations, stash);
                     }
 
-                    inventory_quick_transfer(item, hovered_grid.storage, quick_transfer_destinations);
+                    if (inventory_quick_transfer(item, hovered_grid.storage, quick_transfer_destinations))
+                        audio_play_sound(snd_interact, 0, false);
                     stash_index = clamp(stash_index, 0, max(0, array_length(stash.items) - 1));
                     return;
                 }
@@ -584,6 +604,7 @@ function step_hideout_stash(){
                 stash.hover_y = mouse_grid_y;
                 stash.hover_container = hovered_grid.key;
                 stash_index = clamp(stash_index, 0, max(0, array_length(stash.items) - 1));
+                audio_play_sound(snd_interact, 0, false);
                 break;
             }
         }

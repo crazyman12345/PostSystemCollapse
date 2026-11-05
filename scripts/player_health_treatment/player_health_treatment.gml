@@ -288,8 +288,12 @@ function player_health_consumable_start(_item, _hotbar_slot = -1)
     raid.treatment.item_key = _item.item_key;
     raid.treatment.target_type = "";
     raid.treatment.limb = -1;
-    raid.treatment.duration = _definition.use_duration;
-    raid.treatment.remaining = _definition.use_duration;
+    var _bag = armor_get_equipped_bag_stats();
+    var _chest = armor_get_equipped_chest_stats();
+    var _use_duration = _definition.use_duration * (is_undefined(_bag) ? 1 : _bag.consumable_use_time_multiplier);
+    if (!is_undefined(_chest)) _use_duration /= _chest.consumable_use_speed_multiplier;
+    raid.treatment.duration = _use_duration;
+    raid.treatment.remaining = _use_duration;
     raid.treatment.amount = 1;
     raid.treatment.hotbar_slot = _hotbar_slot;
 

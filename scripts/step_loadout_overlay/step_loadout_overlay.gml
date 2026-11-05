@@ -91,10 +91,12 @@ function step_loadout_overlay()
 
         var mouse_gui_x = device_mouse_x_to_gui(0);
         var mouse_gui_y = device_mouse_y_to_gui(0);
+        var _start_hovered = mouse_gui_x >= 1420 && mouse_gui_x <= 1890
+            && mouse_gui_y >= 920 && mouse_gui_y <= 1015;
+        ui_hover_sound("loadout_start", _start_hovered ? "start" : "");
 
         var mouse_start = mouse_check_button_pressed(mb_left)
-            && mouse_gui_x >= 1420 && mouse_gui_x <= 1890
-            && mouse_gui_y >= 920 && mouse_gui_y <= 1015;
+            && _start_hovered;
 
         if (keyboard_check_pressed(vk_enter) || mouse_start)
         {

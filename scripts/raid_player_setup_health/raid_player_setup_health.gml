@@ -9,6 +9,7 @@ function raid_player_setup_health()
     raid_player_invincible_timer = 0;
 
     raid_player_stamina = raid_player_max_stamina;
+    raid_player_stamina_regen_delay = 0;
 
     var member = crew[0];
 

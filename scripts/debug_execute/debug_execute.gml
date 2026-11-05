@@ -101,6 +101,17 @@ function debug_execute(_command)
 		case "gun_tuning_mode":
 			raid_gun_tuning_toggle();
 			break;
+
+        case "free_craft":
+            if (array_length(args) != 2
+            || (string_lower(args[1]) != "true" && string_lower(args[1]) != "false"))
+            {
+                debug_log_add("Usage: free_craft <true|false>");
+                break;
+            }
+            debug_free_craft = string_lower(args[1]) == "true";
+            debug_log_add("Free crafting " + (debug_free_craft ? "enabled" : "disabled"));
+            break;
 		
         default:
             debug_log_add(
@@ -117,6 +128,7 @@ function debug_command_help()
     debug_log_add("gotoroom <room_number>");
     debug_log_add("money | show_mouse | debug_start_boss <1|2> | god_trader");
     debug_log_add("godmode | hit_regions | ladder_projection | unlock_tables | gun_tuning_mode");
+    debug_log_add("free_craft <true|false>");
     debug_log_add("limb_damage <limb> <amount> | limb_fracture <limb>");
     debug_log_add("limb_bleed <limb> <light|heavy> | limb_blackout <limb> | limb_reset <limb|all>");
 }

@@ -1,11 +1,15 @@
-function trader_get_sell_price(_item_key)
+function trader_get_sell_price(_item_source)
 {
+    var _item_key = is_string(_item_source) ? _item_source : _item_source.item_key;
     var item = item_get(_item_key);
 
     if (is_undefined(item))
     {
         return 0;
     }
+
+    if (!is_string(_item_source) && item.category == ItemCategory.WEAPON)
+        item = weapon_get_effective_stats(_item_source);
 
     // Trader pays 60% of base item value for now
     var sell_multiplier = 0.60;
